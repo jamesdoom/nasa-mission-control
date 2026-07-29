@@ -1,0 +1,46 @@
+import { render } from "@testing-library/react";
+import { createMemoryRouter, RouterProvider } from "react-router-dom";
+import { axe } from "vitest-axe";
+import { describe, expect, it } from "vitest";
+import type { Apod } from "@mission-control/shared";
+import { ApodPanel } from "./ApodPanel";
+import { AppShell } from "./AppShell";
+
+const apod: Apod = {
+  date: "2024-01-01",
+  title: "A cosmic view",
+  explanation: "An educational description of a distant galaxy.",
+  mediaType: "image",
+  mediaUrl: "https://example.com/image.jpg",
+  hdUrl: null,
+  thumbnailUrl: null,
+  copyright: null,
+};
+const jsdomAxeOptions = {
+  rules: { "color-contrast": { enabled: false } },
+};
+
+describe("automated accessibility", () => {
+  it("finds no detectable violations in the application shell", async () => {
+    const router = createMemoryRouter([
+      {
+        path: "/",
+        element: <AppShell />,
+        children: [{ index: true, element: <h1>Test mission</h1> }],
+      },
+    ]);
+    const { container } = render(<RouterProvider router={router} />);
+    const results = await axe(container, jsdomAxeOptions);
+    expect(results.violations).toEqual([]);
+  });
+
+  it("finds no detectable violations in APOD content", async () => {
+    const { container } = render(
+      <main>
+        <ApodPanel apod={apod} saved={false} onToggle={() => undefined} />
+      </main>,
+    );
+    const results = await axe(container, jsdomAxeOptions);
+    expect(results.violations).toEqual([]);
+  });
+});

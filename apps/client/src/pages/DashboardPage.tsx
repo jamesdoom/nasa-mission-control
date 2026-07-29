@@ -1,0 +1,141 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { ApiError } from "../api/apod";
+import { ApodPanel } from "../components/ApodPanel";
+import { ErrorState, LoadingState } from "../components/AsyncState";
+import { useApod } from "../features/apod/useApod";
+import { useFavorites } from "../hooks/useFavorites";
+
+export function DashboardPage() {
+  const query = useApod();
+  const favorites = useFavorites();
+  const error = query.error instanceof ApiError ? query.error : undefined;
+  return (
+    <>
+      <section className="hero section">
+        <div className="hero-grid">
+          <div>
+            <p className="kicker">
+              <span />
+              Live orbital briefing
+            </p>
+            <h1>
+              Explore beyond
+              <br />
+              <em>the horizon.</em>
+            </h1>
+            <p className="hero-lede">
+              Your daily connection to the universe—NASA imagery, mission data,
+              and the stories behind our exploration of space.
+            </p>
+            <div className="hero-actions">
+              <a className="button" href="#daily-briefing">
+                View today’s briefing
+              </a>
+              <Link className="button button--secondary" to="/apod">
+                Browse the archive
+              </Link>
+            </div>
+          </div>
+          <div className="orbit-graphic" aria-hidden="true">
+            <span className="planet" />
+            <span className="orbit orbit-one" />
+            <span className="orbit orbit-two" />
+            <i />
+          </div>
+        </div>
+        <div className="telemetry">
+          <span>
+            <small>Station time</small>
+            <UtcClock />
+          </span>
+          <span>
+            <small>Data link</small>
+            <strong className="nominal">NASA // ACTIVE</strong>
+          </span>
+          <span>
+            <small>Current module</small>
+            <strong>APOD // 01</strong>
+          </span>
+        </div>
+      </section>
+      <section className="section briefing" id="daily-briefing">
+        <div className="section-heading">
+          <div>
+            <p className="kicker">
+              <span />
+              Daily transmission
+            </p>
+            <h2>Today’s cosmic briefing</h2>
+          </div>
+          <Link className="text-link" to="/apod">
+            Explore the archive →
+          </Link>
+        </div>
+        {query.isPending ? (
+          <LoadingState />
+        ) : query.isError ? (
+          <ErrorState
+            message={error?.message ?? "An unexpected error occurred."}
+            requestId={error?.requestId}
+            retry={() => void query.refetch()}
+          />
+        ) : (
+          <ApodPanel
+            apod={query.data}
+            saved={favorites.isFavorite(query.data.date)}
+            onToggle={() => favorites.toggle(query.data)}
+          />
+        )}
+      </section>
+      <section className="section upcoming">
+        <div className="section-heading">
+          <div>
+            <p className="kicker">
+              <span />
+              Expansion roadmap
+            </p>
+            <h2>More instruments coming online</h2>
+          </div>
+        </div>
+        <div className="module-grid">
+          <article>
+            <span>02</span>
+            <small>Future module</small>
+            <h3>Asteroid Watch</h3>
+            <p>
+              Near-Earth object encounters translated into clear, responsible
+              science.
+            </p>
+          </article>
+          <article>
+            <span>03</span>
+            <small>Future module</small>
+            <h3>Space Weather</h3>
+            <p>
+              Solar flares, coronal mass ejections, and geomagnetic conditions.
+            </p>
+          </article>
+          <article>
+            <span>04</span>
+            <small>Future module</small>
+            <h3>Media Library</h3>
+            <p>
+              Search the NASA Image and Video Library across decades of
+              exploration.
+            </p>
+          </article>
+        </div>
+      </section>
+    </>
+  );
+}
+
+export function UtcClock() {
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(new Date()), 1_000);
+    return () => window.clearInterval(timer);
+  }, []);
+  return <strong>{now.toISOString().slice(11, 19)} UTC</strong>;
+}
