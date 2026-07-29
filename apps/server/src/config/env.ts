@@ -20,13 +20,13 @@ const envSchema = z.object({
     .min(1_000)
     .max(30_000)
     .default(8_000),
-  APOD_CACHE_TTL_MS: z.coerce
+  NASA_CACHE_TTL_MS: z.coerce
     .number()
     .int()
     .min(0)
     .max(3_600_000)
     .default(300_000),
-  APOD_CACHE_MAX_ENTRIES: z.coerce
+  NASA_CACHE_MAX_ENTRIES: z.coerce
     .number()
     .int()
     .min(1)

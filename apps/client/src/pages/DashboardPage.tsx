@@ -4,10 +4,13 @@ import { ApiError } from "../api/apod";
 import { ApodPanel } from "../components/ApodPanel";
 import { ErrorState, LoadingState } from "../components/AsyncState";
 import { useApod } from "../features/apod/useApod";
+import { useAsteroids } from "../features/asteroids/useAsteroids";
 import { useFavorites } from "../hooks/useFavorites";
+import { utcDate } from "../utils/dates";
 
 export function DashboardPage() {
   const query = useApod();
+  const asteroidQuery = useAsteroids(utcDate(), utcDate(6));
   const favorites = useFavorites();
   const error = query.error instanceof ApiError ? query.error : undefined;
   return (
@@ -99,15 +102,23 @@ export function DashboardPage() {
           </div>
         </div>
         <div className="module-grid">
-          <article>
+          <Link className="module-card module-card--active" to="/asteroids">
             <span>02</span>
-            <small>Future module</small>
+            <small>Instrument online</small>
             <h3>Asteroid Watch</h3>
-            <p>
-              Near-Earth object encounters translated into clear, responsible
-              science.
-            </p>
-          </article>
+            {asteroidQuery.data ? (
+              <p>
+                {asteroidQuery.data.totalCount} approaches in the next seven
+                days; {asteroidQuery.data.potentiallyHazardousCount} carry
+                NASA’s potentially hazardous classification.
+              </p>
+            ) : (
+              <p>
+                Near-Earth object encounters translated into clear, responsible
+                science.
+              </p>
+            )}
+          </Link>
           <article>
             <span>03</span>
             <small>Future module</small>

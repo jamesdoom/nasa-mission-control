@@ -12,8 +12,8 @@ const env: Env = {
   PORT: 3001,
   CLIENT_ORIGIN: "http://localhost:5173",
   NASA_REQUEST_TIMEOUT_MS: 8000,
-  APOD_CACHE_TTL_MS: 300000,
-  APOD_CACHE_MAX_ENTRIES: 100,
+  NASA_CACHE_TTL_MS: 300000,
+  NASA_CACHE_MAX_ENTRIES: 100,
 };
 const apod: Apod = {
   date: "2024-01-01",

@@ -506,10 +506,22 @@ p {
   border: 1px solid var(--line);
 }
 .module-grid article,
+.module-grid .module-card,
 .about-grid article {
   background: #070d17;
   padding: 2rem;
   min-height: 220px;
+}
+.module-card {
+  color: inherit;
+  text-decoration: none;
+}
+.module-card--active {
+  position: relative;
+  box-shadow: inset 0 2px 0 var(--cyan);
+}
+.module-card--active:hover {
+  background: #0a1421;
 }
 .module-grid article > span,
 .about-grid article > span {
@@ -620,6 +632,333 @@ p {
   margin: 0.5rem 0 0;
   line-height: 1.7;
 }
+.source-note .text-link {
+  display: inline-block;
+  margin-top: 1rem;
+}
+.amber {
+  color: var(--amber);
+}
+.asteroid-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.6fr);
+  align-items: end;
+  gap: 3rem;
+}
+.asteroid-intro .kicker,
+.asteroid-intro h1 {
+  grid-column: 1;
+}
+.asteroid-intro > p:last-child {
+  grid-column: 2;
+  grid-row: 1 / 3;
+}
+.asteroid-console {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(170px, 1fr)) auto;
+  align-items: end;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  background: rgba(9, 17, 29, 0.86);
+}
+.asteroid-console label {
+  display: grid;
+  gap: 0.55rem;
+  color: #8799ab;
+  font:
+    0.62rem "Space Mono",
+    monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.asteroid-console input,
+.asteroid-console select {
+  min-height: 47px;
+  padding: 0.75rem;
+  border: 1px solid #31445a;
+  background: #050b13;
+  color: #fff;
+  color-scheme: dark;
+}
+.asteroid-console > small {
+  grid-column: 1 / -1;
+  color: #607488;
+  font:
+    0.55rem "Space Mono",
+    monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.asteroid-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--line);
+  background: #070d17;
+}
+.asteroid-summary > div {
+  display: grid;
+  gap: 0.7rem;
+  padding: 1.35rem;
+  border-right: 1px solid var(--line);
+}
+.asteroid-summary > div:last-child {
+  border-right: 0;
+}
+.asteroid-summary small,
+.encounter-status small {
+  color: #6d8195;
+  font:
+    0.55rem "Space Mono",
+    monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.asteroid-summary strong {
+  font:
+    700 clamp(1rem, 2vw, 1.45rem) "Space Mono",
+    monospace;
+}
+.hazard-note {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1.25rem;
+  border: 1px solid rgba(255, 179, 64, 0.25);
+  background: rgba(92, 57, 13, 0.1);
+}
+.hazard-note > span {
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--amber);
+  border-radius: 50%;
+  color: var(--amber);
+  font:
+    700 0.7rem "Space Mono",
+    monospace;
+}
+.hazard-note strong {
+  color: #ffd391;
+}
+.hazard-note p {
+  max-width: 90ch;
+  margin: 0.4rem 0 0;
+  color: #93a5b7;
+  line-height: 1.6;
+}
+.asteroid-list {
+  display: grid;
+  gap: 1rem;
+}
+.asteroid-card {
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--line);
+  background: linear-gradient(
+    120deg,
+    rgba(10, 20, 34, 0.94),
+    rgba(6, 12, 21, 0.94)
+  );
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.16);
+}
+.asteroid-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 1.5rem;
+}
+.asteroid-id {
+  color: #61768a;
+  font:
+    0.58rem "Space Mono",
+    monospace;
+  letter-spacing: 0.12em;
+}
+.asteroid-card h2 {
+  margin: 0.45rem 0 0;
+  font-size: clamp(1.6rem, 3vw, 2.5rem);
+  letter-spacing: -0.035em;
+}
+.hazard-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 1rem;
+  color: #72d9a5;
+  font:
+    0.58rem "Space Mono",
+    monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.hazard-badge span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 10px currentColor;
+}
+.hazard-badge--watch {
+  color: var(--amber);
+}
+.asteroid-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 1.5rem 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.asteroid-metrics > div {
+  padding: 1.25rem 1.25rem 1.25rem 0;
+}
+.asteroid-metrics dt,
+.encounter-grid dt {
+  color: #6c8094;
+  font:
+    0.55rem "Space Mono",
+    monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.asteroid-metrics dd {
+  margin: 0.5rem 0 0.25rem;
+  color: #f4f8fc;
+  font:
+    700 clamp(1.05rem, 2vw, 1.45rem) "Space Mono",
+    monospace;
+}
+.asteroid-metrics small {
+  color: #75899c;
+}
+.asteroid-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+.asteroid-card__footer time {
+  color: #72879a;
+  font:
+    0.6rem "Space Mono",
+    monospace;
+  letter-spacing: 0.06em;
+}
+.asteroid-empty {
+  min-height: 35vh;
+  border: 1px solid var(--line);
+}
+.flight-log-section + .flight-log-section {
+  margin-top: 5rem;
+}
+.encounter-page > .text-link {
+  display: inline-block;
+  margin-bottom: 3rem;
+}
+.encounter-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.7fr);
+  align-items: center;
+  min-height: 420px;
+  border-bottom: 1px solid var(--line);
+}
+.encounter-hero h1 {
+  margin-bottom: 1.5rem;
+  font-size: clamp(3rem, 7vw, 7rem);
+  letter-spacing: -0.055em;
+}
+.encounter-hero p:last-child {
+  max-width: 60ch;
+  color: #91a4b7;
+  line-height: 1.7;
+}
+.encounter-orbit {
+  position: relative;
+  min-height: 360px;
+  display: grid;
+  place-items: center;
+}
+.encounter-earth {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    #65a9d7,
+    #153d65 38%,
+    #06101d 72%
+  );
+  box-shadow: 0 0 40px rgba(55, 149, 209, 0.18);
+}
+.encounter-path {
+  position: absolute;
+  width: 330px;
+  height: 145px;
+  transform: rotate(-24deg);
+  border: 1px solid rgba(89, 186, 223, 0.38);
+  border-radius: 50%;
+}
+.encounter-orbit i {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  transform: translate(145px, -68px);
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 18px var(--amber);
+}
+.encounter-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(83, 208, 149, 0.28);
+  background: rgba(30, 97, 67, 0.09);
+}
+.encounter-status--watch {
+  border-color: rgba(255, 179, 64, 0.35);
+  background: rgba(107, 67, 16, 0.1);
+}
+.encounter-status > div {
+  display: grid;
+  gap: 0.5rem;
+}
+.encounter-status strong {
+  font-size: 1.15rem;
+}
+.encounter-save {
+  gap: 0.55rem;
+}
+.encounter-save.is-saved {
+  border-color: #aa4e60;
+  background: #752d3c;
+}
+.encounter-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  margin: 2rem 0;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+.encounter-grid > div {
+  min-height: 190px;
+  padding: 2rem;
+  background: #070d17;
+}
+.encounter-grid dd {
+  margin: 1rem 0 0.5rem;
+  font:
+    700 clamp(1.5rem, 3vw, 2.3rem) "Space Mono",
+    monospace;
+}
+.encounter-grid p {
+  color: #7f92a5;
+}
 .site-footer {
   border-top: 1px solid var(--line);
   padding: 2.5rem clamp(1.25rem, 5vw, 5rem);
@@ -692,6 +1031,39 @@ p {
   }
   .telemetry > span:last-child {
     display: none;
+  }
+  .asteroid-intro {
+    grid-template-columns: 1fr;
+  }
+  .asteroid-intro > p:last-child {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .asteroid-console {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .asteroid-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .asteroid-summary > div:nth-child(2) {
+    border-right: 0;
+  }
+  .asteroid-summary > div:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line);
+  }
+  .encounter-hero {
+    grid-template-columns: 1fr;
+  }
+  .encounter-orbit {
+    position: absolute;
+    right: 1rem;
+    width: 340px;
+    opacity: 0.35;
+    pointer-events: none;
+  }
+  .encounter-hero > div:first-child {
+    position: relative;
+    z-index: 1;
   }
 }
 @media (max-width: 650px) {
@@ -773,6 +1145,39 @@ p {
     grid-template-columns: 1fr;
   }
   .telemetry > span:nth-child(2) {
+    display: none;
+  }
+  .asteroid-console,
+  .asteroid-summary,
+  .asteroid-metrics,
+  .encounter-grid {
+    grid-template-columns: 1fr;
+  }
+  .asteroid-console .button {
+    width: 100%;
+  }
+  .asteroid-summary > div {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .asteroid-summary > div:last-child {
+    border-bottom: 0;
+  }
+  .asteroid-metrics > div {
+    border-bottom: 1px solid var(--line);
+  }
+  .asteroid-metrics > div:last-child {
+    border-bottom: 0;
+  }
+  .asteroid-card__footer,
+  .encounter-status {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .encounter-status .button {
+    width: 100%;
+  }
+  .encounter-orbit {
     display: none;
   }
 }

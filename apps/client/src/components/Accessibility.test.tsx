@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest";
 import type { Apod } from "@mission-control/shared";
 import { ApodPanel } from "./ApodPanel";
 import { AppShell } from "./AppShell";
+import { AsteroidCard } from "./AsteroidCard";
 
 const apod: Apod = {
   date: "2024-01-01",
@@ -40,6 +41,42 @@ describe("automated accessibility", () => {
         <ApodPanel apod={apod} saved={false} onToggle={() => undefined} />
       </main>,
     );
+    const results = await axe(container, jsdomAxeOptions);
+    expect(results.violations).toEqual([]);
+  });
+
+  it("finds no detectable violations in an asteroid encounter card", async () => {
+    const asteroid = {
+      id: "123",
+      name: "(2026 TEST)",
+      jplUrl: "https://ssd.jpl.nasa.gov/example",
+      potentiallyHazardous: true,
+      sentryObject: false,
+      diameterMeters: { min: 100, max: 200 },
+      approach: {
+        date: "2026-07-29",
+        dateTimeUtc: "2026-07-29T12:00:00.000Z",
+        velocityKph: 50_000,
+        missDistanceKm: 2_000_000,
+        missDistanceLunar: 5.2,
+      },
+    };
+    const router = createMemoryRouter([
+      {
+        path: "/",
+        element: (
+          <main>
+            <AsteroidCard
+              asteroid={asteroid}
+              saved={false}
+              onToggle={() => undefined}
+              detailQuery="startDate=2026-07-29&endDate=2026-07-29"
+            />
+          </main>
+        ),
+      },
+    ]);
+    const { container } = render(<RouterProvider router={router} />);
     const results = await axe(container, jsdomAxeOptions);
     expect(results.violations).toEqual([]);
   });

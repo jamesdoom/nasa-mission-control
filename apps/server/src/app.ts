@@ -11,6 +11,7 @@ import {
   requestLogger,
 } from "./middleware/errors.js";
 import { createApodRouter } from "./routes/apod.js";
+import { createAsteroidRouter } from "./routes/asteroids.js";
 
 export function createApp(
   env: Env,
@@ -37,7 +38,15 @@ export function createApp(
   );
   app.use(
     "/api/apod",
-    createApodRouter(nasa, env.APOD_CACHE_TTL_MS, env.APOD_CACHE_MAX_ENTRIES),
+    createApodRouter(nasa, env.NASA_CACHE_TTL_MS, env.NASA_CACHE_MAX_ENTRIES),
+  );
+  app.use(
+    "/api/asteroids",
+    createAsteroidRouter(
+      nasa,
+      env.NASA_CACHE_TTL_MS,
+      env.NASA_CACHE_MAX_ENTRIES,
+    ),
   );
   if (staticDirectory) {
     app.use(express.static(staticDirectory));

@@ -5,6 +5,7 @@ import { MarkIcon } from "./Icons";
 const links = [
   { to: "/", label: "Dashboard" },
   { to: "/apod", label: "APOD" },
+  { to: "/asteroids", label: "Asteroid Watch" },
   { to: "/favorites", label: "Flight Log" },
   { to: "/about", label: "About" },
 ];
