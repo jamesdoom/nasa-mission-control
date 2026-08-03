@@ -9,6 +9,7 @@ import { FavoritesPage } from "./pages/FavoritesPage";
 import { MediaDetailPage } from "./pages/MediaDetailPage";
 import { MediaLibraryPage } from "./pages/MediaLibraryPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
+import { SpaceWeatherPage } from "./pages/SpaceWeatherPage";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
       { path: "asteroids/:asteroidId", element: <AsteroidDetailPage /> },
       { path: "media", element: <MediaLibraryPage /> },
       { path: "media/:nasaId", element: <MediaDetailPage /> },
+      { path: "space-weather", element: <SpaceWeatherPage /> },
       { path: "favorites", element: <FavoritesPage /> },
       { path: "about", element: <AboutPage /> },
       { path: "*", element: <NotFoundPage /> },

@@ -13,6 +13,7 @@ import {
 import { createApodRouter } from "./routes/apod.js";
 import { createAsteroidRouter } from "./routes/asteroids.js";
 import { createMediaRouter } from "./routes/media.js";
+import { createSpaceWeatherRouter } from "./routes/space-weather.js";
 
 export function createApp(
   env: Env,
@@ -52,6 +53,14 @@ export function createApp(
   app.use(
     "/api/media",
     createMediaRouter(nasa, env.NASA_CACHE_TTL_MS, env.NASA_CACHE_MAX_ENTRIES),
+  );
+  app.use(
+    "/api/space-weather",
+    createSpaceWeatherRouter(
+      nasa,
+      env.NASA_CACHE_TTL_MS,
+      env.NASA_CACHE_MAX_ENTRIES,
+    ),
   );
   if (staticDirectory) {
     app.use(express.static(staticDirectory));

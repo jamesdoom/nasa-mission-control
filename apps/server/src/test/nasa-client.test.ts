@@ -161,4 +161,87 @@ describe("NasaClient", () => {
     expect(url.searchParams.get("api_key")).toBeNull();
     expect(url.searchParams.get("page_size")).toBe("24");
   });
+
+  it("normalizes DONKI flares, CMEs, and storms into one chronology", async () => {
+    const payloads: Record<string, unknown> = {
+      FLR: [
+        {
+          flrID: "2026-08-01T10:00:00-FLR-001",
+          instruments: [{ displayName: "GOES: EXIS" }],
+          beginTime: "2026-08-01T10:00Z",
+          peakTime: "2026-08-01T10:05Z",
+          endTime: "2026-08-01T10:10Z",
+          classType: "M1.2",
+          sourceLocation: "N10E20",
+          activeRegionNum: 14494,
+          note: "Observed X-ray flare.",
+          link: "https://webtools.ccmc.gsfc.nasa.gov/DONKI/view/FLR/1/-1",
+          linkedEvents: null,
+        },
+      ],
+      CME: [
+        {
+          activityID: "2026-08-01T11:00:00-CME-001",
+          instruments: [{ displayName: "SOHO: LASCO/C2" }],
+          startTime: "2026-08-01T11:00Z",
+          sourceLocation: "N10E20",
+          activeRegionNum: 14494,
+          note: "CME observed to the east.",
+          link: "https://webtools.ccmc.gsfc.nasa.gov/DONKI/view/CME/2/-1",
+          cmeAnalyses: [
+            { isMostAccurate: true, speed: 600, halfAngle: 30, type: "C" },
+          ],
+          linkedEvents: [{ activityID: "2026-08-01T10:00:00-FLR-001" }],
+        },
+      ],
+      GST: [
+        {
+          gstID: "2026-08-02T15:00:00-GST-001",
+          startTime: "2026-08-02T15:00Z",
+          allKpIndex: [
+            {
+              observedTime: "2026-08-02T18:00Z",
+              kpIndex: 5.67,
+              source: "NOAA",
+            },
+          ],
+          link: "https://webtools.ccmc.gsfc.nasa.gov/DONKI/view/GST/3/-1",
+          linkedEvents: [],
+        },
+      ],
+    };
+    const fetchImpl = vi.fn().mockImplementation((url: URL) => {
+      const endpoint = url.pathname.split("/").pop() ?? "";
+      return Promise.resolve(
+        new Response(JSON.stringify(payloads[endpoint]), {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        }),
+      );
+    });
+    const client = new NasaClient({
+      apiKey: "secret",
+      timeoutMs: 1000,
+      fetchImpl,
+    });
+    const feed = await client.getSpaceWeather(
+      "2026-07-27",
+      "2026-08-03",
+      "all",
+    );
+    expect(feed.counts).toEqual({ flare: 1, cme: 1, storm: 1 });
+    expect(feed.events.map((event) => event.category)).toEqual([
+      "storm",
+      "cme",
+      "flare",
+    ]);
+    expect(feed.events[0]).toMatchObject({
+      title: "Geomagnetic storm observation",
+      measurements: [{ label: "Peak Kp", value: "5.67" }],
+    });
+    expect(feed.events[1]).toMatchObject({
+      measurements: [{ value: "600 km/s" }, { value: "60°" }],
+    });
+    expect(fetchImpl).toHaveBeenCalledTimes(3);
+  });
 });

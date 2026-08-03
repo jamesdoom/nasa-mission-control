@@ -7,6 +7,7 @@ const links = [
   { to: "/apod", label: "APOD" },
   { to: "/asteroids", label: "Asteroid Watch" },
   { to: "/media", label: "Media Library" },
+  { to: "/space-weather", label: "Space Weather" },
   { to: "/favorites", label: "Flight Log" },
   { to: "/about", label: "About" },
 ];

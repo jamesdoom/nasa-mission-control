@@ -8,6 +8,9 @@ import type {
   MediaItem,
   MediaSearch,
   MediaType,
+  SpaceWeatherCategory,
+  SpaceWeatherEvent,
+  SpaceWeatherFeed,
 } from "@mission-control/shared";
 import { HttpError } from "./http-error.js";
 
@@ -86,6 +89,82 @@ const mediaManifestSchema = z.object({
     items: z.array(z.object({ href: z.string().url() })),
   }),
 });
+
+const donkiInstrumentSchema = z.object({ displayName: z.string().min(1) });
+const donkiLinkedEventSchema = z.object({ activityID: z.string().min(1) });
+const donkiBaseSchema = z.object({
+  instruments: z.array(donkiInstrumentSchema).optional().default([]),
+  sourceLocation: z.string().nullable().optional(),
+  activeRegionNum: z.number().int().nullable().optional(),
+  note: z.string().nullable().optional(),
+  link: z.string().url(),
+  linkedEvents: z.array(donkiLinkedEventSchema).nullable().optional(),
+});
+const donkiFlareSchema = donkiBaseSchema.extend({
+  flrID: z.string().min(1),
+  beginTime: z.string(),
+  peakTime: z.string(),
+  endTime: z.string().nullable().optional(),
+  classType: z.string().nullable().optional(),
+});
+const donkiCmeAnalysisSchema = z.object({
+  isMostAccurate: z.boolean(),
+  speed: z.number().nonnegative().nullable().optional(),
+  halfAngle: z.number().nonnegative().nullable().optional(),
+  type: z.string().nullable().optional(),
+});
+const donkiCmeSchema = donkiBaseSchema.extend({
+  activityID: z.string().min(1),
+  startTime: z.string(),
+  cmeAnalyses: z.array(donkiCmeAnalysisSchema).nullable().optional(),
+});
+const donkiKpSchema = z.object({
+  observedTime: z.string(),
+  kpIndex: z.number().min(0).max(9),
+  source: z.string().min(1),
+});
+const donkiStormSchema = z.object({
+  gstID: z.string().min(1),
+  startTime: z.string(),
+  allKpIndex: z.array(donkiKpSchema),
+  link: z.string().url(),
+  linkedEvents: z.array(donkiLinkedEventSchema).nullable().optional(),
+});
+
+function utcInstant(value: string): string {
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.valueOf())) {
+    throw new HttpError(
+      502,
+      "UPSTREAM_UNAVAILABLE",
+      "NASA returned a space weather timestamp in an unexpected format.",
+    );
+  }
+  return parsed.toISOString();
+}
+
+function linkedIds(
+  events: z.infer<typeof donkiLinkedEventSchema>[] | null | undefined,
+): string[] {
+  return events?.map((event) => event.activityID) ?? [];
+}
+
+function kpDescription(kp: number): string {
+  if (kp >= 9) return "Extreme observed geomagnetic activity";
+  if (kp >= 8) return "Severe observed geomagnetic activity";
+  if (kp >= 7) return "Strong observed geomagnetic activity";
+  if (kp >= 6) return "Moderate observed geomagnetic activity";
+  if (kp >= 5) return "Minor observed geomagnetic activity";
+  return "Below geomagnetic storm level";
+}
+
+function textOrFallback(
+  value: string | null | undefined,
+  fallback: string,
+): string {
+  const trimmed = value?.trim();
+  return trimmed === undefined || trimmed === "" ? fallback : trimmed;
+}
 
 function normalizeMediaItem(item: z.infer<typeof mediaItemSchema>): MediaItem {
   const data = item.data[0];
@@ -372,6 +451,169 @@ export class NasaClient {
         playback?.url ?? original?.url ?? playableAssets[0]?.url ?? null,
       downloadUrl: original?.url ?? playableAssets[0]?.url ?? null,
     };
+  }
+
+  async getSpaceWeather(
+    startDate: string,
+    endDate: string,
+    category: SpaceWeatherCategory | "all",
+  ): Promise<SpaceWeatherFeed> {
+    const categories: SpaceWeatherCategory[] =
+      category === "all" ? ["flare", "cme", "storm"] : [category];
+    const endpoint: Record<SpaceWeatherCategory, string> = {
+      flare: "FLR",
+      cme: "CME",
+      storm: "GST",
+    };
+    const responses = await Promise.all(
+      categories.map(async (eventCategory) => {
+        const url = new URL(
+          `https://api.nasa.gov/DONKI/${endpoint[eventCategory]}`,
+        );
+        url.search = new URLSearchParams({
+          startDate,
+          endDate,
+          api_key: this.options.apiKey,
+        }).toString();
+        return { category: eventCategory, data: await this.requestJson(url) };
+      }),
+    );
+    const events: SpaceWeatherEvent[] = [];
+    for (const response of responses) {
+      if (response.category === "flare") {
+        const parsed = z.array(donkiFlareSchema).safeParse(response.data);
+        if (!parsed.success) this.spaceWeatherFormatError();
+        for (const event of parsed.data) {
+          const classType = textOrFallback(event.classType, "unclassified");
+          events.push({
+            id: event.flrID,
+            category: "flare",
+            title: `Solar flare ${classType}`,
+            startTimeUtc: utcInstant(event.beginTime),
+            endTimeUtc: event.endTime ? utcInstant(event.endTime) : null,
+            location: event.sourceLocation ?? null,
+            activeRegion: event.activeRegionNum ?? null,
+            instruments: event.instruments.map((item) => item.displayName),
+            summary: textOrFallback(
+              event.note,
+              "A burst of electromagnetic radiation observed from the Sun.",
+            ),
+            measurements: [
+              {
+                label: "Flare class",
+                value: classType,
+                explanation: "GOES X-ray classification reported by DONKI.",
+              },
+              {
+                label: "Peak time",
+                value: utcInstant(event.peakTime),
+                explanation: "Time of maximum reported X-ray intensity.",
+              },
+            ],
+            linkedEventIds: linkedIds(event.linkedEvents),
+            sourceUrl: event.link,
+          });
+        }
+      } else if (response.category === "cme") {
+        const parsed = z.array(donkiCmeSchema).safeParse(response.data);
+        if (!parsed.success) this.spaceWeatherFormatError();
+        for (const event of parsed.data) {
+          const analysis =
+            event.cmeAnalyses?.find((item) => item.isMostAccurate) ??
+            event.cmeAnalyses?.[0];
+          const measurements = [];
+          if (analysis?.speed != null)
+            measurements.push({
+              label: "Estimated speed",
+              value: `${analysis.speed.toLocaleString("en-US")} km/s`,
+              explanation:
+                "Modeled radial speed from the selected CME analysis.",
+            });
+          if (analysis?.halfAngle != null)
+            measurements.push({
+              label: "Angular width",
+              value: `${String(analysis.halfAngle * 2)}°`,
+              explanation:
+                "Approximate full angular width from the modeled half-angle.",
+            });
+          events.push({
+            id: event.activityID,
+            category: "cme",
+            title: "Coronal mass ejection",
+            startTimeUtc: utcInstant(event.startTime),
+            endTimeUtc: null,
+            location: event.sourceLocation ?? null,
+            activeRegion: event.activeRegionNum ?? null,
+            instruments: event.instruments.map((item) => item.displayName),
+            summary: textOrFallback(
+              event.note,
+              "A large release of plasma and magnetic field observed leaving the Sun.",
+            ),
+            measurements,
+            linkedEventIds: linkedIds(event.linkedEvents),
+            sourceUrl: event.link,
+          });
+        }
+      } else {
+        const parsed = z.array(donkiStormSchema).safeParse(response.data);
+        if (!parsed.success) this.spaceWeatherFormatError();
+        for (const event of parsed.data) {
+          const peak = event.allKpIndex.reduce<z.infer<
+            typeof donkiKpSchema
+          > | null>(
+            (current, item) =>
+              !current || item.kpIndex > current.kpIndex ? item : current,
+            null,
+          );
+          events.push({
+            id: event.gstID,
+            category: "storm",
+            title: "Geomagnetic storm observation",
+            startTimeUtc: utcInstant(event.startTime),
+            endTimeUtc: null,
+            location: "Earth",
+            activeRegion: null,
+            instruments: peak ? [peak.source] : [],
+            summary: peak
+              ? kpDescription(peak.kpIndex)
+              : "Geomagnetic storm activity recorded in DONKI.",
+            measurements: peak
+              ? [
+                  {
+                    label: "Peak Kp",
+                    value: String(peak.kpIndex),
+                    explanation: `${kpDescription(peak.kpIndex)}; observed ${utcInstant(peak.observedTime)}.`,
+                  },
+                ]
+              : [],
+            linkedEventIds: linkedIds(event.linkedEvents),
+            sourceUrl: event.link,
+          });
+        }
+      }
+    }
+    events.sort((first, second) =>
+      second.startTimeUtc.localeCompare(first.startTimeUtc),
+    );
+    return {
+      startDate,
+      endDate,
+      category,
+      counts: {
+        flare: events.filter((event) => event.category === "flare").length,
+        cme: events.filter((event) => event.category === "cme").length,
+        storm: events.filter((event) => event.category === "storm").length,
+      },
+      events,
+    };
+  }
+
+  private spaceWeatherFormatError(): never {
+    throw new HttpError(
+      502,
+      "UPSTREAM_UNAVAILABLE",
+      "NASA returned space weather data in an unexpected format.",
+    );
   }
 
   private async requestJson(url: URL): Promise<unknown> {

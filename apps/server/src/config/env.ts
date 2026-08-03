@@ -19,7 +19,7 @@ const envSchema = z.object({
     .int()
     .min(1_000)
     .max(30_000)
-    .default(8_000),
+    .default(30_000),
   NASA_CACHE_TTL_MS: z.coerce
     .number()
     .int()

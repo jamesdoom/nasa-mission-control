@@ -129,14 +129,14 @@ export function DashboardPage() {
               exploration.
             </p>
           </Link>
-          <article>
+          <Link className="module-card module-card--active" to="/space-weather">
             <span>04</span>
-            <small>Future module</small>
+            <small>Instrument online</small>
             <h3>Space Weather</h3>
             <p>
               Solar flares, coronal mass ejections, and geomagnetic conditions.
             </p>
-          </article>
+          </Link>
         </div>
       </section>
     </>

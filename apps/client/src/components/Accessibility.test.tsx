@@ -7,6 +7,7 @@ import { ApodPanel } from "./ApodPanel";
 import { AppShell } from "./AppShell";
 import { AsteroidCard } from "./AsteroidCard";
 import { MediaCard } from "./MediaCard";
+import { SpaceWeatherCard } from "./SpaceWeatherCard";
 
 const apod: Apod = {
   date: "2024-01-01",
@@ -17,6 +18,26 @@ const apod: Apod = {
   hdUrl: null,
   thumbnailUrl: null,
   copyright: null,
+};
+const weatherEvent = {
+  id: "2026-08-02T15:00:00-GST-001",
+  category: "storm" as const,
+  title: "Geomagnetic storm observation",
+  startTimeUtc: "2026-08-02T15:00:00.000Z",
+  endTimeUtc: null,
+  location: "Earth",
+  activeRegion: null,
+  instruments: ["NOAA"],
+  summary: "Minor observed geomagnetic activity",
+  measurements: [
+    {
+      label: "Peak Kp",
+      value: "5.67",
+      explanation: "Minor observed geomagnetic activity.",
+    },
+  ],
+  linkedEventIds: [],
+  sourceUrl: "https://webtools.ccmc.gsfc.nasa.gov/DONKI/view/GST/1/-1",
 };
 const jsdomAxeOptions = {
   rules: { "color-contrast": { enabled: false } },
@@ -106,6 +127,16 @@ describe("automated accessibility", () => {
       },
     ]);
     const { container } = render(<RouterProvider router={router} />);
+    const results = await axe(container, jsdomAxeOptions);
+    expect(results.violations).toEqual([]);
+  });
+
+  it("finds no detectable violations in a space weather card", async () => {
+    const { container } = render(
+      <main>
+        <SpaceWeatherCard event={weatherEvent} />
+      </main>,
+    );
     const results = await axe(container, jsdomAxeOptions);
     expect(results.violations).toEqual([]);
   });

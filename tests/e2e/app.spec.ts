@@ -109,6 +109,93 @@ async function mockMedia(page: Page): Promise<void> {
   );
 }
 
+const spaceWeatherFeed = {
+  startDate: "2026-07-27",
+  endDate: "2026-08-03",
+  category: "all",
+  counts: { flare: 1, cme: 1, storm: 1 },
+  events: [
+    {
+      id: "2026-08-03T10:00:00-FLR-001",
+      category: "flare",
+      title: "Solar flare M1.2",
+      startTimeUtc: "2026-08-03T10:00:00.000Z",
+      endTimeUtc: "2026-08-03T10:10:00.000Z",
+      location: "N10E20",
+      activeRegion: 14494,
+      instruments: ["GOES: EXIS"],
+      summary: "An observed burst of solar X-ray activity.",
+      measurements: [
+        {
+          label: "Flare class",
+          value: "M1.2",
+          explanation: "GOES X-ray classification reported by DONKI.",
+        },
+      ],
+      linkedEventIds: [],
+      sourceUrl: "https://webtools.ccmc.gsfc.nasa.gov/DONKI/view/FLR/1/-1",
+    },
+    {
+      id: "2026-08-03T08:00:00-CME-001",
+      category: "cme",
+      title: "Coronal mass ejection",
+      startTimeUtc: "2026-08-03T08:00:00.000Z",
+      endTimeUtc: null,
+      location: "N10E20",
+      activeRegion: 14494,
+      instruments: ["SOHO: LASCO/C2"],
+      summary: "A plasma eruption observed leaving the Sun.",
+      measurements: [
+        {
+          label: "Estimated speed",
+          value: "600 km/s",
+          explanation: "Modeled radial speed from the selected CME analysis.",
+        },
+      ],
+      linkedEventIds: ["2026-08-03T10:00:00-FLR-001"],
+      sourceUrl: "https://webtools.ccmc.gsfc.nasa.gov/DONKI/view/CME/1/-1",
+    },
+    {
+      id: "2026-08-02T15:00:00-GST-001",
+      category: "storm",
+      title: "Geomagnetic storm observation",
+      startTimeUtc: "2026-08-02T15:00:00.000Z",
+      endTimeUtc: null,
+      location: "Earth",
+      activeRegion: null,
+      instruments: ["NOAA"],
+      summary: "Minor observed geomagnetic activity",
+      measurements: [
+        {
+          label: "Peak Kp",
+          value: "5.67",
+          explanation:
+            "Minor observed geomagnetic activity; observed 2026-08-02T18:00:00.000Z.",
+        },
+      ],
+      linkedEventIds: ["2026-07-30T16:53:00-CME-001"],
+      sourceUrl: "https://webtools.ccmc.gsfc.nasa.gov/DONKI/view/GST/1/-1",
+    },
+  ],
+};
+
+async function mockSpaceWeather(page: Page): Promise<void> {
+  await page.route(
+    (url) => url.pathname === "/api/space-weather",
+    async (route) => {
+      const url = new URL(route.request().url());
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          ...spaceWeatherFeed,
+          category: url.searchParams.get("category") ?? "all",
+        }),
+      });
+    },
+  );
+}
+
 async function mockApod(page: Page): Promise<void> {
   await page.route(
     (url) => url.pathname === "/api/apod",
@@ -253,4 +340,27 @@ test("searches and inspects the NASA media archive", async ({ page }) => {
     page.getByRole("heading", { name: mediaItem.title }),
   ).toBeVisible();
   await expect(page.getByText("Neil Armstrong")).toBeVisible();
+});
+
+test("filters observed DONKI space weather events", async ({ page }) => {
+  await mockSpaceWeather(page);
+  await page.goto(
+    "/space-weather?startDate=2026-07-27&endDate=2026-08-03&category=all",
+  );
+  await expect(
+    page.getByRole("heading", { name: "Space Weather Center" }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Research data—not an operational forecast."),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Geomagnetic storm observation" }),
+  ).toBeVisible();
+  await page.screenshot({
+    path: "docs/screenshots/space-weather.png",
+    fullPage: true,
+    animations: "disabled",
+  });
+  await page.getByRole("radio", { name: "Solar flares" }).click();
+  await expect(page).toHaveURL(/category=flare/);
 });
