@@ -60,6 +60,55 @@ const asteroidFeed = {
   ],
 };
 
+const mediaItem = {
+  nasaId: "AS11-40-5903",
+  title: "Buzz Aldrin on the Lunar Surface",
+  description: "Apollo 11 lunar module pilot Buzz Aldrin works on the Moon.",
+  mediaType: "image",
+  dateCreated: "1969-07-20T00:00:00Z",
+  center: "JSC",
+  photographer: "Neil Armstrong",
+  keywords: ["Apollo 11", "Moon", "Lunar surface"],
+  previewUrl: testImage,
+};
+
+async function mockMedia(page: Page): Promise<void> {
+  await page.route(
+    (url) => url.pathname === "/api/media/search",
+    async (route) => {
+      const url = new URL(route.request().url());
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          query: url.searchParams.get("q") ?? "apollo",
+          mediaType: url.searchParams.get("mediaType") ?? "all",
+          page: Number(url.searchParams.get("page") ?? 1),
+          pageSize: 24,
+          totalHits: 25,
+          totalPages: 2,
+          items: [mediaItem],
+        }),
+      });
+    },
+  );
+  await page.route(
+    (url) => url.pathname === `/api/media/${mediaItem.nasaId}`,
+    async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          ...mediaItem,
+          assets: [{ url: testImage, label: "original.jpg", kind: "image" }],
+          playbackUrl: testImage,
+          downloadUrl: testImage,
+        }),
+      });
+    },
+  );
+}
+
 async function mockApod(page: Page): Promise<void> {
   await page.route(
     (url) => url.pathname === "/api/apod",
@@ -180,4 +229,28 @@ test("explores, sorts, opens, and saves an asteroid encounter", async ({
   await expect(
     page.getByRole("heading", { name: "(2026 TEST)" }),
   ).toBeVisible();
+});
+
+test("searches and inspects the NASA media archive", async ({ page }) => {
+  await mockMedia(page);
+  await page.goto("/media?q=apollo&mediaType=all&page=1");
+  await expect(
+    page.getByRole("heading", { name: "NASA Media Library" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: mediaItem.title }),
+  ).toBeVisible();
+  await page.getByRole("radio", { name: "image", exact: true }).click();
+  await expect(page).toHaveURL(/mediaType=image/);
+  await page.screenshot({
+    path: "docs/screenshots/media-library.png",
+    fullPage: true,
+    animations: "disabled",
+  });
+  await page.getByRole("link", { name: `Open ${mediaItem.title}` }).click();
+  await expect(page).toHaveURL(/\/media\/AS11-40-5903/);
+  await expect(
+    page.getByRole("heading", { name: mediaItem.title }),
+  ).toBeVisible();
+  await expect(page.getByText("Neil Armstrong")).toBeVisible();
 });

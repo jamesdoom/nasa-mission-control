@@ -1,6 +1,6 @@
 # NASA Mission Control
 
-An original, responsive command-center experience for exploring NASA imagery and space science. The current release combines a polished Astronomy Picture of the Day experience with a data-rich Asteroid Watch and browser-local Flight Log behind a secure Express API boundary.
+An original, responsive command-center experience for exploring NASA imagery and space science. The current release combines APOD, a data-rich Asteroid Watch, NASA Image and Video Library search, and a browser-local Flight Log behind a secure Express API boundary.
 
 > Portfolio project; not affiliated with or endorsed by NASA.
 
@@ -18,10 +18,13 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Asteroid Watch date-range scans, sorting, telemetry, and shareable encounter pages
 - Responsible NASA/JPL potentially hazardous classifications with explicit impact context
 - Saved asteroid encounters alongside APOD discoveries in the Flight Log
+- NASA Image and Video Library full-text search, media filters, pagination, and asset detail pages
+- Responsive image, video, and audio presentation with original-asset links
+- Optimized responsive Milky Way atmosphere with deliberate contrast overlays
 
 ## Planned modules
 
-Earth Observatory (EPIC/Earthdata GIBS), Space Weather (DONKI), NASA Media Library, curated Mission Archive, expanded Flight Log, and source-checked Space Trivia. The legacy NASA Earth and Mars Rover APIs are archived and will not be used.
+Earth Observatory (EPIC/Earthdata GIBS), Space Weather (DONKI), curated Mission Archive, expanded Flight Log, and source-checked Space Trivia. The legacy NASA Earth and Mars Rover APIs are archived and will not be used.
 
 ## Stack
 
@@ -81,7 +84,7 @@ Open `http://localhost:3001`. Deployments must provide `NASA_API_KEY`; the clien
 
 ## Architecture
 
-The browser calls internal endpoints such as `GET /api/apod?date=YYYY-MM-DD` and `GET /api/asteroids?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD`. Express validates each query, calls NASA with the private key, validates important upstream fields, and maps them into deliberately small internal models:
+The browser calls internal endpoints such as `GET /api/apod?date=YYYY-MM-DD`, `GET /api/asteroids?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD`, `GET /api/media/search?q=apollo&mediaType=image&page=1`, and `GET /api/media/:nasaId`. Express validates each query, calls NASA services, validates important upstream fields, and maps them into deliberately small internal models:
 
 ```ts
 type Apod = {
@@ -102,7 +105,7 @@ Errors use `{ error: { code, message, requestId } }`; server details and credent
 
 ## Testing
 
-`npm test` covers query and date-range validation, bounded caching, security headers, APOD and NeoWs response transformation, malformed upstream responses, responsible hazard wording, media rendering, automated accessibility checks, the UTC clock, and local favorites. `npm run test:e2e` verifies dashboard loading, archive URL state, responsive navigation, APOD favorites, and the complete asteroid scan-to-detail-to-Flight-Log flow in Chromium using deterministic mocked NASA data.
+`npm test` covers query and date-range validation, bounded caching, security headers, APOD, NeoWs, and Collection+JSON response transformation, malformed upstream responses, responsible hazard wording, media rendering, automated accessibility checks, the UTC clock, and local favorites. `npm run test:e2e` verifies dashboard loading, URL-backed filters, responsive navigation, APOD favorites, asteroid workflows, and NASA media search-to-detail navigation in Chromium using deterministic mocked data.
 
 [GitHub Actions](.github/workflows/ci.yml) runs formatting, strict types, lint, all Vitest suites, the production build, and Chromium smoke tests for pushes to `main` and pull requests.
 
@@ -112,13 +115,15 @@ The application uses [NASA Open APIs](https://api.nasa.gov/) for APOD and NeoWs.
 
 Asteroid measurements come from NASA/JPL through NeoWs. NASA/JPL defines a potentially hazardous asteroid using orbital proximity and absolute magnitude criteria; the classification does not mean an Earth impact is predicted. See the official [CNEOS PHA definition](https://cneos.jpl.nasa.gov/glossary/PHA.html) and [NEO FAQ](https://cneos.jpl.nasa.gov/faq/).
 
-The [NASA Image and Video Library API](https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf), DONKI, EPIC, and Earthdata GIBS remain candidates for later milestones after integration-specific review.
+The active [NASA Image and Video Library API](https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf) provides search and asset manifests without an API key. Its published PDF is release 1.22.0 from January 2023, and live responses sometimes label preview images `alternate` instead of the documented `preview`; server normalization accepts both. Results can identify third-party copyright holders or people with publicity rights, so detail pages retain source metadata and link to NASA rather than making blanket reuse claims. See NASA’s [Images and Media Usage Guidelines](https://www.nasa.gov/nasa-brand-center/images-and-media/).
+
+The global Milky Way backdrop is the Pixabay image [“Astronomy, Bright, Constellation”](https://pixabay.com/photos/astronomy-bright-constellation-dark-1867616/) by Pexels, supplied for this project and stored as optimized responsive WebP variants. DONKI, EPIC, and Earthdata GIBS remain candidates for later milestones after integration-specific review.
 
 ## Roadmap
 
 1. **Complete:** foundation, dashboard, APOD, local flight log, and Phase 1.1 hardening.
 2. **Complete:** Asteroid Watch with responsible NeoWs telemetry, encounter pages, and saved objects.
-3. NASA Image and Video Library search and detail pages.
+3. **Complete:** NASA Image and Video Library search, filters, pagination, detail pages, and cinematic visual foundation.
 4. DONKI Space Weather Center.
 5. EPIC/Earthdata imagery, curated missions, and trivia.
 
@@ -131,6 +136,8 @@ The captures below use deterministic mocked NASA content so they can be regenera
 ![Mission Control mobile navigation](docs/screenshots/mobile-navigation.png)
 
 ![Asteroid Watch encounter scan](docs/screenshots/asteroid-watch.png)
+
+![NASA Media Library search](docs/screenshots/media-library.png)
 
 ## License
 

@@ -109,4 +109,56 @@ describe("NasaClient", () => {
     expect(url.searchParams.get("api_key")).toBe("secret");
     expect(url.searchParams.get("start_date")).toBe("2026-07-29");
   });
+
+  it("normalizes Collection+JSON media search results", async () => {
+    const fetchImpl = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          collection: {
+            metadata: { total_hits: 25 },
+            items: [
+              {
+                data: [
+                  {
+                    nasa_id: "AS11-40-5903",
+                    title: "Buzz Aldrin on the Moon",
+                    description: "Apollo 11 lunar surface activity.",
+                    media_type: "image",
+                    date_created: "1969-07-20T00:00:00Z",
+                    center: "JSC",
+                    photographer: "Neil Armstrong",
+                    keywords: ["Apollo 11", "Moon"],
+                  },
+                ],
+                links: [
+                  {
+                    href: "https://images-assets.nasa.gov/image/example/thumb.jpg",
+                    rel: "alternate",
+                    render: "image",
+                  },
+                ],
+              },
+            ],
+          },
+        }),
+        { status: 200, headers: { "content-type": "application/json" } },
+      ),
+    );
+    const client = new NasaClient({
+      apiKey: "secret",
+      timeoutMs: 1000,
+      fetchImpl,
+    });
+    await expect(
+      client.searchMedia("apollo", "image", 1, 24),
+    ).resolves.toMatchObject({
+      totalHits: 25,
+      totalPages: 2,
+      items: [{ nasaId: "AS11-40-5903", center: "JSC", mediaType: "image" }],
+    });
+    const url = fetchImpl.mock.calls[0]?.[0] as URL;
+    expect(url.hostname).toBe("images-api.nasa.gov");
+    expect(url.searchParams.get("api_key")).toBeNull();
+    expect(url.searchParams.get("page_size")).toBe("24");
+  });
 });

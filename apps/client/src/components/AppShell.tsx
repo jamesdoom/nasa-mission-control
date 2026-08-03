@@ -6,6 +6,7 @@ const links = [
   { to: "/", label: "Dashboard" },
   { to: "/apod", label: "APOD" },
   { to: "/asteroids", label: "Asteroid Watch" },
+  { to: "/media", label: "Media Library" },
   { to: "/favorites", label: "Flight Log" },
   { to: "/about", label: "About" },
 ];
@@ -69,9 +70,12 @@ export function AppShell() {
           <MarkIcon size={24} />
           <span>NASA Mission Control</span>
         </div>
-        <p>Built with public NASA data. Not an official NASA product.</p>
-        <a href="https://api.nasa.gov/" target="_blank" rel="noreferrer">
-          Data source: NASA Open APIs <span aria-hidden="true">↗</span>
+        <p>
+          Built with public NASA data. Background by Pexels via Pixabay. Not an
+          official NASA product.
+        </p>
+        <a href="https://images.nasa.gov/" target="_blank" rel="noreferrer">
+          Explore NASA media <span aria-hidden="true">↗</span>
         </a>
       </footer>
     </div>

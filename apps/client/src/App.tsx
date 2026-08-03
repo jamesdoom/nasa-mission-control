@@ -6,6 +6,8 @@ import { AsteroidDetailPage } from "./pages/AsteroidDetailPage";
 import { AsteroidsPage } from "./pages/AsteroidsPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { FavoritesPage } from "./pages/FavoritesPage";
+import { MediaDetailPage } from "./pages/MediaDetailPage";
+import { MediaLibraryPage } from "./pages/MediaLibraryPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 
 const router = createBrowserRouter([
@@ -16,6 +18,8 @@ const router = createBrowserRouter([
       { path: "apod", element: <ApodPage /> },
       { path: "asteroids", element: <AsteroidsPage /> },
       { path: "asteroids/:asteroidId", element: <AsteroidDetailPage /> },
+      { path: "media", element: <MediaLibraryPage /> },
+      { path: "media/:nasaId", element: <MediaDetailPage /> },
       { path: "favorites", element: <FavoritesPage /> },
       { path: "about", element: <AboutPage /> },
       { path: "*", element: <NotFoundPage /> },

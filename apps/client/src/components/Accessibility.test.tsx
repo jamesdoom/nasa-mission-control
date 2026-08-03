@@ -6,6 +6,7 @@ import type { Apod } from "@mission-control/shared";
 import { ApodPanel } from "./ApodPanel";
 import { AppShell } from "./AppShell";
 import { AsteroidCard } from "./AsteroidCard";
+import { MediaCard } from "./MediaCard";
 
 const apod: Apod = {
   date: "2024-01-01",
@@ -71,6 +72,34 @@ describe("automated accessibility", () => {
               saved={false}
               onToggle={() => undefined}
               detailQuery="startDate=2026-07-29&endDate=2026-07-29"
+            />
+          </main>
+        ),
+      },
+    ]);
+    const { container } = render(<RouterProvider router={router} />);
+    const results = await axe(container, jsdomAxeOptions);
+    expect(results.violations).toEqual([]);
+  });
+
+  it("finds no detectable violations in a media archive card", async () => {
+    const router = createMemoryRouter([
+      {
+        path: "/",
+        element: (
+          <main>
+            <MediaCard
+              item={{
+                nasaId: "AS11-40-5903",
+                title: "Buzz Aldrin on the Moon",
+                description: "Apollo 11 lunar surface activity.",
+                mediaType: "image",
+                dateCreated: "1969-07-20T00:00:00Z",
+                center: "JSC",
+                photographer: "Neil Armstrong",
+                keywords: ["Moon"],
+                previewUrl: "https://example.com/preview.jpg",
+              }}
             />
           </main>
         ),

@@ -119,21 +119,21 @@ export function DashboardPage() {
               </p>
             )}
           </Link>
-          <article>
+          <Link className="module-card module-card--active" to="/media">
             <span>03</span>
-            <small>Future module</small>
-            <h3>Space Weather</h3>
-            <p>
-              Solar flares, coronal mass ejections, and geomagnetic conditions.
-            </p>
-          </article>
-          <article>
-            <span>04</span>
-            <small>Future module</small>
+            <small>Instrument online</small>
             <h3>Media Library</h3>
             <p>
               Search the NASA Image and Video Library across decades of
               exploration.
+            </p>
+          </Link>
+          <article>
+            <span>04</span>
+            <small>Future module</small>
+            <h3>Space Weather</h3>
+            <p>
+              Solar flares, coronal mass ejections, and geomagnetic conditions.
             </p>
           </article>
         </div>

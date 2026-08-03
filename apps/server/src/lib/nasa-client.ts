@@ -1,5 +1,14 @@
 import { z } from "zod";
-import type { Apod, Asteroid, AsteroidFeed } from "@mission-control/shared";
+import type {
+  Apod,
+  Asteroid,
+  AsteroidFeed,
+  MediaAsset,
+  MediaDetail,
+  MediaItem,
+  MediaSearch,
+  MediaType,
+} from "@mission-control/shared";
 import { HttpError } from "./http-error.js";
 
 const nasaApodSchema = z.object({
@@ -42,6 +51,81 @@ const nasaAsteroidFeedSchema = z.object({
   element_count: z.number().int().nonnegative(),
   near_earth_objects: z.record(z.array(nasaAsteroidSchema)),
 });
+
+const mediaDataSchema = z.object({
+  nasa_id: z.string().min(1),
+  title: z.string().min(1),
+  description: z.string().optional().default(""),
+  media_type: z.enum(["image", "video", "audio"]),
+  date_created: z.string(),
+  center: z.string().optional(),
+  photographer: z.string().optional(),
+  keywords: z.array(z.string()).optional().default([]),
+});
+const mediaItemSchema = z.object({
+  data: z.array(mediaDataSchema).min(1),
+  links: z
+    .array(
+      z.object({
+        href: z.string().url(),
+        rel: z.string(),
+        render: z.string().optional(),
+      }),
+    )
+    .optional()
+    .default([]),
+});
+const mediaSearchSchema = z.object({
+  collection: z.object({
+    items: z.array(mediaItemSchema),
+    metadata: z.object({ total_hits: z.number().int().nonnegative() }),
+  }),
+});
+const mediaManifestSchema = z.object({
+  collection: z.object({
+    items: z.array(z.object({ href: z.string().url() })),
+  }),
+});
+
+function normalizeMediaItem(item: z.infer<typeof mediaItemSchema>): MediaItem {
+  const data = item.data[0];
+  if (!data) {
+    throw new HttpError(
+      502,
+      "UPSTREAM_UNAVAILABLE",
+      "NASA returned media data in an unexpected format.",
+    );
+  }
+  const preview = item.links.find(
+    (link) =>
+      link.render === "image" &&
+      (link.rel === "preview" || link.rel === "alternate"),
+  );
+  return {
+    nasaId: data.nasa_id,
+    title: data.title,
+    description: data.description,
+    mediaType: data.media_type,
+    dateCreated: data.date_created,
+    center: data.center?.trim() === "" ? null : (data.center?.trim() ?? null),
+    photographer:
+      data.photographer?.trim() === ""
+        ? null
+        : (data.photographer?.trim() ?? null),
+    keywords: data.keywords.slice(0, 12),
+    previewUrl: preview?.href ?? null,
+  };
+}
+
+function assetKind(url: string): MediaAsset["kind"] {
+  const extension = new URL(url).pathname.split(".").pop()?.toLowerCase();
+  if (["jpg", "jpeg", "png", "gif", "tif", "tiff"].includes(extension ?? ""))
+    return "image";
+  if (["mp4", "m4v", "mov", "webm"].includes(extension ?? "")) return "video";
+  if (["mp3", "wav", "m4a"].includes(extension ?? "")) return "audio";
+  if (["vtt", "srt"].includes(extension ?? "")) return "caption";
+  return "other";
+}
 
 type NasaClientOptions = {
   apiKey: string;
@@ -205,6 +289,88 @@ export class NasaClient {
           ? null
           : Math.min(...asteroids.map((item) => item.approach.missDistanceKm)),
       asteroids,
+    };
+  }
+
+  async searchMedia(
+    query: string,
+    mediaType: MediaType | "all",
+    page: number,
+    pageSize: number,
+  ): Promise<MediaSearch> {
+    const url = new URL("https://images-api.nasa.gov/search");
+    const params = new URLSearchParams({
+      q: query,
+      page: String(page),
+      page_size: String(pageSize),
+    });
+    if (mediaType !== "all") params.set("media_type", mediaType);
+    url.search = params.toString();
+    const parsed = mediaSearchSchema.safeParse(await this.requestJson(url));
+    if (!parsed.success) {
+      throw new HttpError(
+        502,
+        "UPSTREAM_UNAVAILABLE",
+        "NASA returned media search data in an unexpected format.",
+      );
+    }
+    const totalHits = parsed.data.collection.metadata.total_hits;
+    return {
+      query,
+      mediaType,
+      page,
+      pageSize,
+      totalHits,
+      totalPages: Math.max(1, Math.ceil(totalHits / pageSize)),
+      items: parsed.data.collection.items.map(normalizeMediaItem),
+    };
+  }
+
+  async getMediaDetail(nasaId: string): Promise<MediaDetail> {
+    const searchUrl = new URL("https://images-api.nasa.gov/search");
+    searchUrl.search = new URLSearchParams({ nasa_id: nasaId }).toString();
+    const manifestUrl = new URL(
+      `https://images-api.nasa.gov/asset/${encodeURIComponent(nasaId)}`,
+    );
+    const [searchResponse, manifestResponse] = await Promise.all([
+      this.requestJson(searchUrl),
+      this.requestJson(manifestUrl),
+    ]);
+    const search = mediaSearchSchema.safeParse(searchResponse);
+    const manifest = mediaManifestSchema.safeParse(manifestResponse);
+    const result = search.success ? search.data.collection.items[0] : undefined;
+    if (!result || !manifest.success) {
+      throw new HttpError(
+        502,
+        "UPSTREAM_UNAVAILABLE",
+        "NASA returned media asset data in an unexpected format.",
+      );
+    }
+    const item = normalizeMediaItem(result);
+    const assets = manifest.data.collection.items
+      .map(({ href }) => ({
+        url: href,
+        label: decodeURIComponent(
+          new URL(href).pathname.split("/").pop() ?? href,
+        ),
+        kind: assetKind(href),
+      }))
+      .filter((asset) => asset.kind !== "other");
+    const playableKind = item.mediaType === "image" ? "image" : item.mediaType;
+    const playableAssets = assets.filter(
+      (asset) => asset.kind === playableKind,
+    );
+    const original = playableAssets.find((asset) => /~orig\./i.test(asset.url));
+    const playback =
+      item.mediaType === "image"
+        ? playableAssets.find((asset) => /~medium\.|~large\./i.test(asset.url))
+        : playableAssets.find((asset) => /~small\.|~medium\./i.test(asset.url));
+    return {
+      ...item,
+      assets,
+      playbackUrl:
+        playback?.url ?? original?.url ?? playableAssets[0]?.url ?? null,
+      downloadUrl: original?.url ?? playableAssets[0]?.url ?? null,
     };
   }
 
