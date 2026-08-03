@@ -9,6 +9,8 @@ import { EarthPage } from "./pages/EarthPage";
 import { FavoritesPage } from "./pages/FavoritesPage";
 import { MediaDetailPage } from "./pages/MediaDetailPage";
 import { MediaLibraryPage } from "./pages/MediaLibraryPage";
+import { MissionDetailPage } from "./pages/MissionDetailPage";
+import { MissionsPage } from "./pages/MissionsPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { SpaceWeatherPage } from "./pages/SpaceWeatherPage";
 
@@ -24,6 +26,8 @@ const router = createBrowserRouter([
       { path: "media/:nasaId", element: <MediaDetailPage /> },
       { path: "space-weather", element: <SpaceWeatherPage /> },
       { path: "earth", element: <EarthPage /> },
+      { path: "missions", element: <MissionsPage /> },
+      { path: "missions/:missionSlug", element: <MissionDetailPage /> },
       { path: "favorites", element: <FavoritesPage /> },
       { path: "about", element: <AboutPage /> },
       { path: "*", element: <NotFoundPage /> },

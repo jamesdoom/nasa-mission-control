@@ -8,6 +8,8 @@ import { AppShell } from "./AppShell";
 import { AsteroidCard } from "./AsteroidCard";
 import { MediaCard } from "./MediaCard";
 import { SpaceWeatherCard } from "./SpaceWeatherCard";
+import { MissionCard } from "./MissionCard";
+import { missions } from "../data/missions";
 import { EarthImageViewer } from "./EarthImageViewer";
 
 const apod: Apod = {
@@ -162,6 +164,24 @@ describe("automated accessibility", () => {
         />
       </main>,
     );
+    const results = await axe(container, jsdomAxeOptions);
+    expect(results.violations).toEqual([]);
+  });
+
+  it("finds no detectable violations in a curated mission card", async () => {
+    const mission = missions[0];
+    if (!mission) throw new Error("Expected a curated mission fixture.");
+    const router = createMemoryRouter([
+      {
+        path: "/",
+        element: (
+          <main>
+            <MissionCard mission={mission} />
+          </main>
+        ),
+      },
+    ]);
+    const { container } = render(<RouterProvider router={router} />);
     const results = await axe(container, jsdomAxeOptions);
     expect(results.violations).toEqual([]);
   });

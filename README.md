@@ -1,6 +1,6 @@
 # NASA Mission Control
 
-An original, responsive command-center experience for exploring NASA imagery and space science. The current release combines APOD, Asteroid Watch, NASA media search, DONKI space weather, and an EPIC/Earthdata Earth Observatory behind a secure Express API boundary.
+An original, responsive command-center experience for exploring NASA imagery and space science. The current release combines live and frequently updated NASA data with a source-checked Mission Archive, while clearly distinguishing curated records from API telemetry.
 
 > Portfolio project; not affiliated with or endorsed by NASA.
 
@@ -26,10 +26,13 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Earth Observatory with date-based DSCOVR EPIC natural/enhanced imagery sequences
 - Keyboard-operable EPIC filmstrip, observation telemetry, and full-resolution downloads
 - Daily MODIS Terra true-color global composites from Earthdata GIBS
+- Curated Mission Archive spanning Apollo 11, Voyager 1, Curiosity, and Webb
+- URL-backed destination, spacecraft-type, and status filters
+- Cinematic mission records with timelines, achievements, NASA photography, credits, and official sources
 
 ## Planned modules
 
-Curated Mission Archive, expanded Flight Log, source-checked Space Trivia, and additional mission-specific visual assets. The legacy NASA Earth and Mars Rover APIs are archived and will not be used.
+Expanded Flight Log, source-checked Space Trivia, and additional mission-specific visual assets for live-data modules. The legacy NASA Earth and Mars Rover APIs are archived and will not be used.
 
 ## Stack
 
@@ -106,11 +109,13 @@ type Apod = {
 
 The Earth contract contains the selected and latest available dates, normalized EPIC frames, centroid telemetry, archive URLs, and an exact GIBS WMS image URL. EPIC metadata field names and WMS configuration details do not spread through the UI. The asteroid contract contains only identity, JPL source URL, NASA classification flags, estimated diameter bounds, and the selected Earth approach’s UTC time, relative velocity, and miss distance. Dynamic NeoWs date buckets and numeric strings never reach the UI.
 
+Mission Archive records are intentionally local, typed editorial content rather than an invented “live missions” API. Every record carries a review date, official NASA source links, exact NASA Image Library ID and credit, and a stable route at `/missions/:missionSlug`. Archive filters remain in the URL.
+
 Errors use `{ error: { code, message, requestId } }`; server details and credentials are never returned. Shared internal contracts live in `packages/shared`, while NASA-specific schemas remain in `apps/server`.
 
 ## Testing
 
-`npm test` covers query and date-range validation, bounded caching, security headers, APOD, NeoWs, Collection+JSON, DONKI, and Earth observation behavior, malformed upstream responses, responsible scientific wording, media rendering, automated accessibility checks, the UTC clock, and local favorites. `npm run test:e2e` verifies dashboard loading, URL-backed filters, responsive navigation, APOD favorites, asteroid workflows, NASA media navigation, Space Weather filtering, and the EPIC image sequence in Chromium using deterministic mocked data.
+`npm test` covers query and date-range validation, bounded caching, security headers, APOD, NeoWs, Collection+JSON, DONKI, Earth observation behavior, curated mission source integrity, malformed upstream responses, responsible scientific wording, media rendering, automated accessibility checks, the UTC clock, and local favorites. `npm run test:e2e` verifies dashboard loading, URL-backed filters, responsive navigation, APOD favorites, asteroid workflows, NASA media navigation, Space Weather filtering, the EPIC image sequence, and Mission Archive navigation in Chromium.
 
 [GitHub Actions](.github/workflows/ci.yml) runs formatting, strict types, lint, all Vitest suites, the production build, and Chromium smoke tests for pushes to `main` and pull requests.
 
@@ -130,6 +135,8 @@ The global daily mosaic uses the official [NASA Earthdata GIBS](https://earthdat
 
 Space weather observations come from NASA’s active DONKI FLR, CME, and GST endpoints. NASA/CCMC describes DONKI as preliminary experimental research information supplied as a community service, not the official U.S. operational forecast. The application links to [NOAA’s Space Weather Prediction Center](https://www.swpc.noaa.gov/) for official forecasts and to each DONKI source record for context.
 
+Mission Archive facts and chronology are checked against official NASA mission pages for [Apollo 11](https://www.nasa.gov/mission/apollo-11/), [Voyager 1](https://science.nasa.gov/mission/voyager/voyager-1/), [Curiosity](https://science.nasa.gov/mission/msl-curiosity/), and [Webb](https://science.nasa.gov/mission/webb/). Locally stored photographs retain their NASA Image Library IDs and displayed credits: `as11-40-5903`, `PIA21741`, `PIA20603`, and `GSFC_20171208_Archive_e000356`. Active and extended mission statuses can change and must be rechecked against those sources when archive records are edited.
+
 ## Roadmap
 
 1. **Complete:** foundation, dashboard, APOD, local flight log, and Phase 1.1 hardening.
@@ -137,7 +144,7 @@ Space weather observations come from NASA’s active DONKI FLR, CME, and GST end
 3. **Complete:** NASA Image and Video Library search, filters, pagination, detail pages, and cinematic visual foundation.
 4. **Complete:** DONKI Space Weather Center with observed event chronology, filters, measurements, and research context.
 5. **Complete:** Earth Observatory with date-based EPIC sequences, natural/enhanced views, and Earthdata GIBS daily composites.
-6. Curated Mission Archive with source-checked timelines and module-specific NASA photography.
+6. **Complete:** curated Mission Archive with source-checked timelines, URL-backed filtering, detail records, and credited NASA photography.
 7. Expanded Flight Log and Space Trivia.
 
 ## Screenshots
@@ -155,6 +162,8 @@ The captures below use deterministic mocked NASA content so they can be regenera
 ![DONKI Space Weather Center](docs/screenshots/space-weather.png)
 
 ![Earth Observatory](docs/screenshots/earth-observatory.png)
+
+![Curiosity Mission Archive record](docs/screenshots/mission-archive.png)
 
 ## License
 

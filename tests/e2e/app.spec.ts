@@ -437,3 +437,36 @@ test("browses EPIC frames and keeps Earth observation state in the URL", async (
     ),
   ).toBe(false);
 });
+
+test("filters and opens a source-backed mission record", async ({ page }) => {
+  await page.goto("/missions");
+  await expect(
+    page.getByRole("heading", { name: "Mission Archive" }),
+  ).toBeVisible();
+  await page.getByLabel("Destination").selectOption("Mars");
+  await expect(page).toHaveURL(/destination=Mars/);
+  await expect(page.getByRole("heading", { name: "Curiosity" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Apollo 11" })).toHaveCount(0);
+  await page
+    .getByRole("link", { name: "Open Curiosity mission archive" })
+    .click();
+  await expect(page).toHaveURL(/\/missions\/curiosity$/);
+  await expect(
+    page.getByRole("heading", { name: "Defining moments" }),
+  ).toBeVisible();
+  await expect(page.getByText("Curated record", { exact: true })).toBeVisible();
+  await page.locator("main").click({ position: { x: 10, y: 10 } });
+  await page.screenshot({
+    path: "docs/screenshots/mission-archive.png",
+    fullPage: true,
+    animations: "disabled",
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth >
+        document.documentElement.clientWidth,
+    ),
+  ).toBe(false);
+});

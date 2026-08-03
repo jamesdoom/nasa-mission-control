@@ -143,6 +143,12 @@ export function DashboardPage() {
             <h3>Earth Observatory</h3>
             <p>Sunlit EPIC sequences and daily MODIS Terra global imagery.</p>
           </Link>
+          <Link className="module-card module-card--active" to="/missions">
+            <span>06</span>
+            <small>Archive online</small>
+            <h3>Mission Archive</h3>
+            <p>Source-checked flight histories from Apollo to Webb.</p>
+          </Link>
         </div>
       </section>
     </>

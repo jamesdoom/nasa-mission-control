@@ -9,6 +9,7 @@ const links = [
   { to: "/media", label: "Media Library" },
   { to: "/space-weather", label: "Space Weather" },
   { to: "/earth", label: "Earth" },
+  { to: "/missions", label: "Missions" },
   { to: "/favorites", label: "Flight Log" },
   { to: "/about", label: "About" },
 ];
