@@ -5,6 +5,7 @@ import { ApodPage } from "./pages/ApodPage";
 import { AsteroidDetailPage } from "./pages/AsteroidDetailPage";
 import { AsteroidsPage } from "./pages/AsteroidsPage";
 import { DashboardPage } from "./pages/DashboardPage";
+import { EarthPage } from "./pages/EarthPage";
 import { FavoritesPage } from "./pages/FavoritesPage";
 import { MediaDetailPage } from "./pages/MediaDetailPage";
 import { MediaLibraryPage } from "./pages/MediaLibraryPage";
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
       { path: "media", element: <MediaLibraryPage /> },
       { path: "media/:nasaId", element: <MediaDetailPage /> },
       { path: "space-weather", element: <SpaceWeatherPage /> },
+      { path: "earth", element: <EarthPage /> },
       { path: "favorites", element: <FavoritesPage /> },
       { path: "about", element: <AboutPage /> },
       { path: "*", element: <NotFoundPage /> },

@@ -8,6 +8,7 @@ const links = [
   { to: "/asteroids", label: "Asteroid Watch" },
   { to: "/media", label: "Media Library" },
   { to: "/space-weather", label: "Space Weather" },
+  { to: "/earth", label: "Earth" },
   { to: "/favorites", label: "Flight Log" },
   { to: "/about", label: "About" },
 ];

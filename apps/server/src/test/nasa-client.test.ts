@@ -2,6 +2,50 @@ import { describe, expect, it, vi } from "vitest";
 import { NasaClient } from "../lib/nasa-client.js";
 
 describe("NasaClient", () => {
+  it("normalizes EPIC metadata and builds exact archive and GIBS URLs", async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify([{ date: "2026-08-01" }]), {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        }),
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify([
+            {
+              identifier: "20260801004554",
+              caption: "Earth from DSCOVR",
+              image: "epic_1b_20260801004554",
+              date: "2026-08-01 00:45:54",
+              centroid_coordinates: { lat: 5.3, lon: -156.2 },
+            },
+          ]),
+          { status: 200, headers: { "content-type": "application/json" } },
+        ),
+      );
+    const client = new NasaClient({
+      apiKey: "secret",
+      timeoutMs: 1000,
+      fetchImpl,
+    });
+    const result = await client.getEarthObservation("natural");
+    expect(result).toMatchObject({
+      date: "2026-08-01",
+      latestAvailableDate: "2026-08-01",
+      collection: "natural",
+      images: [{ capturedAtUtc: "2026-08-01T00:45:54.000Z" }],
+    });
+    expect(result.images[0]?.imageUrl).toBe(
+      "https://epic.gsfc.nasa.gov/archive/natural/2026/08/01/jpg/epic_1b_20260801004554.jpg",
+    );
+    const gibs = new URL(result.dailyComposite.imageUrl);
+    expect(gibs.searchParams.get("VERSION")).toBe("1.3.0");
+    expect(gibs.searchParams.get("BBOX")).toBe("-90,-180,90,180");
+    expect(gibs.searchParams.get("TIME")).toBe("2026-08-01");
+  });
+
   it("maps NASA snake_case fields to the internal model", async () => {
     const fetchImpl = vi.fn().mockResolvedValue(
       new Response(

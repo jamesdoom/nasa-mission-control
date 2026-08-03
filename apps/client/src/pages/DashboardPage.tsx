@@ -137,6 +137,12 @@ export function DashboardPage() {
               Solar flares, coronal mass ejections, and geomagnetic conditions.
             </p>
           </Link>
+          <Link className="module-card module-card--active" to="/earth">
+            <span>05</span>
+            <small>Instrument online</small>
+            <h3>Earth Observatory</h3>
+            <p>Sunlit EPIC sequences and daily MODIS Terra global imagery.</p>
+          </Link>
         </div>
       </section>
     </>

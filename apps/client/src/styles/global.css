@@ -548,6 +548,9 @@ p {
   background: var(--line);
   border: 1px solid var(--line);
 }
+.module-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
 .module-grid article,
 .module-grid .module-card,
 .about-grid article {
@@ -1456,6 +1459,234 @@ p {
   gap: 1rem;
   color: #6f859a;
 }
+.earth-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: end;
+  padding-bottom: 3rem;
+}
+.earth-intro h1 {
+  font-size: clamp(3.5rem, 7vw, 7rem);
+  letter-spacing: -0.06em;
+  line-height: 0.9;
+  margin-bottom: 1.5rem;
+}
+.earth-intro > div > p:last-child {
+  max-width: 650px;
+  color: #9eb0c2;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+.earth-intro aside {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem 1.5rem;
+  border-left: 1px solid var(--cyan);
+  padding: 1.5rem;
+  background: rgba(7, 16, 28, 0.78);
+}
+.earth-intro aside span,
+.earth-intro aside strong {
+  font:
+    0.65rem "Space Mono",
+    monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.earth-intro aside span {
+  color: #6f8296;
+}
+.earth-intro aside strong {
+  text-align: right;
+}
+.earth-console-section {
+  padding-top: 0;
+  padding-bottom: 2rem;
+}
+.earth-console {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) auto auto;
+  gap: 0.8rem;
+  align-items: end;
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  background: rgba(8, 18, 31, 0.9);
+}
+.earth-console label {
+  display: grid;
+  gap: 0.55rem;
+  color: #8296aa;
+  font:
+    0.63rem "Space Mono",
+    monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.earth-console input {
+  min-height: 48px;
+  padding: 0.75rem;
+  color: #fff;
+  color-scheme: dark;
+  background: #050b13;
+  border: 1px solid #31445a;
+}
+.earth-collections {
+  border: 0;
+  padding: 1rem 0 0;
+  margin: 0;
+  display: flex;
+  gap: 0.75rem;
+}
+.earth-collections legend {
+  color: #73879a;
+  font:
+    0.62rem "Space Mono",
+    monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.7rem;
+}
+.earth-collections label {
+  cursor: pointer;
+}
+.earth-collections input {
+  position: absolute;
+  opacity: 0;
+}
+.earth-collections span {
+  display: block;
+  border: 1px solid #304258;
+  padding: 0.65rem 0.9rem;
+  color: #91a5b9;
+  font-size: 0.78rem;
+}
+.earth-collections input:checked + span {
+  color: #fff;
+  border-color: var(--cyan);
+  background: rgba(72, 217, 239, 0.08);
+}
+.earth-collections input:focus-visible + span {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+.earth-results {
+  padding-top: 1rem;
+}
+.earth-viewer {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.65fr);
+  border: 1px solid var(--line);
+  background: #07101b;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.32);
+}
+.earth-viewer__stage {
+  position: relative;
+  min-height: 650px;
+  overflow: hidden;
+  background: #01040a;
+}
+.earth-viewer__stage > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.earth-viewer__telemetry {
+  position: absolute;
+  inset: auto 1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0.9rem;
+  background: rgba(2, 7, 14, 0.82);
+  border: 1px solid var(--line);
+  color: #9cb4c8;
+  font:
+    0.62rem "Space Mono",
+    monospace;
+  letter-spacing: 0.07em;
+}
+.earth-viewer__copy {
+  padding: clamp(2rem, 4vw, 4rem);
+  align-self: center;
+}
+.earth-viewer__copy h2 {
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+.earth-viewer__copy > p {
+  color: #a0b2c2;
+  line-height: 1.7;
+}
+.earth-viewer__note {
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.85rem;
+}
+.earth-filmstrip {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 0.55rem;
+  overflow-x: auto;
+  padding: 0.85rem;
+  border-top: 1px solid var(--line);
+}
+.earth-filmstrip button {
+  flex: 0 0 106px;
+  border: 1px solid transparent;
+  padding: 4px;
+  color: #8296a9;
+  background: #040a12;
+  cursor: pointer;
+}
+.earth-filmstrip button[aria-current="true"] {
+  border-color: var(--cyan);
+  color: #fff;
+}
+.earth-filmstrip img {
+  width: 100%;
+  aspect-ratio: 1;
+  display: block;
+  object-fit: cover;
+}
+.earth-filmstrip span {
+  display: block;
+  padding: 0.4rem 0 0.2rem;
+  font:
+    0.6rem "Space Mono",
+    monospace;
+}
+.gibs-section {
+  padding-top: 3rem;
+}
+.gibs-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.6fr);
+  border: 1px solid var(--line);
+  background: #07101b;
+}
+.gibs-panel > img {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  display: block;
+  object-fit: cover;
+  background: #02050a;
+}
+.gibs-panel > div {
+  align-self: center;
+  padding: clamp(2rem, 4vw, 3.5rem);
+}
+.gibs-panel h3 {
+  font-size: 1.8rem;
+  line-height: 1.15;
+}
+.gibs-panel p {
+  color: #96a9bb;
+  line-height: 1.7;
+}
 .weather-card__category {
   color: var(--cyan);
 }
@@ -1655,6 +1886,14 @@ p {
   .weather-summary > div:nth-child(-n + 2) {
     border-bottom: 1px solid var(--line);
   }
+  .earth-intro,
+  .earth-viewer,
+  .gibs-panel {
+    grid-template-columns: 1fr;
+  }
+  .earth-viewer__stage {
+    min-height: 500px;
+  }
 }
 @media (max-width: 900px) {
   .site-header {
@@ -1816,6 +2055,22 @@ p {
   .weather-card > footer {
     align-items: flex-start;
     flex-direction: column;
+  }
+  .earth-console {
+    grid-template-columns: 1fr;
+  }
+  .earth-console .button {
+    width: 100%;
+  }
+  .earth-viewer__stage {
+    min-height: 360px;
+  }
+  .earth-viewer__telemetry {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .gibs-panel > img {
+    min-height: 240px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

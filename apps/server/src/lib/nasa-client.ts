@@ -3,6 +3,8 @@ import type {
   Apod,
   Asteroid,
   AsteroidFeed,
+  EarthCollection,
+  EarthObservation,
   MediaAsset,
   MediaDetail,
   MediaItem,
@@ -24,6 +26,18 @@ const nasaApodSchema = z.object({
   thumbnail_url: z.string().url().optional(),
   copyright: z.string().optional(),
 });
+
+const epicImageSchema = z.object({
+  identifier: z.string().min(1),
+  caption: z.string().min(1),
+  image: z.string().min(1),
+  date: z.string(),
+  centroid_coordinates: z.object({
+    lat: z.number().finite(),
+    lon: z.number().finite(),
+  }),
+});
+const epicAvailableSchema = z.array(z.object({ date: z.string() })).min(1);
 
 const nonNegativeNumber = z.coerce.number().finite().nonnegative();
 const nasaApproachSchema = z.object({
@@ -291,6 +305,78 @@ export class NasaClient {
       hdUrl: item.hdurl ?? null,
       thumbnailUrl: item.thumbnail_url ?? null,
       copyright: copyright === "" ? null : (copyright ?? null),
+    };
+  }
+
+  async getEarthObservation(
+    collection: EarthCollection,
+    requestedDate?: string,
+  ): Promise<EarthObservation> {
+    const availableUrl = new URL(
+      `https://epic.gsfc.nasa.gov/api/${collection}/all`,
+    );
+    const available = epicAvailableSchema.safeParse(
+      await this.requestJson(availableUrl),
+    );
+    if (!available.success) this.earthFormatError();
+    const latestAvailableDate = available.data[0]?.date.slice(0, 10);
+    if (!latestAvailableDate) this.earthFormatError();
+    const date = requestedDate ?? latestAvailableDate;
+    const imagesUrl = new URL(
+      `https://epic.gsfc.nasa.gov/api/${collection}/date/${date}`,
+    );
+    const images = z
+      .array(epicImageSchema)
+      .safeParse(await this.requestJson(imagesUrl));
+    if (!images.success) this.earthFormatError();
+    const archiveCollection = collection === "natural" ? "natural" : "enhanced";
+    const normalized = images.data.map((item) => {
+      const captured = new Date(`${item.date.replace(" ", "T")}Z`);
+      if (Number.isNaN(captured.valueOf())) this.earthFormatError();
+      const [year, month, day] = item.date.slice(0, 10).split("-");
+      if (!year || !month || !day) this.earthFormatError();
+      const archive = `https://epic.gsfc.nasa.gov/archive/${archiveCollection}/${year}/${month}/${day}`;
+      return {
+        id: item.identifier,
+        caption: item.caption,
+        capturedAtUtc: captured.toISOString(),
+        centroid: {
+          latitude: item.centroid_coordinates.lat,
+          longitude: item.centroid_coordinates.lon,
+        },
+        imageUrl: `${archive}/jpg/${item.image}.jpg`,
+        thumbnailUrl: `${archive}/thumbs/${item.image}.jpg`,
+        downloadUrl: `${archive}/png/${item.image}.png`,
+      };
+    });
+    const gibs = new URL(
+      "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi",
+    );
+    gibs.search = new URLSearchParams({
+      SERVICE: "WMS",
+      REQUEST: "GetMap",
+      VERSION: "1.3.0",
+      LAYERS: "MODIS_Terra_CorrectedReflectance_TrueColor",
+      STYLES: "",
+      FORMAT: "image/jpeg",
+      TRANSPARENT: "false",
+      HEIGHT: "900",
+      WIDTH: "1800",
+      CRS: "EPSG:4326",
+      BBOX: "-90,-180,90,180",
+      TIME: date,
+    }).toString();
+    return {
+      date,
+      latestAvailableDate,
+      collection,
+      images: normalized,
+      dailyComposite: {
+        title: "MODIS Terra corrected-reflectance true color",
+        layer: "MODIS_Terra_CorrectedReflectance_TrueColor",
+        imageUrl: gibs.toString(),
+        sourceUrl: "https://earthdata.nasa.gov/data/tools/gibs",
+      },
     };
   }
 
@@ -613,6 +699,14 @@ export class NasaClient {
       502,
       "UPSTREAM_UNAVAILABLE",
       "NASA returned space weather data in an unexpected format.",
+    );
+  }
+
+  private earthFormatError(): never {
+    throw new HttpError(
+      502,
+      "UPSTREAM_UNAVAILABLE",
+      "NASA returned Earth observation data in an unexpected format.",
     );
   }
 

@@ -8,6 +8,7 @@ import { AppShell } from "./AppShell";
 import { AsteroidCard } from "./AsteroidCard";
 import { MediaCard } from "./MediaCard";
 import { SpaceWeatherCard } from "./SpaceWeatherCard";
+import { EarthImageViewer } from "./EarthImageViewer";
 
 const apod: Apod = {
   date: "2024-01-01",
@@ -135,6 +136,30 @@ describe("automated accessibility", () => {
     const { container } = render(
       <main>
         <SpaceWeatherCard event={weatherEvent} />
+      </main>,
+    );
+    const results = await axe(container, jsdomAxeOptions);
+    expect(results.violations).toEqual([]);
+  });
+
+  it("finds no detectable violations in the EPIC image viewer", async () => {
+    const { container } = render(
+      <main>
+        <EarthImageViewer
+          images={[
+            {
+              id: "epic-1",
+              caption: "Earth from DSCOVR",
+              capturedAtUtc: "2026-08-01T00:45:54.000Z",
+              centroid: { latitude: 5, longitude: -156 },
+              imageUrl: "https://example.com/earth.jpg",
+              thumbnailUrl: "https://example.com/earth-thumb.jpg",
+              downloadUrl: "https://example.com/earth.png",
+            },
+          ]}
+          selectedIndex={0}
+          onSelect={() => undefined}
+        />
       </main>,
     );
     const results = await axe(container, jsdomAxeOptions);

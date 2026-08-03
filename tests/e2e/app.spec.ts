@@ -196,6 +196,45 @@ async function mockSpaceWeather(page: Page): Promise<void> {
   );
 }
 
+const earthObservation = {
+  date: "2026-08-01",
+  latestAvailableDate: "2026-08-01",
+  collection: "natural",
+  images: [0, 1].map((index) => ({
+    id: `epic-${String(index)}`,
+    caption: "This image was taken by NASA's EPIC camera aboard DSCOVR.",
+    capturedAtUtc: `2026-08-01T0${String(index)}:45:54.000Z`,
+    centroid: { latitude: 5.3, longitude: -156.2 },
+    imageUrl: testImage,
+    thumbnailUrl: testImage,
+    downloadUrl: testImage,
+  })),
+  dailyComposite: {
+    title: "MODIS Terra corrected-reflectance true color",
+    layer: "MODIS_Terra_CorrectedReflectance_TrueColor",
+    imageUrl: testImage,
+    sourceUrl: "https://earthdata.nasa.gov/data/tools/gibs",
+  },
+};
+
+async function mockEarth(page: Page): Promise<void> {
+  await page.route(
+    (url) => url.pathname === "/api/earth",
+    async (route) => {
+      const url = new URL(route.request().url());
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          ...earthObservation,
+          date: url.searchParams.get("date") ?? earthObservation.date,
+          collection: url.searchParams.get("collection") ?? "natural",
+        }),
+      });
+    },
+  );
+}
+
 async function mockApod(page: Page): Promise<void> {
   await page.route(
     (url) => url.pathname === "/api/apod",
@@ -363,4 +402,38 @@ test("filters observed DONKI space weather events", async ({ page }) => {
   });
   await page.getByRole("radio", { name: "Solar flares" }).click();
   await expect(page).toHaveURL(/category=flare/);
+});
+
+test("browses EPIC frames and keeps Earth observation state in the URL", async ({
+  page,
+}) => {
+  await mockEarth(page);
+  await page.goto("/earth?date=2026-08-01&collection=natural");
+  await expect(
+    page.getByRole("heading", { name: "Earth Observatory" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Our world in daylight" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Show Earth image 2 of 2" }).click();
+  await expect(page).toHaveURL(/image=2/);
+  await page.getByRole("radio", { name: "Enhanced color" }).click();
+  await expect(page).toHaveURL(/collection=enhanced/);
+  await expect(
+    page.getByRole("heading", { name: "Our world in daylight" }),
+  ).toBeVisible();
+  await page.locator("main").click({ position: { x: 10, y: 10 } });
+  await page.screenshot({
+    path: "docs/screenshots/earth-observatory.png",
+    fullPage: true,
+    animations: "disabled",
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth >
+        document.documentElement.clientWidth,
+    ),
+  ).toBe(false);
 });

@@ -1,6 +1,6 @@
 # NASA Mission Control
 
-An original, responsive command-center experience for exploring NASA imagery and space science. The current release combines APOD, a data-rich Asteroid Watch, NASA Image and Video Library search, and a browser-local Flight Log behind a secure Express API boundary.
+An original, responsive command-center experience for exploring NASA imagery and space science. The current release combines APOD, Asteroid Watch, NASA media search, DONKI space weather, and an EPIC/Earthdata Earth Observatory behind a secure Express API boundary.
 
 > Portfolio project; not affiliated with or endorsed by NASA.
 
@@ -23,10 +23,13 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Optimized responsive Milky Way atmosphere with deliberate contrast overlays
 - DONKI Space Weather Center for solar flares, CMEs, and geomagnetic storm observations
 - Plain-language measurements, UTC timestamps, research disclaimers, and source links
+- Earth Observatory with date-based DSCOVR EPIC natural/enhanced imagery sequences
+- Keyboard-operable EPIC filmstrip, observation telemetry, and full-resolution downloads
+- Daily MODIS Terra true-color global composites from Earthdata GIBS
 
 ## Planned modules
 
-Earth Observatory (EPIC/Earthdata GIBS), curated Mission Archive, expanded Flight Log, and source-checked Space Trivia. The legacy NASA Earth and Mars Rover APIs are archived and will not be used.
+Curated Mission Archive, expanded Flight Log, source-checked Space Trivia, and additional mission-specific visual assets. The legacy NASA Earth and Mars Rover APIs are archived and will not be used.
 
 ## Stack
 
@@ -86,7 +89,7 @@ Open `http://localhost:3001`. Deployments must provide `NASA_API_KEY`; the clien
 
 ## Architecture
 
-The browser calls internal endpoints such as `GET /api/apod?date=YYYY-MM-DD`, `GET /api/asteroids?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD`, `GET /api/media/search?q=apollo&mediaType=image&page=1`, and `GET /api/space-weather?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD&category=all`. Express validates each query, calls NASA services, validates important upstream fields, and maps them into deliberately small internal models:
+The browser calls internal endpoints such as `GET /api/apod?date=YYYY-MM-DD`, `GET /api/asteroids?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD`, `GET /api/media/search?q=apollo&mediaType=image&page=1`, `GET /api/space-weather?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD&category=all`, and `GET /api/earth?date=YYYY-MM-DD&collection=natural`. Express validates each query, calls NASA services, validates important upstream fields, and maps them into deliberately small internal models:
 
 ```ts
 type Apod = {
@@ -101,13 +104,13 @@ type Apod = {
 };
 ```
 
-The asteroid contract contains only identity, JPL source URL, NASA classification flags, estimated diameter bounds, and the selected Earth approach’s UTC time, relative velocity, and miss distance. Dynamic NeoWs date buckets and numeric strings never reach the UI.
+The Earth contract contains the selected and latest available dates, normalized EPIC frames, centroid telemetry, archive URLs, and an exact GIBS WMS image URL. EPIC metadata field names and WMS configuration details do not spread through the UI. The asteroid contract contains only identity, JPL source URL, NASA classification flags, estimated diameter bounds, and the selected Earth approach’s UTC time, relative velocity, and miss distance. Dynamic NeoWs date buckets and numeric strings never reach the UI.
 
 Errors use `{ error: { code, message, requestId } }`; server details and credentials are never returned. Shared internal contracts live in `packages/shared`, while NASA-specific schemas remain in `apps/server`.
 
 ## Testing
 
-`npm test` covers query and date-range validation, bounded caching, security headers, APOD, NeoWs, Collection+JSON, and DONKI response transformation, malformed upstream responses, responsible scientific wording, media rendering, automated accessibility checks, the UTC clock, and local favorites. `npm run test:e2e` verifies dashboard loading, URL-backed filters, responsive navigation, APOD favorites, asteroid workflows, NASA media navigation, and Space Weather filtering in Chromium using deterministic mocked data.
+`npm test` covers query and date-range validation, bounded caching, security headers, APOD, NeoWs, Collection+JSON, DONKI, and Earth observation behavior, malformed upstream responses, responsible scientific wording, media rendering, automated accessibility checks, the UTC clock, and local favorites. `npm run test:e2e` verifies dashboard loading, URL-backed filters, responsive navigation, APOD favorites, asteroid workflows, NASA media navigation, Space Weather filtering, and the EPIC image sequence in Chromium using deterministic mocked data.
 
 [GitHub Actions](.github/workflows/ci.yml) runs formatting, strict types, lint, all Vitest suites, the production build, and Chromium smoke tests for pushes to `main` and pull requests.
 
@@ -119,7 +122,11 @@ Asteroid measurements come from NASA/JPL through NeoWs. NASA/JPL defines a poten
 
 The active [NASA Image and Video Library API](https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf) provides search and asset manifests without an API key. Its published PDF is release 1.22.0 from January 2023, and live responses sometimes label preview images `alternate` instead of the documented `preview`; server normalization accepts both. Results can identify third-party copyright holders or people with publicity rights, so detail pages retain source metadata and link to NASA rather than making blanket reuse claims. See NASA’s [Images and Media Usage Guidelines](https://www.nasa.gov/nasa-brand-center/images-and-media/).
 
-The global Milky Way backdrop is the Pixabay image [“Astronomy, Bright, Constellation”](https://pixabay.com/photos/astronomy-bright-constellation-dark-1867616/) by Pexels, supplied for this project and stored as optimized responsive WebP variants. EPIC and Earthdata GIBS remain candidates for later milestones after integration-specific review.
+The global Milky Way backdrop is the Pixabay image [“Astronomy, Bright, Constellation”](https://pixabay.com/photos/astronomy-bright-constellation-dark-1867616/) by Pexels, supplied for this project and stored as optimized responsive WebP variants.
+
+Earth Observatory uses NASA’s active [DSCOVR EPIC API](https://epic.gsfc.nasa.gov/about/api) and official EPIC archive. EPIC operates at the Sun–Earth L1 point and generally publishes multiple full-disk frames for an available observation day; it is frequently delayed relative to the current date, so the interface labels the newest date as “latest available” rather than live. Natural-color frames are composites of adjusted spectral bands, while enhanced-color frames increase atmospheric and surface detail. Credit: NASA EPIC Team.
+
+The global daily mosaic uses the official [NASA Earthdata GIBS](https://earthdata.nasa.gov/data/tools/gibs) WMS 1.3.0 service and the `MODIS_Terra_CorrectedReflectance_TrueColor` layer. GIBS imagery may have latency, cloud cover, or missing same-day pixels. The retired `api.nasa.gov/planetary/earth` service is intentionally not used; NASA’s API portal points Earth imagery users to GIBS instead.
 
 Space weather observations come from NASA’s active DONKI FLR, CME, and GST endpoints. NASA/CCMC describes DONKI as preliminary experimental research information supplied as a community service, not the official U.S. operational forecast. The application links to [NOAA’s Space Weather Prediction Center](https://www.swpc.noaa.gov/) for official forecasts and to each DONKI source record for context.
 
@@ -129,7 +136,9 @@ Space weather observations come from NASA’s active DONKI FLR, CME, and GST end
 2. **Complete:** Asteroid Watch with responsible NeoWs telemetry, encounter pages, and saved objects.
 3. **Complete:** NASA Image and Video Library search, filters, pagination, detail pages, and cinematic visual foundation.
 4. **Complete:** DONKI Space Weather Center with observed event chronology, filters, measurements, and research context.
-5. EPIC/Earthdata imagery, curated missions, and trivia.
+5. **Complete:** Earth Observatory with date-based EPIC sequences, natural/enhanced views, and Earthdata GIBS daily composites.
+6. Curated Mission Archive with source-checked timelines and module-specific NASA photography.
+7. Expanded Flight Log and Space Trivia.
 
 ## Screenshots
 
@@ -144,6 +153,8 @@ The captures below use deterministic mocked NASA content so they can be regenera
 ![NASA Media Library search](docs/screenshots/media-library.png)
 
 ![DONKI Space Weather Center](docs/screenshots/space-weather.png)
+
+![Earth Observatory](docs/screenshots/earth-observatory.png)
 
 ## License
 
