@@ -44,6 +44,7 @@ export function DashboardPage() {
             <span className="planet" />
             <span className="orbit orbit-one" />
             <span className="orbit orbit-two" />
+            <span className="orbit orbit-one orbit-one--foreground" />
             <i />
           </div>
         </div>
