@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
+  removeVercelParsedQuery,
   removeVercelRouteParameter,
-  removeVercelRouteQuery,
 } from "../lib/vercel-url.js";
 
 describe("Vercel API adapter", () => {
@@ -11,9 +11,9 @@ describe("Vercel API adapter", () => {
     ).toBe("/api/apod?date=2026-08-04");
   });
 
-  it("removes Vercel's pre-parsed path field without changing app fields", () => {
-    const query = { date: "2026-08-04", path: ["apod"] };
-    removeVercelRouteQuery(query);
-    expect(query).toEqual({ date: "2026-08-04" });
+  it("removes Vercel's parsed query so Express can parse the clean URL", () => {
+    const request = { query: { date: "2026-08-04", path: ["apod"] } };
+    removeVercelParsedQuery(request);
+    expect(request).not.toHaveProperty("query");
   });
 });

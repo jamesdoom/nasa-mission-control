@@ -4,8 +4,8 @@ export function removeVercelRouteParameter(requestUrl: string): string {
   return `${url.pathname}${url.search}`;
 }
 
-export function removeVercelRouteQuery(
-  query: Record<string, unknown> | undefined,
-): void {
-  if (query) delete query.path;
+export function removeVercelParsedQuery(request: {
+  query?: Record<string, unknown>;
+}): void {
+  Reflect.deleteProperty(request, "query");
 }

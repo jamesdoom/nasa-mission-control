@@ -3,7 +3,7 @@ import { createApp } from "../apps/server/src/app.js";
 import { parseEnv } from "../apps/server/src/config/env.js";
 import {
   removeVercelRouteParameter,
-  removeVercelRouteQuery,
+  removeVercelParsedQuery,
 } from "../apps/server/src/lib/vercel-url.js";
 
 const app = createApp(parseEnv(process.env));
@@ -16,6 +16,6 @@ export default function handler(
   response: ServerResponse,
 ): void {
   request.url = removeVercelRouteParameter(request.url ?? "/");
-  removeVercelRouteQuery(request.query);
+  removeVercelParsedQuery(request);
   app(request, response);
 }
