@@ -46,6 +46,44 @@ describe("NasaClient", () => {
     expect(gibs.searchParams.get("TIME")).toBe("2026-08-01");
   });
 
+  it("retries an empty EPIC response when NASA lists the date as available", async () => {
+    const image = {
+      identifier: "20260801004554",
+      caption: "Earth from DSCOVR",
+      image: "epic_RGB_20260801004554",
+      date: "2026-08-01 00:45:54",
+      centroid_coordinates: { lat: 5.3, lon: -156.2 },
+    };
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify([{ date: "2026-08-01" }]), {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        }),
+      )
+      .mockResolvedValueOnce(
+        new Response("[]", {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        }),
+      )
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify([image]), {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        }),
+      );
+    const client = new NasaClient({
+      apiKey: "secret",
+      timeoutMs: 1000,
+      fetchImpl,
+    });
+    const result = await client.getEarthObservation("enhanced", "2026-08-01");
+    expect(result.images).toHaveLength(1);
+    expect(fetchImpl).toHaveBeenCalledTimes(3);
+  });
+
   it("maps NASA snake_case fields to the internal model", async () => {
     const fetchImpl = vi.fn().mockResolvedValue(
       new Response(

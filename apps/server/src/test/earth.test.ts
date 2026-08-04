@@ -18,7 +18,17 @@ const observation: EarthObservation = {
   date: "2026-08-01",
   latestAvailableDate: "2026-08-01",
   collection: "natural",
-  images: [],
+  images: [
+    {
+      id: "20260801004554",
+      caption: "Earth from DSCOVR",
+      capturedAtUtc: "2026-08-01T00:45:54.000Z",
+      centroid: { latitude: 5.3, longitude: -156.2 },
+      imageUrl: "https://epic.gsfc.nasa.gov/example.jpg",
+      thumbnailUrl: "https://epic.gsfc.nasa.gov/example-thumb.jpg",
+      downloadUrl: "https://epic.gsfc.nasa.gov/example.png",
+    },
+  ],
   dailyComposite: {
     title: "MODIS Terra corrected-reflectance true color",
     layer: "MODIS_Terra_CorrectedReflectance_TrueColor",
@@ -40,6 +50,19 @@ describe("GET /api/earth", () => {
     expect(first.headers["x-cache"]).toBe("MISS");
     expect(second.headers["x-cache"]).toBe("HIT");
     expect(getEarthObservation).toHaveBeenCalledOnce();
+  });
+
+  it("does not cache an empty upstream observation", async () => {
+    const emptyObservation = { ...observation, images: [] };
+    const getEarthObservation = vi.fn().mockResolvedValue(emptyObservation);
+    const app = createApp(env, {
+      getEarthObservation,
+    } as unknown as NasaClient);
+    const first = await request(app).get("/api/earth?collection=enhanced");
+    const second = await request(app).get("/api/earth?collection=enhanced");
+    expect(first.headers["x-cache"]).toBe("MISS");
+    expect(second.headers["x-cache"]).toBe("MISS");
+    expect(getEarthObservation).toHaveBeenCalledTimes(2);
   });
 
   it.each(["date=2026-02-30", "date=2030-01-01", "collection=infrared"])(

@@ -10,6 +10,19 @@ function collectionFrom(value: string | null): EarthCollection {
   return value === "enhanced" ? "enhanced" : "natural";
 }
 
+export function collectionSearchParams(
+  current: URLSearchParams,
+  collection: EarthCollection,
+  resolvedDate?: string,
+): URLSearchParams {
+  const next = new URLSearchParams({ collection });
+  const activeDate = resolvedDate ?? current.get("date");
+  const activeImage = current.get("image");
+  if (activeDate) next.set("date", activeDate);
+  if (activeImage) next.set("image", activeImage);
+  return next;
+}
+
 export function EarthPage() {
   const [params, setParams] = useSearchParams();
   const date = params.get("date") ?? undefined;
@@ -22,9 +35,9 @@ export function EarthPage() {
   useEffect(() => setDraftDate(date ?? ""), [date]);
 
   function update(nextCollection: EarthCollection) {
-    const next = new URLSearchParams({ collection: nextCollection });
-    if (date) next.set("date", date);
-    setParams(next);
+    setParams(
+      collectionSearchParams(params, nextCollection, query.data?.date ?? date),
+    );
   }
 
   function submit(event: SyntheticEvent<HTMLFormElement>) {

@@ -325,10 +325,22 @@ export class NasaClient {
     const imagesUrl = new URL(
       `https://epic.gsfc.nasa.gov/api/${collection}/date/${date}`,
     );
-    const images = z
-      .array(epicImageSchema)
-      .safeParse(await this.requestJson(imagesUrl));
+    const imageListSchema = z.array(epicImageSchema);
+    let images = imageListSchema.safeParse(await this.requestJson(imagesUrl));
+    const dateIsListed = available.data.some(
+      (item) => item.date.slice(0, 10) === date,
+    );
+    if (images.success && images.data.length === 0 && dateIsListed) {
+      images = imageListSchema.safeParse(await this.requestJson(imagesUrl));
+    }
     if (!images.success) this.earthFormatError();
+    if (images.data.length === 0 && dateIsListed) {
+      throw new HttpError(
+        503,
+        "UPSTREAM_UNAVAILABLE",
+        "NASA temporarily returned an incomplete Earth observation. Please retry.",
+      );
+    }
     const archiveCollection = collection === "natural" ? "natural" : "enhanced";
     const normalized = images.data.map((item) => {
       const captured = new Date(`${item.date.replace(" ", "T")}Z`);

@@ -69,7 +69,9 @@ export function createEarthRouter(
       parsed.data.collection,
       date,
     );
-    cache.set(cacheKey, observation, cacheTtlMs);
+    if (observation.images.length > 0) {
+      cache.set(cacheKey, observation, cacheTtlMs);
+    }
     response.setHeader("cache-control", "private, max-age=300");
     response.setHeader("x-cache", "MISS");
     response.json(observation);
