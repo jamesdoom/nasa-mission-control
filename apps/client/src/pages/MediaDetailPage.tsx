@@ -1,14 +1,26 @@
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ApiError } from "../api/apod";
 import { ErrorState, LoadingState } from "../components/AsyncState";
 import { useMediaDetail } from "../features/media/useMedia";
 import { useMediaFavorites } from "../hooks/useMediaFavorites";
+import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
 
 export function MediaDetailPage() {
   const nasaId = useParams().nasaId ?? "";
   const query = useMediaDetail(nasaId);
   const error = query.error instanceof ApiError ? query.error : undefined;
   const favorites = useMediaFavorites();
+  const recent = useRecentlyViewed();
+  useEffect(() => {
+    if (!query.data) return;
+    recent.record({
+      kind: "media",
+      id: query.data.nasaId,
+      title: query.data.title,
+      path: `/media/${encodeURIComponent(query.data.nasaId)}`,
+    });
+  }, [query.data, recent.record]);
   if (query.isPending)
     return (
       <section className="section">

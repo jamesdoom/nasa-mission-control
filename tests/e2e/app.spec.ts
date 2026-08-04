@@ -301,12 +301,18 @@ test("provides an operable mobile navigation menu", async ({ page }) => {
   await menu.click();
   await expect(menu).toHaveAttribute("aria-expanded", "true");
   await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible();
+  await page.getByRole("button", { name: /Explore/ }).click();
+  await expect(
+    page.getByRole("link", { name: "02 Asteroid Watch", exact: true }),
+  ).toBeVisible();
   await page.screenshot({
     path: "docs/screenshots/mobile-navigation.png",
     fullPage: false,
     animations: "disabled",
   });
-  await page.getByRole("link", { name: "Asteroid Watch", exact: true }).click();
+  await page
+    .getByRole("link", { name: "02 Asteroid Watch", exact: true })
+    .click();
   await expect(
     page.getByRole("heading", { name: "Asteroid Watch" }),
   ).toBeVisible();
@@ -490,6 +496,7 @@ test("filters and opens a source-backed mission record", async ({ page }) => {
 
 test("scores and explains source-checked space trivia", async ({ page }) => {
   await page.goto("/trivia?difficulty=cadet");
+  await expect(page).toHaveTitle("Space Trivia | NASA Mission Control");
   await expect(
     page.getByRole("heading", { name: "Space Trivia" }),
   ).toBeVisible();

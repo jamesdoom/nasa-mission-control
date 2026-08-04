@@ -47,7 +47,7 @@ export function AsteroidsPage() {
 
   return (
     <section className="section page-section asteroid-page">
-      <div className="page-intro asteroid-intro">
+      <div className="page-intro asteroid-intro asteroid-intro--visual">
         <p className="kicker">
           <span />
           Instrument 02
@@ -62,6 +62,14 @@ export function AsteroidsPage() {
           classifications describe observed orbits—they are not impact
           predictions.
         </p>
+        <a
+          className="module-image-credit"
+          href="https://images.nasa.gov/details/2019-02-25_regolith_image_compilation"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Bennu imagery: NASA / Goddard / University of Arizona ↗
+        </a>
       </div>
 
       <form

@@ -6,6 +6,7 @@ import { ApodPanel } from "../components/ApodPanel";
 import { ErrorState, LoadingState } from "../components/AsyncState";
 import { useApod } from "../features/apod/useApod";
 import { useFavorites } from "../hooks/useFavorites";
+import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
 
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -16,7 +17,17 @@ export function ApodPage() {
   useEffect(() => setDraftDate(selectedDate), [selectedDate]);
   const query = useApod(selectedDate);
   const favorites = useFavorites();
+  const recent = useRecentlyViewed();
   const error = query.error instanceof ApiError ? query.error : undefined;
+  useEffect(() => {
+    if (!query.data) return;
+    recent.record({
+      kind: "apod",
+      id: query.data.date,
+      title: query.data.title,
+      path: `/apod?date=${query.data.date}`,
+    });
+  }, [query.data, recent.record]);
   return (
     <section className="section page-section">
       <div className="page-intro">

@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { ApiError } from "../api/apod";
 import { ErrorState, LoadingState } from "../components/AsyncState";
 import { HeartIcon } from "../components/Icons";
 import { useAsteroids } from "../features/asteroids/useAsteroids";
 import { useAsteroidFavorites } from "../hooks/useAsteroidFavorites";
+import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
 import { utcDate } from "../utils/dates";
 
 const number = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 });
@@ -15,9 +17,19 @@ export function AsteroidDetailPage() {
   const endDate = params.get("endDate") ?? utcDate(6);
   const query = useAsteroids(startDate, endDate);
   const favorites = useAsteroidFavorites();
+  const recent = useRecentlyViewed();
   const error = query.error instanceof ApiError ? query.error : undefined;
   const asteroid = query.data?.asteroids.find((item) => item.id === asteroidId);
   const backQuery = new URLSearchParams({ startDate, endDate }).toString();
+  useEffect(() => {
+    if (!asteroid) return;
+    recent.record({
+      kind: "asteroid",
+      id: asteroid.id,
+      title: asteroid.name,
+      path: `/asteroids/${asteroid.id}?${backQuery}`,
+    });
+  }, [asteroid, backQuery, recent.record]);
 
   if (query.isPending)
     return (

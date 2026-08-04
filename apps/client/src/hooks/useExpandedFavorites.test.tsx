@@ -4,6 +4,7 @@ import type { MediaItem } from "@mission-control/shared";
 import { missions } from "../data/missions";
 import { useMediaFavorites } from "./useMediaFavorites";
 import { useMissionFavorites } from "./useMissionFavorites";
+import { useRecentlyViewed } from "./useRecentlyViewed";
 
 const media: MediaItem = {
   nasaId: "TEST-1",
@@ -46,5 +47,29 @@ describe("expanded Flight Log favorites", () => {
     );
     const { result } = renderHook(() => useMediaFavorites());
     expect(result.current.favorites).toEqual([media]);
+  });
+
+  it("deduplicates and clears recently viewed records", () => {
+    const { result } = renderHook(() => useRecentlyViewed());
+    act(() =>
+      result.current.record({
+        kind: "mission",
+        id: "apollo-11",
+        title: "Apollo 11",
+        path: "/missions/apollo-11",
+      }),
+    );
+    act(() =>
+      result.current.record({
+        kind: "mission",
+        id: "apollo-11",
+        title: "Apollo 11 updated",
+        path: "/missions/apollo-11",
+      }),
+    );
+    expect(result.current.items).toHaveLength(1);
+    expect(result.current.items[0]?.title).toBe("Apollo 11 updated");
+    act(() => result.current.clear());
+    expect(result.current.items).toEqual([]);
   });
 });

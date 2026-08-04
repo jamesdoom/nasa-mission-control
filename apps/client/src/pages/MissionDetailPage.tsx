@@ -1,11 +1,23 @@
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getMission } from "../data/missions";
 import { NotFoundPage } from "./NotFoundPage";
 import { useMissionFavorites } from "../hooks/useMissionFavorites";
+import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
 
 export function MissionDetailPage() {
   const mission = getMission(useParams().missionSlug);
   const favorites = useMissionFavorites();
+  const recent = useRecentlyViewed();
+  useEffect(() => {
+    if (!mission) return;
+    recent.record({
+      kind: "mission",
+      id: mission.slug,
+      title: mission.name,
+      path: `/missions/${mission.slug}`,
+    });
+  }, [mission, recent.record]);
   if (!mission) return <NotFoundPage />;
   return (
     <>

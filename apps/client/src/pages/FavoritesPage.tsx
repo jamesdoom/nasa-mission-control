@@ -7,12 +7,14 @@ import { useAsteroidFavorites } from "../hooks/useAsteroidFavorites";
 import { useFavorites } from "../hooks/useFavorites";
 import { useMediaFavorites } from "../hooks/useMediaFavorites";
 import { useMissionFavorites } from "../hooks/useMissionFavorites";
+import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
 
 export function FavoritesPage() {
   const favorites = useFavorites();
   const asteroidFavorites = useAsteroidFavorites();
   const missionFavorites = useMissionFavorites();
   const mediaFavorites = useMediaFavorites();
+  const recent = useRecentlyViewed();
   const isEmpty =
     favorites.favorites.length === 0 &&
     asteroidFavorites.favorites.length === 0 &&
@@ -144,6 +146,44 @@ export function FavoritesPage() {
               />
             ))}
           </div>
+        </section>
+      )}
+      {recent.items.length > 0 && (
+        <section className="flight-log-section recent-history">
+          <div className="section-heading">
+            <div>
+              <p className="kicker">
+                <span />
+                Navigation history
+              </p>
+              <h2>Recently viewed</h2>
+            </div>
+            <button
+              className="button button--secondary"
+              type="button"
+              onClick={() => {
+                if (
+                  window.confirm(
+                    "Clear recently viewed history from this browser?",
+                  )
+                )
+                  recent.clear();
+              }}
+            >
+              Clear history
+            </button>
+          </div>
+          <ol>
+            {recent.items.map((item) => (
+              <li key={`${item.kind}-${item.id}`}>
+                <span>{item.kind}</span>
+                <Link to={item.path}>{item.title}</Link>
+                <time dateTime={item.viewedAt}>
+                  {new Date(item.viewedAt).toLocaleDateString()}
+                </time>
+              </li>
+            ))}
+          </ol>
         </section>
       )}
     </section>

@@ -39,7 +39,7 @@ export function SpaceWeatherPage() {
 
   return (
     <>
-      <section className="section weather-intro">
+      <section className="section weather-intro weather-intro--visual">
         <div>
           <p className="kicker">
             <span />
@@ -61,6 +61,14 @@ export function SpaceWeatherPage() {
             Open NOAA SWPC ↗
           </a>
         </aside>
+        <a
+          className="module-image-credit"
+          href="https://images.nasa.gov/details/PIA26681"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Solar imagery: NASA / SDO ↗
+        </a>
       </section>
       <section className="section weather-console-section">
         <form className="weather-console" onSubmit={submit}>

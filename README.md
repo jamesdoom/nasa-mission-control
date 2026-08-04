@@ -30,11 +30,15 @@ An original, responsive command-center experience for exploring NASA imagery and
 - URL-backed destination, spacecraft-type, and status filters
 - Cinematic mission records with timelines, achievements, NASA photography, credits, and official sources
 - Expanded browser-local Flight Log for APOD, asteroids, mission records, and NASA media
+- Runtime-validated recently viewed history with deduplication, bounded storage, and clear controls
 - Source-checked Space Trivia with three difficulty levels, scoring, persistent best streak, explanations, and NASA citations
+- Grouped, keyboard-accessible module navigation with route-aware document titles
+- Route-level code splitting, self-hosted fonts, and optimized local imagery for faster repeat visits
+- Credited NASA Bennu and solar imagery establishing a distinct visual identity for major live-data modules
 
 ## Planned modules
 
-Additional mission-specific visual assets for live-data modules and optional Flight Log quality-of-life improvements. The legacy NASA Earth and Mars Rover APIs are archived and will not be used.
+Optional account synchronization, deployment observability, and additional source-checked mission records. The legacy NASA Earth and Mars Rover APIs are archived and will not be used.
 
 ## Stack
 
@@ -94,6 +98,16 @@ Open `http://localhost:3001`. Deployments must provide `NASA_API_KEY`; the clien
 
 ## Architecture
 
+```mermaid
+flowchart LR
+  Browser[React client] -->|Normalized /api contracts| Express[Express boundary]
+  Express -->|Validated requests + server-only key| Open[api.nasa.gov]
+  Express -->|Validated public requests| Images[NASA Image Library]
+  Express -->|WMS imagery| GIBS[Earthdata GIBS]
+  Browser -->|Favorites, history, streak| Local[Browser local storage]
+  Curated[Typed local mission + trivia content] --> Browser
+```
+
 The browser calls internal endpoints such as `GET /api/apod?date=YYYY-MM-DD`, `GET /api/asteroids?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD`, `GET /api/media/search?q=apollo&mediaType=image&page=1`, `GET /api/space-weather?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD&category=all`, and `GET /api/earth?date=YYYY-MM-DD&collection=natural`. Express validates each query, calls NASA services, validates important upstream fields, and maps them into deliberately small internal models:
 
 ```ts
@@ -113,11 +127,15 @@ The Earth contract contains the selected and latest available dates, normalized 
 
 Mission Archive records are intentionally local, typed editorial content rather than an invented “live missions” API. Every record carries a review date, official NASA source links, exact NASA Image Library ID and credit, and a stable route at `/missions/:missionSlug`. Archive filters remain in the URL.
 
-The Flight Log uses separate bounded, runtime-validated local-storage records for each content type. APOD and asteroid formats remain backward compatible; mission favorites store stable curated slugs, and NASA media favorites store only the normalized metadata required to render a saved card. No account, database, or cross-device synchronization is implied.
+The Flight Log uses separate bounded, runtime-validated local-storage records for each content type. APOD and asteroid formats remain backward compatible; mission favorites store stable curated slugs, and NASA media favorites store only the normalized metadata required to render a saved card. A separate 20-item recently viewed store deduplicates APOD, asteroid, media, and mission visits. No account, database, or cross-device synchronization is implied.
 
 Space Trivia is curated local educational content. Its question bank is divided into cadet, specialist, and commander levels, and every explanation links to the official NASA page used for verification. Only the best streak persists locally; individual answers and scores remain session state.
 
 Errors use `{ error: { code, message, requestId } }`; server details and credentials are never returned. Shared internal contracts live in `packages/shared`, while NASA-specific schemas remain in `apps/server`.
+
+### Performance strategy
+
+Non-dashboard routes load as independent Vite chunks, so visitors do not download every instrument on first paint. The primary production client chunk is approximately 336 kB (107 kB gzip), down from approximately 389 kB (119 kB gzip) before route splitting. DM Sans and Space Mono are self-hosted WOFF2 files, imagery is lazy-loaded where appropriate, and the global atmosphere uses responsive WebP sources.
 
 ## Testing
 
@@ -134,6 +152,8 @@ Asteroid measurements come from NASA/JPL through NeoWs. NASA/JPL defines a poten
 The active [NASA Image and Video Library API](https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf) provides search and asset manifests without an API key. Its published PDF is release 1.22.0 from January 2023, and live responses sometimes label preview images `alternate` instead of the documented `preview`; server normalization accepts both. Results can identify third-party copyright holders or people with publicity rights, so detail pages retain source metadata and link to NASA rather than making blanket reuse claims. See NASA’s [Images and Media Usage Guidelines](https://www.nasa.gov/nasa-brand-center/images-and-media/).
 
 The global Milky Way backdrop is the Pixabay image [“Astronomy, Bright, Constellation”](https://pixabay.com/photos/astronomy-bright-constellation-dark-1867616/) by Pexels, supplied for this project and stored as optimized responsive WebP variants.
+
+Asteroid Watch uses the NASA Image Library record [“A Region of Bennu’s Northern Hemisphere Close Up”](https://images.nasa.gov/details/2019-02-25_regolith_image_compilation), credited to NASA/Goddard/University of Arizona (`2019-02-25_regolith_image_compilation`). Space Weather uses [“Image of Sun From NASA's Solar Dynamics Observatory”](https://images.nasa.gov/details/PIA26681), credited to NASA/SDO (`PIA26681`). Both module headers link directly to their official source records.
 
 Earth Observatory uses NASA’s active [DSCOVR EPIC API](https://epic.gsfc.nasa.gov/about/api) and official EPIC archive. EPIC operates at the Sun–Earth L1 point and generally publishes multiple full-disk frames for an available observation day; it is frequently delayed relative to the current date, so the interface labels the newest date as “latest available” rather than live. Natural-color frames are composites of adjusted spectral bands, while enhanced-color frames increase atmospheric and surface detail. Credit: NASA EPIC Team.
 
@@ -152,7 +172,8 @@ Mission Archive facts and chronology are checked against official NASA mission p
 5. **Complete:** Earth Observatory with date-based EPIC sequences, natural/enhanced views, and Earthdata GIBS daily composites.
 6. **Complete:** curated Mission Archive with source-checked timelines, URL-backed filtering, detail records, and credited NASA photography.
 7. **Complete:** expanded Flight Log for mission and media records plus source-checked Space Trivia with scoring, streaks, difficulty levels, explanations, and citations.
-8. Module-specific NASA photography, recent-history controls, and final portfolio polish.
+8. **Complete:** module-specific NASA photography, grouped accessible navigation, recent-history controls, route-level performance work, metadata, and final portfolio polish.
+9. **Optional next:** deployment, uptime/error observability, portfolio case-study material, and additional source-checked archive records.
 
 ## Screenshots
 

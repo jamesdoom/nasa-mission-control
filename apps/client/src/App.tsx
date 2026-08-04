@@ -1,38 +1,94 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AppShell } from "./components/AppShell";
-import { AboutPage } from "./pages/AboutPage";
-import { ApodPage } from "./pages/ApodPage";
-import { AsteroidDetailPage } from "./pages/AsteroidDetailPage";
-import { AsteroidsPage } from "./pages/AsteroidsPage";
 import { DashboardPage } from "./pages/DashboardPage";
-import { EarthPage } from "./pages/EarthPage";
-import { FavoritesPage } from "./pages/FavoritesPage";
-import { MediaDetailPage } from "./pages/MediaDetailPage";
-import { MediaLibraryPage } from "./pages/MediaLibraryPage";
-import { MissionDetailPage } from "./pages/MissionDetailPage";
-import { MissionsPage } from "./pages/MissionsPage";
-import { NotFoundPage } from "./pages/NotFoundPage";
-import { SpaceWeatherPage } from "./pages/SpaceWeatherPage";
-import { TriviaPage } from "./pages/TriviaPage";
 
 const router = createBrowserRouter([
   {
     element: <AppShell />,
     children: [
       { index: true, element: <DashboardPage /> },
-      { path: "apod", element: <ApodPage /> },
-      { path: "asteroids", element: <AsteroidsPage /> },
-      { path: "asteroids/:asteroidId", element: <AsteroidDetailPage /> },
-      { path: "media", element: <MediaLibraryPage /> },
-      { path: "media/:nasaId", element: <MediaDetailPage /> },
-      { path: "space-weather", element: <SpaceWeatherPage /> },
-      { path: "earth", element: <EarthPage /> },
-      { path: "missions", element: <MissionsPage /> },
-      { path: "missions/:missionSlug", element: <MissionDetailPage /> },
-      { path: "trivia", element: <TriviaPage /> },
-      { path: "favorites", element: <FavoritesPage /> },
-      { path: "about", element: <AboutPage /> },
-      { path: "*", element: <NotFoundPage /> },
+      {
+        path: "apod",
+        lazy: async () => ({
+          Component: (await import("./pages/ApodPage")).ApodPage,
+        }),
+      },
+      {
+        path: "asteroids",
+        lazy: async () => ({
+          Component: (await import("./pages/AsteroidsPage")).AsteroidsPage,
+        }),
+      },
+      {
+        path: "asteroids/:asteroidId",
+        lazy: async () => ({
+          Component: (await import("./pages/AsteroidDetailPage"))
+            .AsteroidDetailPage,
+        }),
+      },
+      {
+        path: "media",
+        lazy: async () => ({
+          Component: (await import("./pages/MediaLibraryPage"))
+            .MediaLibraryPage,
+        }),
+      },
+      {
+        path: "media/:nasaId",
+        lazy: async () => ({
+          Component: (await import("./pages/MediaDetailPage")).MediaDetailPage,
+        }),
+      },
+      {
+        path: "space-weather",
+        lazy: async () => ({
+          Component: (await import("./pages/SpaceWeatherPage"))
+            .SpaceWeatherPage,
+        }),
+      },
+      {
+        path: "earth",
+        lazy: async () => ({
+          Component: (await import("./pages/EarthPage")).EarthPage,
+        }),
+      },
+      {
+        path: "missions",
+        lazy: async () => ({
+          Component: (await import("./pages/MissionsPage")).MissionsPage,
+        }),
+      },
+      {
+        path: "missions/:missionSlug",
+        lazy: async () => ({
+          Component: (await import("./pages/MissionDetailPage"))
+            .MissionDetailPage,
+        }),
+      },
+      {
+        path: "trivia",
+        lazy: async () => ({
+          Component: (await import("./pages/TriviaPage")).TriviaPage,
+        }),
+      },
+      {
+        path: "favorites",
+        lazy: async () => ({
+          Component: (await import("./pages/FavoritesPage")).FavoritesPage,
+        }),
+      },
+      {
+        path: "about",
+        lazy: async () => ({
+          Component: (await import("./pages/AboutPage")).AboutPage,
+        }),
+      },
+      {
+        path: "*",
+        lazy: async () => ({
+          Component: (await import("./pages/NotFoundPage")).NotFoundPage,
+        }),
+      },
     ],
   },
 ]);
