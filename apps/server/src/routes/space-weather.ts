@@ -42,9 +42,11 @@ export function createSpaceWeatherRouter(
   const router = Router();
   const cache = new MemoryCache<SpaceWeatherFeed>(cacheMaxEntries);
   router.get("/", async (request, response) => {
-    const query = { ...request.query };
-    delete query.path;
-    const parsed = querySchema.safeParse(query);
+    const parsed = querySchema.safeParse({
+      startDate: request.query.startDate,
+      endDate: request.query.endDate,
+      category: request.query.category,
+    });
     if (!parsed.success) {
       throw new HttpError(
         400,

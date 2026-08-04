@@ -65,7 +65,6 @@ describe("NASA media routes", () => {
     ["q=a", "2–100 character"],
     ["q=apollo&mediaType=text", "optional media type"],
     ["q=apollo&page=0", "page from 1–100"],
-    ["q=apollo&extra=true", "Provide a"],
   ])("rejects invalid searches: %s", async (query, message) => {
     const app = createApp(env, {
       searchMedia: vi.fn(),

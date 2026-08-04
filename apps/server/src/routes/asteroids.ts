@@ -41,9 +41,10 @@ export function createAsteroidRouter(
   const router = Router();
   const cache = new MemoryCache<AsteroidFeed>(cacheMaxEntries);
   router.get("/", async (request, response) => {
-    const query = { ...request.query };
-    delete query.path;
-    const parsed = querySchema.safeParse(query);
+    const parsed = querySchema.safeParse({
+      startDate: request.query.startDate,
+      endDate: request.query.endDate,
+    });
     if (!parsed.success) {
       throw new HttpError(
         400,

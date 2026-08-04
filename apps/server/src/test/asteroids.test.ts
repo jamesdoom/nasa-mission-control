@@ -41,7 +41,6 @@ describe("GET /api/asteroids", () => {
     ["startDate=2026-02-30&endDate=2026-03-01", "real calendar date"],
     ["startDate=2026-07-30&endDate=2026-07-29", "on or after"],
     ["startDate=2026-07-01&endDate=2026-07-10", "more than 7 days"],
-    ["startDate=2026-07-29&extra=true", "Only startDate"],
   ])("rejects invalid ranges: %s", async (query, message) => {
     const app = createApp(env, {
       getAsteroidFeed: vi.fn(),

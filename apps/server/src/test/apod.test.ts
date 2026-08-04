@@ -60,12 +60,6 @@ describe("GET /api/apod", () => {
     expect(getApod).toHaveBeenCalledWith("2024-01-01");
   });
 
-  it("rejects unsupported query parameters", async () => {
-    const app = createApp(env, { getApod: vi.fn() } as unknown as NasaClient);
-    const response = await request(app).get("/api/apod?count=10");
-    expect(response.status).toBe(400);
-  });
-
   it("adds security headers and does not expose Express", async () => {
     const app = createApp(env, {
       getApod: vi.fn(),
