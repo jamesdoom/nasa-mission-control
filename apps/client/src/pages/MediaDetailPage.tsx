@@ -2,11 +2,13 @@ import { Link, useParams } from "react-router-dom";
 import { ApiError } from "../api/apod";
 import { ErrorState, LoadingState } from "../components/AsyncState";
 import { useMediaDetail } from "../features/media/useMedia";
+import { useMediaFavorites } from "../hooks/useMediaFavorites";
 
 export function MediaDetailPage() {
   const nasaId = useParams().nasaId ?? "";
   const query = useMediaDetail(nasaId);
   const error = query.error instanceof ApiError ? query.error : undefined;
+  const favorites = useMediaFavorites();
   if (query.isPending)
     return (
       <section className="section">
@@ -95,9 +97,19 @@ export function MediaDetailPage() {
             </ul>
           )}
           <div className="media-detail__actions">
+            <button
+              className="button"
+              type="button"
+              aria-pressed={favorites.isFavorite(item.nasaId)}
+              onClick={() => favorites.toggle(item)}
+            >
+              {favorites.isFavorite(item.nasaId)
+                ? "Remove from Flight Log"
+                : "Save to Flight Log"}
+            </button>
             {item.downloadUrl && (
               <a
-                className="button"
+                className="button button--secondary"
                 href={item.downloadUrl}
                 target="_blank"
                 rel="noreferrer"

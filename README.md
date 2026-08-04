@@ -1,6 +1,6 @@
 # NASA Mission Control
 
-An original, responsive command-center experience for exploring NASA imagery and space science. The current release combines live and frequently updated NASA data with a source-checked Mission Archive, while clearly distinguishing curated records from API telemetry.
+An original, responsive command-center experience for exploring NASA imagery and space science. The current release combines live and frequently updated NASA data with a source-checked Mission Archive, a multi-content personal Flight Log, and an educational trivia simulation.
 
 > Portfolio project; not affiliated with or endorsed by NASA.
 
@@ -29,10 +29,12 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Curated Mission Archive spanning Apollo 11, Voyager 1, Curiosity, and Webb
 - URL-backed destination, spacecraft-type, and status filters
 - Cinematic mission records with timelines, achievements, NASA photography, credits, and official sources
+- Expanded browser-local Flight Log for APOD, asteroids, mission records, and NASA media
+- Source-checked Space Trivia with three difficulty levels, scoring, persistent best streak, explanations, and NASA citations
 
 ## Planned modules
 
-Expanded Flight Log, source-checked Space Trivia, and additional mission-specific visual assets for live-data modules. The legacy NASA Earth and Mars Rover APIs are archived and will not be used.
+Additional mission-specific visual assets for live-data modules and optional Flight Log quality-of-life improvements. The legacy NASA Earth and Mars Rover APIs are archived and will not be used.
 
 ## Stack
 
@@ -111,11 +113,15 @@ The Earth contract contains the selected and latest available dates, normalized 
 
 Mission Archive records are intentionally local, typed editorial content rather than an invented “live missions” API. Every record carries a review date, official NASA source links, exact NASA Image Library ID and credit, and a stable route at `/missions/:missionSlug`. Archive filters remain in the URL.
 
+The Flight Log uses separate bounded, runtime-validated local-storage records for each content type. APOD and asteroid formats remain backward compatible; mission favorites store stable curated slugs, and NASA media favorites store only the normalized metadata required to render a saved card. No account, database, or cross-device synchronization is implied.
+
+Space Trivia is curated local educational content. Its question bank is divided into cadet, specialist, and commander levels, and every explanation links to the official NASA page used for verification. Only the best streak persists locally; individual answers and scores remain session state.
+
 Errors use `{ error: { code, message, requestId } }`; server details and credentials are never returned. Shared internal contracts live in `packages/shared`, while NASA-specific schemas remain in `apps/server`.
 
 ## Testing
 
-`npm test` covers query and date-range validation, bounded caching, security headers, APOD, NeoWs, Collection+JSON, DONKI, Earth observation behavior, curated mission source integrity, malformed upstream responses, responsible scientific wording, media rendering, automated accessibility checks, the UTC clock, and local favorites. `npm run test:e2e` verifies dashboard loading, URL-backed filters, responsive navigation, APOD favorites, asteroid workflows, NASA media navigation, Space Weather filtering, the EPIC image sequence, and Mission Archive navigation in Chromium.
+`npm test` covers query and date-range validation, bounded caching, security headers, APOD, NeoWs, Collection+JSON, DONKI, Earth observation behavior, curated mission and trivia source integrity, malformed upstream responses, media rendering, automated accessibility checks, trivia scoring, the UTC clock, and all local favorite stores. `npm run test:e2e` verifies dashboard loading, URL-backed filters, responsive navigation, all four Flight Log content types, Space Weather filtering, the EPIC image sequence, Mission Archive navigation, and Space Trivia in Chromium.
 
 [GitHub Actions](.github/workflows/ci.yml) runs formatting, strict types, lint, all Vitest suites, the production build, and Chromium smoke tests for pushes to `main` and pull requests.
 
@@ -145,7 +151,8 @@ Mission Archive facts and chronology are checked against official NASA mission p
 4. **Complete:** DONKI Space Weather Center with observed event chronology, filters, measurements, and research context.
 5. **Complete:** Earth Observatory with date-based EPIC sequences, natural/enhanced views, and Earthdata GIBS daily composites.
 6. **Complete:** curated Mission Archive with source-checked timelines, URL-backed filtering, detail records, and credited NASA photography.
-7. Expanded Flight Log and Space Trivia.
+7. **Complete:** expanded Flight Log for mission and media records plus source-checked Space Trivia with scoring, streaks, difficulty levels, explanations, and citations.
+8. Module-specific NASA photography, recent-history controls, and final portfolio polish.
 
 ## Screenshots
 
@@ -164,6 +171,8 @@ The captures below use deterministic mocked NASA content so they can be regenera
 ![Earth Observatory](docs/screenshots/earth-observatory.png)
 
 ![Curiosity Mission Archive record](docs/screenshots/mission-archive.png)
+
+![Source-checked Space Trivia](docs/screenshots/space-trivia.png)
 
 ## License
 

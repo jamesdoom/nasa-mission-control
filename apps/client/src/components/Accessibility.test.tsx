@@ -10,6 +10,7 @@ import { MediaCard } from "./MediaCard";
 import { SpaceWeatherCard } from "./SpaceWeatherCard";
 import { MissionCard } from "./MissionCard";
 import { missions } from "../data/missions";
+import { TriviaPage } from "../pages/TriviaPage";
 import { EarthImageViewer } from "./EarthImageViewer";
 
 const apod: Apod = {
@@ -181,6 +182,13 @@ describe("automated accessibility", () => {
         ),
       },
     ]);
+    const { container } = render(<RouterProvider router={router} />);
+    const results = await axe(container, jsdomAxeOptions);
+    expect(results.violations).toEqual([]);
+  });
+
+  it("finds no detectable violations in the trivia simulation", async () => {
+    const router = createMemoryRouter([{ path: "/", element: <TriviaPage /> }]);
     const { container } = render(<RouterProvider router={router} />);
     const results = await axe(container, jsdomAxeOptions);
     expect(results.violations).toEqual([]);

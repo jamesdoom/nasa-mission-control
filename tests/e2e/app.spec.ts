@@ -379,6 +379,14 @@ test("searches and inspects the NASA media archive", async ({ page }) => {
     page.getByRole("heading", { name: mediaItem.title }),
   ).toBeVisible();
   await expect(page.getByText("Neil Armstrong")).toBeVisible();
+  await page.getByRole("button", { name: "Save to Flight Log" }).click();
+  await page.getByRole("link", { name: "Flight Log" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Media discoveries" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: mediaItem.title }),
+  ).toBeVisible();
 });
 
 test("filters observed DONKI space weather events", async ({ page }) => {
@@ -455,9 +463,47 @@ test("filters and opens a source-backed mission record", async ({ page }) => {
     page.getByRole("heading", { name: "Defining moments" }),
   ).toBeVisible();
   await expect(page.getByText("Curated record", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Save to Flight Log" }).click();
+  await page.getByRole("link", { name: "Flight Log" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Mission records" }),
+  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Curiosity" })).toBeVisible();
+  await page
+    .getByRole("link", { name: "Open Curiosity mission archive" })
+    .click();
   await page.locator("main").click({ position: { x: 10, y: 10 } });
   await page.screenshot({
     path: "docs/screenshots/mission-archive.png",
+    fullPage: true,
+    animations: "disabled",
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth >
+        document.documentElement.clientWidth,
+    ),
+  ).toBe(false);
+});
+
+test("scores and explains source-checked space trivia", async ({ page }) => {
+  await page.goto("/trivia?difficulty=cadet");
+  await expect(
+    page.getByRole("heading", { name: "Space Trivia" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: /Sea of Tranquility/ }).click();
+  await expect(page.getByText("Correct trajectory")).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: /Verify with NASA Apollo 11/ }),
+  ).toBeVisible();
+  await page.getByRole("radio", { name: "specialist" }).click();
+  await expect(page).toHaveURL(/difficulty=specialist/);
+  await expect(page.getByText(/Which spacecraft became/)).toBeVisible();
+  await page.locator("main").click({ position: { x: 10, y: 10 } });
+  await page.screenshot({
+    path: "docs/screenshots/space-trivia.png",
     fullPage: true,
     animations: "disabled",
   });

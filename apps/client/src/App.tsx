@@ -13,6 +13,7 @@ import { MissionDetailPage } from "./pages/MissionDetailPage";
 import { MissionsPage } from "./pages/MissionsPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { SpaceWeatherPage } from "./pages/SpaceWeatherPage";
+import { TriviaPage } from "./pages/TriviaPage";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
       { path: "earth", element: <EarthPage /> },
       { path: "missions", element: <MissionsPage /> },
       { path: "missions/:missionSlug", element: <MissionDetailPage /> },
+      { path: "trivia", element: <TriviaPage /> },
       { path: "favorites", element: <FavoritesPage /> },
       { path: "about", element: <AboutPage /> },
       { path: "*", element: <NotFoundPage /> },

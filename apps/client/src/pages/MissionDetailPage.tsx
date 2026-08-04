@@ -1,9 +1,11 @@
 import { Link, useParams } from "react-router-dom";
 import { getMission } from "../data/missions";
 import { NotFoundPage } from "./NotFoundPage";
+import { useMissionFavorites } from "../hooks/useMissionFavorites";
 
 export function MissionDetailPage() {
   const mission = getMission(useParams().missionSlug);
+  const favorites = useMissionFavorites();
   if (!mission) return <NotFoundPage />;
   return (
     <>
@@ -29,6 +31,16 @@ export function MissionDetailPage() {
               </span>
               <span>{mission.destination}</span>
               <span>{mission.vehicle}</span>
+              <button
+                className="mission-save"
+                type="button"
+                aria-pressed={favorites.isFavorite(mission.slug)}
+                onClick={() => favorites.toggle(mission)}
+              >
+                {favorites.isFavorite(mission.slug)
+                  ? "Remove from Flight Log"
+                  : "Save to Flight Log"}
+              </button>
             </div>
           </div>
           <p className="mission-detail__credit">

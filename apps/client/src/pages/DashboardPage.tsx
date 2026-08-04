@@ -149,6 +149,15 @@ export function DashboardPage() {
             <h3>Mission Archive</h3>
             <p>Source-checked flight histories from Apollo to Webb.</p>
           </Link>
+          <Link className="module-card module-card--active" to="/trivia">
+            <span>07</span>
+            <small>Simulation online</small>
+            <h3>Space Trivia</h3>
+            <p>
+              Source-checked mission knowledge with explanations after every
+              answer.
+            </p>
+          </Link>
         </div>
       </section>
     </>
