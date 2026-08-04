@@ -57,11 +57,6 @@ export function AsteroidsPage() {
           <br />
           Watch
         </h1>
-        <p>
-          Track near-Earth object approaches using NASA/JPL data. Distances and
-          classifications describe observed orbits—they are not impact
-          predictions.
-        </p>
         <a
           className="module-image-credit"
           href="https://images.nasa.gov/details/2019-02-25_regolith_image_compilation"
