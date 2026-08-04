@@ -96,6 +96,10 @@ npm start
 
 Open `http://localhost:3001`. Deployments must provide `NASA_API_KEY`; the client build never receives it. Any Node.js host that runs the build and start commands and preserves environment variables can use this production path.
 
+### Vercel deployment
+
+The root `vercel.json` builds the shared contracts and Vite client, preserves `/api/*` for the catch-all Express function, and rewrites other paths to the SPA entry point. Configure `NASA_API_KEY` as an encrypted Vercel environment variable for Production and Preview before deploying. `CLIENT_ORIGIN` may be set to the production origin, while the remaining server settings can use their documented defaults.
+
 ## Architecture
 
 ```mermaid
