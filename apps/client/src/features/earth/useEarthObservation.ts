@@ -9,6 +9,5 @@ export function useEarthObservation(
   return useQuery({
     queryKey: ["earth", collection, date ?? "latest"],
     queryFn: () => getEarthObservation(collection, date),
-    placeholderData: (previous) => previous,
   });
 }

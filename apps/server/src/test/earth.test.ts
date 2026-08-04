@@ -62,6 +62,7 @@ describe("GET /api/earth", () => {
     const second = await request(app).get("/api/earth?collection=enhanced");
     expect(first.headers["x-cache"]).toBe("MISS");
     expect(second.headers["x-cache"]).toBe("MISS");
+    expect(first.headers["cache-control"]).toBe("no-store");
     expect(getEarthObservation).toHaveBeenCalledTimes(2);
   });
 

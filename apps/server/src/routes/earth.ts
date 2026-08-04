@@ -69,10 +69,14 @@ export function createEarthRouter(
       parsed.data.collection,
       date,
     );
-    if (observation.images.length > 0) {
+    const hasImages = observation.images.length > 0;
+    if (hasImages) {
       cache.set(cacheKey, observation, cacheTtlMs);
     }
-    response.setHeader("cache-control", "private, max-age=300");
+    response.setHeader(
+      "cache-control",
+      hasImages ? "private, max-age=300" : "no-store",
+    );
     response.setHeader("x-cache", "MISS");
     response.json(observation);
   });

@@ -132,8 +132,24 @@ export function EarthPage() {
         ) : query.data.images.length === 0 ? (
           <div className="state-panel">
             <div>
-              <strong>No EPIC frames for this date</strong>
-              <p>Try the latest available date or another recent day.</p>
+              <strong>
+                {collection === "natural" ? "Natural" : "Enhanced"} color is not
+                available for {query.data.date}
+              </strong>
+              <p>
+                NASA lists {query.data.latestAvailableDate} as the latest date
+                in this collection.
+              </p>
+              <button
+                className="button button--secondary"
+                type="button"
+                onClick={() => {
+                  setDraftDate("");
+                  setParams({ collection });
+                }}
+              >
+                Open latest {collection} color
+              </button>
             </div>
           </div>
         ) : (
