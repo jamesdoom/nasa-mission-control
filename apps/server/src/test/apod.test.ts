@@ -50,7 +50,17 @@ describe("GET /api/apod", () => {
     expect(getApod).not.toHaveBeenCalled();
   });
 
-  it("rejects unknown query parameters", async () => {
+  it("ignores hosting metadata while validating documented parameters", async () => {
+    const getApod = vi.fn().mockResolvedValue(apod);
+    const app = createApp(env, { getApod } as unknown as NasaClient);
+    const response = await request(app).get(
+      "/api/apod?date=2024-01-01&path=apod",
+    );
+    expect(response.status).toBe(200);
+    expect(getApod).toHaveBeenCalledWith("2024-01-01");
+  });
+
+  it("rejects unsupported query parameters", async () => {
     const app = createApp(env, { getApod: vi.fn() } as unknown as NasaClient);
     const response = await request(app).get("/api/apod?count=10");
     expect(response.status).toBe(400);

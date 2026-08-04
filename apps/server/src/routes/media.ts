@@ -25,7 +25,9 @@ export function createMediaRouter(
   const detailCache = new MemoryCache<MediaDetail>(cacheMaxEntries);
 
   router.get("/search", async (request, response) => {
-    const parsed = searchSchema.safeParse(request.query);
+    const query = { ...request.query };
+    delete query.path;
+    const parsed = searchSchema.safeParse(query);
     if (!parsed.success) {
       throw new HttpError(
         400,

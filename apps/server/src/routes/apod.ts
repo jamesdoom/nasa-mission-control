@@ -44,7 +44,9 @@ export function createApodRouter(
   const router = Router();
   const cache = new MemoryCache<Apod>(cacheMaxEntries);
   router.get("/", async (request, response) => {
-    const parsed = querySchema.safeParse(request.query);
+    const query = { ...request.query };
+    delete query.path;
+    const parsed = querySchema.safeParse(query);
     if (!parsed.success)
       throw new HttpError(
         400,
