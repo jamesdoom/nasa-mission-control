@@ -1112,6 +1112,36 @@ p {
   min-height: 35vh;
   border: 1px solid var(--line);
 }
+.route-error {
+  display: grid;
+  place-content: center;
+  min-height: 100vh;
+  padding: clamp(2rem, 7vw, 6rem);
+  background:
+    radial-gradient(
+      circle at 70% 20%,
+      rgba(25, 104, 153, 0.18),
+      transparent 36%
+    ),
+    var(--background);
+  text-align: center;
+}
+.route-error h1 {
+  margin: 0.75rem 0 1rem;
+}
+.route-error > p:not(.kicker) {
+  max-width: 38rem;
+  margin: 0 auto;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.route-error__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
 .flight-log-section + .flight-log-section {
   margin-top: 5rem;
 }
