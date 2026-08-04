@@ -11,7 +11,7 @@
     "dev": "concurrently -n server,client -c yellow,cyan \"npm:dev -w @mission-control/server\" \"npm:dev -w @mission-control/client\"",
     "build": "npm run build -w @mission-control/shared && npm run build -w @mission-control/server && npm run build -w @mission-control/client",
     "start": "node apps/server/dist/index.js",
-    "typecheck": "tsc -p tsconfig.json --pretty false && npm run typecheck --workspaces --if-present",
+    "typecheck": "npm run typecheck -w @mission-control/shared && npm run typecheck -w @mission-control/server && npm run typecheck -w @mission-control/client && tsc -p tsconfig.json --pretty false",
     "test": "npm run test --workspaces --if-present",
     "test:e2e": "playwright test",
     "lint": "eslint .",
