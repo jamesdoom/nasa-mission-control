@@ -86,6 +86,16 @@ describe("GET /api/apod", () => {
     expect(response.headers["x-powered-by"]).toBeUndefined();
   });
 
+  it("does not advertise the development CORS origin in production", async () => {
+    const app = createApp({ ...env, NODE_ENV: "production" }, {
+      getApod: vi.fn(),
+    } as unknown as NasaClient);
+    const response = await request(app)
+      .get("/api/health")
+      .set("origin", "https://example.com");
+    expect(response.headers["access-control-allow-origin"]).toBeUndefined();
+  });
+
   it("replaces unsafe caller-supplied request identifiers", async () => {
     const app = createApp(env, { getApod: vi.fn() } as unknown as NasaClient);
     const response = await request(app)

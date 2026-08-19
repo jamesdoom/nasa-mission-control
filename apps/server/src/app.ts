@@ -33,7 +33,9 @@ export function createApp(
       crossOriginResourcePolicy: { policy: "cross-origin" },
     }),
   );
-  app.use(cors({ origin: env.CLIENT_ORIGIN }));
+  if (env.NODE_ENV !== "production") {
+    app.use(cors({ origin: env.CLIENT_ORIGIN }));
+  }
   app.use(express.json({ limit: "16kb" }));
   app.use(requestId);
   if (env.NODE_ENV !== "test") app.use(requestLogger);

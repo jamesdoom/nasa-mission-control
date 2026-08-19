@@ -103,7 +103,7 @@ Open `http://localhost:3001`. Deployments must provide `NASA_API_KEY`; the clien
 
 ### Vercel deployment
 
-The root `vercel.json` builds the shared contracts and Vite client, preserves `/api/*` for the catch-all Express function, and rewrites other paths to the SPA entry point. Configure `NASA_API_KEY` as an encrypted Vercel environment variable for Production and Preview before deploying. `CLIENT_ORIGIN` may be set to the production origin, while the remaining server settings can use their documented defaults.
+The root `vercel.json` builds the shared contracts and Vite client, preserves `/api/*` for the catch-all Express function, and rewrites other paths to the SPA entry point. Configure `NASA_API_KEY` as an encrypted Vercel environment variable for Production and Preview before deploying. Production client/API traffic is same-origin; `CLIENT_ORIGIN` is used only by local and test servers.
 
 ### Production monitoring
 
