@@ -21,6 +21,7 @@
 - `npm run dev`: run client and server.
 - `npm run typecheck`, `npm run lint`, `npm test`, `npm run build`: quality gates.
 - `npm run test:e2e`: run Playwright smoke tests against a local Vite server.
+- `npm run smoke:production`: run read-only public health and SPA rewrite checks against the deployed site.
 - `npm start`: serve the built client and API from the production Express process.
 - `npm run format`: format source and documentation.
 

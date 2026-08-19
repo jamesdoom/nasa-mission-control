@@ -18,7 +18,9 @@ export default tseslint.config(
   {
     languageOptions: {
       parserOptions: {
-        projectService: true,
+        projectService: {
+          allowDefaultProject: ["scripts/*.mjs"],
+        },
         tsconfigRootDir: import.meta.dirname,
       },
       globals: { ...globals.browser, ...globals.node },
@@ -42,6 +44,10 @@ export default tseslint.config(
       "@typescript-eslint/no-namespace": "off",
       "@typescript-eslint/consistent-type-definitions": "off",
     },
+  },
+  {
+    files: ["scripts/*.mjs"],
+    ...tseslint.configs.disableTypeChecked,
   },
   prettier,
 );

@@ -48,6 +48,8 @@ An original, responsive command-center experience for exploring NASA imagery and
 - User-visible same-origin API health checks with explicit NASA-upstream scope
 - Portfolio case study covering product constraints, architecture, scientific communication, and quality evidence
 - Expanded source-checked Mission Archive with Perseverance and Parker Solar Probe
+- Global offline mode messaging with route-change focus and assistive-technology announcements
+- Scheduled read-only production smoke checks and a documented incident-triage runbook
 
 ## Planned modules
 
@@ -91,6 +93,7 @@ npm run typecheck
 npm run lint
 npm test
 npm run test:e2e
+npm run smoke:production
 npm run build
 npm run format:check
 ```
@@ -119,7 +122,7 @@ The root `vercel.json` builds the shared contracts and Vite client, preserves `/
 
 Every API request emits a structured completion record containing its request ID, method, route path, status, and duration. Unexpected server errors and sanitized browser runtime failures appear in Vercel Runtime Logs as `request.unhandled_error` and `client.runtime_error`. Client reports contain only the error category, a bounded message, and the URL pathname—never query parameters, stack traces, local-storage values, or NASA credentials.
 
-After a deployment, verify `/api/health`, one live-data route, a lazy-loaded page, and a retry flow. The About page exposes a user-triggered, no-store check of the same-origin Express health route and carefully labels it as application availability—not proof that every NASA upstream is healthy. Review Runtime Logs for 5xx responses and repeated `client.runtime_error` events. This lightweight baseline does not replace third-party uptime monitoring or alerting; add those only if the project gains a production service-level target.
+After a deployment, verify `/api/health`, one live-data route, a lazy-loaded page, and a retry flow. The About page exposes a user-triggered, no-store check of the same-origin Express health route and carefully labels it as application availability—not proof that every NASA upstream is healthy. A scheduled GitHub workflow runs the same public health-contract and SPA-rewrite smoke checks every six hours. Review Runtime Logs for 5xx responses and repeated `client.runtime_error` events. See the [production operations runbook](docs/operations.md) for manual verification, triage, and alerting limits. This lightweight baseline does not replace third-party uptime monitoring; add that only if the project gains a production service-level target.
 
 ## Architecture
 
@@ -166,7 +169,7 @@ Non-dashboard routes load as independent Vite chunks, so visitors do not downloa
 
 ## Testing
 
-`npm test` covers query and date-range validation, bounded caching, security headers, APOD, NeoWs, Collection+JSON, DONKI, Earth observation behavior, curated mission and trivia source integrity, timeout/rate-limit/non-JSON/malformed upstream responses, browser error reporting, media rendering, automated accessibility checks, trivia scoring, the UTC clock, and all local favorite stores. `npm run test:e2e` verifies dashboard loading, transient API recovery, URL-backed filters, responsive navigation, all four Flight Log content types, Space Weather filtering, the EPIC image sequence, Mission Archive navigation, and Space Trivia in Chromium.
+`npm test` covers query and date-range validation, bounded caching, security headers, APOD, NeoWs, Collection+JSON, DONKI, Earth observation behavior, curated mission and trivia source integrity, timeout/rate-limit/non-JSON/malformed upstream responses, browser error reporting, offline-state messaging, route focus, media rendering, automated accessibility checks, trivia scoring, the UTC clock, and all local favorite stores. `npm run test:e2e` verifies dashboard loading, transient API recovery, URL-backed filters, responsive navigation, all Flight Log content types, Space Weather filtering, the EPIC image sequence, Mission Archive navigation, portfolio status evidence, and Space Trivia in Chromium.
 
 [GitHub Actions](.github/workflows/ci.yml) runs formatting, strict types, lint, all Vitest suites, the production build, and Chromium smoke tests for pushes to `main` and pull requests.
 
@@ -207,7 +210,8 @@ Mission Archive facts and chronology are checked against official NASA mission p
 11. **Complete — Discovery phase 3:** five source-backed guided journeys, cross-module navigation, contextual mission continuations, and a dedicated lazy-loaded Discovery instrument.
 12. **Complete — Personalization phase 4:** organized collection counts and shortcuts, saved discovery paths, and validated local backup/restore without accounts or uploads.
 13. **Complete — Portfolio evidence phase 5:** scoped API-health visibility, a production-quality case study, and source-checked Perseverance and Parker Solar Probe records with credited NASA imagery.
-14. **Next:** production observability alerts, additional mission depth, or optional account synchronization only if the product scope justifies the added infrastructure.
+14. **Complete — Reliability and polish phase 6:** scheduled production smoke checks, a concise operations runbook, global offline guidance, and accessible route-change focus and announcements.
+15. **Next:** gather production performance evidence, refine any issues found in real-user testing, or add optional account synchronization only if the product scope justifies the infrastructure.
 
 ## Screenshots
 

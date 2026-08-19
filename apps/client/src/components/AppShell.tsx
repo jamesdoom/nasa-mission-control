@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { MarkIcon } from "./Icons";
+import { useNetworkStatus } from "../hooks/useNetworkStatus";
 
 const moduleLinks = [
   { to: "/apod", label: "APOD" },
@@ -32,6 +33,8 @@ export function AppShell() {
   const [modulesOpen, setModulesOpen] = useState(false);
   const navigationRef = useRef<HTMLElement>(null);
   const location = useLocation();
+  const previousPath = useRef(location.pathname);
+  const online = useNetworkStatus();
   const modulesActive = moduleLinks.some(
     ({ to }) =>
       location.pathname === to || location.pathname.startsWith(`${to}/`),
@@ -43,7 +46,14 @@ export function AppShell() {
     document.title = `${title} | NASA Mission Control`;
     setOpen(false);
     setModulesOpen(false);
+    if (previousPath.current !== location.pathname) {
+      document.getElementById("main-content")?.focus({ preventScroll: true });
+      previousPath.current = location.pathname;
+    }
   }, [location.pathname]);
+
+  const basePath = `/${location.pathname.split("/").find(Boolean) ?? ""}`;
+  const routeTitle = routeTitles[basePath] ?? "Mission Control";
 
   useEffect(() => {
     function close(event: MouseEvent) {
@@ -129,11 +139,23 @@ export function AppShell() {
           <NavLink to="/favorites">Flight Log</NavLink>
           <NavLink to="/about">About</NavLink>
         </nav>
-        <div className="system-status">
-          <span className="status-dot" />
-          SYSTEMS NOMINAL
+        <div className={online ? "system-status" : "system-status is-offline"}>
+          <span className="status-dot" aria-hidden="true" />
+          {online ? "SYSTEMS NOMINAL" : "LOCAL MODE"}
         </div>
       </header>
+      {online ? null : (
+        <div className="connectivity-banner" role="status">
+          <strong>Network link offline.</strong>
+          <span>
+            Saved Flight Log records remain available. Live NASA instruments
+            will reconnect when this browser is online.
+          </span>
+        </div>
+      )}
+      <p className="sr-only" aria-live="polite" aria-atomic="true">
+        {routeTitle} loaded
+      </p>
       <main id="main-content" tabIndex={-1}>
         <Outlet />
       </main>
