@@ -1,10 +1,13 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { axe } from "vitest-axe";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { DiscoveryPage } from "./DiscoveryPage";
 
 describe("DiscoveryPage", () => {
+  beforeEach(() => localStorage.clear());
+
   it("presents accessible guided paths across existing instruments", async () => {
     const { container } = render(
       <MemoryRouter>
@@ -26,5 +29,22 @@ describe("DiscoveryPage", () => {
       rules: { "color-contrast": { enabled: false } },
     });
     expect(results.violations).toEqual([]);
+  });
+
+  it("saves a guided path to the Flight Log", async () => {
+    const user = userEvent.setup();
+    render(
+      <MemoryRouter>
+        <DiscoveryPage />
+      </MemoryRouter>,
+    );
+    const save = screen.getByRole("button", {
+      name: "Save Follow a signal from the Sun to Earth to Flight Log",
+    });
+    await user.click(save);
+    expect(save).toHaveAttribute("aria-pressed", "true");
+    expect(
+      localStorage.getItem("mission-control:journey-favorites:v1"),
+    ).toContain("sun-to-earth");
   });
 });

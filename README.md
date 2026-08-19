@@ -43,6 +43,8 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Plain-language DONKI measurement guide separating flare class, modeled CME speed, and observed Kp activity
 - Guided discovery paths connecting live instruments, NASA media searches, and source-checked mission history
 - Contextual mission-record actions that continue into related observations and guided investigations
+- Saveable guided paths with organized Flight Log collection counts and section shortcuts
+- Validated, browser-local Flight Log backup and restore for user-controlled continuity without an account
 
 ## Planned modules
 
@@ -147,7 +149,7 @@ The Earth contract contains the selected and latest available dates, normalized 
 
 Mission Archive records are intentionally local, typed editorial content rather than an invented “live missions” API. Every record carries a review date, official NASA source links, exact NASA Image Library ID and credit, and a stable route at `/missions/:missionSlug`. Archive filters remain in the URL.
 
-The Flight Log uses separate bounded, runtime-validated local-storage records for each content type. APOD and asteroid formats remain backward compatible; mission favorites store stable curated slugs, and NASA media favorites store only the normalized metadata required to render a saved card. A separate 20-item recently viewed store deduplicates APOD, asteroid, media, and mission visits. No account, database, or cross-device synchronization is implied.
+The Flight Log uses separate bounded, runtime-validated local-storage records for each content type. APOD and asteroid formats remain backward compatible; mission and guided-path favorites store stable curated identifiers, and NASA media favorites store only the normalized metadata required to render a saved card. A separate 20-item recently viewed store deduplicates APOD, asteroid, media, and mission visits. Users can export the supported records to a versioned JSON backup and restore that backup explicitly in another browser. Imports are size-limited, key-whitelisted, and processed entirely on-device; no account, database, automatic upload, or synchronization is implied.
 
 Space Trivia is curated local educational content. Its question bank is divided into cadet, specialist, and commander levels, and every explanation links to the official NASA page used for verification. Only the best streak persists locally; individual answers and scores remain session state.
 
@@ -200,8 +202,8 @@ Mission Archive facts and chronology are checked against official NASA mission p
 9. **Complete — Reliability phase 1:** stable upstream-failure mapping, retry metadata, failure-safe caching, visible data freshness, sanitized client-error telemetry, security hardening, and browser recovery coverage.
 10. **Complete — Data experience phase 2:** accessible asteroid comparison visualization, URL-backed metrics, precise measurement caveats, DONKI scale explainers, and live APOD payload resilience.
 11. **Complete — Discovery phase 3:** five source-backed guided journeys, cross-module navigation, contextual mission continuations, and a dedicated lazy-loaded Discovery instrument.
-12. **Next — Personalization phase 4:** richer Flight Log organization, saved discovery paths, and user-controlled session continuity without adding accounts prematurely.
-13. **Later:** dedicated uptime alerts, portfolio case-study material, and additional source-checked archive records.
+12. **Complete — Personalization phase 4:** organized collection counts and shortcuts, saved discovery paths, and validated local backup/restore without accounts or uploads.
+13. **Next — Portfolio evidence phase 5:** dedicated uptime visibility, production-quality case-study material, and additional source-checked archive records.
 
 ## Screenshots
 

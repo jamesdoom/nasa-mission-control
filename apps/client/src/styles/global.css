@@ -766,6 +766,15 @@ p {
   font-size: clamp(1.8rem, 4vw, 3rem);
   line-height: 1.02;
 }
+.journey-card__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.journey-card__controls .eyebrow {
+  margin: 0;
+}
 .journey-card > header > p:last-child,
 .journey-card footer p {
   color: #92a7ba;
@@ -887,6 +896,111 @@ p {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.5rem;
+}
+.flight-log-console {
+  display: grid;
+  grid-template-columns: minmax(250px, 1fr) minmax(280px, 1.2fr);
+  gap: 2rem;
+  margin-bottom: 4rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border: 1px solid rgba(72, 217, 239, 0.28);
+  background:
+    radial-gradient(circle at 0 0, rgba(72, 217, 239, 0.1), transparent 18rem),
+    #07111d;
+}
+.flight-log-console h2 {
+  margin: 0.5rem 0;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+.flight-log-console > div:first-child > p:last-child {
+  max-width: 60ch;
+  color: #91a6b9;
+  line-height: 1.6;
+}
+.flight-log-console nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: 0.65rem;
+}
+.flight-log-console nav a {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line);
+  color: #a9bdcf;
+  text-decoration: none;
+}
+.flight-log-console nav a:hover {
+  border-color: var(--cyan);
+  color: #fff;
+}
+.flight-log-console nav strong {
+  color: var(--cyan);
+  font:
+    0.65rem "Space Mono",
+    monospace;
+}
+.flight-log-backup {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+.flight-log-backup label {
+  cursor: pointer;
+}
+.flight-log-backup p {
+  flex: 1 1 260px;
+  margin: 0;
+  color: #82a4bd;
+  font-size: 0.78rem;
+}
+.saved-journey-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.saved-journey-grid article {
+  display: flex;
+  flex-direction: column;
+  min-height: 260px;
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  background: #081321;
+}
+.saved-journey-grid h3 {
+  margin: 0.5rem 0;
+  font-size: 1.6rem;
+}
+.saved-journey-grid article > p:last-of-type {
+  color: #91a6b9;
+  line-height: 1.6;
+}
+.saved-journey-grid article > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: auto;
+}
+.saved-journey-grid a {
+  color: var(--cyan);
+  text-decoration: none;
+}
+.saved-journey-grid button {
+  border: 0;
+  background: transparent;
+  color: #ff9aaa;
+  cursor: pointer;
+  font:
+    0.62rem "Space Mono",
+    monospace;
+  text-transform: uppercase;
 }
 .flight-log-saved-card {
   position: relative;
@@ -3107,6 +3221,12 @@ p {
   .journey-card {
     grid-template-columns: 1fr;
   }
+  .flight-log-console {
+    grid-template-columns: 1fr;
+  }
+  .flight-log-backup {
+    grid-column: 1;
+  }
   .journey-card footer {
     grid-column: 1;
   }
@@ -3440,6 +3560,10 @@ p {
   .mission-filters,
   .mission-card > a,
   .mission-sources {
+    grid-template-columns: 1fr;
+  }
+  .flight-log-console nav,
+  .saved-journey-grid {
     grid-template-columns: 1fr;
   }
   .journey-card footer {

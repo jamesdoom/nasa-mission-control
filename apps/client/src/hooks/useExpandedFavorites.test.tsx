@@ -4,6 +4,7 @@ import type { MediaItem } from "@mission-control/shared";
 import { missions } from "../data/missions";
 import { useMediaFavorites } from "./useMediaFavorites";
 import { useMissionFavorites } from "./useMissionFavorites";
+import { useJourneyFavorites } from "./useJourneyFavorites";
 import { useRecentlyViewed } from "./useRecentlyViewed";
 
 const media: MediaItem = {
@@ -71,5 +72,21 @@ describe("expanded Flight Log favorites", () => {
     expect(result.current.items[0]?.title).toBe("Apollo 11 updated");
     act(() => result.current.clear());
     expect(result.current.items).toEqual([]);
+  });
+
+  it("saves only known guided discovery paths", () => {
+    localStorage.setItem(
+      "mission-control:journey-favorites:v1",
+      JSON.stringify(["moon-then-now", "unknown-path"]),
+    );
+    const { result } = renderHook(() => useJourneyFavorites());
+    expect(result.current.favorites.map((journey) => journey.id)).toEqual([
+      "moon-then-now",
+    ]);
+    const journey = result.current.favorites[0];
+    expect(journey).toBeDefined();
+    if (!journey) return;
+    act(() => result.current.toggle(journey));
+    expect(result.current.favorites).toEqual([]);
   });
 });

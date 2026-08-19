@@ -1,9 +1,12 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { HeartIcon } from "../components/Icons";
 import { discoveryJourneys } from "../data/journeys";
+import { useJourneyFavorites } from "../hooks/useJourneyFavorites";
 
 export function DiscoveryPage() {
   const { hash } = useLocation();
+  const favorites = useJourneyFavorites();
   useEffect(() => {
     if (!hash) return;
     const frame = window.requestAnimationFrame(() => {
@@ -32,7 +35,26 @@ export function DiscoveryPage() {
         {discoveryJourneys.map((journey) => (
           <article className="journey-card" id={journey.id} key={journey.id}>
             <header>
-              <p className="eyebrow">{journey.code}</p>
+              <div className="journey-card__controls">
+                <p className="eyebrow">{journey.code}</p>
+                <button
+                  type="button"
+                  className={
+                    favorites.isFavorite(journey.id)
+                      ? "icon-button is-saved"
+                      : "icon-button"
+                  }
+                  aria-pressed={favorites.isFavorite(journey.id)}
+                  aria-label={`${
+                    favorites.isFavorite(journey.id) ? "Remove" : "Save"
+                  } ${journey.title} ${
+                    favorites.isFavorite(journey.id) ? "from" : "to"
+                  } Flight Log`}
+                  onClick={() => favorites.toggle(journey)}
+                >
+                  <HeartIcon />
+                </button>
+              </div>
               <h2>{journey.title}</h2>
               <p>{journey.summary}</p>
             </header>

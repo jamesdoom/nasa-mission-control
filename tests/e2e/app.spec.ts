@@ -555,6 +555,11 @@ test("follows a guided discovery path into mission history and back", async ({
     .getByRole("article")
     .filter({ hasText: "Reconstruct Apollo 11 through evidence" });
   await journey
+    .getByRole("button", {
+      name: "Save Reconstruct Apollo 11 through evidence to Flight Log",
+    })
+    .click();
+  await journey
     .getByRole("link", { name: "Open instrument →" })
     .first()
     .click();
@@ -571,6 +576,18 @@ test("follows a guided discovery path into mission history and back", async ({
       name: "Reconstruct Apollo 11 through evidence",
     }),
   ).toBeVisible();
+  await page.getByRole("link", { name: "Flight Log" }).click();
+  await expect(
+    page.getByRole("heading", { name: "1 saved record" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Guided discovery paths" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Export backup" }),
+  ).toBeVisible();
+  await page.getByRole("link", { name: "Resume path →" }).click();
+  await expect(page).toHaveURL(/\/discover#moon-then-now$/);
 });
 
 test("scores and explains source-checked space trivia", async ({ page }) => {
