@@ -233,7 +233,8 @@ The monthly `Mission status review` workflow checks official source availability
 19. **Complete — Mission Archive phase 11:** ten source-checked records, destination overview groups, richer new timelines, curated related media, official NASA photography, and scheduled status-review evidence.
 20. **Complete — Guided Discovery phase 12:** dedicated Hubble, Juno, Cassini, and Artemis I investigation paths with mission continuations, live-instrument context, NASA media searches, official citations, and Flight Log compatibility.
 21. **Complete — Content performance phase 13:** expanded synthetic coverage for Mission Archive and Guided Discovery, route transfer evidence, optimized archive card imagery, and enforceable image and transfer budgets.
-22. **Next:** compare the expanded synthetic trends with Speed Insights after a meaningful real-user sample; consider account synchronization separately if users need cross-device collections.
+22. **Complete — Cosmetic phase 1:** a protected `visual-baseline-v1` rollback point, reusable immersion tokens, layered dashboard star fields, an atmospheric horizon, restrained telemetry motion, and more dimensional instrument surfaces with reduced-motion support.
+23. **Next:** review the dashboard experiment across devices before extending its visual language to individual mission instruments; consider account synchronization separately if users need cross-device collections.
 
 ## Screenshots
 

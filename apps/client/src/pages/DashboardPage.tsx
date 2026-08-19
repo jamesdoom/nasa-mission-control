@@ -16,6 +16,12 @@ export function DashboardPage() {
   return (
     <>
       <section className="hero section">
+        <div className="hero-immersion" aria-hidden="true">
+          <span className="hero-immersion__stars hero-immersion__stars--near" />
+          <span className="hero-immersion__stars hero-immersion__stars--far" />
+          <span className="hero-immersion__horizon" />
+          <span className="hero-immersion__scan" />
+        </div>
         <div className="hero-grid">
           <div>
             <p className="kicker">
