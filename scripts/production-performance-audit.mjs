@@ -14,11 +14,42 @@ const budgets = {
   fcpMs: 3_000,
   headingReadyMs: 5_000,
   cls: 0.1,
+  sameOriginTransferKb: 1_200,
 };
 const scenarios = [
   { name: "dashboard-desktop", pathname: "/", width: 1440, height: 900 },
   { name: "dashboard-mobile", pathname: "/", width: 390, height: 844 },
   { name: "about-desktop", pathname: "/about", width: 1440, height: 900 },
+  {
+    name: "mission-archive-desktop",
+    pathname: "/missions",
+    width: 1440,
+    height: 900,
+  },
+  {
+    name: "mission-archive-mobile",
+    pathname: "/missions",
+    width: 390,
+    height: 844,
+  },
+  {
+    name: "mission-detail-desktop",
+    pathname: "/missions/artemis-i",
+    width: 1440,
+    height: 900,
+  },
+  {
+    name: "guided-discovery-desktop",
+    pathname: "/discover",
+    width: 1440,
+    height: 900,
+  },
+  {
+    name: "guided-discovery-mobile",
+    pathname: "/discover",
+    width: 390,
+    height: 844,
+  },
 ];
 
 if (baseUrl.protocol !== "https:")
@@ -43,6 +74,8 @@ function enforce(result) {
   if (result.metrics.headingReadyMs > budgets.headingReadyMs)
     failures.push("heading-ready budget");
   if (result.metrics.cls > budgets.cls) failures.push("CLS budget");
+  if (result.resources.sameOriginTransferKb > budgets.sameOriginTransferKb)
+    failures.push("same-origin transfer budget");
   return failures;
 }
 
@@ -101,6 +134,11 @@ try {
     const observed = await page.evaluate(() => {
       const navigation = performance.getEntriesByType("navigation")[0];
       const paint = performance.getEntriesByName("first-contentful-paint")[0];
+      const sameOriginResources = performance
+        .getEntriesByType("resource")
+        .filter(
+          (entry) => new URL(entry.name).origin === window.location.origin,
+        );
       return {
         connectionAndResponseMs: navigation?.responseStart ?? 0,
         ttfbMs:
@@ -114,6 +152,18 @@ try {
         horizontalOverflow:
           document.documentElement.scrollWidth >
           document.documentElement.clientWidth,
+        sameOriginTransferKb:
+          sameOriginResources.reduce(
+            (total, entry) => total + entry.encodedBodySize,
+            navigation?.encodedBodySize ?? 0,
+          ) / 1024,
+        sameOriginResourceCount: sameOriginResources.length + 1,
+        scriptCount: sameOriginResources.filter(
+          (entry) => entry.initiatorType === "script",
+        ).length,
+        imageCount: sameOriginResources.filter(
+          (entry) => entry.initiatorType === "img",
+        ).length,
       };
     });
     const result = {
@@ -131,6 +181,12 @@ try {
         headingReadyMs: round(headingReadyMs),
       },
       horizontalOverflow: observed.horizontalOverflow,
+      resources: {
+        sameOriginTransferKb: round(observed.sameOriginTransferKb),
+        sameOriginResourceCount: observed.sameOriginResourceCount,
+        scriptCount: observed.scriptCount,
+        imageCount: observed.imageCount,
+      },
       consoleErrors,
       pageErrors,
       failedSameOriginResources,

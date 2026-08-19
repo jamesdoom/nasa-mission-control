@@ -24,7 +24,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      - name: Audit production dashboard and case study
+      - name: Audit production dashboard and key content routes
         env:
           PRODUCTION_URL: https://nasa-mission-control-alpha.vercel.app
         run: npm run audit:production

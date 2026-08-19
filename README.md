@@ -176,9 +176,9 @@ Errors use `{ error: { code, message, requestId } }`; server details and credent
 
 Non-dashboard routes load as independent Vite chunks, so visitors do not download every instrument on first paint. With Speed Insights included, the primary production client chunk is approximately 342 kB (109 kB gzip), still below the approximately 389 kB (119 kB gzip) build measured before route splitting. DM Sans and Space Mono are self-hosted WOFF2 files, imagery is lazy-loaded where appropriate, and the global atmosphere uses responsive WebP sources.
 
-Vercel Speed Insights records production Core Web Vitals by route without adding general-purpose visitor analytics. CI also fails if the largest compressed JavaScript asset exceeds 120 kB, all compressed JavaScript exceeds 160 kB, or compressed CSS exceeds 16 kB. Run `npm run build && npm run performance:budget` to reproduce the asset evidence locally; see the [performance notes](docs/performance.md) for interpretation and the optimization workflow.
+Vercel Speed Insights records production Core Web Vitals by route without adding general-purpose visitor analytics. CI also fails if the largest compressed JavaScript asset exceeds 120 kB, all compressed JavaScript exceeds 160 kB, compressed CSS exceeds 16 kB, or the ten optimized Mission Archive card images exceed 400 kB in aggregate. Run `npm run build && npm run performance:budget` to reproduce the asset evidence locally; see the [performance notes](docs/performance.md) for interpretation and the optimization workflow.
 
-A separate daily GitHub workflow runs a warmed synthetic audit against the production dashboard at desktop and mobile sizes plus the About case study. It fails on HTTP, console, page, same-origin resource, horizontal-overflow, TTFB, FCP, heading-readiness, or CLS regressions and retains its JSON report for 30 days. Run `npm run audit:production` for the same read-only check locally.
+A separate daily GitHub workflow runs a warmed synthetic audit against the production dashboard, Mission Archive, and Guided Discovery at desktop and mobile sizes plus the About case study and an Artemis I mission record. It fails on HTTP, console, page, same-origin resource, horizontal-overflow, transfer-size, TTFB, FCP, heading-readiness, or CLS regressions and retains its JSON report for 30 days. Run `npm run audit:production` for the same read-only check locally.
 
 ## Testing
 
@@ -232,7 +232,8 @@ The monthly `Mission status review` workflow checks official source availability
 18. **Complete — Navigation phase 10:** an accessible, lazy-loaded global command palette with keyboard navigation, mission and discovery indexing, focus containment, and direct route navigation.
 19. **Complete — Mission Archive phase 11:** ten source-checked records, destination overview groups, richer new timelines, curated related media, official NASA photography, and scheduled status-review evidence.
 20. **Complete — Guided Discovery phase 12:** dedicated Hubble, Juno, Cassini, and Artemis I investigation paths with mission continuations, live-instrument context, NASA media searches, official citations, and Flight Log compatibility.
-21. **Next:** compare synthetic trends with Speed Insights after a meaningful real-user sample and optimize only measured route regressions; consider account synchronization separately if users need cross-device collections.
+21. **Complete — Content performance phase 13:** expanded synthetic coverage for Mission Archive and Guided Discovery, route transfer evidence, optimized archive card imagery, and enforceable image and transfer budgets.
+22. **Next:** compare the expanded synthetic trends with Speed Insights after a meaningful real-user sample; consider account synchronization separately if users need cross-device collections.
 
 ## Screenshots
 

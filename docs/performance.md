@@ -17,11 +17,12 @@ npm run performance:budget
 
 The check reports gzip sizes and fails when any limit is exceeded:
 
-| Evidence                 |      Budget |
-| ------------------------ | ----------: |
-| Largest JavaScript asset | 120 kB gzip |
-| All JavaScript assets    | 160 kB gzip |
-| All CSS assets           |  16 kB gzip |
+| Evidence                 |       Budget |
+| ------------------------ | -----------: |
+| Largest JavaScript asset |  120 kB gzip |
+| All JavaScript assets    |  160 kB gzip |
+| All CSS assets           |   16 kB gzip |
+| Mission Archive cards    | 400 kB total |
 
 The limits leave a small, deliberate margin above the verified Phase 7 build. Raising one requires an explanation because a passing budget should not conceal an avoidable regression.
 
@@ -41,7 +42,7 @@ Small samples are directional rather than conclusive. Before changing code, conf
 npm run audit:production
 ```
 
-The audit warms the production origin once to keep runner DNS and TLS setup from masquerading as application TTFB, then checks the desktop dashboard, mobile dashboard, and desktop About route. It records connection-plus-response time separately while budgeting server TTFB, FCP, heading readiness, and CLS. It also fails on non-200 navigation, console or page errors, failed same-origin resources, and horizontal overflow.
+The audit warms the production origin once to keep runner DNS and TLS setup from masquerading as application TTFB, then checks the dashboard at desktop and mobile sizes, the About case study, the Mission Archive at desktop and mobile sizes, an Artemis I mission record, and Guided Discovery at desktop and mobile sizes. It records connection-plus-response time separately while budgeting server TTFB, FCP, heading readiness, CLS, and same-origin encoded transfer size. It also fails on non-200 navigation, console or page errors, failed same-origin resources, and horizontal overflow.
 
 The initial Phase 9 baseline was:
 
@@ -52,6 +53,8 @@ The initial Phase 9 baseline was:
 | About desktop     | 33 ms | 292 ms |       364 ms |   0 |
 
 These are synthetic observations from one run, not claims about every visitor. The scheduled workflow retains `production-performance.json` artifacts for 30 days so changes can be compared under the same methodology.
+
+The Phase 13 route expansion identified a 1.77 MB desktop Mission Archive transfer caused by all ten full-resolution card images entering the browser's lazy-load threshold. Archive cards now use dedicated 720-pixel derivatives with a 400 kB aggregate build budget, while mission detail records retain their larger source images. The production audit enforces a 1.2 MB same-origin transfer ceiling per scenario. Browser transfer measurements are useful regression signals under consistent conditions, not a replacement for real-user Speed Insights data.
 
 ## Optimization workflow
 

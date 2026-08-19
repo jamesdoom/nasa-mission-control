@@ -16,6 +16,9 @@ describe("MissionCard", () => {
     expect(screen.getByRole("heading", { name: mission.name })).toBeVisible();
     expect(screen.getByText(mission.statusLabel)).toBeVisible();
     expect(
+      screen.getByRole("img", { name: mission.image.alt }),
+    ).toHaveAttribute("src", `/assets/missions/cards/${mission.slug}.jpg`);
+    expect(
       screen.getByRole("link", {
         name: `Open ${mission.name} mission archive`,
       }),

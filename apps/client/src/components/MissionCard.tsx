@@ -9,7 +9,14 @@ export function MissionCard({ mission }: { mission: Mission }) {
         aria-label={`Open ${mission.name} mission archive`}
       >
         <div className="mission-card__image">
-          <img src={mission.image.src} alt={mission.image.alt} loading="lazy" />
+          <img
+            src={`/assets/missions/cards/${mission.slug}.jpg`}
+            alt={mission.image.alt}
+            width="720"
+            height="480"
+            loading="lazy"
+            decoding="async"
+          />
           <span className={`mission-status mission-status--${mission.status}`}>
             {mission.statusLabel}
           </span>
