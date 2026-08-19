@@ -19,12 +19,20 @@ describe("DiscoveryPage", () => {
         name: "Follow the evidence across Mission Control",
       }),
     ).toBeInTheDocument();
-    expect(screen.getAllByRole("article")).toHaveLength(5);
+    expect(screen.getAllByRole("article")).toHaveLength(9);
+    expect(
+      screen.getByText("27 connected investigation steps"),
+    ).toBeInTheDocument();
     expect(
       screen.getByRole("link", {
         name: "Verify context with NASA Apollo 11 ↗",
       }),
     ).toHaveAttribute("href", "https://www.nasa.gov/mission/apollo-11/");
+    expect(
+      screen.getByRole("link", {
+        name: "Verify context with NASA Artemis I ↗",
+      }),
+    ).toHaveAttribute("href", "https://www.nasa.gov/mission/artemis-i/");
     const results = await axe(container, {
       rules: { "color-contrast": { enabled: false } },
     });

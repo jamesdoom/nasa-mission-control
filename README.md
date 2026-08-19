@@ -42,7 +42,7 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Explicit retry metadata, no-store failure responses, and transient-failure recovery coverage
 - URL-backed Asteroid Comparison Lab for miss distance, upper diameter estimate, and Earth-relative velocity
 - Plain-language DONKI measurement guide separating flare class, modeled CME speed, and observed Kp activity
-- Guided discovery paths connecting live instruments, NASA media searches, and source-checked mission history
+- Nine guided discovery paths connecting live instruments, NASA media searches, and source-checked mission history
 - Contextual mission-record actions that continue into related observations and guided investigations
 - Saveable guided paths with organized Flight Log collection counts and section shortcuts
 - Validated, browser-local Flight Log backup and restore for user-controlled continuity without an account
@@ -231,7 +231,8 @@ The monthly `Mission status review` workflow checks official source availability
 17. **Complete — Production evidence phase 9:** live error and traffic audit, daily desktop/mobile synthetic checks, Web Vital snapshots, stability budgets, and retained JSON evidence without visitor analytics.
 18. **Complete — Navigation phase 10:** an accessible, lazy-loaded global command palette with keyboard navigation, mission and discovery indexing, focus containment, and direct route navigation.
 19. **Complete — Mission Archive phase 11:** ten source-checked records, destination overview groups, richer new timelines, curated related media, official NASA photography, and scheduled status-review evidence.
-20. **Next:** compare synthetic trends with Speed Insights after a meaningful real-user sample, deepen guided discovery connections for the expanded missions, and optimize only measured route regressions; consider account synchronization separately if users need cross-device collections.
+20. **Complete — Guided Discovery phase 12:** dedicated Hubble, Juno, Cassini, and Artemis I investigation paths with mission continuations, live-instrument context, NASA media searches, official citations, and Flight Log compatibility.
+21. **Next:** compare synthetic trends with Speed Insights after a meaningful real-user sample and optimize only measured route regressions; consider account synchronization separately if users need cross-device collections.
 
 ## Screenshots
 

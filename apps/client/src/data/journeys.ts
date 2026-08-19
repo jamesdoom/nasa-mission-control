@@ -191,4 +191,148 @@ export const discoveryJourneys: DiscoveryJourney[] = [
       url: "https://science.nasa.gov/mission/webb/",
     },
   },
+  {
+    id: "hubble-cosmic-scale",
+    code: "PATH // 06",
+    title: "Measure the universe through Hubble",
+    summary:
+      "Move from a serviceable observatory in Earth orbit to the images that reshaped cosmic distance and time.",
+    outcome:
+      "You will connect Hubble’s engineering history to interpreted daily astronomy and its primary visual archive.",
+    steps: [
+      {
+        label: "Orient",
+        title: "Enter Hubble’s mission record",
+        description:
+          "Trace deployment, optical repair, servicing missions, and a multi-decade science campaign.",
+        to: "/missions/hubble",
+      },
+      {
+        label: "Observe",
+        title: "Read today’s cosmic briefing",
+        description:
+          "Use APOD’s explanation and attribution to interpret a current astronomy selection.",
+        to: "/apod",
+      },
+      {
+        label: "Compare",
+        title: "Search Hubble’s deep-field archive",
+        description:
+          "Examine NASA media records for the exposures that revealed galaxies across cosmic history.",
+        to: "/media?q=Hubble+Deep+Field&mediaType=image&page=1",
+      },
+    ],
+    source: {
+      label: "NASA Hubble",
+      url: "https://science.nasa.gov/mission/hubble/",
+    },
+  },
+  {
+    id: "jupiter-beneath-clouds",
+    code: "PATH // 07",
+    title: "Read Jupiter beneath the clouds",
+    summary:
+      "Follow Juno from polar orbit into the gravity, atmosphere, aurora, and moon observations behind its discoveries.",
+    outcome:
+      "You will distinguish the spacecraft’s mission design from the image evidence used to investigate the Jovian system.",
+    steps: [
+      {
+        label: "Brief",
+        title: "Review Juno’s extended mission",
+        description:
+          "Connect Jupiter orbit insertion to polar science passes and close encounters with Galilean moons.",
+        to: "/missions/juno",
+      },
+      {
+        label: "Inspect",
+        title: "Search Juno’s Jupiter imagery",
+        description:
+          "Compare cloud systems, polar cyclones, auroras, and moon flybys in NASA’s archive.",
+        to: "/media?q=Juno+Jupiter&mediaType=image&page=1",
+      },
+      {
+        label: "Synthesize",
+        title: "Run a planetary science debrief",
+        description:
+          "Use source-backed explanations to reinforce the difference between images, measurements, and inference.",
+        to: "/trivia?difficulty=commander",
+      },
+    ],
+    source: {
+      label: "NASA Juno",
+      url: "https://science.nasa.gov/mission/juno/",
+    },
+  },
+  {
+    id: "saturn-ocean-worlds",
+    code: "PATH // 08",
+    title: "Trace Cassini’s ocean-world evidence",
+    summary:
+      "Reconstruct how one Saturn orbiter connected rings, atmospheres, Titan’s surface, and Enceladus’ hidden ocean.",
+    outcome:
+      "You will see how a long-duration mission combined flybys, a landed probe, and repeated measurements into a scientific legacy.",
+    steps: [
+      {
+        label: "Reconstruct",
+        title: "Open the Cassini-Huygens record",
+        description:
+          "Follow the journey from launch and Saturn arrival through Huygens and the Grand Finale.",
+        to: "/missions/cassini",
+      },
+      {
+        label: "Examine",
+        title: "Search Enceladus and Titan media",
+        description:
+          "Inspect NASA records of icy plumes, methane landscapes, rings, and moon encounters.",
+        to: "/media?q=Cassini+Enceladus+Titan&mediaType=image&page=1",
+      },
+      {
+        label: "Continue",
+        title: "Open today’s astronomy briefing",
+        description:
+          "Place Saturn-system evidence beside a current interpreted view of the universe.",
+        to: "/apod",
+      },
+    ],
+    source: {
+      label: "NASA Cassini",
+      url: "https://science.nasa.gov/mission/cassini/",
+    },
+  },
+  {
+    id: "artemis-return-moon",
+    code: "PATH // 09",
+    title: "Rehearse a return to the Moon",
+    summary:
+      "Use Artemis I to connect launch systems, lunar navigation, heat-shield testing, and Earth viewed from deep space.",
+    outcome:
+      "You will understand Artemis I as an integrated uncrewed flight test and separate its completed objectives from later Artemis missions.",
+    steps: [
+      {
+        label: "Reconstruct",
+        title: "Follow the Artemis I flight test",
+        description:
+          "Trace SLS launch, Orion’s lunar flybys, distant retrograde orbit, re-entry, and recovery.",
+        to: "/missions/artemis-i",
+      },
+      {
+        label: "Look back",
+        title: "View Earth from deep space",
+        description:
+          "Use EPIC’s current full-disk sequence to compare another distant perspective on our planet.",
+        to: "/earth",
+      },
+      {
+        label: "Inspect",
+        title: "Search the Artemis I image record",
+        description:
+          "Explore Orion, the Moon, launch operations, and recovery through NASA media metadata.",
+        to: "/media?q=Artemis+I+Orion&mediaType=image&page=1",
+      },
+    ],
+    source: {
+      label: "NASA Artemis I",
+      url: "https://www.nasa.gov/mission/artemis-i/",
+    },
+  },
 ];

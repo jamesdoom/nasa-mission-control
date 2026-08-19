@@ -1046,11 +1046,28 @@ p {
   line-height: 0.94;
   letter-spacing: -0.055em;
 }
-.discovery-intro > p:last-child {
+.discovery-intro > h1 + p {
   max-width: 66ch;
   color: #9eb2c5;
   font-size: 1.1rem;
   line-height: 1.75;
+}
+.discovery-intro aside {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  color: #70879b;
+  font:
+    0.62rem "Space Mono",
+    monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.discovery-intro aside strong {
+  padding: 0.5rem 0.65rem;
+  border: 1px solid rgba(72, 217, 239, 0.4);
+  color: var(--cyan);
 }
 .discovery-grid {
   display: grid;

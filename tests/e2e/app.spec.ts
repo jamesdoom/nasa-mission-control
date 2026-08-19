@@ -644,6 +644,40 @@ test("follows a guided discovery path into mission history and back", async ({
   await expect(page).toHaveURL(/\/discover#moon-then-now$/);
 });
 
+test("connects Artemis I to its guided lunar investigation", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/missions/artemis-i");
+  await page.getByRole("link", { name: "Open guided path" }).click();
+  await expect(page).toHaveURL(/\/discover#artemis-return-moon$/);
+  const journey = page
+    .getByRole("article")
+    .filter({ hasText: "Rehearse a return to the Moon" });
+  await expect(
+    journey.getByRole("heading", { name: "Rehearse a return to the Moon" }),
+  ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth >
+        document.documentElement.clientWidth,
+    ),
+  ).toBe(false);
+  await expect(
+    journey.getByRole("link", {
+      name: "Verify context with NASA Artemis I ↗",
+    }),
+  ).toHaveAttribute("href", "https://www.nasa.gov/mission/artemis-i/");
+  await journey
+    .getByRole("button", {
+      name: "Save Rehearse a return to the Moon to Flight Log",
+    })
+    .click();
+  await journey.getByRole("link", { name: "Open instrument →" }).nth(1).click();
+  await expect(page).toHaveURL(/\/earth$/);
+});
+
 test("scores and explains source-checked space trivia", async ({ page }) => {
   await page.goto("/trivia?difficulty=cadet");
   await expect(page).toHaveTitle("Space Trivia | NASA Mission Control");

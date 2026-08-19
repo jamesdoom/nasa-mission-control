@@ -27,6 +27,10 @@ export function DiscoveryPage() {
           mattered. NASA’s media archive shows how the evidence was captured.
           Choose a flight path and move between all three.
         </p>
+        <aside>
+          <strong>{discoveryJourneys.length} guided paths</strong>
+          <span>27 connected investigation steps</span>
+        </aside>
       </section>
       <section
         className="section discovery-grid"

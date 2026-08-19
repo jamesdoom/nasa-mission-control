@@ -39,6 +39,26 @@ const missionDiscovery: Record<
     instrument: "/apod",
     instrumentLabel: "Open today’s cosmic briefing",
   },
+  hubble: {
+    journey: "hubble-cosmic-scale",
+    instrument: "/apod",
+    instrumentLabel: "Open today’s cosmic briefing",
+  },
+  juno: {
+    journey: "jupiter-beneath-clouds",
+    instrument: "/media?q=Juno+Jupiter&mediaType=image&page=1",
+    instrumentLabel: "Search Juno imagery",
+  },
+  cassini: {
+    journey: "saturn-ocean-worlds",
+    instrument: "/media?q=Cassini+Enceladus+Titan&mediaType=image&page=1",
+    instrumentLabel: "Search Saturn-system imagery",
+  },
+  "artemis-i": {
+    journey: "artemis-return-moon",
+    instrument: "/earth",
+    instrumentLabel: "View Earth from deep space",
+  },
 };
 
 export function MissionDetailPage() {
