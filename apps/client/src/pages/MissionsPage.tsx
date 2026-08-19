@@ -11,6 +11,7 @@ const destinations: (MissionDestination | "all")[] = [
   "all",
   "Moon",
   "Mars",
+  "Sun",
   "Outer Solar System",
   "Universe",
 ];
@@ -73,13 +74,13 @@ export function MissionsPage() {
         <div>
           <h1>Mission Archive</h1>
           <p>
-            Four journeys across six decades—assembled from source-checked NASA
+            Six journeys across six decades—assembled from source-checked NASA
             records and clearly separated from live telemetry.
           </p>
         </div>
         <aside>
           <strong>CURATED DATA</strong>
-          <span>Last source review // 2026-08-03</span>
+          <span>Last source review // 2026-08-19</span>
         </aside>
       </section>
       <section className="section mission-filter-section">

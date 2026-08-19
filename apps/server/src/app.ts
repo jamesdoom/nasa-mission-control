@@ -39,9 +39,14 @@ export function createApp(
   app.use(express.json({ limit: "16kb" }));
   app.use(requestId);
   if (env.NODE_ENV !== "test") app.use(requestLogger);
-  app.get("/api/health", (_request, response) =>
-    response.json({ status: "ok" }),
-  );
+  app.get("/api/health", (_request, response) => {
+    response.setHeader("cache-control", "no-store");
+    response.json({
+      status: "ok",
+      service: "mission-control-api",
+      checkedAt: new Date().toISOString(),
+    });
+  });
   app.use("/api/client-errors", createClientErrorRouter());
   app.use(
     "/api/apod",

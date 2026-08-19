@@ -24,6 +24,16 @@ const missionDiscovery: Record<
     instrument: "/media?q=Curiosity+Mars&mediaType=image&page=1",
     instrumentLabel: "Search Curiosity imagery",
   },
+  perseverance: {
+    journey: "mars-field-lab",
+    instrument: "/media?q=Perseverance+Mars&mediaType=image&page=1",
+    instrumentLabel: "Search Perseverance imagery",
+  },
+  "parker-solar-probe": {
+    journey: "sun-to-earth",
+    instrument: "/space-weather",
+    instrumentLabel: "Open heliophysics observations",
+  },
   webb: {
     journey: "deep-universe",
     instrument: "/apod",

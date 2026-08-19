@@ -546,6 +546,45 @@ test("filters and opens a source-backed mission record", async ({ page }) => {
   ).toBe(false);
 });
 
+test("shows portfolio evidence, API status, and the expanded mission archive", async ({
+  page,
+}) => {
+  await page.route(
+    (url) => url.pathname === "/api/health",
+    async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          status: "ok",
+          service: "mission-control-api",
+          checkedAt: "2026-08-19T15:00:00.000Z",
+        }),
+      });
+    },
+  );
+  await page.goto("/about");
+  await expect(
+    page.getByRole("heading", { name: "Mission Control API online" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", {
+      name: "From unstable public data to a dependable learning experience",
+    }),
+  ).toBeVisible();
+  await page.goto("/missions");
+  await page.getByLabel("Destination").selectOption("Sun");
+  await expect(page).toHaveURL(/destination=Sun/);
+  await expect(
+    page.getByRole("heading", { name: "Parker Solar Probe" }),
+  ).toBeVisible();
+  await page
+    .getByRole("link", { name: "Open Parker Solar Probe mission archive" })
+    .click();
+  await expect(page).toHaveURL(/\/missions\/parker-solar-probe$/);
+  await expect(page.getByText("NASA / Bill Ingalls")).toBeVisible();
+});
+
 test("follows a guided discovery path into mission history and back", async ({
   page,
 }) => {

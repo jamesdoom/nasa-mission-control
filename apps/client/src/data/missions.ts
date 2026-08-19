@@ -1,7 +1,7 @@
 export type MissionStatus = "active" | "completed" | "extended";
 export type MissionVehicle = "crewed" | "probe" | "rover" | "observatory";
 export type MissionDestination =
-  "Moon" | "Mars" | "Outer Solar System" | "Universe";
+  "Moon" | "Mars" | "Sun" | "Outer Solar System" | "Universe";
 
 export type Mission = {
   slug: string;
@@ -314,6 +314,154 @@ export const missions: Mission[] = [
       },
     ],
     verifiedAt: "2026-08-03",
+  },
+  {
+    slug: "perseverance",
+    name: "Perseverance",
+    program: "Mars 2020",
+    missionNumber: "ARCHIVE // 005",
+    status: "active",
+    statusLabel: "Active mission",
+    vehicle: "rover",
+    destination: "Mars",
+    launchDate: "2020-07-30",
+    endDate: null,
+    dek: "A sample-caching rover reading Jezero Crater’s ancient environments for signs of past microbial life.",
+    overview:
+      "Perseverance explores Jezero Crater, where an ancient river delta and lake once existed. The rover studies Mars’ geology and past climate, searches for signs of ancient microbial life, and seals selected rock and regolith cores in sample tubes.",
+    objective:
+      "Seek signs of ancient life, characterize Mars’ geology and climate, and collect samples for possible future return to Earth.",
+    achievements: [
+      "Completed the first powered, controlled flight demonstration on another planet with Ingenuity",
+      "Collected and sealed the first rock cores on another planet",
+      "Deposited a backup set of sample tubes on the Martian surface",
+    ],
+    image: {
+      src: "/assets/missions/perseverance.jpg",
+      alt: "NASA’s Perseverance rover beside the Cheyava Falls rock on Mars",
+      credit: "NASA / JPL-Caltech / MSSS",
+      nasaId: "PIA26344",
+      sourceUrl:
+        "https://science.nasa.gov/resource/perseverances-selfie-with-cheyava-falls/",
+    },
+    facts: [
+      { label: "Landing site", value: "Jezero Crater" },
+      { label: "Launch vehicle", value: "Atlas V 541" },
+      { label: "Science payload", value: "7 instruments" },
+      { label: "Power", value: "Radioisotope generator" },
+    ],
+    timeline: [
+      {
+        date: "2020-07-30",
+        title: "Launch",
+        description:
+          "Mars 2020 launched from Cape Canaveral aboard an Atlas V 541.",
+      },
+      {
+        date: "2021-02-18",
+        title: "Jezero Crater landing",
+        description:
+          "Perseverance completed an autonomous entry, descent, and sky-crane landing.",
+      },
+      {
+        date: "2021-04-19",
+        title: "Ingenuity’s first flight",
+        description:
+          "The rover documented the first powered, controlled flight on another world.",
+      },
+      {
+        date: "2021-09-06",
+        title: "First rock core sealed",
+        description:
+          "NASA confirmed Perseverance had collected and stored its first Martian rock sample.",
+      },
+    ],
+    sources: [
+      {
+        label: "NASA Perseverance mission",
+        url: "https://science.nasa.gov/mission/mars-2020-perseverance/",
+      },
+      {
+        label: "NASA Perseverance fact sheet",
+        url: "https://science.nasa.gov/resource/mars-2020-perseverance-fact-sheet/",
+      },
+    ],
+    verifiedAt: "2026-08-19",
+  },
+  {
+    slug: "parker-solar-probe",
+    name: "Parker Solar Probe",
+    program: "Living With a Star",
+    missionNumber: "ARCHIVE // 006",
+    status: "active",
+    statusLabel: "Active mission",
+    vehicle: "probe",
+    destination: "Sun",
+    launchDate: "2018-08-12",
+    endDate: null,
+    dek: "Humanity’s first mission into the solar corona, built to sample a star’s atmosphere directly.",
+    overview:
+      "Parker Solar Probe uses repeated Venus gravity assists to pass through the Sun’s outer atmosphere. Protected by a carbon-composite heat shield, its instruments measure fields, particles, and the solar wind closer to their source than any previous spacecraft.",
+    objective:
+      "Trace the energy that heats the corona, investigate the source of the solar wind, and study the acceleration of energetic particles.",
+    achievements: [
+      "First spacecraft to fly through the solar corona",
+      "Closest human-made object to the Sun",
+      "Fastest human-made object",
+    ],
+    image: {
+      src: "/assets/missions/parker-solar-probe.jpg",
+      alt: "Delta IV Heavy engines launching NASA’s Parker Solar Probe at night",
+      credit: "NASA / Bill Ingalls",
+      nasaId: "PARKER-LAUNCH-2018-08-12",
+      sourceUrl: "https://science.nasa.gov/resource/parker-solar-probe-launch/",
+    },
+    facts: [
+      { label: "Target", value: "Solar corona" },
+      { label: "Launch vehicle", value: "Delta IV Heavy" },
+      { label: "Instrument suites", value: "4" },
+      {
+        label: "Mission management",
+        value: "NASA Goddard / Johns Hopkins APL",
+      },
+    ],
+    timeline: [
+      {
+        date: "2018-08-12",
+        title: "Launch",
+        description:
+          "Parker Solar Probe launched from Cape Canaveral aboard a Delta IV Heavy.",
+      },
+      {
+        date: "2018-11-05",
+        title: "First solar encounter",
+        description:
+          "The spacecraft completed its first close pass through the Sun’s outer atmosphere.",
+      },
+      {
+        date: "2021-04-28",
+        title: "Inside the corona",
+        description:
+          "Parker crossed the Alfvén critical surface and directly sampled the solar atmosphere.",
+      },
+      {
+        date: "2024-12-24",
+        title: "Record close approach",
+        description:
+          "The probe passed about 3.8 million miles above the solar surface at roughly 430,000 mph.",
+      },
+    ],
+    sources: [
+      {
+        label: "NASA Parker Solar Probe mission",
+        url: "https://science.nasa.gov/mission/parker-solar-probe/",
+      },
+      {
+        label: "NASA record close approach",
+        url: "https://science.nasa.gov/science-research/heliophysics/nasas-parker-solar-probe-makes-history-with-closest-pass-to-sun/",
+      },
+    ],
+    verifiedAt: "2026-08-19",
   },
 ];
 

@@ -702,7 +702,8 @@ p {
   margin: 1.5rem 0 0.7rem;
 }
 .module-grid h3,
-.about-grid h2 {
+.about-grid h2,
+.about-grid h3 {
   font-size: 1.35rem;
 }
 .module-grid p,
@@ -712,6 +713,140 @@ p {
 }
 .page-section {
   min-height: calc(100vh - 76px);
+}
+.about-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(340px, 0.75fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: start;
+  min-height: auto;
+  padding-bottom: clamp(4rem, 8vw, 8rem);
+}
+.about-hero .page-intro {
+  margin-bottom: 0;
+}
+.about-hero .page-intro > p:last-child {
+  max-width: 62ch;
+  color: #9ab0c4;
+  font-size: 1.08rem;
+  line-height: 1.75;
+}
+.health-status {
+  margin-top: 3rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(72, 217, 239, 0.3);
+  background: #07121f;
+}
+.health-status > div {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.health-status h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.25rem;
+}
+.health-status p {
+  margin: 0;
+  color: #86a0b7;
+  line-height: 1.5;
+}
+.health-status .eyebrow {
+  margin-bottom: 1.5rem;
+}
+.health-status small {
+  display: block;
+  margin-top: 1rem;
+  color: #647c91;
+  line-height: 1.5;
+}
+.health-status .button {
+  width: 100%;
+}
+.status-dot--pending {
+  background: var(--amber);
+  box-shadow: 0 0 12px rgba(255, 179, 64, 0.75);
+}
+.case-study,
+.about-principles {
+  padding-top: clamp(4rem, 9vw, 8rem);
+  padding-bottom: clamp(4rem, 9vw, 8rem);
+  border-top: 1px solid var(--line);
+}
+.case-study > header,
+.about-principles > header {
+  max-width: 900px;
+  margin-bottom: 3rem;
+}
+.case-study > header h2,
+.about-principles > header h2 {
+  margin: 0.8rem 0 0;
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+.case-study__metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 1px;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.case-study__metrics div {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  background: #07111d;
+}
+.case-study__metrics strong {
+  color: var(--cyan);
+  font:
+    700 clamp(2rem, 5vw, 4rem) "Space Mono",
+    monospace;
+}
+.case-study__metrics span {
+  color: #8299ad;
+  font-size: 0.78rem;
+}
+.case-study__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.case-study__grid article {
+  padding: clamp(1.5rem, 4vw, 3rem);
+  background: #07101b;
+}
+.case-study__grid article > span {
+  color: #6e8ba3;
+  font:
+    0.6rem "Space Mono",
+    monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.case-study__grid h3 {
+  margin: 1rem 0 0.7rem;
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+}
+.case-study__grid p {
+  max-width: 62ch;
+  color: #8da3b7;
+  line-height: 1.7;
+}
+.about-principles {
+  padding-bottom: 3rem;
+}
+.about-principles + .source-note {
+  margin-top: 0;
+  margin-bottom: 5rem;
+}
+.source-note a {
+  color: var(--cyan);
 }
 .page-section,
 .media-intro,
@@ -3218,6 +3353,16 @@ p {
   .about-grid {
     grid-template-columns: 1fr;
   }
+  .about-hero,
+  .case-study__grid {
+    grid-template-columns: 1fr;
+  }
+  .health-status {
+    margin-top: 0;
+  }
+  .case-study__metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .journey-card {
     grid-template-columns: 1fr;
   }
@@ -3564,6 +3709,9 @@ p {
   }
   .flight-log-console nav,
   .saved-journey-grid {
+    grid-template-columns: 1fr;
+  }
+  .case-study__metrics {
     grid-template-columns: 1fr;
   }
   .journey-card footer {

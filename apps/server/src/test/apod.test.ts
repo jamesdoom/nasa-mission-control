@@ -1,7 +1,11 @@
 import request from "supertest";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it, vi } from "vitest";
-import type { ApiErrorResponse, Apod } from "@mission-control/shared";
+import type {
+  ApiErrorResponse,
+  Apod,
+  HealthStatus,
+} from "@mission-control/shared";
 import { createApp } from "../app.js";
 import type { Env } from "../config/env.js";
 import type { NasaClient } from "../lib/nasa-client.js";
@@ -84,6 +88,13 @@ describe("GET /api/apod", () => {
     const response = await request(app).get("/api/health");
     expect(response.headers["x-content-type-options"]).toBe("nosniff");
     expect(response.headers["x-powered-by"]).toBeUndefined();
+    expect(response.headers["cache-control"]).toBe("no-store");
+    const health = response.body as HealthStatus;
+    expect(health).toMatchObject({
+      status: "ok",
+      service: "mission-control-api",
+    });
+    expect(health.checkedAt).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
   });
 
   it("does not advertise the development CORS origin in production", async () => {

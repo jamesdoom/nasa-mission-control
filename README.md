@@ -45,6 +45,9 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Contextual mission-record actions that continue into related observations and guided investigations
 - Saveable guided paths with organized Flight Log collection counts and section shortcuts
 - Validated, browser-local Flight Log backup and restore for user-controlled continuity without an account
+- User-visible same-origin API health checks with explicit NASA-upstream scope
+- Portfolio case study covering product constraints, architecture, scientific communication, and quality evidence
+- Expanded source-checked Mission Archive with Perseverance and Parker Solar Probe
 
 ## Planned modules
 
@@ -116,7 +119,7 @@ The root `vercel.json` builds the shared contracts and Vite client, preserves `/
 
 Every API request emits a structured completion record containing its request ID, method, route path, status, and duration. Unexpected server errors and sanitized browser runtime failures appear in Vercel Runtime Logs as `request.unhandled_error` and `client.runtime_error`. Client reports contain only the error category, a bounded message, and the URL pathname—never query parameters, stack traces, local-storage values, or NASA credentials.
 
-After a deployment, verify `/api/health`, one live-data route, a lazy-loaded page, and a retry flow. Review Runtime Logs for 5xx responses and repeated `client.runtime_error` events. This lightweight baseline does not replace dedicated uptime monitoring or alerting; add those only if the project gains a production service-level target.
+After a deployment, verify `/api/health`, one live-data route, a lazy-loaded page, and a retry flow. The About page exposes a user-triggered, no-store check of the same-origin Express health route and carefully labels it as application availability—not proof that every NASA upstream is healthy. Review Runtime Logs for 5xx responses and repeated `client.runtime_error` events. This lightweight baseline does not replace third-party uptime monitoring or alerting; add those only if the project gains a production service-level target.
 
 ## Architecture
 
@@ -147,7 +150,7 @@ type Apod = {
 
 The Earth contract contains the selected and latest available dates, normalized EPIC frames, centroid telemetry, archive URLs, and an exact GIBS WMS image URL. EPIC metadata field names and WMS configuration details do not spread through the UI. The asteroid contract contains only identity, JPL source URL, NASA classification flags, estimated diameter bounds, and the selected Earth approach’s UTC time, relative velocity, and miss distance. Dynamic NeoWs date buckets and numeric strings never reach the UI.
 
-Mission Archive records are intentionally local, typed editorial content rather than an invented “live missions” API. Every record carries a review date, official NASA source links, exact NASA Image Library ID and credit, and a stable route at `/missions/:missionSlug`. Archive filters remain in the URL.
+Mission Archive records are intentionally local, typed editorial content rather than an invented “live missions” API. Every record carries a review date, official NASA source links, a stable NASA image/resource identifier and credit, and a stable route at `/missions/:missionSlug`. Archive filters remain in the URL.
 
 The Flight Log uses separate bounded, runtime-validated local-storage records for each content type. APOD and asteroid formats remain backward compatible; mission and guided-path favorites store stable curated identifiers, and NASA media favorites store only the normalized metadata required to render a saved card. A separate 20-item recently viewed store deduplicates APOD, asteroid, media, and mission visits. Users can export the supported records to a versioned JSON backup and restore that backup explicitly in another browser. Imports are size-limited, key-whitelisted, and processed entirely on-device; no account, database, automatic upload, or synchronization is implied.
 
@@ -187,7 +190,7 @@ The global daily mosaic uses the official [NASA Earthdata GIBS](https://earthdat
 
 Space weather observations come from NASA’s active DONKI FLR, CME, and GST endpoints. NASA/CCMC describes DONKI as preliminary experimental research information supplied as a community service, not the official U.S. operational forecast. The application links to [NOAA’s Space Weather Prediction Center](https://www.swpc.noaa.gov/) for official forecasts and to each DONKI source record for context.
 
-Mission Archive facts and chronology are checked against official NASA mission pages for [Apollo 11](https://www.nasa.gov/mission/apollo-11/), [Voyager 1](https://science.nasa.gov/mission/voyager/voyager-1/), [Curiosity](https://science.nasa.gov/mission/msl-curiosity/), and [Webb](https://science.nasa.gov/mission/webb/). Locally stored photographs retain their NASA Image Library IDs and displayed credits: `as11-40-5903`, `PIA21741`, `PIA20603`, and `GSFC_20171208_Archive_e000356`. Active and extended mission statuses can change and must be rechecked against those sources when archive records are edited.
+Mission Archive facts and chronology are checked against official NASA mission pages for [Apollo 11](https://www.nasa.gov/mission/apollo-11/), [Voyager 1](https://science.nasa.gov/mission/voyager/voyager-1/), [Curiosity](https://science.nasa.gov/mission/msl-curiosity/), [Webb](https://science.nasa.gov/mission/webb/), [Perseverance](https://science.nasa.gov/mission/mars-2020-perseverance/), and [Parker Solar Probe](https://science.nasa.gov/mission/parker-solar-probe/). Locally stored photographs retain displayed NASA credits and stable source identifiers: `as11-40-5903`, `PIA21741`, `PIA20603`, `GSFC_20171208_Archive_e000356`, `PIA26344`, and the official Parker launch resource dated 2018-08-12. Active and extended mission statuses can change and must be rechecked against those sources when archive records are edited.
 
 ## Roadmap
 
@@ -203,7 +206,8 @@ Mission Archive facts and chronology are checked against official NASA mission p
 10. **Complete — Data experience phase 2:** accessible asteroid comparison visualization, URL-backed metrics, precise measurement caveats, DONKI scale explainers, and live APOD payload resilience.
 11. **Complete — Discovery phase 3:** five source-backed guided journeys, cross-module navigation, contextual mission continuations, and a dedicated lazy-loaded Discovery instrument.
 12. **Complete — Personalization phase 4:** organized collection counts and shortcuts, saved discovery paths, and validated local backup/restore without accounts or uploads.
-13. **Next — Portfolio evidence phase 5:** dedicated uptime visibility, production-quality case-study material, and additional source-checked archive records.
+13. **Complete — Portfolio evidence phase 5:** scoped API-health visibility, a production-quality case study, and source-checked Perseverance and Parker Solar Probe records with credited NASA imagery.
+14. **Next:** production observability alerts, additional mission depth, or optional account synchronization only if the product scope justifies the added infrastructure.
 
 ## Screenshots
 
