@@ -34,3 +34,18 @@ export function HeartIcon() {
     </svg>
   );
 }
+
+export function SearchIcon({ size = 18 }: IconProps) {
+  return (
+    <svg
+      aria-hidden="true"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <circle cx="11" cy="11" r="6.5" stroke="currentColor" strokeWidth="1.7" />
+      <path d="m16 16 4 4" stroke="currentColor" strokeWidth="1.7" />
+    </svg>
+  );
+}

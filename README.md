@@ -7,6 +7,7 @@ An original, responsive command-center experience for exploring NASA imagery and
 ## Current features
 
 - Responsive application shell with accessible desktop/mobile navigation
+- Lazy-loaded global command search for keyboard-first access to instruments, missions, and discovery paths (`Ctrl+K` or `Command+K`)
 - Mission Control dashboard and live UTC telemetry styling
 - APOD image and embedded-video support with date-based shareable URLs
 - Native playback for direct NASA video files with embedded-player support and a direct-open fallback
@@ -225,7 +226,8 @@ Mission Archive facts and chronology are checked against official NASA mission p
 15. **Complete — Performance evidence phase 7:** route-level Vercel Speed Insights, reproducible compressed bundle evidence, CI performance budgets, dependency advisory remediation, and a documented measurement workflow.
 16. **Complete — API delivery phase 8:** targeted Vercel CDN caching, separate live/archive freshness policies, stale-while-revalidate delivery, cache diagnostics, and failure-safe no-store behavior.
 17. **Complete — Production evidence phase 9:** live error and traffic audit, daily desktop/mobile synthetic checks, Web Vital snapshots, stability budgets, and retained JSON evidence without visitor analytics.
-18. **Next:** compare synthetic trends with Speed Insights after a meaningful real-user sample, then optimize measured route regressions; consider account synchronization separately if users need cross-device collections.
+18. **Complete — Navigation phase 10:** an accessible, lazy-loaded global command palette with keyboard navigation, mission and discovery indexing, focus containment, and direct route navigation.
+19. **Next:** compare synthetic trends with Speed Insights after a meaningful real-user sample, then expand source-backed mission content and optimize only measured route regressions; consider account synchronization separately if users need cross-device collections.
 
 ## Screenshots
 

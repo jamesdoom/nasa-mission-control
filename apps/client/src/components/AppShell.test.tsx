@@ -46,4 +46,26 @@ describe("AppShell reliability behavior", () => {
     );
     expect(screen.getByText("LOCAL MODE")).toBeInTheDocument();
   });
+
+  it("opens global command search from the keyboard", async () => {
+    const user = userEvent.setup();
+    const router = createMemoryRouter([
+      {
+        path: "/",
+        element: <AppShell />,
+        children: [{ index: true, element: <h1>Dashboard content</h1> }],
+      },
+    ]);
+    render(<RouterProvider router={router} />);
+
+    await user.keyboard("{Control>}k{/Control}");
+    const dialog = await screen.findByRole("dialog", {
+      name: "Command search",
+    });
+    expect(dialog).toBeInTheDocument();
+    expect(screen.getByRole("combobox")).toHaveFocus();
+
+    await user.keyboard("{Escape}");
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
 });

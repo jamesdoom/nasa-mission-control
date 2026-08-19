@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
-import { MarkIcon } from "./Icons";
+import { MarkIcon, SearchIcon } from "./Icons";
 import { useNetworkStatus } from "../hooks/useNetworkStatus";
 
 const moduleLinks = [
@@ -28,9 +28,16 @@ const routeTitles: Record<string, string> = {
   "/about": "About",
 };
 
+const CommandPalette = lazy(() =>
+  import("./CommandPalette").then((module) => ({
+    default: module.CommandPalette,
+  })),
+);
+
 export function AppShell() {
   const [open, setOpen] = useState(false);
   const [modulesOpen, setModulesOpen] = useState(false);
+  const [commandOpen, setCommandOpen] = useState(false);
   const navigationRef = useRef<HTMLElement>(null);
   const location = useLocation();
   const previousPath = useRef(location.pathname);
@@ -62,6 +69,10 @@ export function AppShell() {
     }
     function escape(event: KeyboardEvent) {
       if (event.key === "Escape") setModulesOpen(false);
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        setCommandOpen((value) => !value);
+      }
     }
     document.addEventListener("pointerdown", close);
     document.addEventListener("keydown", escape);
@@ -139,6 +150,18 @@ export function AppShell() {
           <NavLink to="/favorites">Flight Log</NavLink>
           <NavLink to="/about">About</NavLink>
         </nav>
+        <button
+          className="command-trigger"
+          type="button"
+          aria-label="Open command search"
+          aria-haspopup="dialog"
+          aria-expanded={commandOpen}
+          onClick={() => setCommandOpen(true)}
+        >
+          <SearchIcon />
+          <span>Search</span>
+          <kbd>Ctrl K</kbd>
+        </button>
         <div className={online ? "system-status" : "system-status is-offline"}>
           <span className="status-dot" aria-hidden="true" />
           {online ? "SYSTEMS NOMINAL" : "LOCAL MODE"}
@@ -172,6 +195,11 @@ export function AppShell() {
           Explore NASA media <span aria-hidden="true">↗</span>
         </a>
       </footer>
+      {commandOpen ? (
+        <Suspense fallback={null}>
+          <CommandPalette onClose={() => setCommandOpen(false)} />
+        </Suspense>
+      ) : null}
     </div>
   );
 }

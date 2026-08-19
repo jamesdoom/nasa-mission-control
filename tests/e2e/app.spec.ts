@@ -658,3 +658,26 @@ test("scores and explains source-checked space trivia", async ({ page }) => {
     ),
   ).toBe(false);
 });
+
+test("navigates the mission index with global command search", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.keyboard.press("Control+K");
+  const dialog = page.getByRole("dialog", { name: "Command search" });
+  await expect(dialog).toBeVisible();
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth >
+        document.documentElement.clientWidth,
+    ),
+  ).toBe(false);
+  await page.getByRole("combobox").fill("Parker Solar Probe");
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/\/missions\/parker-solar-probe$/);
+  await expect(
+    page.getByRole("heading", { name: "Parker Solar Probe" }),
+  ).toBeVisible();
+});
