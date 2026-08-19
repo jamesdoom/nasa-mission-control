@@ -4,6 +4,11 @@ import type { MediaDetail, MediaSearch } from "@mission-control/shared";
 import { MemoryCache } from "../lib/cache.js";
 import { HttpError } from "../lib/http-error.js";
 import type { NasaClient } from "../lib/nasa-client.js";
+import {
+  archiveNasaCache,
+  mediaSearchCache,
+  sendSharedJson,
+} from "../lib/response-cache.js";
 
 const pageSize = 24;
 const searchSchema = z
@@ -41,15 +46,12 @@ export function createMediaRouter(
     const cacheKey = `${q.toLowerCase()}:${mediaType}:${String(page)}`;
     const cached = searchCache.get(cacheKey);
     if (cached) {
-      response.setHeader("x-cache", "HIT");
-      response.json(cached);
+      sendSharedJson(response, cached, "HIT", mediaSearchCache);
       return;
     }
     const result = await nasa.searchMedia(q, mediaType, page, pageSize);
     searchCache.set(cacheKey, result, cacheTtlMs);
-    response.setHeader("cache-control", "private, max-age=60");
-    response.setHeader("x-cache", "MISS");
-    response.json(result);
+    sendSharedJson(response, result, "MISS", mediaSearchCache);
   });
 
   router.get("/:nasaId", async (request, response) => {
@@ -59,15 +61,12 @@ export function createMediaRouter(
     }
     const cached = detailCache.get(parsed.data);
     if (cached) {
-      response.setHeader("x-cache", "HIT");
-      response.json(cached);
+      sendSharedJson(response, cached, "HIT", archiveNasaCache);
       return;
     }
     const detail = await nasa.getMediaDetail(parsed.data);
     detailCache.set(parsed.data, detail, cacheTtlMs);
-    response.setHeader("cache-control", "private, max-age=300");
-    response.setHeader("x-cache", "MISS");
-    response.json(detail);
+    sendSharedJson(response, detail, "MISS", archiveNasaCache);
   });
 
   return router;

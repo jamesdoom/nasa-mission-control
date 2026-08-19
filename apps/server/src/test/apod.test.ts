@@ -40,6 +40,13 @@ describe("GET /api/apod", () => {
     expect(first.body).toEqual(apod);
     expect(first.headers["x-cache"]).toBe("MISS");
     expect(second.headers["x-cache"]).toBe("HIT");
+    expect(first.headers["cache-control"]).toBe("public, max-age=300");
+    expect(first.headers["cdn-cache-control"]).toBe(
+      "public, max-age=86400, stale-while-revalidate=604800",
+    );
+    expect(second.headers["cdn-cache-control"]).toBe(
+      first.headers["cdn-cache-control"],
+    );
     expect(getApod).toHaveBeenCalledTimes(1);
   });
 
@@ -64,6 +71,7 @@ describe("GET /api/apod", () => {
     const recovered = await request(app).get("/api/apod?date=2024-01-01");
     expect(failed.status).toBe(500);
     expect(failed.headers["cache-control"]).toBe("no-store");
+    expect(failed.headers["cdn-cache-control"]).toBeUndefined();
     expect(failed.headers["retry-after"]).toBe("30");
     const body = JSON.parse(failed.text) as ApiErrorResponse;
     expect(body.error).toMatchObject({ retryable: true });

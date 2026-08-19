@@ -34,6 +34,9 @@ describe("GET /api/asteroids", () => {
     expect(first.body).toEqual(feed);
     expect(first.headers["x-cache"]).toBe("MISS");
     expect(second.headers["x-cache"]).toBe("HIT");
+    expect(first.headers["cdn-cache-control"]).toBe(
+      "public, max-age=300, stale-while-revalidate=900",
+    );
     expect(getAsteroidFeed).toHaveBeenCalledOnce();
   });
 

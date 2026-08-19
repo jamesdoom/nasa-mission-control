@@ -4,6 +4,11 @@ import type { EarthObservation } from "@mission-control/shared";
 import { MemoryCache } from "../lib/cache.js";
 import { HttpError } from "../lib/http-error.js";
 import type { NasaClient } from "../lib/nasa-client.js";
+import {
+  archiveNasaCache,
+  liveNasaCache,
+  sendSharedJson,
+} from "../lib/response-cache.js";
 
 const querySchema = z
   .object({
@@ -58,11 +63,11 @@ export function createEarthRouter(
       );
     }
     const date = validateDate(parsed.data.date);
+    const cachePolicy = date ? archiveNasaCache : liveNasaCache;
     const cacheKey = `${parsed.data.collection}:${date ?? "latest"}`;
     const cached = cache.get(cacheKey);
     if (cached) {
-      response.setHeader("x-cache", "HIT");
-      response.json(cached);
+      sendSharedJson(response, cached, "HIT", cachePolicy);
       return;
     }
     const observation = await nasa.getEarthObservation(
@@ -73,12 +78,13 @@ export function createEarthRouter(
     if (hasImages) {
       cache.set(cacheKey, observation, cacheTtlMs);
     }
-    response.setHeader(
-      "cache-control",
-      hasImages ? "private, max-age=300" : "no-store",
-    );
-    response.setHeader("x-cache", "MISS");
-    response.json(observation);
+    if (hasImages) {
+      sendSharedJson(response, observation, "MISS", cachePolicy);
+    } else {
+      response.setHeader("cache-control", "no-store");
+      response.setHeader("x-cache", "MISS");
+      response.json(observation);
+    }
   });
   return router;
 }

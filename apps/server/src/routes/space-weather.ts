@@ -4,6 +4,7 @@ import type { SpaceWeatherFeed } from "@mission-control/shared";
 import { MemoryCache } from "../lib/cache.js";
 import { HttpError } from "../lib/http-error.js";
 import type { NasaClient } from "../lib/nasa-client.js";
+import { liveNasaCache, sendSharedJson } from "../lib/response-cache.js";
 
 const dayMs = 86_400_000;
 const datePattern = /^\d{4}-\d{2}-\d{2}$/;
@@ -74,15 +75,12 @@ export function createSpaceWeatherRouter(
     const cacheKey = `${startDate}:${endDate}:${category}`;
     const cached = cache.get(cacheKey);
     if (cached) {
-      response.setHeader("x-cache", "HIT");
-      response.json(cached);
+      sendSharedJson(response, cached, "HIT", liveNasaCache);
       return;
     }
     const feed = await nasa.getSpaceWeather(startDate, endDate, category);
     cache.set(cacheKey, feed, cacheTtlMs);
-    response.setHeader("cache-control", "private, max-age=60");
-    response.setHeader("x-cache", "MISS");
-    response.json(feed);
+    sendSharedJson(response, feed, "MISS", liveNasaCache);
   });
   return router;
 }

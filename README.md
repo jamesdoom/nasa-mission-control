@@ -51,6 +51,7 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Global offline mode messaging with route-change focus and assistive-technology announcements
 - Scheduled read-only production smoke checks and a documented incident-triage runbook
 - Vercel Speed Insights for route-level Core Web Vitals plus CI-enforced compressed asset budgets
+- Shared Vercel CDN caching for successful public NASA responses, with live/archive freshness policies
 
 ## Planned modules
 
@@ -123,6 +124,8 @@ The root `vercel.json` builds the shared contracts and Vite client, preserves `/
 ### Production monitoring
 
 Every API request emits a structured completion record containing its request ID, method, route path, status, and duration. Unexpected server errors and sanitized browser runtime failures appear in Vercel Runtime Logs as `request.unhandled_error` and `client.runtime_error`. Client reports contain only the error category, a bounded message, and the URL pathname—never query parameters, stack traces, local-storage values, or NASA credentials.
+
+Successful public NASA responses use short browser caching plus targeted Vercel CDN caching. Live feeds remain fresh for five minutes at the CDN; historical APOD, dated EPIC observations, and media detail records use longer archive policies. Empty Earth observations, validation failures, upstream failures, health checks, and client-error reports are never cached. `x-cache` describes the origin function’s bounded memory cache, while Vercel’s `x-vercel-cache` header describes edge delivery. See the [cache policy](docs/caching.md) for exact limits and diagnostics.
 
 After a deployment, verify `/api/health`, one live-data route, a lazy-loaded page, and a retry flow. The About page exposes a user-triggered, no-store check of the same-origin Express health route and carefully labels it as application availability—not proof that every NASA upstream is healthy. A scheduled GitHub workflow runs the same public health-contract and SPA-rewrite smoke checks every six hours. Review Runtime Logs for 5xx responses and repeated `client.runtime_error` events. See the [production operations runbook](docs/operations.md) for manual verification, triage, and alerting limits. This lightweight baseline does not replace third-party uptime monitoring; add that only if the project gains a production service-level target.
 
@@ -216,7 +219,8 @@ Mission Archive facts and chronology are checked against official NASA mission p
 13. **Complete — Portfolio evidence phase 5:** scoped API-health visibility, a production-quality case study, and source-checked Perseverance and Parker Solar Probe records with credited NASA imagery.
 14. **Complete — Reliability and polish phase 6:** scheduled production smoke checks, a concise operations runbook, global offline guidance, and accessible route-change focus and announcements.
 15. **Complete — Performance evidence phase 7:** route-level Vercel Speed Insights, reproducible compressed bundle evidence, CI performance budgets, dependency advisory remediation, and a documented measurement workflow.
-16. **Next:** evaluate real-user Core Web Vitals after enough production traffic, then optimize only routes with evidence of regressions; consider account synchronization separately if users need cross-device collections.
+16. **Complete — API delivery phase 8:** targeted Vercel CDN caching, separate live/archive freshness policies, stale-while-revalidate delivery, cache diagnostics, and failure-safe no-store behavior.
+17. **Next:** evaluate Core Web Vitals and CDN hit rates after enough production traffic, then optimize only measured regressions; consider account synchronization separately if users need cross-device collections.
 
 ## Screenshots
 

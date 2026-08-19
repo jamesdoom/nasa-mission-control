@@ -4,6 +4,11 @@ import { APOD_EARLIEST_DATE, type Apod } from "@mission-control/shared";
 import { MemoryCache } from "../lib/cache.js";
 import { HttpError } from "../lib/http-error.js";
 import type { NasaClient } from "../lib/nasa-client.js";
+import {
+  archiveNasaCache,
+  liveNasaCache,
+  sendSharedJson,
+} from "../lib/response-cache.js";
 
 const datePattern = /^\d{4}-\d{2}-\d{2}$/;
 const querySchema = z
@@ -52,17 +57,15 @@ export function createApodRouter(
         "Only an optional date=YYYY-MM-DD query parameter is accepted.",
       );
     const date = validateDate(parsed.data.date ?? utcToday());
+    const cachePolicy = date === utcToday() ? liveNasaCache : archiveNasaCache;
     const cached = cache.get(date);
     if (cached) {
-      response.setHeader("x-cache", "HIT");
-      response.json(cached);
+      sendSharedJson(response, cached, "HIT", cachePolicy);
       return;
     }
     const apod = await nasa.getApod(date);
     cache.set(date, apod, cacheTtlMs);
-    response.setHeader("cache-control", "private, max-age=60");
-    response.setHeader("x-cache", "MISS");
-    response.json(apod);
+    sendSharedJson(response, apod, "MISS", cachePolicy);
   });
   return router;
 }

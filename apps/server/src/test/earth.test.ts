@@ -49,6 +49,9 @@ describe("GET /api/earth", () => {
     expect(first.body).toEqual(observation);
     expect(first.headers["x-cache"]).toBe("MISS");
     expect(second.headers["x-cache"]).toBe("HIT");
+    expect(first.headers["cdn-cache-control"]).toBe(
+      "public, max-age=300, stale-while-revalidate=900",
+    );
     expect(getEarthObservation).toHaveBeenCalledOnce();
   });
 
@@ -63,6 +66,7 @@ describe("GET /api/earth", () => {
     expect(first.headers["x-cache"]).toBe("MISS");
     expect(second.headers["x-cache"]).toBe("MISS");
     expect(first.headers["cache-control"]).toBe("no-store");
+    expect(first.headers["cdn-cache-control"]).toBeUndefined();
     expect(getEarthObservation).toHaveBeenCalledTimes(2);
   });
 
