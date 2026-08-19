@@ -1,6 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import { MissionCard } from "../components/MissionCard";
 import {
+  missionDestinations,
   missions,
   type MissionDestination,
   type MissionStatus,
@@ -9,15 +10,12 @@ import {
 
 const destinations: (MissionDestination | "all")[] = [
   "all",
-  "Moon",
-  "Mars",
-  "Sun",
-  "Outer Solar System",
-  "Universe",
+  ...missionDestinations,
 ];
 const vehicles: (MissionVehicle | "all")[] = [
   "all",
   "crewed",
+  "spacecraft",
   "probe",
   "rover",
   "observatory",
@@ -56,6 +54,11 @@ export function MissionsPage() {
       (vehicle === "all" || mission.vehicle === vehicle) &&
       (status === "all" || mission.status === status),
   );
+  const latestReview = missions.reduce(
+    (latest, mission) =>
+      mission.verifiedAt > latest ? mission.verifiedAt : latest,
+    missions[0]?.verifiedAt ?? "",
+  );
 
   function update(key: "destination" | "vehicle" | "status", value: string) {
     const next = new URLSearchParams(params);
@@ -74,14 +77,54 @@ export function MissionsPage() {
         <div>
           <h1>Mission Archive</h1>
           <p>
-            Six journeys across six decades—assembled from source-checked NASA
+            Ten journeys across six decades—assembled from source-checked NASA
             records and clearly separated from live telemetry.
           </p>
         </div>
         <aside>
           <strong>CURATED DATA</strong>
-          <span>Last source review // 2026-08-19</span>
+          <span>Last source review // {latestReview}</span>
         </aside>
+      </section>
+      <section
+        className="section mission-destinations"
+        aria-labelledby="destination-groups-title"
+      >
+        <div className="section-heading">
+          <div>
+            <p className="kicker">
+              <span />
+              Destination index
+            </p>
+            <h2 id="destination-groups-title">Explore by destination</h2>
+          </div>
+          <p>Choose a region to focus the archive.</p>
+        </div>
+        <div className="mission-destination-grid">
+          {missionDestinations.map((item) => {
+            const grouped = missions.filter(
+              (mission) => mission.destination === item,
+            );
+            const operating = grouped.filter(
+              (mission) => mission.status !== "completed",
+            ).length;
+            return (
+              <button
+                key={item}
+                type="button"
+                aria-pressed={destination === item}
+                onClick={() => update("destination", item)}
+              >
+                <span>{item}</span>
+                <strong>{grouped.length}</strong>
+                <small>
+                  {operating} active or extended mission
+                  {operating === 1 ? "" : "s"}
+                </small>
+              </button>
+            );
+          })}
+        </div>
       </section>
       <section className="section mission-filter-section">
         <div className="mission-filters" aria-label="Mission filters">

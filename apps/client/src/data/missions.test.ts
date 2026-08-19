@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { missions } from "./missions";
+import { getMissionReviewDueDate, missions } from "./missions";
 
 describe("curated mission archive", () => {
   it("keeps every record source-backed and uniquely addressable", () => {
@@ -16,6 +16,21 @@ describe("curated mission archive", () => {
       ).toBe(true);
       expect(mission.image.nasaId).not.toBe("");
       expect(mission.verifiedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(getMissionReviewDueDate(mission)).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    }
+  });
+
+  it("connects expanded records to official NASA media", () => {
+    const expanded = missions.filter((mission) => mission.relatedMedia);
+    expect(expanded).toHaveLength(4);
+    for (const mission of expanded) {
+      expect(mission.timeline.length).toBeGreaterThanOrEqual(5);
+      expect(mission.relatedMedia).toHaveLength(2);
+      expect(
+        mission.relatedMedia?.every((item) =>
+          new URL(item.url).hostname.endsWith("nasa.gov"),
+        ),
+      ).toBe(true);
     }
   });
 });

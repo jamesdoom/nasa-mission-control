@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getMission } from "../data/missions";
+import { getMission, getMissionReviewDueDate } from "../data/missions";
 import { NotFoundPage } from "./NotFoundPage";
 import { useMissionFavorites } from "../hooks/useMissionFavorites";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
@@ -149,13 +149,58 @@ export function MissionDetailPage() {
               ))}
             </ol>
           </section>
+          {mission.relatedMedia ? (
+            <section
+              className="mission-related-media"
+              aria-labelledby="related-mission-media"
+            >
+              <div className="section-heading">
+                <div>
+                  <p className="kicker">
+                    <span />
+                    Official NASA media
+                  </p>
+                  <h2 id="related-mission-media">
+                    Continue through the record
+                  </h2>
+                </div>
+              </div>
+              <div>
+                {mission.relatedMedia.map((item) => (
+                  <a
+                    key={item.url}
+                    href={item.url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <span>{item.kind}</span>
+                    <strong>{item.title}</strong>
+                    <p>{item.description}</p>
+                    <small>Open official NASA source ↗</small>
+                  </a>
+                ))}
+                <Link
+                  to={`/media?q=${encodeURIComponent(mission.name)}&mediaType=image&page=1`}
+                >
+                  <span>archive search</span>
+                  <strong>Search NASA’s media library</strong>
+                  <p>
+                    Find additional normalized image and video records connected
+                    to {mission.name}.
+                  </p>
+                  <small>Open Mission Control media search →</small>
+                </Link>
+              </div>
+            </section>
+          ) : null}
           <aside className="mission-sources">
             <div>
               <strong>Curated record</strong>
               <p>
                 This page is maintained locally, not generated from live
                 telemetry. Status and facts were last checked against official
-                NASA sources on {mission.verifiedAt}.
+                NASA sources on {mission.verifiedAt}. The next scheduled status
+                review is due by {getMissionReviewDueDate(mission)}.
               </p>
             </div>
             <ul>

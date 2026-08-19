@@ -509,7 +509,9 @@ test("filters and opens a source-backed mission record", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "Mission Archive" }),
   ).toBeVisible();
-  await page.getByLabel("Destination").selectOption("Mars");
+  await page
+    .getByRole("combobox", { name: "Destination", exact: true })
+    .selectOption("Mars");
   await expect(page).toHaveURL(/destination=Mars/);
   await expect(page.getByRole("heading", { name: "Curiosity" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Apollo 11" })).toHaveCount(0);
@@ -573,7 +575,12 @@ test("shows portfolio evidence, API status, and the expanded mission archive", a
     }),
   ).toBeVisible();
   await page.goto("/missions");
-  await page.getByLabel("Destination").selectOption("Sun");
+  await page.getByRole("button", { name: /Moon/ }).click();
+  await expect(page).toHaveURL(/destination=Moon/);
+  await expect(page.getByRole("heading", { name: "Artemis I" })).toBeVisible();
+  await page
+    .getByRole("combobox", { name: "Destination", exact: true })
+    .selectOption("Sun");
   await expect(page).toHaveURL(/destination=Sun/);
   await expect(
     page.getByRole("heading", { name: "Parker Solar Probe" }),
@@ -583,6 +590,14 @@ test("shows portfolio evidence, API status, and the expanded mission archive", a
     .click();
   await expect(page).toHaveURL(/\/missions\/parker-solar-probe$/);
   await expect(page.getByText("NASA / Bill Ingalls")).toBeVisible();
+  await page.goto("/missions/artemis-i");
+  await expect(
+    page.getByRole("heading", { name: "Continue through the record" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: /Best images from Artemis I/ }),
+  ).toBeVisible();
+  await expect(page.getByText(/next scheduled status review/i)).toBeVisible();
 });
 
 test("follows a guided discovery path into mission history and back", async ({
@@ -664,6 +679,9 @@ test("navigates the mission index with global command search", async ({
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
+  await expect(
+    page.getByRole("button", { name: "Open command search" }),
+  ).toBeVisible();
   await page.keyboard.press("Control+K");
   const dialog = page.getByRole("dialog", { name: "Command search" });
   await expect(dialog).toBeVisible();

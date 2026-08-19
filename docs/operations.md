@@ -7,11 +7,20 @@ NASA Mission Control runs as a Vite single-page application with same-origin Exp
 - GitHub Actions runs the complete quality pipeline on every push and pull request.
 - `Production smoke` runs every six hours and can also be started manually. It checks the public `/api/health` contract, its `no-store` policy, and the `/about` SPA rewrite.
 - `Production performance` runs daily, checks desktop/mobile rendering and stability budgets, and retains a JSON evidence artifact for 30 days.
+- `Mission status review` runs monthly, checks curated review deadlines and official NASA source availability, and retains its evidence for 90 days. It deliberately requires a human to confirm changing mission statuses.
 - Vercel Runtime Logs contain structured request completion records and sanitized `client.runtime_error` reports.
 - Successful NASA routes expose `x-vercel-cache` for CDN diagnostics and `x-cache` for origin-memory diagnostics; see [caching.md](caching.md).
 - The About page offers a user-triggered health check. It verifies the application API only.
 
 These signals do not prove that APOD, NeoWs, DONKI, EPIC, GIBS, or the NASA Image Library is currently available. Each instrument handles its own upstream failure and retry state.
+
+## Curated mission review
+
+```bash
+npm run review:missions -- --check-sources
+```
+
+Active mission records expire after 90 days, extended records after 60 days, and completed records after one year. When the workflow reports an overdue record, read its linked official NASA sources, correct any changed facts or status, and update `verifiedAt` only after completing that review. HTTP availability alone is not evidence that the content remains accurate.
 
 ## Manual smoke test
 

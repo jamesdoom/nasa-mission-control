@@ -1,0 +1,35 @@
+name: Mission status review
+
+on:
+  schedule:
+    - cron: "17 13 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mission-status-review
+  cancel-in-progress: true
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Check review deadlines and official NASA sources
+        run: npm run review:missions -- --check-sources
+      - name: Upload mission review evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mission-status-review
+          path: artifacts/mission-status-review.json
+          if-no-files-found: error
+          retention-days: 90

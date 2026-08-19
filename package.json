@@ -16,6 +16,7 @@
     "test:e2e": "playwright test",
     "performance:budget": "node scripts/check-performance-budget.mjs",
     "audit:production": "node scripts/production-performance-audit.mjs",
+    "review:missions": "node scripts/review-mission-status.mjs",
     "smoke:production": "node scripts/production-smoke.mjs",
     "lint": "eslint .",
     "format": "prettier --write .",

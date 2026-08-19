@@ -28,9 +28,9 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Earth Observatory with date-based DSCOVR EPIC natural/enhanced imagery sequences
 - Keyboard-operable EPIC filmstrip, observation telemetry, and full-resolution downloads
 - Daily MODIS Terra true-color global composites from Earthdata GIBS
-- Curated Mission Archive spanning Apollo 11, Voyager 1, Curiosity, and Webb
+- Ten-record curated Mission Archive spanning Apollo, Artemis, planetary exploration, heliophysics, and space observatories
 - URL-backed destination, spacecraft-type, and status filters
-- Cinematic mission records with timelines, achievements, NASA photography, credits, and official sources
+- Destination overview groups and cinematic mission records with richer timelines, related NASA media, photography, credits, and official sources
 - Expanded browser-local Flight Log for APOD, asteroids, mission records, and NASA media
 - Runtime-validated recently viewed history with deduplication, bounded storage, and clear controls
 - Source-checked Space Trivia with three difficulty levels, scoring, persistent best streak, explanations, and NASA citations
@@ -100,6 +100,7 @@ npm run test:e2e
 npm run performance:budget
 npm run audit:production
 npm run smoke:production
+npm run review:missions
 npm run build
 npm run format:check
 ```
@@ -205,7 +206,9 @@ The global daily mosaic uses the official [NASA Earthdata GIBS](https://earthdat
 
 Space weather observations come from NASA’s active DONKI FLR, CME, and GST endpoints. NASA/CCMC describes DONKI as preliminary experimental research information supplied as a community service, not the official U.S. operational forecast. The application links to [NOAA’s Space Weather Prediction Center](https://www.swpc.noaa.gov/) for official forecasts and to each DONKI source record for context.
 
-Mission Archive facts and chronology are checked against official NASA mission pages for [Apollo 11](https://www.nasa.gov/mission/apollo-11/), [Voyager 1](https://science.nasa.gov/mission/voyager/voyager-1/), [Curiosity](https://science.nasa.gov/mission/msl-curiosity/), [Webb](https://science.nasa.gov/mission/webb/), [Perseverance](https://science.nasa.gov/mission/mars-2020-perseverance/), and [Parker Solar Probe](https://science.nasa.gov/mission/parker-solar-probe/). Locally stored photographs retain displayed NASA credits and stable source identifiers: `as11-40-5903`, `PIA21741`, `PIA20603`, `GSFC_20171208_Archive_e000356`, `PIA26344`, and the official Parker launch resource dated 2018-08-12. Active and extended mission statuses can change and must be rechecked against those sources when archive records are edited.
+Mission Archive facts and chronology are checked against official NASA mission pages for [Apollo 11](https://www.nasa.gov/mission/apollo-11/), [Voyager 1](https://science.nasa.gov/mission/voyager/voyager-1/), [Curiosity](https://science.nasa.gov/mission/msl-curiosity/), [Webb](https://science.nasa.gov/mission/webb/), [Perseverance](https://science.nasa.gov/mission/mars-2020-perseverance/), [Parker Solar Probe](https://science.nasa.gov/mission/parker-solar-probe/), [Hubble](https://science.nasa.gov/mission/hubble/), [Juno](https://science.nasa.gov/mission/juno/), [Cassini-Huygens](https://science.nasa.gov/mission/cassini/), and [Artemis I](https://www.nasa.gov/mission/artemis-i/). Locally stored photographs retain displayed NASA credits and stable source identifiers, including `as11-40-5903`, `PIA21741`, `PIA20603`, `GSFC_20171208_Archive_e000356`, `PIA26344`, `sts061-57-021`, `PIA25014`, `PIA06193`, and `art001e000669`. Active and extended mission statuses are curated snapshots, not live telemetry.
+
+The monthly `Mission status review` workflow checks official source availability and flags records whose human review date has expired. Active records are reviewed every 90 days, extended missions every 60 days, and completed records annually. A passing link check does not verify a mission’s status; maintainers must read the official sources and update `verifiedAt` after review. Run `npm run review:missions -- --check-sources` to reproduce the scheduled check.
 
 ## Roadmap
 
@@ -227,7 +230,8 @@ Mission Archive facts and chronology are checked against official NASA mission p
 16. **Complete — API delivery phase 8:** targeted Vercel CDN caching, separate live/archive freshness policies, stale-while-revalidate delivery, cache diagnostics, and failure-safe no-store behavior.
 17. **Complete — Production evidence phase 9:** live error and traffic audit, daily desktop/mobile synthetic checks, Web Vital snapshots, stability budgets, and retained JSON evidence without visitor analytics.
 18. **Complete — Navigation phase 10:** an accessible, lazy-loaded global command palette with keyboard navigation, mission and discovery indexing, focus containment, and direct route navigation.
-19. **Next:** compare synthetic trends with Speed Insights after a meaningful real-user sample, then expand source-backed mission content and optimize only measured route regressions; consider account synchronization separately if users need cross-device collections.
+19. **Complete — Mission Archive phase 11:** ten source-checked records, destination overview groups, richer new timelines, curated related media, official NASA photography, and scheduled status-review evidence.
+20. **Next:** compare synthetic trends with Speed Insights after a meaningful real-user sample, deepen guided discovery connections for the expanded missions, and optimize only measured route regressions; consider account synchronization separately if users need cross-device collections.
 
 ## Screenshots
 

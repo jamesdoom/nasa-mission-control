@@ -1,5 +1,6 @@
 export type MissionStatus = "active" | "completed" | "extended";
-export type MissionVehicle = "crewed" | "probe" | "rover" | "observatory";
+export type MissionVehicle =
+  "crewed" | "spacecraft" | "probe" | "rover" | "observatory";
 export type MissionDestination =
   "Moon" | "Mars" | "Sun" | "Outer Solar System" | "Universe";
 
@@ -27,6 +28,12 @@ export type Mission = {
   };
   facts: { label: string; value: string }[];
   timeline: { date: string; title: string; description: string }[];
+  relatedMedia?: {
+    title: string;
+    description: string;
+    kind: "image" | "story" | "timeline";
+    url: string;
+  }[];
   sources: { label: string; url: string }[];
   verifiedAt: string;
 };
@@ -463,7 +470,396 @@ export const missions: Mission[] = [
     ],
     verifiedAt: "2026-08-19",
   },
+  {
+    slug: "hubble",
+    name: "Hubble Space Telescope",
+    program: "Great Observatories",
+    missionNumber: "ARCHIVE // 007",
+    status: "active",
+    statusLabel: "Active mission",
+    vehicle: "observatory",
+    destination: "Universe",
+    launchDate: "1990-04-24",
+    endDate: null,
+    dek: "A serviceable observatory in low Earth orbit that transformed humanity’s view of the universe.",
+    overview:
+      "Hubble observes ultraviolet, visible, and near-infrared light above Earth’s atmosphere. Five astronaut servicing missions repaired and upgraded the telescope, enabling a scientific record that spans the solar system, stellar birth and death, galaxies, and the expansion of the universe.",
+    objective:
+      "Use high-resolution observations above Earth’s atmosphere to investigate the origin, structure, and evolution of the universe.",
+    achievements: [
+      "Helped establish the universe’s expansion rate and age",
+      "Provided evidence that supermassive black holes are common in galaxy centers",
+      "Built a multi-decade record of planets, stars, nebulae, and distant galaxies",
+    ],
+    image: {
+      src: "/assets/missions/hubble.jpg",
+      alt: "Hubble Space Telescope above Earth with the Moon in the distance",
+      credit: "NASA",
+      nasaId: "sts061-57-021",
+      sourceUrl: "https://images.nasa.gov/details/sts061-57-021",
+    },
+    facts: [
+      { label: "Orbit", value: "Low Earth orbit" },
+      { label: "Launch vehicle", value: "Space Shuttle Discovery" },
+      { label: "Primary mirror", value: "2.4 meters" },
+      { label: "Servicing missions", value: "5" },
+    ],
+    timeline: [
+      {
+        date: "1990-04-24",
+        title: "Launch",
+        description: "Discovery launched Hubble aboard mission STS-31.",
+      },
+      {
+        date: "1990-04-25",
+        title: "Deployment",
+        description: "The crew released Hubble into low Earth orbit.",
+      },
+      {
+        date: "1993-12-13",
+        title: "Optics restored",
+        description:
+          "The first servicing mission installed corrective optics and a new camera.",
+      },
+      {
+        date: "1995-12-18",
+        title: "Hubble Deep Field",
+        description:
+          "A long exposure began revealing thousands of galaxies in a seemingly empty patch of sky.",
+      },
+      {
+        date: "2009-05-24",
+        title: "Final servicing mission",
+        description:
+          "Astronauts completed the fifth servicing mission with new instruments and repairs.",
+      },
+    ],
+    relatedMedia: [
+      {
+        title: "Hubble’s iconic images",
+        description: "Explore NASA’s curated gallery of landmark observations.",
+        kind: "image",
+        url: "https://science.nasa.gov/mission/hubble/multimedia/hubble-images/",
+      },
+      {
+        title: "Complete Hubble timeline",
+        description:
+          "Trace the observatory’s development, servicing, and discoveries.",
+        kind: "timeline",
+        url: "https://science.nasa.gov/mission/hubble/overview/hubble-timeline/",
+      },
+    ],
+    sources: [
+      {
+        label: "NASA Hubble mission",
+        url: "https://science.nasa.gov/mission/hubble/",
+      },
+      {
+        label: "NASA Hubble timeline",
+        url: "https://science.nasa.gov/mission/hubble/overview/hubble-timeline/",
+      },
+    ],
+    verifiedAt: "2026-08-19",
+  },
+  {
+    slug: "juno",
+    name: "Juno",
+    program: "New Frontiers",
+    missionNumber: "ARCHIVE // 008",
+    status: "extended",
+    statusLabel: "Extended mission",
+    vehicle: "probe",
+    destination: "Outer Solar System",
+    launchDate: "2011-08-05",
+    endDate: null,
+    dek: "A solar-powered orbiter probing beneath Jupiter’s clouds and surveying its largest moons.",
+    overview:
+      "Juno measures Jupiter’s gravity, magnetic field, atmosphere, auroras, rings, and deep structure from a highly elliptical polar orbit. Its extended mission added close encounters with Ganymede, Europa, and Io to the investigation of the Jovian system.",
+    objective:
+      "Investigate Jupiter’s origin and evolution by mapping its interior, atmosphere, magnetic field, and polar environment.",
+    achievements: [
+      "Mapped vast cyclone systems around Jupiter’s poles",
+      "Measured atmospheric jet streams extending thousands of kilometers deep",
+      "Expanded its investigation through close flybys of three Galilean moons",
+    ],
+    image: {
+      src: "/assets/missions/juno.jpg",
+      alt: "Jupiter with its moons Io and Europa seen by NASA’s Juno spacecraft",
+      credit: "NASA / JPL-Caltech / SwRI / MSSS",
+      nasaId: "PIA25014",
+      sourceUrl: "https://images.nasa.gov/details/PIA25014",
+    },
+    facts: [
+      { label: "Target", value: "Jupiter system" },
+      { label: "Launch vehicle", value: "Atlas V 551" },
+      { label: "Orbit", value: "Elliptical polar orbit" },
+      { label: "Power", value: "Three solar arrays" },
+    ],
+    timeline: [
+      {
+        date: "2011-08-05",
+        title: "Launch",
+        description: "Juno launched from Cape Canaveral aboard an Atlas V.",
+      },
+      {
+        date: "2013-10-09",
+        title: "Earth gravity assist",
+        description:
+          "An Earth flyby supplied the velocity needed to reach Jupiter.",
+      },
+      {
+        date: "2016-07-04",
+        title: "Jupiter orbit insertion",
+        description: "A 35-minute engine burn placed Juno into polar orbit.",
+      },
+      {
+        date: "2021-06-07",
+        title: "Ganymede encounter",
+        description:
+          "Juno made the closest spacecraft flyby of Ganymede in more than two decades.",
+      },
+      {
+        date: "2023-12-30",
+        title: "Io close flyby",
+        description:
+          "The extended mission began a pair of close passes over volcanic Io.",
+      },
+    ],
+    relatedMedia: [
+      {
+        title: "JunoCam image gallery",
+        description:
+          "Explore processed Jupiter imagery from the mission’s public camera.",
+        kind: "image",
+        url: "https://science.nasa.gov/mission/juno/multimedia/",
+      },
+      {
+        title: "Juno discoveries",
+        description:
+          "Review NASA’s account of the mission’s major scientific results.",
+        kind: "story",
+        url: "https://science.nasa.gov/mission/juno/",
+      },
+    ],
+    sources: [
+      {
+        label: "NASA Juno mission",
+        url: "https://science.nasa.gov/mission/juno/",
+      },
+      {
+        label: "NASA Juno fact sheet",
+        url: "https://science.nasa.gov/resource/fact-sheet-juno/",
+      },
+    ],
+    verifiedAt: "2026-08-19",
+  },
+  {
+    slug: "cassini",
+    name: "Cassini-Huygens",
+    program: "Flagship mission",
+    missionNumber: "ARCHIVE // 009",
+    status: "completed",
+    statusLabel: "Mission complete",
+    vehicle: "probe",
+    destination: "Outer Solar System",
+    launchDate: "1997-10-15",
+    endDate: "2017-09-15",
+    dek: "A two-decade exploration of Saturn that revealed ocean worlds and landed a probe on Titan.",
+    overview:
+      "The NASA, ESA, and ASI Cassini-Huygens mission orbited Saturn for 13 years. Cassini surveyed the planet, rings, and moons while ESA’s Huygens probe descended through Titan’s atmosphere, producing an enduring record of one of the solar system’s most complex planetary systems.",
+    objective:
+      "Study Saturn’s atmosphere, rings, magnetosphere, and diverse moons, including Titan’s atmosphere and surface.",
+    achievements: [
+      "Revealed a global ocean and hydrothermal activity within Enceladus",
+      "Delivered Huygens for the first landing in the outer solar system",
+      "Documented liquid methane seas and weather on Titan",
+    ],
+    image: {
+      src: "/assets/missions/cassini.jpg",
+      alt: "Saturn and its rings assembled from Cassini spacecraft images",
+      credit: "NASA / JPL / Space Science Institute",
+      nasaId: "PIA06193",
+      sourceUrl: "https://images.nasa.gov/details/PIA06193",
+    },
+    facts: [
+      { label: "Partners", value: "NASA / ESA / ASI" },
+      { label: "Launch vehicle", value: "Titan IVB-Centaur" },
+      { label: "Saturn orbits", value: "294" },
+      { label: "Mission duration", value: "19 years, 11 months" },
+    ],
+    timeline: [
+      {
+        date: "1997-10-15",
+        title: "Launch",
+        description: "Cassini-Huygens began its seven-year journey to Saturn.",
+      },
+      {
+        date: "2004-07-01",
+        title: "Saturn orbit insertion",
+        description: "Cassini became the first spacecraft to orbit Saturn.",
+      },
+      {
+        date: "2005-01-14",
+        title: "Huygens lands on Titan",
+        description:
+          "ESA’s probe transmitted data through its atmospheric descent and from the surface.",
+      },
+      {
+        date: "2005-07-14",
+        title: "Active Enceladus",
+        description:
+          "A close flyby revealed a geologically active south polar region and icy plume material.",
+      },
+      {
+        date: "2017-09-15",
+        title: "Grand Finale",
+        description:
+          "Cassini entered Saturn’s atmosphere, protecting potentially habitable moons from contamination.",
+      },
+    ],
+    relatedMedia: [
+      {
+        title: "Cassini image galleries",
+        description:
+          "Browse NASA’s visual record of Saturn, its rings, and moons.",
+        kind: "image",
+        url: "https://science.nasa.gov/mission/cassini/multimedia/images/",
+      },
+      {
+        title: "Cassini mission timeline",
+        description: "Re-fly the journey from launch through the Grand Finale.",
+        kind: "timeline",
+        url: "https://science.nasa.gov/mission/cassini/the-journey/timeline/",
+      },
+    ],
+    sources: [
+      {
+        label: "NASA Cassini mission",
+        url: "https://science.nasa.gov/mission/cassini/",
+      },
+      {
+        label: "NASA Cassini mission overview",
+        url: "https://science.nasa.gov/mission/cassini/about-the-mission/",
+      },
+      {
+        label: "NASA Cassini quick facts",
+        url: "https://science.nasa.gov/mission/cassini/quick-facts/",
+      },
+    ],
+    verifiedAt: "2026-08-19",
+  },
+  {
+    slug: "artemis-i",
+    name: "Artemis I",
+    program: "Artemis",
+    missionNumber: "ARCHIVE // 010",
+    status: "completed",
+    statusLabel: "Flight test complete",
+    vehicle: "spacecraft",
+    destination: "Moon",
+    launchDate: "2022-11-16",
+    endDate: "2022-12-11",
+    dek: "The first integrated flight test of SLS, Orion, and the ground systems built for lunar exploration.",
+    overview:
+      "Artemis I sent an uncrewed Orion spacecraft around the Moon to test NASA’s deep-space exploration systems together. The mission exercised launch, navigation, communications, distant retrograde orbit operations, high-speed lunar-return re-entry, and Pacific recovery.",
+    objective:
+      "Demonstrate Orion’s systems in deep space, test its heat shield at lunar-return speed, and recover the spacecraft safely.",
+    achievements: [
+      "Completed the first integrated SLS and Orion flight",
+      "Traveled about 1.4 million miles during a 25-day lunar mission",
+      "Returned at roughly Mach 32 and splashed down safely in the Pacific",
+    ],
+    image: {
+      src: "/assets/missions/artemis-i.jpg",
+      alt: "Orion spacecraft with the Moon during the Artemis I mission",
+      credit: "NASA",
+      nasaId: "art001e000669",
+      sourceUrl: "https://images.nasa.gov/details/art001e000669",
+    },
+    facts: [
+      { label: "Mission type", value: "Uncrewed lunar flight test" },
+      { label: "Launch vehicle", value: "Space Launch System" },
+      { label: "Duration", value: "25 days, 10 hours, 53 minutes" },
+      { label: "Distance traveled", value: "About 1.4 million miles" },
+    ],
+    timeline: [
+      {
+        date: "2022-11-16",
+        title: "Launch",
+        description:
+          "SLS launched Orion from Kennedy Space Center’s Launch Complex 39B.",
+      },
+      {
+        date: "2022-11-21",
+        title: "Outbound lunar flyby",
+        description: "Orion passed about 81 miles above the lunar surface.",
+      },
+      {
+        date: "2022-11-25",
+        title: "Distant retrograde orbit",
+        description:
+          "Orion entered a stable orbit thousands of miles beyond the Moon.",
+      },
+      {
+        date: "2022-12-05",
+        title: "Return powered flyby",
+        description:
+          "A close lunar pass placed Orion on its homeward trajectory.",
+      },
+      {
+        date: "2022-12-11",
+        title: "Pacific splashdown",
+        description:
+          "Orion completed re-entry and was recovered west of Baja California.",
+      },
+    ],
+    relatedMedia: [
+      {
+        title: "Best images from Artemis I",
+        description: "See NASA’s selected views from Orion’s lunar journey.",
+        kind: "image",
+        url: "https://www.nasa.gov/missions/artemis/orion/view-the-best-images-from-nasas-artemis-i-mission/",
+      },
+      {
+        title: "Artemis I day-by-day timeline",
+        description: "Follow the complete 25-day flight test chronology.",
+        kind: "timeline",
+        url: "https://www.nasa.gov/reference/artemis-i-mission-timeline/",
+      },
+    ],
+    sources: [
+      {
+        label: "NASA Artemis I mission",
+        url: "https://www.nasa.gov/mission/artemis-i/",
+      },
+      {
+        label: "NASA Artemis I timeline",
+        url: "https://www.nasa.gov/reference/artemis-i-mission-timeline/",
+      },
+    ],
+    verifiedAt: "2026-08-19",
+  },
 ];
+
+export const missionDestinations = [
+  "Moon",
+  "Mars",
+  "Sun",
+  "Outer Solar System",
+  "Universe",
+] as const satisfies readonly MissionDestination[];
+
+export function getMissionReviewDueDate(mission: Mission): string {
+  const reviewIntervalDays =
+    mission.status === "completed"
+      ? 365
+      : mission.status === "extended"
+        ? 60
+        : 90;
+  const due = new Date(`${mission.verifiedAt}T00:00:00Z`);
+  due.setUTCDate(due.getUTCDate() + reviewIntervalDays);
+  return due.toISOString().slice(0, 10);
+}
 
 export function getMission(slug: string | undefined): Mission | undefined {
   return missions.find((mission) => mission.slug === slug);
