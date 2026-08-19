@@ -1,5 +1,14 @@
 import { expect, test, type Page } from "@playwright/test";
 
+async function capturePortfolioScreenshot(
+  page: Page,
+  options: Parameters<Page["screenshot"]>[0],
+): Promise<void> {
+  if (process.env.UPDATE_SCREENSHOTS === "true") {
+    await page.screenshot(options);
+  }
+}
+
 const testImage = `data:image/svg+xml,${encodeURIComponent(`
   <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
     <defs><radialGradient id="space"><stop stop-color="#4087bd"/><stop offset=".35" stop-color="#122b52"/><stop offset="1" stop-color="#020611"/></radialGradient></defs>
@@ -271,7 +280,7 @@ test("loads APOD, saves it, and preserves it in the Flight Log", async ({
     page.getByRole("heading", { name: "Explore beyond the horizon." }),
   ).toBeVisible();
   await expect(page.getByRole("heading", { name: apod.title })).toBeVisible();
-  await page.screenshot({
+  await capturePortfolioScreenshot(page, {
     path: "docs/screenshots/dashboard.png",
     fullPage: true,
     animations: "disabled",
@@ -291,6 +300,44 @@ test("keeps archive dates in the URL", async ({ page }) => {
   await expect(page.getByRole("heading", { name: apod.title })).toBeVisible();
 });
 
+test("recovers from a transient APOD failure without losing the selected date", async ({
+  page,
+}) => {
+  let attempts = 0;
+  await page.route(
+    (url) => url.pathname === "/api/apod",
+    async (route) => {
+      attempts += 1;
+      if (attempts <= 2) {
+        await route.fulfill({
+          status: 503,
+          contentType: "application/json",
+          body: JSON.stringify({
+            error: {
+              code: "UPSTREAM_UNAVAILABLE",
+              message: "NASA did not respond in time.",
+              requestId: "test-recovery",
+              retryable: true,
+            },
+          }),
+        });
+        return;
+      }
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(apod),
+      });
+    },
+  );
+  await page.goto("/apod?date=2024-01-01");
+  await expect(page.getByText("NASA did not respond in time.")).toBeVisible();
+  await expect(page.getByText("Reference: test-recovery")).toBeVisible();
+  await page.getByRole("button", { name: "Retry transmission" }).click();
+  await expect(page.getByRole("heading", { name: apod.title })).toBeVisible();
+  await expect(page).toHaveURL(/date=2024-01-01/);
+});
+
 test("provides an operable mobile navigation menu", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await mockApod(page);
@@ -305,7 +352,7 @@ test("provides an operable mobile navigation menu", async ({ page }) => {
   await expect(
     page.getByRole("link", { name: "02 Asteroid Watch", exact: true }),
   ).toBeVisible();
-  await page.screenshot({
+  await capturePortfolioScreenshot(page, {
     path: "docs/screenshots/mobile-navigation.png",
     fullPage: false,
     animations: "disabled",
@@ -340,7 +387,7 @@ test("explores, sorts, opens, and saves an asteroid encounter", async ({
   ).toBeVisible();
   await page.getByLabel("Sort encounters").selectOption("fastest");
   await expect(page).toHaveURL(/sort=fastest/);
-  await page.screenshot({
+  await capturePortfolioScreenshot(page, {
     path: "docs/screenshots/asteroid-watch.png",
     fullPage: true,
     animations: "disabled",
@@ -374,7 +421,7 @@ test("searches and inspects the NASA media archive", async ({ page }) => {
   ).toBeVisible();
   await page.getByRole("radio", { name: "image", exact: true }).click();
   await expect(page).toHaveURL(/mediaType=image/);
-  await page.screenshot({
+  await capturePortfolioScreenshot(page, {
     path: "docs/screenshots/media-library.png",
     fullPage: true,
     animations: "disabled",
@@ -409,7 +456,7 @@ test("filters observed DONKI space weather events", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "Geomagnetic storm observation" }),
   ).toBeVisible();
-  await page.screenshot({
+  await capturePortfolioScreenshot(page, {
     path: "docs/screenshots/space-weather.png",
     fullPage: true,
     animations: "disabled",
@@ -437,7 +484,7 @@ test("browses EPIC frames and keeps Earth observation state in the URL", async (
     page.getByRole("heading", { name: "Our world in daylight" }),
   ).toBeVisible();
   await page.locator("main").click({ position: { x: 10, y: 10 } });
-  await page.screenshot({
+  await capturePortfolioScreenshot(page, {
     path: "docs/screenshots/earth-observatory.png",
     fullPage: true,
     animations: "disabled",
@@ -479,7 +526,7 @@ test("filters and opens a source-backed mission record", async ({ page }) => {
     .getByRole("link", { name: "Open Curiosity mission archive" })
     .click();
   await page.locator("main").click({ position: { x: 10, y: 10 } });
-  await page.screenshot({
+  await capturePortfolioScreenshot(page, {
     path: "docs/screenshots/mission-archive.png",
     fullPage: true,
     animations: "disabled",
@@ -509,7 +556,7 @@ test("scores and explains source-checked space trivia", async ({ page }) => {
   await expect(page).toHaveURL(/difficulty=specialist/);
   await expect(page.getByText(/Which spacecraft became/)).toBeVisible();
   await page.locator("main").click({ position: { x: 10, y: 10 } });
-  await page.screenshot({
+  await capturePortfolioScreenshot(page, {
     path: "docs/screenshots/space-trivia.png",
     fullPage: true,
     animations: "disabled",

@@ -287,7 +287,7 @@ export class NasaClient {
       );
     }
 
-    const parsed = nasaApodSchema.safeParse(await response.json());
+    const parsed = nasaApodSchema.safeParse(await this.parseJson(response));
     if (!parsed.success)
       throw new HttpError(
         502,
@@ -767,6 +767,18 @@ export class NasaClient {
         "NASA returned an unexpected response.",
       );
     }
-    return (await response.json()) as unknown;
+    return this.parseJson(response);
+  }
+
+  private async parseJson(response: Response): Promise<unknown> {
+    try {
+      return (await response.json()) as unknown;
+    } catch {
+      throw new HttpError(
+        502,
+        "UPSTREAM_UNAVAILABLE",
+        "NASA returned malformed data. Please retry shortly.",
+      );
+    }
   }
 }

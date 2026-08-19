@@ -3,6 +3,7 @@ import type { EarthCollection } from "@mission-control/shared";
 import { useSearchParams } from "react-router-dom";
 import { ApiError } from "../api/apod";
 import { ErrorState, LoadingState } from "../components/AsyncState";
+import { DataStatus } from "../components/DataStatus";
 import { EarthImageViewer } from "../components/EarthImageViewer";
 import { useEarthObservation } from "../features/earth/useEarthObservation";
 
@@ -153,14 +154,21 @@ export function EarthPage() {
             </div>
           </div>
         ) : (
-          <EarthImageViewer
-            images={query.data.images}
-            selectedIndex={Math.min(
-              selectedIndex,
-              query.data.images.length - 1,
-            )}
-            onSelect={selectImage}
-          />
+          <>
+            <DataStatus
+              source="NASA DSCOVR EPIC"
+              updatedAt={query.dataUpdatedAt}
+              refreshing={query.isFetching}
+            />
+            <EarthImageViewer
+              images={query.data.images}
+              selectedIndex={Math.min(
+                selectedIndex,
+                query.data.images.length - 1,
+              )}
+              onSelect={selectImage}
+            />
+          </>
         )}
       </section>
       {query.data && (

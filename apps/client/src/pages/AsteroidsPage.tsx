@@ -4,6 +4,7 @@ import type { Asteroid } from "@mission-control/shared";
 import { ApiError } from "../api/apod";
 import { AsteroidCard } from "../components/AsteroidCard";
 import { ErrorState, LoadingState } from "../components/AsyncState";
+import { DataStatus } from "../components/DataStatus";
 import { useAsteroids } from "../features/asteroids/useAsteroids";
 import { useAsteroidFavorites } from "../hooks/useAsteroidFavorites";
 import { utcDate } from "../utils/dates";
@@ -128,6 +129,11 @@ export function AsteroidsPage() {
         />
       ) : (
         <>
+          <DataStatus
+            source="NASA/JPL NeoWs"
+            updatedAt={query.dataUpdatedAt}
+            refreshing={query.isFetching}
+          />
           <div className="asteroid-summary" aria-label="Encounter summary">
             <div>
               <small>Objects detected</small>

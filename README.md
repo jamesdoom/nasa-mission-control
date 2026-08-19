@@ -35,6 +35,9 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Grouped, keyboard-accessible module navigation with route-aware document titles
 - Route-level code splitting, self-hosted fonts, and optimized local imagery for faster repeat visits
 - Credited NASA Bennu and solar imagery establishing a distinct visual identity for major live-data modules
+- Visible NASA source/freshness indicators across live-data instruments
+- Sanitized browser runtime-error reporting to structured Vercel function logs
+- Explicit retry metadata, no-store failure responses, and transient-failure recovery coverage
 
 ## Planned modules
 
@@ -84,6 +87,8 @@ npm run format:check
 
 The first Playwright run may require `npx playwright install chromium`.
 
+Portfolio screenshots are not rewritten during normal or CI test runs. To regenerate the deterministic captures, set `UPDATE_SCREENSHOTS=true` while running `npm run test:e2e` (or `$env:UPDATE_SCREENSHOTS="true"` first in PowerShell).
+
 ## Production run
 
 Build all workspaces, set `NODE_ENV=production`, and start Express. The server serves both the compiled SPA and `/api` routes:
@@ -99,6 +104,12 @@ Open `http://localhost:3001`. Deployments must provide `NASA_API_KEY`; the clien
 ### Vercel deployment
 
 The root `vercel.json` builds the shared contracts and Vite client, preserves `/api/*` for the catch-all Express function, and rewrites other paths to the SPA entry point. Configure `NASA_API_KEY` as an encrypted Vercel environment variable for Production and Preview before deploying. `CLIENT_ORIGIN` may be set to the production origin, while the remaining server settings can use their documented defaults.
+
+### Production monitoring
+
+Every API request emits a structured completion record containing its request ID, method, route path, status, and duration. Unexpected server errors and sanitized browser runtime failures appear in Vercel Runtime Logs as `request.unhandled_error` and `client.runtime_error`. Client reports contain only the error category, a bounded message, and the URL pathname—never query parameters, stack traces, local-storage values, or NASA credentials.
+
+After a deployment, verify `/api/health`, one live-data route, a lazy-loaded page, and a retry flow. Review Runtime Logs for 5xx responses and repeated `client.runtime_error` events. This lightweight baseline does not replace dedicated uptime monitoring or alerting; add those only if the project gains a production service-level target.
 
 ## Architecture
 
@@ -143,7 +154,7 @@ Non-dashboard routes load as independent Vite chunks, so visitors do not downloa
 
 ## Testing
 
-`npm test` covers query and date-range validation, bounded caching, security headers, APOD, NeoWs, Collection+JSON, DONKI, Earth observation behavior, curated mission and trivia source integrity, malformed upstream responses, media rendering, automated accessibility checks, trivia scoring, the UTC clock, and all local favorite stores. `npm run test:e2e` verifies dashboard loading, URL-backed filters, responsive navigation, all four Flight Log content types, Space Weather filtering, the EPIC image sequence, Mission Archive navigation, and Space Trivia in Chromium.
+`npm test` covers query and date-range validation, bounded caching, security headers, APOD, NeoWs, Collection+JSON, DONKI, Earth observation behavior, curated mission and trivia source integrity, timeout/rate-limit/non-JSON/malformed upstream responses, browser error reporting, media rendering, automated accessibility checks, trivia scoring, the UTC clock, and all local favorite stores. `npm run test:e2e` verifies dashboard loading, transient API recovery, URL-backed filters, responsive navigation, all four Flight Log content types, Space Weather filtering, the EPIC image sequence, Mission Archive navigation, and Space Trivia in Chromium.
 
 [GitHub Actions](.github/workflows/ci.yml) runs formatting, strict types, lint, all Vitest suites, the production build, and Chromium smoke tests for pushes to `main` and pull requests.
 
@@ -177,7 +188,9 @@ Mission Archive facts and chronology are checked against official NASA mission p
 6. **Complete:** curated Mission Archive with source-checked timelines, URL-backed filtering, detail records, and credited NASA photography.
 7. **Complete:** expanded Flight Log for mission and media records plus source-checked Space Trivia with scoring, streaks, difficulty levels, explanations, and citations.
 8. **Complete:** module-specific NASA photography, grouped accessible navigation, recent-history controls, route-level performance work, metadata, and final portfolio polish.
-9. **Optional next:** deployment, uptime/error observability, portfolio case-study material, and additional source-checked archive records.
+9. **Complete — Reliability phase 1:** stable upstream-failure mapping, retry metadata, failure-safe caching, visible data freshness, sanitized client-error telemetry, security hardening, and browser recovery coverage.
+10. **Next — Data experience:** richer comparisons, explainers, and visualization for scientific measurements without overstating NASA classifications.
+11. **Later:** dedicated uptime alerts, portfolio case-study material, and additional source-checked archive records.
 
 ## Screenshots
 

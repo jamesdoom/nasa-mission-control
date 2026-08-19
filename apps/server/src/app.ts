@@ -12,6 +12,7 @@ import {
 } from "./middleware/errors.js";
 import { createApodRouter } from "./routes/apod.js";
 import { createAsteroidRouter } from "./routes/asteroids.js";
+import { createClientErrorRouter } from "./routes/client-errors.js";
 import { createEarthRouter } from "./routes/earth.js";
 import { createMediaRouter } from "./routes/media.js";
 import { createSpaceWeatherRouter } from "./routes/space-weather.js";
@@ -39,6 +40,7 @@ export function createApp(
   app.get("/api/health", (_request, response) =>
     response.json({ status: "ok" }),
   );
+  app.use("/api/client-errors", createClientErrorRouter());
   app.use(
     "/api/apod",
     createApodRouter(nasa, env.NASA_CACHE_TTL_MS, env.NASA_CACHE_MAX_ENTRIES),

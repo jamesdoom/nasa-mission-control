@@ -2,6 +2,7 @@ import { useEffect, useState, type SyntheticEvent } from "react";
 import { useSearchParams } from "react-router-dom";
 import { ApiError } from "../api/apod";
 import { ErrorState, LoadingState } from "../components/AsyncState";
+import { DataStatus } from "../components/DataStatus";
 import { MediaCard } from "../components/MediaCard";
 import { useMediaSearch } from "../features/media/useMedia";
 
@@ -121,6 +122,11 @@ export function MediaLibraryPage() {
           </div>
         ) : (
           <>
+            <DataStatus
+              source="NASA Image and Video Library"
+              updatedAt={result.dataUpdatedAt}
+              refreshing={result.isFetching}
+            />
             <div className="media-grid">
               {result.data.items.map((item) => (
                 <MediaCard key={item.nasaId} item={item} />

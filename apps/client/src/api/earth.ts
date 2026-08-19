@@ -18,7 +18,11 @@ export async function getEarthObservation(
     const fallback = "Mission Control could not retrieve Earth observations.";
     try {
       const body = (await response.json()) as ApiErrorResponse;
-      throw new ApiError(body.error.message || fallback, body.error.requestId);
+      throw new ApiError(
+        body.error.message || fallback,
+        body.error.requestId,
+        body.error.retryable,
+      );
     } catch (error: unknown) {
       if (error instanceof ApiError) throw error;
       throw new ApiError(fallback);

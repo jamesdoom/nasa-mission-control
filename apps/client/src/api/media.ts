@@ -13,7 +13,11 @@ async function request<T>(url: string, fallback: string): Promise<T> {
   if (!response.ok) {
     try {
       const body = (await response.json()) as ApiErrorResponse;
-      throw new ApiError(body.error.message || fallback, body.error.requestId);
+      throw new ApiError(
+        body.error.message || fallback,
+        body.error.requestId,
+        body.error.retryable,
+      );
     } catch (error: unknown) {
       if (error instanceof ApiError) throw error;
       throw new ApiError(fallback);

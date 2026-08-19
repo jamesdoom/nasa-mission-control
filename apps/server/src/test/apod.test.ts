@@ -1,7 +1,7 @@
 import request from "supertest";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it, vi } from "vitest";
-import type { Apod } from "@mission-control/shared";
+import type { ApiErrorResponse, Apod } from "@mission-control/shared";
 import { createApp } from "../app.js";
 import type { Env } from "../config/env.js";
 import type { NasaClient } from "../lib/nasa-client.js";
@@ -50,6 +50,23 @@ describe("GET /api/apod", () => {
     expect(getApod).not.toHaveBeenCalled();
   });
 
+  it("does not cache upstream failures and returns retry guidance", async () => {
+    const getApod = vi
+      .fn()
+      .mockRejectedValueOnce(new Error("upstream"))
+      .mockResolvedValue(apod);
+    const app = createApp(env, { getApod } as unknown as NasaClient);
+    const failed = await request(app).get("/api/apod?date=2024-01-01");
+    const recovered = await request(app).get("/api/apod?date=2024-01-01");
+    expect(failed.status).toBe(500);
+    expect(failed.headers["cache-control"]).toBe("no-store");
+    expect(failed.headers["retry-after"]).toBe("30");
+    const body = JSON.parse(failed.text) as ApiErrorResponse;
+    expect(body.error).toMatchObject({ retryable: true });
+    expect(recovered.status).toBe(200);
+    expect(getApod).toHaveBeenCalledTimes(2);
+  });
+
   it("ignores hosting metadata while validating documented parameters", async () => {
     const getApod = vi.fn().mockResolvedValue(apod);
     const app = createApp(env, { getApod } as unknown as NasaClient);
@@ -67,6 +84,16 @@ describe("GET /api/apod", () => {
     const response = await request(app).get("/api/health");
     expect(response.headers["x-content-type-options"]).toBe("nosniff");
     expect(response.headers["x-powered-by"]).toBeUndefined();
+  });
+
+  it("replaces unsafe caller-supplied request identifiers", async () => {
+    const app = createApp(env, { getApod: vi.fn() } as unknown as NasaClient);
+    const response = await request(app)
+      .get("/api/health")
+      .set("x-request-id", "unsafe request id");
+    expect(response.headers["x-request-id"]).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f-]{27}$/,
+    );
   });
 
   it("serves the SPA entry point for direct client-side routes", async () => {

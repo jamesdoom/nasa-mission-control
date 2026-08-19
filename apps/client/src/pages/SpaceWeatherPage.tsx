@@ -2,6 +2,7 @@ import { useEffect, useState, type SyntheticEvent } from "react";
 import { useSearchParams } from "react-router-dom";
 import { ApiError } from "../api/apod";
 import { ErrorState, LoadingState } from "../components/AsyncState";
+import { DataStatus } from "../components/DataStatus";
 import { SpaceWeatherCard } from "../components/SpaceWeatherCard";
 import { useSpaceWeather } from "../features/space-weather/useSpaceWeather";
 import { utcDate } from "../utils/dates";
@@ -165,11 +166,18 @@ export function SpaceWeatherPage() {
             </div>
           </div>
         ) : (
-          <div className="weather-grid">
-            {query.data.events.map((item) => (
-              <SpaceWeatherCard key={item.id} event={item} />
-            ))}
-          </div>
+          <>
+            <DataStatus
+              source="NASA DONKI"
+              updatedAt={query.dataUpdatedAt}
+              refreshing={query.isFetching}
+            />
+            <div className="weather-grid">
+              {query.data.events.map((item) => (
+                <SpaceWeatherCard key={item.id} event={item} />
+              ))}
+            </div>
+          </>
         )}
       </section>
     </>

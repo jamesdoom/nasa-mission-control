@@ -2,6 +2,49 @@ import { describe, expect, it, vi } from "vitest";
 import { NasaClient } from "../lib/nasa-client.js";
 
 describe("NasaClient", () => {
+  it("maps timeouts, rate limits, non-JSON, and malformed JSON to stable errors", async () => {
+    const cases: { result: Promise<Response>; code: string }[] = [
+      {
+        result: Promise.reject(
+          Object.assign(new Error("late"), { name: "TimeoutError" }),
+        ),
+        code: "UPSTREAM_UNAVAILABLE",
+      },
+      {
+        result: Promise.resolve(new Response("limited", { status: 429 })),
+        code: "RATE_LIMITED",
+      },
+      {
+        result: Promise.resolve(
+          new Response("html", {
+            status: 200,
+            headers: { "content-type": "text/html" },
+          }),
+        ),
+        code: "UPSTREAM_UNAVAILABLE",
+      },
+      {
+        result: Promise.resolve(
+          new Response("{", {
+            status: 200,
+            headers: { "content-type": "application/json" },
+          }),
+        ),
+        code: "UPSTREAM_UNAVAILABLE",
+      },
+    ];
+    for (const { result, code } of cases) {
+      const client = new NasaClient({
+        apiKey: "secret",
+        timeoutMs: 1000,
+        fetchImpl: vi.fn().mockReturnValue(result),
+      });
+      await expect(client.getApod("2024-01-01")).rejects.toMatchObject({
+        code,
+      });
+    }
+  });
+
   it("normalizes EPIC metadata and builds exact archive and GIBS URLs", async () => {
     const fetchImpl = vi
       .fn()

@@ -6,5 +6,10 @@ export type ApiErrorCode =
   | "INTERNAL_ERROR";
 
 export type ApiErrorResponse = {
-  error: { code: ApiErrorCode; message: string; requestId: string };
+  error: {
+    code: ApiErrorCode;
+    message: string;
+    requestId: string;
+    retryable: boolean;
+  };
 };

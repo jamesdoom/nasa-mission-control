@@ -4,6 +4,7 @@ import { APOD_EARLIEST_DATE } from "@mission-control/shared";
 import { ApiError } from "../api/apod";
 import { ApodPanel } from "../components/ApodPanel";
 import { ErrorState, LoadingState } from "../components/AsyncState";
+import { DataStatus } from "../components/DataStatus";
 import { useApod } from "../features/apod/useApod";
 import { useFavorites } from "../hooks/useFavorites";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
@@ -78,11 +79,18 @@ export function ApodPage() {
           retry={() => void query.refetch()}
         />
       ) : (
-        <ApodPanel
-          apod={query.data}
-          saved={favorites.isFavorite(query.data.date)}
-          onToggle={() => favorites.toggle(query.data)}
-        />
+        <>
+          <DataStatus
+            source="NASA APOD"
+            updatedAt={query.dataUpdatedAt}
+            refreshing={query.isFetching}
+          />
+          <ApodPanel
+            apod={query.data}
+            saved={favorites.isFavorite(query.data.date)}
+            onToggle={() => favorites.toggle(query.data)}
+          />
+        </>
       )}
     </section>
   );

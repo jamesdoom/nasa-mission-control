@@ -13,7 +13,11 @@ declare global {
 }
 
 export const requestId: RequestHandler = (request, response, next) => {
-  request.requestId = request.header("x-request-id") ?? randomUUID();
+  const supplied = request.header("x-request-id");
+  request.requestId =
+    supplied && /^[A-Za-z0-9._-]{1,64}$/.test(supplied)
+      ? supplied
+      : randomUUID();
   response.setHeader("x-request-id", request.requestId);
   next();
 };
@@ -56,6 +60,7 @@ export const errorHandler: ErrorRequestHandler = (
       code: known ? error.code : "INTERNAL_ERROR",
       message: known ? error.message : "An unexpected server error occurred.",
       requestId: request.requestId,
+      retryable: status >= 500,
     },
   };
   if (!known) {
@@ -64,5 +69,7 @@ export const errorHandler: ErrorRequestHandler = (
       errorName: error instanceof Error ? error.name : "UnknownError",
     });
   }
+  response.setHeader("cache-control", "no-store");
+  if (body.error.retryable) response.setHeader("retry-after", "30");
   response.status(status).json(body);
 };
