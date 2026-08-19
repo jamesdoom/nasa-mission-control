@@ -50,6 +50,7 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Expanded source-checked Mission Archive with Perseverance and Parker Solar Probe
 - Global offline mode messaging with route-change focus and assistive-technology announcements
 - Scheduled read-only production smoke checks and a documented incident-triage runbook
+- Vercel Speed Insights for route-level Core Web Vitals plus CI-enforced compressed asset budgets
 
 ## Planned modules
 
@@ -93,6 +94,7 @@ npm run typecheck
 npm run lint
 npm test
 npm run test:e2e
+npm run performance:budget
 npm run smoke:production
 npm run build
 npm run format:check
@@ -165,7 +167,9 @@ Errors use `{ error: { code, message, requestId } }`; server details and credent
 
 ### Performance strategy
 
-Non-dashboard routes load as independent Vite chunks, so visitors do not download every instrument on first paint. The primary production client chunk is approximately 336 kB (107 kB gzip), down from approximately 389 kB (119 kB gzip) before route splitting. DM Sans and Space Mono are self-hosted WOFF2 files, imagery is lazy-loaded where appropriate, and the global atmosphere uses responsive WebP sources.
+Non-dashboard routes load as independent Vite chunks, so visitors do not download every instrument on first paint. With Speed Insights included, the primary production client chunk is approximately 342 kB (109 kB gzip), still below the approximately 389 kB (119 kB gzip) build measured before route splitting. DM Sans and Space Mono are self-hosted WOFF2 files, imagery is lazy-loaded where appropriate, and the global atmosphere uses responsive WebP sources.
+
+Vercel Speed Insights records production Core Web Vitals by route without adding general-purpose visitor analytics. CI also fails if the largest compressed JavaScript asset exceeds 120 kB, all compressed JavaScript exceeds 160 kB, or compressed CSS exceeds 16 kB. Run `npm run build && npm run performance:budget` to reproduce the asset evidence locally; see the [performance notes](docs/performance.md) for interpretation and the optimization workflow.
 
 ## Testing
 
@@ -211,7 +215,8 @@ Mission Archive facts and chronology are checked against official NASA mission p
 12. **Complete — Personalization phase 4:** organized collection counts and shortcuts, saved discovery paths, and validated local backup/restore without accounts or uploads.
 13. **Complete — Portfolio evidence phase 5:** scoped API-health visibility, a production-quality case study, and source-checked Perseverance and Parker Solar Probe records with credited NASA imagery.
 14. **Complete — Reliability and polish phase 6:** scheduled production smoke checks, a concise operations runbook, global offline guidance, and accessible route-change focus and announcements.
-15. **Next:** gather production performance evidence, refine any issues found in real-user testing, or add optional account synchronization only if the product scope justifies the infrastructure.
+15. **Complete — Performance evidence phase 7:** route-level Vercel Speed Insights, reproducible compressed bundle evidence, CI performance budgets, dependency advisory remediation, and a documented measurement workflow.
+16. **Next:** evaluate real-user Core Web Vitals after enough production traffic, then optimize only routes with evidence of regressions; consider account synchronization separately if users need cross-device collections.
 
 ## Screenshots
 
