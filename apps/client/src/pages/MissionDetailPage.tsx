@@ -5,6 +5,32 @@ import { NotFoundPage } from "./NotFoundPage";
 import { useMissionFavorites } from "../hooks/useMissionFavorites";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
 
+const missionDiscovery: Record<
+  string,
+  { journey: string; instrument: string; instrumentLabel: string }
+> = {
+  "apollo-11": {
+    journey: "moon-then-now",
+    instrument: "/earth",
+    instrumentLabel: "View Earth from deep space",
+  },
+  "voyager-1": {
+    journey: "sun-to-earth",
+    instrument: "/space-weather",
+    instrumentLabel: "Explore heliophysics observations",
+  },
+  curiosity: {
+    journey: "mars-field-lab",
+    instrument: "/media?q=Curiosity+Mars&mediaType=image&page=1",
+    instrumentLabel: "Search Curiosity imagery",
+  },
+  webb: {
+    journey: "deep-universe",
+    instrument: "/apod",
+    instrumentLabel: "Open today’s cosmic briefing",
+  },
+};
+
 export function MissionDetailPage() {
   const mission = getMission(useParams().missionSlug);
   const favorites = useMissionFavorites();
@@ -19,6 +45,7 @@ export function MissionDetailPage() {
     });
   }, [mission, recent.record]);
   if (!mission) return <NotFoundPage />;
+  const discovery = missionDiscovery[mission.slug];
   return (
     <>
       <article className="mission-detail">
@@ -131,6 +158,34 @@ export function MissionDetailPage() {
               ))}
             </ul>
           </aside>
+          {discovery ? (
+            <section
+              className="mission-discovery"
+              aria-labelledby="continue-exploration"
+            >
+              <div>
+                <p className="eyebrow">Continue the investigation</p>
+                <h2 id="continue-exploration">
+                  Connect this record to live Mission Control
+                </h2>
+                <p>
+                  Move from this curated history into current observations and
+                  primary NASA media without losing the scientific context.
+                </p>
+              </div>
+              <div>
+                <Link className="button" to={`/discover#${discovery.journey}`}>
+                  Open guided path
+                </Link>
+                <Link
+                  className="button button--secondary"
+                  to={discovery.instrument}
+                >
+                  {discovery.instrumentLabel}
+                </Link>
+              </div>
+            </section>
+          ) : null}
         </div>
       </article>
     </>

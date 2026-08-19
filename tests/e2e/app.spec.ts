@@ -546,6 +546,33 @@ test("filters and opens a source-backed mission record", async ({ page }) => {
   ).toBe(false);
 });
 
+test("follows a guided discovery path into mission history and back", async ({
+  page,
+}) => {
+  await page.goto("/discover");
+  await expect(page).toHaveTitle("Guided Discovery | NASA Mission Control");
+  const journey = page
+    .getByRole("article")
+    .filter({ hasText: "Reconstruct Apollo 11 through evidence" });
+  await journey
+    .getByRole("link", { name: "Open instrument →" })
+    .first()
+    .click();
+  await expect(page).toHaveURL(/\/missions\/apollo-11$/);
+  await expect(
+    page.getByRole("heading", {
+      name: "Connect this record to live Mission Control",
+    }),
+  ).toBeVisible();
+  await page.getByRole("link", { name: "Open guided path" }).click();
+  await expect(page).toHaveURL(/\/discover#moon-then-now$/);
+  await expect(
+    page.getByRole("heading", {
+      name: "Reconstruct Apollo 11 through evidence",
+    }),
+  ).toBeVisible();
+});
+
 test("scores and explains source-checked space trivia", async ({ page }) => {
   await page.goto("/trivia?difficulty=cadet");
   await expect(page).toHaveTitle("Space Trivia | NASA Mission Control");

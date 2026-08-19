@@ -87,6 +87,14 @@ const router = createBrowserRouter([
         }),
       },
       {
+        path: "discover",
+        lazy: async () => ({
+          Component: (
+            await loadLazyRoute(() => import("./pages/DiscoveryPage"))
+          ).DiscoveryPage,
+        }),
+      },
+      {
         path: "favorites",
         lazy: async () => ({
           Component: (

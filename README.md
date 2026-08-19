@@ -41,6 +41,8 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Explicit retry metadata, no-store failure responses, and transient-failure recovery coverage
 - URL-backed Asteroid Comparison Lab for miss distance, upper diameter estimate, and Earth-relative velocity
 - Plain-language DONKI measurement guide separating flare class, modeled CME speed, and observed Kp activity
+- Guided discovery paths connecting live instruments, NASA media searches, and source-checked mission history
+- Contextual mission-record actions that continue into related observations and guided investigations
 
 ## Planned modules
 
@@ -149,6 +151,8 @@ The Flight Log uses separate bounded, runtime-validated local-storage records fo
 
 Space Trivia is curated local educational content. Its question bank is divided into cadet, specialist, and commander levels, and every explanation links to the official NASA page used for verification. Only the best streak persists locally; individual answers and scores remain session state.
 
+Discovery Paths are typed, locally curated navigation narratives rather than another live API. Each path connects existing normalized data routes, NASA Image Library searches, and mission records, then links to the official NASA topic or mission page that anchors its educational context.
+
 Errors use `{ error: { code, message, requestId } }`; server details and credentials are never returned. Shared internal contracts live in `packages/shared`, while NASA-specific schemas remain in `apps/server`.
 
 ### Performance strategy
@@ -195,8 +199,9 @@ Mission Archive facts and chronology are checked against official NASA mission p
 8. **Complete:** module-specific NASA photography, grouped accessible navigation, recent-history controls, route-level performance work, metadata, and final portfolio polish.
 9. **Complete — Reliability phase 1:** stable upstream-failure mapping, retry metadata, failure-safe caching, visible data freshness, sanitized client-error telemetry, security hardening, and browser recovery coverage.
 10. **Complete — Data experience phase 2:** accessible asteroid comparison visualization, URL-backed metrics, precise measurement caveats, DONKI scale explainers, and live APOD payload resilience.
-11. **Next — Discovery:** guided cross-module journeys, related-content links, and stronger connections between live observations and curated mission history.
-12. **Later:** dedicated uptime alerts, portfolio case-study material, and additional source-checked archive records.
+11. **Complete — Discovery phase 3:** five source-backed guided journeys, cross-module navigation, contextual mission continuations, and a dedicated lazy-loaded Discovery instrument.
+12. **Next — Personalization phase 4:** richer Flight Log organization, saved discovery paths, and user-controlled session continuity without adding accounts prematurely.
+13. **Later:** dedicated uptime alerts, portfolio case-study material, and additional source-checked archive records.
 
 ## Screenshots
 

@@ -158,6 +158,15 @@ export function DashboardPage() {
               answer.
             </p>
           </Link>
+          <Link className="module-card module-card--active" to="/discover">
+            <span>08</span>
+            <small>Guidance online</small>
+            <h3>Discovery Paths</h3>
+            <p>
+              Follow evidence across live observations, mission history, and
+              NASA’s media archive.
+            </p>
+          </Link>
         </div>
       </section>
     </>

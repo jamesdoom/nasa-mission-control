@@ -10,6 +10,7 @@ const moduleLinks = [
   { to: "/earth", label: "Earth" },
   { to: "/missions", label: "Missions" },
   { to: "/trivia", label: "Trivia" },
+  { to: "/discover", label: "Discovery Paths" },
 ];
 
 const routeTitles: Record<string, string> = {
@@ -21,6 +22,7 @@ const routeTitles: Record<string, string> = {
   "/earth": "Earth Observatory",
   "/missions": "Mission Archive",
   "/trivia": "Space Trivia",
+  "/discover": "Guided Discovery",
   "/favorites": "Personal Flight Log",
   "/about": "About",
 };

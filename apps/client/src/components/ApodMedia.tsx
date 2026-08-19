@@ -17,7 +17,7 @@ export function ApodMedia({
 }) {
   if (apod.mediaType === "video" && isDirectVideo(apod.mediaUrl))
     return (
-      <div className="media-frame">
+      <div className="media-frame media-frame--direct">
         <video
           controls
           playsInline

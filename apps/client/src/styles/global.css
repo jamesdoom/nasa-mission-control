@@ -533,10 +533,17 @@ p {
   object-fit: contain;
   background: #02050a;
 }
+.media-frame--direct {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+.media-frame--direct video {
+  min-height: 0;
+}
 .media-frame__fallback {
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
+  position: static;
+  justify-self: end;
+  margin: 0.65rem 1rem;
   padding: 0.55rem 0.7rem;
   border: 1px solid rgba(72, 217, 239, 0.35);
   background: rgba(2, 7, 13, 0.82);
@@ -716,6 +723,131 @@ p {
 }
 .page-intro {
   margin-bottom: 3rem;
+}
+.discovery-intro {
+  padding-top: clamp(4rem, 9vw, 8rem);
+  padding-bottom: 2.5rem;
+}
+.discovery-intro h1 {
+  max-width: 15ch;
+  margin: 0.7rem 0 1rem;
+  font-size: clamp(3rem, 8vw, 7rem);
+  line-height: 0.94;
+  letter-spacing: -0.055em;
+}
+.discovery-intro > p:last-child {
+  max-width: 66ch;
+  color: #9eb2c5;
+  font-size: 1.1rem;
+  line-height: 1.75;
+}
+.discovery-grid {
+  display: grid;
+  gap: 1.5rem;
+  padding-top: 0;
+}
+.journey-card {
+  scroll-margin-top: 6rem;
+  display: grid;
+  grid-template-columns: minmax(240px, 0.7fr) minmax(0, 1.3fr);
+  gap: 2rem;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(
+      circle at 8% 10%,
+      rgba(72, 217, 239, 0.09),
+      transparent 19rem
+    ),
+    rgba(5, 12, 22, 0.94);
+}
+.journey-card > header h2 {
+  margin: 0.55rem 0 0.9rem;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1.02;
+}
+.journey-card > header > p:last-child,
+.journey-card footer p {
+  color: #92a7ba;
+  line-height: 1.65;
+}
+.journey-card ol {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.journey-card li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: 1rem;
+  padding: 0 0 1.7rem;
+}
+.journey-card li:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  top: 1.7rem;
+  bottom: 0;
+  left: 1.05rem;
+  width: 1px;
+  background: linear-gradient(var(--cyan), rgba(72, 217, 239, 0.08));
+}
+.journey-card li > span {
+  position: relative;
+  z-index: 1;
+  width: 2.15rem;
+  height: 2.15rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--cyan);
+  border-radius: 50%;
+  background: #07111d;
+  color: var(--cyan);
+  font:
+    0.62rem "Space Mono",
+    monospace;
+}
+.journey-card li small {
+  color: #6f879c;
+  font:
+    0.57rem "Space Mono",
+    monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.journey-card li h3 {
+  margin: 0.25rem 0 0.35rem;
+  font-size: 1.2rem;
+}
+.journey-card li p {
+  margin: 0 0 0.55rem;
+  color: #8fa4b7;
+  line-height: 1.55;
+}
+.journey-card li a,
+.journey-card footer a {
+  color: var(--cyan);
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+.journey-card li a:hover,
+.journey-card footer a:hover {
+  text-decoration: underline;
+}
+.journey-card footer {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+.journey-card footer p {
+  max-width: 72ch;
+  margin: 0;
 }
 .page-intro h1 {
   font-size: clamp(3rem, 6vw, 6rem);
@@ -2577,6 +2709,31 @@ p {
   color: var(--cyan);
   font-size: 0.78rem;
 }
+.mission-discovery {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  padding: 2rem;
+  border: 1px solid rgba(72, 217, 239, 0.25);
+  background: linear-gradient(120deg, rgba(13, 38, 57, 0.9), #07111c);
+}
+.mission-discovery h2 {
+  max-width: 22ch;
+  margin: 0.45rem 0;
+  font-size: clamp(1.7rem, 4vw, 2.7rem);
+}
+.mission-discovery p:last-child {
+  max-width: 62ch;
+  color: #91a6b9;
+  line-height: 1.6;
+}
+.mission-discovery > div:last-child {
+  flex: 0 0 auto;
+  display: grid;
+  gap: 0.75rem;
+}
 .trivia-intro {
   padding-bottom: 3rem;
 }
@@ -2947,6 +3104,16 @@ p {
   .about-grid {
     grid-template-columns: 1fr;
   }
+  .journey-card {
+    grid-template-columns: 1fr;
+  }
+  .journey-card footer {
+    grid-column: 1;
+  }
+  .mission-discovery {
+    align-items: stretch;
+    flex-direction: column;
+  }
   .favorites-grid {
     grid-template-columns: 1fr;
   }
@@ -3274,6 +3441,14 @@ p {
   .mission-card > a,
   .mission-sources {
     grid-template-columns: 1fr;
+  }
+  .journey-card footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .mission-discovery > div:last-child,
+  .mission-discovery .button {
+    width: 100%;
   }
   .mission-card__image {
     min-height: 360px;
