@@ -119,6 +119,51 @@ export function SpaceWeatherPage() {
           ))}
         </fieldset>
       </section>
+      <section
+        className="section weather-guide"
+        aria-labelledby="weather-guide-title"
+      >
+        <div className="section-heading">
+          <div>
+            <p className="kicker">
+              <span />
+              Measurement guide
+            </p>
+            <h2 id="weather-guide-title">Read each signal on its own scale</h2>
+          </div>
+        </div>
+        <div className="weather-guide__grid">
+          <article>
+            <span>FLR</span>
+            <h3>Flare class</h3>
+            <p>
+              A, B, C, M, and X describe peak X-ray intensity. Each letter step
+              is ten times stronger; the number refines the class.
+            </p>
+          </article>
+          <article>
+            <span>CME</span>
+            <h3>Modeled speed</h3>
+            <p>
+              DONKI’s kilometers-per-second value comes from a CME analysis.
+              Speed alone does not tell whether the eruption is Earth-directed.
+            </p>
+          </article>
+          <article>
+            <span>GST</span>
+            <h3>Kp index</h3>
+            <p>
+              Kp summarizes global geomagnetic activity from 0 to 9. Values of 5
+              or higher meet NOAA’s geomagnetic-storm threshold.
+            </p>
+          </article>
+        </div>
+        <p className="source-note">
+          These are observed or modeled research records, not a forecast. Event
+          cards retain NASA’s source links; use NOAA SWPC for operational
+          alerts.
+        </p>
+      </section>
       <section className="section weather-results" aria-live="polite">
         {query.data && (
           <div className="weather-summary">

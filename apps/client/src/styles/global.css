@@ -1014,6 +1014,121 @@ p {
   color: #93a5b7;
   line-height: 1.6;
 }
+.comparison-lab {
+  margin-bottom: 2rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(135deg, rgba(12, 28, 45, 0.92), rgba(5, 12, 22, 0.96)),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent calc(20% - 1px),
+      rgba(72, 217, 239, 0.08) 20%
+    );
+}
+.comparison-lab__heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 2rem;
+}
+.comparison-lab h2 {
+  max-width: 16ch;
+  margin: 0.4rem 0 0;
+  font-size: clamp(1.7rem, 4vw, 2.7rem);
+}
+.comparison-lab fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.comparison-lab legend {
+  width: 100%;
+  margin-bottom: 0.35rem;
+  color: #7890a6;
+  font:
+    0.58rem "Space Mono",
+    monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.comparison-lab label {
+  position: relative;
+}
+.comparison-lab input {
+  position: absolute;
+  opacity: 0;
+}
+.comparison-lab label span {
+  display: block;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #2b4258;
+  color: #9aabba;
+  cursor: pointer;
+}
+.comparison-lab input:checked + span {
+  border-color: var(--cyan);
+  background: rgba(72, 217, 239, 0.1);
+  color: #fff;
+}
+.comparison-lab input:focus-visible + span {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+.comparison-lab__explanation,
+.comparison-lab__note {
+  color: #8fa4b8;
+  line-height: 1.6;
+}
+.comparison-lab__explanation {
+  max-width: 78ch;
+  margin: 1.5rem 0;
+}
+.comparison-chart {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.comparison-chart li > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.35rem;
+  font-family: "Space Mono", monospace;
+}
+.comparison-chart li strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.comparison-chart li > div:first-child span {
+  color: #b7c9d9;
+  white-space: nowrap;
+}
+.comparison-chart__track {
+  height: 0.65rem;
+  overflow: hidden;
+  border: 1px solid rgba(72, 217, 239, 0.2);
+  background: rgba(2, 7, 13, 0.7);
+}
+.comparison-chart__track > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #2774a8, var(--cyan));
+  box-shadow: 0 0 16px rgba(72, 217, 239, 0.35);
+}
+.comparison-lab__note {
+  margin: 1.5rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.85rem;
+}
 .asteroid-list {
   display: grid;
   gap: 1rem;
@@ -1659,6 +1774,39 @@ p {
 }
 .weather-results {
   padding-top: 2rem;
+}
+.weather-guide {
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+}
+.weather-guide__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.weather-guide__grid article {
+  padding: 1.4rem;
+  border: 1px solid var(--line);
+  background: rgba(6, 14, 25, 0.92);
+}
+.weather-guide__grid article > span {
+  color: var(--cyan);
+  font:
+    0.62rem "Space Mono",
+    monospace;
+  letter-spacing: 0.12em;
+}
+.weather-guide__grid h3 {
+  margin: 0.5rem 0 0.6rem;
+  font-size: 1.2rem;
+}
+.weather-guide__grid p {
+  margin: 0;
+  color: #91a5b8;
+  line-height: 1.65;
+}
+.weather-guide .source-note {
+  margin-top: 1rem;
 }
 .weather-summary {
   display: grid;
@@ -2804,6 +2952,13 @@ p {
   .asteroid-summary {
     grid-template-columns: repeat(2, 1fr);
   }
+  .comparison-lab__heading {
+    align-items: start;
+    flex-direction: column;
+  }
+  .weather-guide__grid {
+    grid-template-columns: 1fr;
+  }
   .asteroid-summary > div:nth-child(2) {
     border-right: 0;
   }
@@ -2991,6 +3146,16 @@ p {
   }
   .asteroid-console .button {
     width: 100%;
+  }
+  .comparison-lab fieldset {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+  .comparison-chart li > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.2rem;
   }
   .asteroid-summary > div {
     border-right: 0;

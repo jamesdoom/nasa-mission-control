@@ -156,6 +156,32 @@ describe("NasaClient", () => {
     expect(url.searchParams.get("thumbs")).toBe("true");
   });
 
+  it("accepts NASA video records with an empty thumbnail URL", async () => {
+    const fetchImpl = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          date: "2026-08-19",
+          title: "The Case of the Mysterious Maybe Meteor",
+          explanation:
+            "An airplane contrail crosses the partially eclipsed Sun.",
+          media_type: "video",
+          url: "https://apod.nasa.gov/apod/image/2608/perseids_eclipse_mystery.mp4",
+          thumbnail_url: "",
+        }),
+        { status: 200, headers: { "content-type": "application/json" } },
+      ),
+    );
+    const client = new NasaClient({
+      apiKey: "secret",
+      timeoutMs: 1000,
+      fetchImpl,
+    });
+    await expect(client.getApod("2026-08-19")).resolves.toMatchObject({
+      mediaType: "video",
+      thumbnailUrl: null,
+    });
+  });
+
   it("rejects malformed successful data", async () => {
     const fetchImpl = vi.fn().mockResolvedValue(
       new Response("{}", {

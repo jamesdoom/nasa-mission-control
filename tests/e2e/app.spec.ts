@@ -387,6 +387,11 @@ test("explores, sorts, opens, and saves an asteroid encounter", async ({
   ).toBeVisible();
   await page.getByLabel("Sort encounters").selectOption("fastest");
   await expect(page).toHaveURL(/sort=fastest/);
+  await page.getByRole("radio", { name: "Diameter estimate" }).click();
+  await expect(page).toHaveURL(/metric=diameter/);
+  await expect(
+    page.getByRole("heading", { name: "Put the numbers in perspective" }),
+  ).toBeVisible();
   await capturePortfolioScreenshot(page, {
     path: "docs/screenshots/asteroid-watch.png",
     fullPage: true,

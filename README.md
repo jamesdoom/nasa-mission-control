@@ -38,6 +38,8 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Visible NASA source/freshness indicators across live-data instruments
 - Sanitized browser runtime-error reporting to structured Vercel function logs
 - Explicit retry metadata, no-store failure responses, and transient-failure recovery coverage
+- URL-backed Asteroid Comparison Lab for miss distance, upper diameter estimate, and Earth-relative velocity
+- Plain-language DONKI measurement guide separating flare class, modeled CME speed, and observed Kp activity
 
 ## Planned modules
 
@@ -162,6 +164,8 @@ Non-dashboard routes load as independent Vite chunks, so visitors do not downloa
 
 The application uses [NASA Open APIs](https://api.nasa.gov/) for APOD and NeoWs. NASA’s official APOD service repository notes that the public hosted instance can experience downtime, so every NASA integration is treated as a fallible upstream. NASA-provided copyright attribution is displayed when present.
 
+APOD video records may include a missing or empty `thumbnail_url` even when `thumbs=true`; the server normalizes that case to `null` while continuing to validate every non-empty media URL.
+
 Asteroid measurements come from NASA/JPL through NeoWs. NASA/JPL defines a potentially hazardous asteroid using orbital proximity and absolute magnitude criteria; the classification does not mean an Earth impact is predicted. See the official [CNEOS PHA definition](https://cneos.jpl.nasa.gov/glossary/PHA.html) and [NEO FAQ](https://cneos.jpl.nasa.gov/faq/).
 
 The active [NASA Image and Video Library API](https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf) provides search and asset manifests without an API key. Its published PDF is release 1.22.0 from January 2023, and live responses sometimes label preview images `alternate` instead of the documented `preview`; server normalization accepts both. Results can identify third-party copyright holders or people with publicity rights, so detail pages retain source metadata and link to NASA rather than making blanket reuse claims. See NASA’s [Images and Media Usage Guidelines](https://www.nasa.gov/nasa-brand-center/images-and-media/).
@@ -189,8 +193,9 @@ Mission Archive facts and chronology are checked against official NASA mission p
 7. **Complete:** expanded Flight Log for mission and media records plus source-checked Space Trivia with scoring, streaks, difficulty levels, explanations, and citations.
 8. **Complete:** module-specific NASA photography, grouped accessible navigation, recent-history controls, route-level performance work, metadata, and final portfolio polish.
 9. **Complete — Reliability phase 1:** stable upstream-failure mapping, retry metadata, failure-safe caching, visible data freshness, sanitized client-error telemetry, security hardening, and browser recovery coverage.
-10. **Next — Data experience:** richer comparisons, explainers, and visualization for scientific measurements without overstating NASA classifications.
-11. **Later:** dedicated uptime alerts, portfolio case-study material, and additional source-checked archive records.
+10. **Complete — Data experience phase 2:** accessible asteroid comparison visualization, URL-backed metrics, precise measurement caveats, DONKI scale explainers, and live APOD payload resilience.
+11. **Next — Discovery:** guided cross-module journeys, related-content links, and stronger connections between live observations and curated mission history.
+12. **Later:** dedicated uptime alerts, portfolio case-study material, and additional source-checked archive records.
 
 ## Screenshots
 

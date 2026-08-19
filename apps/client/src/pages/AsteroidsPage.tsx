@@ -3,6 +3,10 @@ import { useSearchParams } from "react-router-dom";
 import type { Asteroid } from "@mission-control/shared";
 import { ApiError } from "../api/apod";
 import { AsteroidCard } from "../components/AsteroidCard";
+import {
+  AsteroidComparison,
+  type AsteroidComparisonMetric,
+} from "../components/AsteroidComparison";
 import { ErrorState, LoadingState } from "../components/AsyncState";
 import { DataStatus } from "../components/DataStatus";
 import { useAsteroids } from "../features/asteroids/useAsteroids";
@@ -11,6 +15,11 @@ import { utcDate } from "../utils/dates";
 
 type SortMode = "closest" | "largest" | "fastest";
 const sortModes: SortMode[] = ["closest", "largest", "fastest"];
+const comparisonMetrics: AsteroidComparisonMetric[] = [
+  "distance",
+  "diameter",
+  "velocity",
+];
 
 function sortAsteroids(items: Asteroid[], mode: SortMode): Asteroid[] {
   return [...items].sort((first, second) => {
@@ -31,6 +40,13 @@ export function AsteroidsPage() {
     requestedSort && sortModes.includes(requestedSort)
       ? requestedSort
       : "closest";
+  const requestedMetric = params.get(
+    "metric",
+  ) as AsteroidComparisonMetric | null;
+  const metric =
+    requestedMetric && comparisonMetrics.includes(requestedMetric)
+      ? requestedMetric
+      : "distance";
   const [draftStart, setDraftStart] = useState(startDate);
   const [draftEnd, setDraftEnd] = useState(endDate);
   useEffect(() => {
@@ -72,7 +88,7 @@ export function AsteroidsPage() {
         className="asteroid-console"
         onSubmit={(event) => {
           event.preventDefault();
-          setParams({ startDate: draftStart, endDate: draftEnd, sort });
+          setParams({ startDate: draftStart, endDate: draftEnd, sort, metric });
         }}
       >
         <label>
@@ -103,6 +119,7 @@ export function AsteroidsPage() {
                 startDate,
                 endDate,
                 sort: event.target.value as SortMode,
+                metric,
               })
             }
           >
@@ -180,6 +197,16 @@ export function AsteroidsPage() {
               </p>
             </div>
           </aside>
+
+          {asteroids.length > 0 ? (
+            <AsteroidComparison
+              asteroids={asteroids}
+              metric={metric}
+              onMetricChange={(nextMetric) =>
+                setParams({ startDate, endDate, sort, metric: nextMetric })
+              }
+            />
+          ) : null}
 
           {asteroids.length === 0 ? (
             <div className="empty-state asteroid-empty">

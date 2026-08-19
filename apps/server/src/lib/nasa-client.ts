@@ -23,7 +23,7 @@ const nasaApodSchema = z.object({
   media_type: z.enum(["image", "video"]),
   url: z.string().url(),
   hdurl: z.string().url().optional(),
-  thumbnail_url: z.string().url().optional(),
+  thumbnail_url: z.union([z.string().url(), z.literal("")]).optional(),
   copyright: z.string().optional(),
 });
 
@@ -303,7 +303,7 @@ export class NasaClient {
       mediaType: item.media_type,
       mediaUrl: item.url,
       hdUrl: item.hdurl ?? null,
-      thumbnailUrl: item.thumbnail_url ?? null,
+      thumbnailUrl: item.thumbnail_url || null,
       copyright: copyright === "" ? null : (copyright ?? null),
     };
   }
