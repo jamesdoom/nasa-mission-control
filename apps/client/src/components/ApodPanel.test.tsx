@@ -26,4 +26,28 @@ describe("ApodPanel", () => {
     await userEvent.click(button);
     expect(onToggle).toHaveBeenCalledOnce();
   });
+
+  it("uses the native player for direct NASA video files", () => {
+    render(
+      <ApodPanel
+        apod={{
+          ...apod,
+          mediaUrl:
+            "https://apod.nasa.gov/apod/image/2608/perseids_eclipse_mystery.mp4",
+          thumbnailUrl: null,
+        }}
+        saved={false}
+        onToggle={vi.fn()}
+      />,
+    );
+    const player = screen.getByLabelText("A cosmic view video");
+    expect(player.tagName).toBe("VIDEO");
+    expect(player).toHaveAttribute("controls");
+    expect(
+      screen.getByRole("link", { name: "Open video directly ↗" }),
+    ).toHaveAttribute(
+      "href",
+      "https://apod.nasa.gov/apod/image/2608/perseids_eclipse_mystery.mp4",
+    );
+  });
 });

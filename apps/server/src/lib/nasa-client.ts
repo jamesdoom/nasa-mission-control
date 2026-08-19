@@ -303,7 +303,8 @@ export class NasaClient {
       mediaType: item.media_type,
       mediaUrl: item.url,
       hdUrl: item.hdurl ?? null,
-      thumbnailUrl: item.thumbnail_url || null,
+      thumbnailUrl:
+        item.thumbnail_url === "" ? null : (item.thumbnail_url ?? null),
       copyright: copyright === "" ? null : (copyright ?? null),
     };
   }

@@ -9,6 +9,7 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Responsive application shell with accessible desktop/mobile navigation
 - Mission Control dashboard and live UTC telemetry styling
 - APOD image and embedded-video support with date-based shareable URLs
+- Native playback for direct NASA video files with embedded-player support and a direct-open fallback
 - Server-side NASA key, response normalization, timeout, validation, stable errors, and memory caching
 - Local APOD favorites with attribution when supplied by NASA
 - Loading, empty, error, and retry experiences; reduced-motion support
