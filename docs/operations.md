@@ -6,6 +6,7 @@ NASA Mission Control runs as a Vite single-page application with same-origin Exp
 
 - GitHub Actions runs the complete quality pipeline on every push and pull request.
 - `Production smoke` runs every six hours and can also be started manually. It checks the public `/api/health` contract, its `no-store` policy, and the `/about` SPA rewrite.
+- `Production performance` runs daily, checks desktop/mobile rendering and stability budgets, and retains a JSON evidence artifact for 30 days.
 - Vercel Runtime Logs contain structured request completion records and sanitized `client.runtime_error` reports.
 - Successful NASA routes expose `x-vercel-cache` for CDN diagnostics and `x-cache` for origin-memory diagnostics; see [caching.md](caching.md).
 - The About page offers a user-triggered health check. It verifies the application API only.

@@ -4,6 +4,7 @@ NASA Mission Control uses two complementary forms of performance evidence:
 
 - Vercel Speed Insights collects route-level Core Web Vitals from real production visits.
 - A deterministic CI check measures the compressed JavaScript and CSS produced by Vite.
+- A daily Playwright audit captures consistent desktop/mobile production measurements and runtime stability signals.
 
 No general visitor analytics, advertising identifiers, accounts, or custom tracking events are included.
 
@@ -33,6 +34,24 @@ Use the Vercel project’s Speed Insights view after production has received eno
 - CLS below 0.1
 
 Small samples are directional rather than conclusive. Before changing code, confirm that a weak metric persists across multiple visits and is not isolated to a single device or network class.
+
+## Synthetic production audit
+
+```sh
+npm run audit:production
+```
+
+The audit warms the production origin once to keep runner DNS and TLS setup from masquerading as application TTFB, then checks the desktop dashboard, mobile dashboard, and desktop About route. It records connection-plus-response time separately while budgeting server TTFB, FCP, heading readiness, and CLS. It also fails on non-200 navigation, console or page errors, failed same-origin resources, and horizontal overflow.
+
+The initial Phase 9 baseline was:
+
+| Scenario          |  TTFB |    FCP | LCP snapshot | CLS |
+| ----------------- | ----: | -----: | -----------: | --: |
+| Dashboard desktop | 40 ms | 436 ms |       436 ms |   0 |
+| Dashboard mobile  | 31 ms | 296 ms |       328 ms |   0 |
+| About desktop     | 33 ms | 292 ms |       364 ms |   0 |
+
+These are synthetic observations from one run, not claims about every visitor. The scheduled workflow retains `production-performance.json` artifacts for 30 days so changes can be compared under the same methodology.
 
 ## Optimization workflow
 

@@ -1,0 +1,38 @@
+name: Production performance
+
+on:
+  schedule:
+    - cron: "43 11 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-performance
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Audit production dashboard and case study
+        env:
+          PRODUCTION_URL: https://nasa-mission-control-alpha.vercel.app
+        run: npm run audit:production
+      - name: Upload performance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-performance
+          path: artifacts/production-performance.json
+          if-no-files-found: error
+          retention-days: 30

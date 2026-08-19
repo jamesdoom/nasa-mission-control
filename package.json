@@ -15,6 +15,7 @@
     "test": "npm run test --workspaces --if-present",
     "test:e2e": "playwright test",
     "performance:budget": "node scripts/check-performance-budget.mjs",
+    "audit:production": "node scripts/production-performance-audit.mjs",
     "smoke:production": "node scripts/production-smoke.mjs",
     "lint": "eslint .",
     "format": "prettier --write .",

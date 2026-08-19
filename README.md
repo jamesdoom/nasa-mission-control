@@ -52,6 +52,7 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Scheduled read-only production smoke checks and a documented incident-triage runbook
 - Vercel Speed Insights for route-level Core Web Vitals plus CI-enforced compressed asset budgets
 - Shared Vercel CDN caching for successful public NASA responses, with live/archive freshness policies
+- Daily desktop/mobile production performance audits with downloadable evidence and stability budgets
 
 ## Planned modules
 
@@ -96,6 +97,7 @@ npm run lint
 npm test
 npm run test:e2e
 npm run performance:budget
+npm run audit:production
 npm run smoke:production
 npm run build
 npm run format:check
@@ -174,6 +176,8 @@ Non-dashboard routes load as independent Vite chunks, so visitors do not downloa
 
 Vercel Speed Insights records production Core Web Vitals by route without adding general-purpose visitor analytics. CI also fails if the largest compressed JavaScript asset exceeds 120 kB, all compressed JavaScript exceeds 160 kB, or compressed CSS exceeds 16 kB. Run `npm run build && npm run performance:budget` to reproduce the asset evidence locally; see the [performance notes](docs/performance.md) for interpretation and the optimization workflow.
 
+A separate daily GitHub workflow runs a warmed synthetic audit against the production dashboard at desktop and mobile sizes plus the About case study. It fails on HTTP, console, page, same-origin resource, horizontal-overflow, TTFB, FCP, heading-readiness, or CLS regressions and retains its JSON report for 30 days. Run `npm run audit:production` for the same read-only check locally.
+
 ## Testing
 
 `npm test` covers query and date-range validation, bounded caching, security headers, APOD, NeoWs, Collection+JSON, DONKI, Earth observation behavior, curated mission and trivia source integrity, timeout/rate-limit/non-JSON/malformed upstream responses, browser error reporting, offline-state messaging, route focus, media rendering, automated accessibility checks, trivia scoring, the UTC clock, and all local favorite stores. `npm run test:e2e` verifies dashboard loading, transient API recovery, URL-backed filters, responsive navigation, all Flight Log content types, Space Weather filtering, the EPIC image sequence, Mission Archive navigation, portfolio status evidence, and Space Trivia in Chromium.
@@ -220,7 +224,8 @@ Mission Archive facts and chronology are checked against official NASA mission p
 14. **Complete — Reliability and polish phase 6:** scheduled production smoke checks, a concise operations runbook, global offline guidance, and accessible route-change focus and announcements.
 15. **Complete — Performance evidence phase 7:** route-level Vercel Speed Insights, reproducible compressed bundle evidence, CI performance budgets, dependency advisory remediation, and a documented measurement workflow.
 16. **Complete — API delivery phase 8:** targeted Vercel CDN caching, separate live/archive freshness policies, stale-while-revalidate delivery, cache diagnostics, and failure-safe no-store behavior.
-17. **Next:** evaluate Core Web Vitals and CDN hit rates after enough production traffic, then optimize only measured regressions; consider account synchronization separately if users need cross-device collections.
+17. **Complete — Production evidence phase 9:** live error and traffic audit, daily desktop/mobile synthetic checks, Web Vital snapshots, stability budgets, and retained JSON evidence without visitor analytics.
+18. **Next:** compare synthetic trends with Speed Insights after a meaningful real-user sample, then optimize measured route regressions; consider account synchronization separately if users need cross-device collections.
 
 ## Screenshots
 
