@@ -13,6 +13,7 @@ import { missions } from "../data/missions";
 import { TriviaPage } from "../pages/TriviaPage";
 import { FavoritesPage } from "../pages/FavoritesPage";
 import { MissionComparePage } from "../pages/MissionComparePage";
+import { ScaleLabPage } from "../pages/ScaleLabPage";
 import { EarthImageViewer } from "./EarthImageViewer";
 
 const apod: Apod = {
@@ -216,6 +217,16 @@ describe("automated accessibility", () => {
       {
         initialEntries: ["/missions/compare?missions=apollo-11,artemis-i"],
       },
+    );
+    const { container } = render(<RouterProvider router={router} />);
+    const results = await axe(container, jsdomAxeOptions);
+    expect(results.violations).toEqual([]);
+  });
+
+  it("finds no detectable violations in the celestial scale laboratory", async () => {
+    const router = createMemoryRouter(
+      [{ path: "/scale-lab", element: <ScaleLabPage /> }],
+      { initialEntries: ["/scale-lab?profiles=moon,mars,saturn"] },
     );
     const { container } = render(<RouterProvider router={router} />);
     const results = await axe(container, jsdomAxeOptions);

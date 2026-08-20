@@ -32,6 +32,7 @@ An original, responsive command-center experience for exploring NASA imagery and
 - URL-backed destination, spacecraft-type, and status filters
 - Destination overview groups and cinematic mission records with richer timelines, related NASA media, photography, credits, and official sources
 - Shareable two- or three-mission comparison workspace with aligned flight profiles and a merged cross-mission chronology
+- Celestial Scale Laboratory with source-checked reference frames, logarithmic distance and diameter comparisons, calculated one-way light time, and shareable controls
 - Expanded browser-local Flight Log for APOD, asteroids, guided paths, mission records, and NASA media, with URL-backed search, collection filters, sorting, summaries, and portable backups
 - Runtime-validated recently viewed history with deduplication, bounded storage, and clear controls
 - Twelve source-checked Space Trivia questions with three difficulty levels, four URL-backed knowledge channels, scoring, a persistent best streak, explanations, and NASA citations
@@ -167,6 +168,8 @@ Mission Archive records are intentionally local, typed editorial content rather 
 
 Mission comparison reuses those same curated records rather than maintaining a second source of facts. Archive selections are limited to three missions, comparison URLs preserve the selected slugs, and timeline events are merged chronologically from each record’s reviewed milestones.
 
+The Celestial Scale Laboratory is a curated educational model, not a live ephemeris or trajectory engine. Every profile labels its origin, approximation type, and NASA source. Distances may use different reference frames when that is what the source supports; the interface warns against reading them as simultaneous positions. Signal time is calculated from the displayed distance using 299,792.458 kilometers per second, and logarithmic bars communicate orders of magnitude rather than linear spacing.
+
 The Flight Log uses separate bounded, runtime-validated local-storage records for each content type. APOD and asteroid formats remain backward compatible; mission and guided-path favorites store stable curated identifiers, and NASA media favorites store only the normalized metadata required to render a saved card. Saved records can be searched, filtered by collection, and sorted by title; these organization controls are preserved in the URL without changing stored data. A separate 20-item recently viewed store deduplicates APOD, asteroid, media, and mission visits. Users can export the supported records to a versioned JSON backup and restore that backup explicitly in another browser. Imports are size-limited, key-whitelisted, and processed entirely on-device; no account, database, automatic upload, or synchronization is implied.
 
 Space Trivia is curated local educational content. Its twelve-question bank is divided into cadet, specialist, and commander levels and can be filtered into Moon, planets, observatories, and deep-space channels. Every difficulty/channel combination contains a question, and every explanation links to the official NASA page used for verification. Difficulty and category remain shareable URL state. Only the best streak persists locally; individual answers and scores remain session state.
@@ -179,13 +182,13 @@ Errors use `{ error: { code, message, requestId } }`; server details and credent
 
 Non-dashboard routes load as independent Vite chunks, so visitors do not download every instrument on first paint. With Speed Insights included, the primary production client chunk is approximately 342 kB (109 kB gzip), still below the approximately 389 kB (119 kB gzip) build measured before route splitting. DM Sans and Space Mono are self-hosted WOFF2 files, imagery is lazy-loaded where appropriate, and the global atmosphere uses responsive WebP sources.
 
-Vercel Speed Insights records production Core Web Vitals by route without adding general-purpose visitor analytics. CI also fails if the largest compressed JavaScript asset exceeds 120 kB, all compressed JavaScript exceeds 160 kB, compressed CSS exceeds 16 kB, or the ten optimized Mission Archive card images exceed 400 kB in aggregate. Run `npm run build && npm run performance:budget` to reproduce the asset evidence locally; see the [performance notes](docs/performance.md) for interpretation and the optimization workflow.
+Vercel Speed Insights records production Core Web Vitals by route without adding general-purpose visitor analytics. CI also fails if the largest compressed JavaScript asset exceeds 120 kB, all compressed JavaScript exceeds 160 kB, compressed CSS exceeds 18 kB, or the ten optimized Mission Archive card images exceed 400 kB in aggregate. Run `npm run build && npm run performance:budget` to reproduce the asset evidence locally; see the [performance notes](docs/performance.md) for interpretation and the optimization workflow.
 
 A separate daily GitHub workflow runs a warmed synthetic audit against the production dashboard, Mission Archive, and Guided Discovery at desktop and mobile sizes plus the About case study and an Artemis I mission record. It fails on HTTP, console, page, same-origin resource, horizontal-overflow, transfer-size, TTFB, FCP, heading-readiness, or CLS regressions and retains its JSON report for 30 days. Run `npm run audit:production` for the same read-only check locally.
 
 ## Testing
 
-`npm test` covers query and date-range validation, bounded caching, security headers, APOD, NeoWs, Collection+JSON, DONKI, Earth observation behavior, curated mission and trivia source integrity, timeout/rate-limit/non-JSON/malformed upstream responses, browser error reporting, offline-state messaging, route focus, media rendering, automated accessibility checks, trivia scoring, the UTC clock, and all local favorite stores. `npm run test:e2e` verifies dashboard loading, transient API recovery, URL-backed filters, responsive navigation, all Flight Log content types, Space Weather filtering, the EPIC image sequence, Mission Archive navigation, portfolio status evidence, and Space Trivia in Chromium.
+`npm test` covers query and date-range validation, bounded caching, security headers, APOD, NeoWs, Collection+JSON, DONKI, Earth observation behavior, curated mission, scale-profile, and trivia source integrity, timeout/rate-limit/non-JSON/malformed upstream responses, browser error reporting, offline-state messaging, route focus, media rendering, automated accessibility checks, trivia scoring, the UTC clock, and all local favorite stores. `npm run test:e2e` verifies dashboard loading, transient API recovery, URL-backed filters, responsive navigation, all Flight Log content types, Space Weather filtering, the EPIC image sequence, Mission Archive navigation and comparison, celestial scale controls, portfolio status evidence, and Space Trivia in Chromium.
 
 [GitHub Actions](.github/workflows/ci.yml) runs formatting, strict types, lint, all Vitest suites, the production build, and Chromium smoke tests for pushes to `main` and pull requests.
 
@@ -243,7 +246,15 @@ The monthly `Mission status review` workflow checks official source availability
 26. **Complete — Knowledge simulation phase 2:** expanded Space Trivia to four source-checked questions per difficulty, added URL-backed Moon, planets, observatories, and deep-space channels, and guaranteed every difficulty/channel combination has content.
 27. **Complete — Flight Log organization phase 3:** added URL-backed search, five collection filters, title sorting, result and collection summaries, and tested no-match recovery without changing on-device storage formats.
 28. **Complete — Mission analysis phase 4:** added URL-backed selection for two or three archive records, a responsive side-by-side flight profile workspace, direct NASA source links, and a tested merged cross-mission chronology.
-29. **Next:** add an educational celestial scale laboratory that compares mission distances, object sizes, and light-travel time without implying false precision.
+29. **Complete — Celestial scale phase 5:** added seven NASA-sourced reference profiles, URL-backed measurement controls, logarithmic distance and diameter comparisons, calculated one-way light time, mission continuations, and explicit reference-frame and precision guidance.
+
+### Next five improvement phases
+
+30. **Phase 6 — Provenance and data literacy:** add reusable source drawers, measurement glossaries, freshness language, and clear live-versus-curated indicators across every instrument.
+31. **Phase 7 — Unified discovery index:** extend command search into a full results experience spanning instruments, missions, guided paths, saved records, and normalized NASA media without introducing a database.
+32. **Phase 8 — Solar-system mission map:** create an accessible, non-WebGL exploration map connecting archive missions to destinations and major milestones, with a structured text alternative and reduced-motion mode.
+33. **Phase 9 — Resilient field console:** add an installable offline shell, deliberate cache/version messaging, and graceful read-only access to curated educational modules while keeping live telemetry honest about connectivity.
+34. **Phase 10 — Portfolio narrative release:** add a concise guided product tour, refreshed deterministic screenshots, architecture diagrams, measurable before/after performance evidence, and a polished release case study.
 
 ## Screenshots
 

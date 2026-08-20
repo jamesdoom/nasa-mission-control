@@ -21,10 +21,10 @@ The check reports gzip sizes and fails when any limit is exceeded:
 | ------------------------ | -----------: |
 | Largest JavaScript asset |  120 kB gzip |
 | All JavaScript assets    |  160 kB gzip |
-| All CSS assets           |   16 kB gzip |
+| All CSS assets           |   18 kB gzip |
 | Mission Archive cards    | 400 kB total |
 
-The limits leave a small, deliberate margin above the verified Phase 7 build. Raising one requires an explanation because a passing budget should not conceal an avoidable regression.
+The limits leave a small, deliberate margin above verified builds. Phase 5 raised the CSS ceiling from 16 to 18 kB to accommodate the responsive Celestial Scale Laboratory controls, logarithmic plot, evidence cards, and reduced-width layouts; its measured addition was about 0.6 kB gzip. Raising a limit requires an explanation because a passing budget should not conceal an avoidable regression.
 
 ## Interpret real-user results
 

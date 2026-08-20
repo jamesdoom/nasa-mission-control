@@ -584,6 +584,38 @@ test("compares mission profiles across a merged chronology", async ({
   ).toBe(false);
 });
 
+test("explores celestial scale with shareable measurement state", async ({
+  page,
+}) => {
+  await page.goto("/scale-lab?profiles=moon%2Cmars%2Csaturn");
+  await expect(page).toHaveTitle(
+    "Celestial Scale Laboratory | NASA Mission Control",
+  );
+  await expect(
+    page.getByRole("heading", {
+      name: "How far does the reference span reach?",
+    }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "One-way light time" }).click();
+  await expect(page).toHaveURL(/metric=signal/);
+  await expect(
+    page.getByRole("heading", { name: "How long would a signal need?" }),
+  ).toBeVisible();
+  await expect(
+    page
+      .getByRole("region", { name: "How long would a signal need?" })
+      .getByText("1.3 seconds"),
+  ).toBeVisible();
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth >
+        document.documentElement.clientWidth,
+    ),
+  ).toBe(false);
+});
+
 test("shows portfolio evidence, API status, and the expanded mission archive", async ({
   page,
 }) => {

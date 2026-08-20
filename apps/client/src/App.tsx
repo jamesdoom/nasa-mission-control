@@ -88,6 +88,13 @@ const router = createBrowserRouter([
         }),
       },
       {
+        path: "scale-lab",
+        lazy: async () => ({
+          Component: (await loadLazyRoute(() => import("./pages/ScaleLabPage")))
+            .ScaleLabPage,
+        }),
+      },
+      {
         path: "trivia",
         lazy: async () => ({
           Component: (await loadLazyRoute(() => import("./pages/TriviaPage")))

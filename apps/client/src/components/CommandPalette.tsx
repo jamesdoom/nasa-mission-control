@@ -51,6 +51,12 @@ const instrumentSeeds = [
     "Browse source-checked mission history",
     "/missions",
   ],
+  [
+    "scale-lab",
+    "Celestial Scale Laboratory",
+    "Compare mission distances, sizes, and signal time",
+    "/scale-lab",
+  ],
   ["trivia", "Space Trivia", "Test source-checked space knowledge", "/trivia"],
 ] as const;
 

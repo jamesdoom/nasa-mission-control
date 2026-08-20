@@ -10,6 +10,7 @@ const moduleLinks = [
   { to: "/space-weather", label: "Space Weather" },
   { to: "/earth", label: "Earth" },
   { to: "/missions", label: "Missions" },
+  { to: "/scale-lab", label: "Scale Lab" },
   { to: "/trivia", label: "Trivia" },
   { to: "/discover", label: "Discovery Paths" },
 ];
@@ -23,6 +24,7 @@ const routeTitles: Record<string, string> = {
   "/earth": "Earth Observatory",
   "/missions": "Mission Archive",
   "/missions/compare": "Mission Comparison",
+  "/scale-lab": "Celestial Scale Laboratory",
   "/trivia": "Space Trivia",
   "/discover": "Guided Discovery",
   "/favorites": "Personal Flight Log",
