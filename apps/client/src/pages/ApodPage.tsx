@@ -3,11 +3,13 @@ import { useSearchParams } from "react-router-dom";
 import { APOD_EARLIEST_DATE } from "@mission-control/shared";
 import { ApiError } from "../api/apod";
 import { ApodPanel } from "../components/ApodPanel";
+import { ContinueExploring } from "../components/ContinueExploring";
 import { ErrorState, LoadingState } from "../components/AsyncState";
 import { DataStatus } from "../components/DataStatus";
 import { useApod } from "../features/apod/useApod";
 import { useFavorites } from "../hooks/useFavorites";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
+import { contextualLinksForText } from "../data/contextualLinks";
 
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -89,6 +91,11 @@ export function ApodPage() {
             apod={query.data}
             saved={favorites.isFavorite(query.data.date)}
             onToggle={() => favorites.toggle(query.data)}
+          />
+          <ContinueExploring
+            links={contextualLinksForText(
+              `${query.data.title} ${query.data.explanation}`,
+            )}
           />
         </>
       )}

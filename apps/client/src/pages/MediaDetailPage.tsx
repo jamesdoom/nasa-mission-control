@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ApiError } from "../api/apod";
 import { ErrorState, LoadingState } from "../components/AsyncState";
+import { ContinueExploring } from "../components/ContinueExploring";
+import { contextualLinksForText } from "../data/contextualLinks";
 import { useMediaDetail } from "../features/media/useMedia";
 import { useMediaFavorites } from "../hooks/useMediaFavorites";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
@@ -145,6 +147,11 @@ export function MediaDetailPage() {
           </p>
         </div>
       </div>
+      <ContinueExploring
+        links={contextualLinksForText(
+          `${item.title} ${item.description} ${item.keywords.join(" ")}`,
+        )}
+      />
     </article>
   );
 }

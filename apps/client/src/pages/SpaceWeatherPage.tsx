@@ -3,9 +3,11 @@ import { useSearchParams } from "react-router-dom";
 import { ApiError } from "../api/apod";
 import { ErrorState, LoadingState } from "../components/AsyncState";
 import { DataStatus } from "../components/DataStatus";
+import { ContinueExploring } from "../components/ContinueExploring";
 import { SpaceWeatherCard } from "../components/SpaceWeatherCard";
 import { useSpaceWeather } from "../features/space-weather/useSpaceWeather";
 import { utcDate } from "../utils/dates";
+import { weatherExplorationLinks } from "../data/contextualLinks";
 
 const categories = ["all", "flare", "cme", "storm"] as const;
 type Category = (typeof categories)[number];
@@ -224,6 +226,9 @@ export function SpaceWeatherPage() {
             </div>
           </>
         )}
+      </section>
+      <section className="section connected-section">
+        <ContinueExploring links={weatherExplorationLinks} />
       </section>
     </>
   );

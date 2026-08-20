@@ -236,7 +236,8 @@ The monthly `Mission status review` workflow checks official source availability
 22. **Complete — Cosmetic phase 1:** a protected `visual-baseline-v1` rollback point, reusable immersion tokens, layered dashboard star fields, an atmospheric horizon, restrained telemetry motion, and more dimensional instrument surfaces with reduced-motion support.
 23. **Complete — Cosmetic phase 2:** module-specific atmospheric lighting, deeper translucent consoles, dimensional data cards, refined navigation depth, and consistent instrument-page visual language without changing application behavior.
 24. **Complete — Cosmetic phase 3:** brief reduced-motion-aware route arrival transitions and static mission-image telemetry framing, adding navigational polish without persistent animation or asset weight.
-25. **Next:** gather visual feedback from the live design before choosing between deeper mission-specific identity work and a compact user-controlled visual-effects preference.
+25. **Complete — Contextual discovery phase 1:** reusable observation-to-mission connections across APOD, asteroid encounters, Earth, space weather, and NASA media details, with tested subject matching and pre-filtered continuation routes.
+26. **Next:** expand source-checked Space Trivia depth and category controls, or improve local Flight Log organization without cross-device persistence.
 
 ## Screenshots
 

@@ -2,11 +2,13 @@ import { useEffect } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { ApiError } from "../api/apod";
 import { ErrorState, LoadingState } from "../components/AsyncState";
+import { ContinueExploring } from "../components/ContinueExploring";
 import { HeartIcon } from "../components/Icons";
 import { useAsteroids } from "../features/asteroids/useAsteroids";
 import { useAsteroidFavorites } from "../hooks/useAsteroidFavorites";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
 import { utcDate } from "../utils/dates";
+import { asteroidExplorationLinks } from "../data/contextualLinks";
 
 const number = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 });
 
@@ -160,6 +162,7 @@ export function AsteroidDetailPage() {
           Open NASA/JPL small-body record ↗
         </a>
       </aside>
+      <ContinueExploring links={asteroidExplorationLinks} />
     </section>
   );
 }

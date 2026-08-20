@@ -4,8 +4,10 @@ import { useSearchParams } from "react-router-dom";
 import { ApiError } from "../api/apod";
 import { ErrorState, LoadingState } from "../components/AsyncState";
 import { DataStatus } from "../components/DataStatus";
+import { ContinueExploring } from "../components/ContinueExploring";
 import { EarthImageViewer } from "../components/EarthImageViewer";
 import { useEarthObservation } from "../features/earth/useEarthObservation";
+import { earthExplorationLinks } from "../data/contextualLinks";
 
 function collectionFrom(value: string | null): EarthCollection {
   return value === "enhanced" ? "enhanced" : "natural";
@@ -214,6 +216,9 @@ export function EarthPage() {
           </p>
         </section>
       )}
+      <section className="section connected-section">
+        <ContinueExploring links={earthExplorationLinks} />
+      </section>
     </>
   );
 }
