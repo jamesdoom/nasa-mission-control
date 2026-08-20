@@ -22,11 +22,17 @@ const routeTitles: Record<string, string> = {
   "/space-weather": "Space Weather Center",
   "/earth": "Earth Observatory",
   "/missions": "Mission Archive",
+  "/missions/compare": "Mission Comparison",
   "/trivia": "Space Trivia",
   "/discover": "Guided Discovery",
   "/favorites": "Personal Flight Log",
   "/about": "About",
 };
+
+function titleForPath(pathname: string): string {
+  const basePath = `/${pathname.split("/").find(Boolean) ?? ""}`;
+  return routeTitles[pathname] ?? routeTitles[basePath] ?? "Mission Control";
+}
 
 const CommandPalette = lazy(() =>
   import("./CommandPalette").then((module) => ({
@@ -74,8 +80,7 @@ export function AppShell() {
   );
 
   useEffect(() => {
-    const basePath = `/${location.pathname.split("/").find(Boolean) ?? ""}`;
-    const title = routeTitles[basePath] ?? "Mission Control";
+    const title = titleForPath(location.pathname);
     document.title = `${title} | NASA Mission Control`;
     setOpen(false);
     setModulesOpen(false);
@@ -87,8 +92,7 @@ export function AppShell() {
     }
   }, [location.pathname]);
 
-  const basePath = `/${location.pathname.split("/").find(Boolean) ?? ""}`;
-  const routeTitle = routeTitles[basePath] ?? "Mission Control";
+  const routeTitle = titleForPath(location.pathname);
 
   useEffect(() => {
     function close(event: MouseEvent) {

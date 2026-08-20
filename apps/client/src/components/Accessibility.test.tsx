@@ -12,6 +12,7 @@ import { MissionCard } from "./MissionCard";
 import { missions } from "../data/missions";
 import { TriviaPage } from "../pages/TriviaPage";
 import { FavoritesPage } from "../pages/FavoritesPage";
+import { MissionComparePage } from "../pages/MissionComparePage";
 import { EarthImageViewer } from "./EarthImageViewer";
 
 const apod: Apod = {
@@ -207,5 +208,17 @@ describe("automated accessibility", () => {
     const results = await axe(container, jsdomAxeOptions);
     expect(results.violations).toEqual([]);
     localStorage.removeItem("mission-control:mission-favorites:v1");
+  });
+
+  it("finds no detectable violations in mission comparison", async () => {
+    const router = createMemoryRouter(
+      [{ path: "/missions/compare", element: <MissionComparePage /> }],
+      {
+        initialEntries: ["/missions/compare?missions=apollo-11,artemis-i"],
+      },
+    );
+    const { container } = render(<RouterProvider router={router} />);
+    const results = await axe(container, jsdomAxeOptions);
+    expect(results.violations).toEqual([]);
   });
 });

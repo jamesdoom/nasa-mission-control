@@ -72,6 +72,14 @@ const router = createBrowserRouter([
         }),
       },
       {
+        path: "missions/compare",
+        lazy: async () => ({
+          Component: (
+            await loadLazyRoute(() => import("./pages/MissionComparePage"))
+          ).MissionComparePage,
+        }),
+      },
+      {
         path: "missions/:missionSlug",
         lazy: async () => ({
           Component: (

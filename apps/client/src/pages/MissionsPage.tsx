@@ -1,5 +1,6 @@
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { MissionCard } from "../components/MissionCard";
+import { MissionComparisonPicker } from "../components/MissionComparisonPicker";
 import {
   missionDestinations,
   missions,
@@ -7,6 +8,10 @@ import {
   type MissionStatus,
   type MissionVehicle,
 } from "../data/missions";
+import {
+  missionSelectionFrom,
+  toggleMissionSelection,
+} from "../utils/missionComparison";
 
 const destinations: (MissionDestination | "all")[] = [
   "all",
@@ -48,6 +53,7 @@ export function MissionsPage() {
   );
   const vehicle = validOption(params.get("vehicle"), vehicles, "all");
   const status = validOption(params.get("status"), statuses, "all");
+  const compared = missionSelectionFrom(params.get("compare"));
   const visible = missions.filter(
     (mission) =>
       (destination === "all" || mission.destination === destination) &&
@@ -64,6 +70,14 @@ export function MissionsPage() {
     const next = new URLSearchParams(params);
     if (value === "all") next.delete(key);
     else next.set(key, value);
+    setParams(next);
+  }
+
+  function toggleComparison(slug: string) {
+    const next = new URLSearchParams(params);
+    const selection = toggleMissionSelection(compared, slug);
+    if (selection.length > 0) next.set("compare", selection.join(","));
+    else next.delete("compare");
     setParams(next);
   }
 
@@ -172,6 +186,56 @@ export function MissionsPage() {
             {visible.length === 1 ? "" : "s"} in view
           </span>
         </div>
+      </section>
+      <section
+        className="section mission-compare-console"
+        aria-labelledby="comparison-channel-title"
+      >
+        <div className="mission-compare-console__heading">
+          <div>
+            <p className="kicker">
+              <span />
+              Comparison channel
+            </p>
+            <h2 id="comparison-channel-title">Align mission records</h2>
+            <p>
+              Select up to three missions currently in view, then compare their
+              objectives, flight profiles, and defining moments.
+            </p>
+          </div>
+          <div>
+            <strong>{compared.length}/3 selected</strong>
+            {compared.length >= 2 ? (
+              <Link
+                className="button"
+                to={`/missions/compare?${new URLSearchParams({
+                  missions: compared.join(","),
+                }).toString()}`}
+              >
+                Open comparison
+              </Link>
+            ) : (
+              <span>Select at least two missions</span>
+            )}
+            {compared.length > 0 ? (
+              <button
+                type="button"
+                onClick={() => {
+                  const next = new URLSearchParams(params);
+                  next.delete("compare");
+                  setParams(next);
+                }}
+              >
+                Clear selection
+              </button>
+            ) : null}
+          </div>
+        </div>
+        <MissionComparisonPicker
+          options={visible}
+          selected={compared}
+          onToggle={toggleComparison}
+        />
       </section>
       <section className="section mission-results" aria-live="polite">
         {visible.length === 0 ? (

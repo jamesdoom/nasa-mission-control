@@ -555,6 +555,35 @@ test("filters and opens a source-backed mission record", async ({ page }) => {
   ).toBe(false);
 });
 
+test("compares mission profiles across a merged chronology", async ({
+  page,
+}) => {
+  await page.goto("/missions?destination=Moon");
+  await page.getByRole("checkbox", { name: /Apollo 11/ }).click();
+  await expect(page).toHaveURL(/compare=apollo-11/);
+  await page.getByRole("checkbox", { name: /Artemis I/ }).click();
+  await expect(page).toHaveURL(/compare=apollo-11%2Cartemis-i/);
+  await page.getByRole("link", { name: "Open comparison" }).click();
+  await expect(page).toHaveURL(
+    /\/missions\/compare\?missions=apollo-11%2Cartemis-i/,
+  );
+  await expect(page).toHaveTitle("Mission Comparison | NASA Mission Control");
+  await expect(
+    page.getByRole("heading", { name: "Mission parameters" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Across mission time" }),
+  ).toBeVisible();
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth >
+        document.documentElement.clientWidth,
+    ),
+  ).toBe(false);
+});
+
 test("shows portfolio evidence, API status, and the expanded mission archive", async ({
   page,
 }) => {
