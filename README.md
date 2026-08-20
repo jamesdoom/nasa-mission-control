@@ -31,7 +31,7 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Ten-record curated Mission Archive spanning Apollo, Artemis, planetary exploration, heliophysics, and space observatories
 - URL-backed destination, spacecraft-type, and status filters
 - Destination overview groups and cinematic mission records with richer timelines, related NASA media, photography, credits, and official sources
-- Expanded browser-local Flight Log for APOD, asteroids, mission records, and NASA media
+- Expanded browser-local Flight Log for APOD, asteroids, guided paths, mission records, and NASA media, with URL-backed search, collection filters, sorting, summaries, and portable backups
 - Runtime-validated recently viewed history with deduplication, bounded storage, and clear controls
 - Twelve source-checked Space Trivia questions with three difficulty levels, four URL-backed knowledge channels, scoring, a persistent best streak, explanations, and NASA citations
 - Grouped, keyboard-accessible module navigation with route-aware document titles
@@ -164,7 +164,7 @@ The Earth contract contains the selected and latest available dates, normalized 
 
 Mission Archive records are intentionally local, typed editorial content rather than an invented “live missions” API. Every record carries a review date, official NASA source links, a stable NASA image/resource identifier and credit, and a stable route at `/missions/:missionSlug`. Archive filters remain in the URL.
 
-The Flight Log uses separate bounded, runtime-validated local-storage records for each content type. APOD and asteroid formats remain backward compatible; mission and guided-path favorites store stable curated identifiers, and NASA media favorites store only the normalized metadata required to render a saved card. A separate 20-item recently viewed store deduplicates APOD, asteroid, media, and mission visits. Users can export the supported records to a versioned JSON backup and restore that backup explicitly in another browser. Imports are size-limited, key-whitelisted, and processed entirely on-device; no account, database, automatic upload, or synchronization is implied.
+The Flight Log uses separate bounded, runtime-validated local-storage records for each content type. APOD and asteroid formats remain backward compatible; mission and guided-path favorites store stable curated identifiers, and NASA media favorites store only the normalized metadata required to render a saved card. Saved records can be searched, filtered by collection, and sorted by title; these organization controls are preserved in the URL without changing stored data. A separate 20-item recently viewed store deduplicates APOD, asteroid, media, and mission visits. Users can export the supported records to a versioned JSON backup and restore that backup explicitly in another browser. Imports are size-limited, key-whitelisted, and processed entirely on-device; no account, database, automatic upload, or synchronization is implied.
 
 Space Trivia is curated local educational content. Its twelve-question bank is divided into cadet, specialist, and commander levels and can be filtered into Moon, planets, observatories, and deep-space channels. Every difficulty/channel combination contains a question, and every explanation links to the official NASA page used for verification. Difficulty and category remain shareable URL state. Only the best streak persists locally; individual answers and scores remain session state.
 
@@ -238,7 +238,8 @@ The monthly `Mission status review` workflow checks official source availability
 24. **Complete — Cosmetic phase 3:** brief reduced-motion-aware route arrival transitions and static mission-image telemetry framing, adding navigational polish without persistent animation or asset weight.
 25. **Complete — Contextual discovery phase 1:** reusable observation-to-mission connections across APOD, asteroid encounters, Earth, space weather, and NASA media details, with tested subject matching and pre-filtered continuation routes.
 26. **Complete — Knowledge simulation phase 2:** expanded Space Trivia to four source-checked questions per difficulty, added URL-backed Moon, planets, observatories, and deep-space channels, and guaranteed every difficulty/channel combination has content.
-27. **Next:** improve local Flight Log organization with search, content-type filters, and clearer collection summaries while keeping all data on-device.
+27. **Complete — Flight Log organization phase 3:** added URL-backed search, five collection filters, title sorting, result and collection summaries, and tested no-match recovery without changing on-device storage formats.
+28. **Next:** add lightweight mission comparison and cross-mission timeline tools using the existing source-checked archive.
 
 ## Screenshots
 

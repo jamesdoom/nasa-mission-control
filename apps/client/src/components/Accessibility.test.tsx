@@ -11,6 +11,7 @@ import { SpaceWeatherCard } from "./SpaceWeatherCard";
 import { MissionCard } from "./MissionCard";
 import { missions } from "../data/missions";
 import { TriviaPage } from "../pages/TriviaPage";
+import { FavoritesPage } from "../pages/FavoritesPage";
 import { EarthImageViewer } from "./EarthImageViewer";
 
 const apod: Apod = {
@@ -192,5 +193,19 @@ describe("automated accessibility", () => {
     const { container } = render(<RouterProvider router={router} />);
     const results = await axe(container, jsdomAxeOptions);
     expect(results.violations).toEqual([]);
+  });
+
+  it("finds no detectable violations in the populated Flight Log controls", async () => {
+    localStorage.setItem(
+      "mission-control:mission-favorites:v1",
+      JSON.stringify(["apollo-11"]),
+    );
+    const router = createMemoryRouter([
+      { path: "/", element: <FavoritesPage /> },
+    ]);
+    const { container } = render(<RouterProvider router={router} />);
+    const results = await axe(container, jsdomAxeOptions);
+    expect(results.violations).toEqual([]);
+    localStorage.removeItem("mission-control:mission-favorites:v1");
   });
 });

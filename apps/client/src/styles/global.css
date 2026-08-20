@@ -1562,10 +1562,36 @@ p {
   margin: 0.5rem 0;
   font-size: clamp(2rem, 4vw, 3.5rem);
 }
-.flight-log-console > div:first-child > p:last-child {
+.flight-log-console > div:first-child > p:not(.eyebrow) {
   max-width: 60ch;
   color: #91a6b9;
   line-height: 1.6;
+}
+.flight-log-metrics {
+  display: flex;
+  gap: 2rem;
+  margin: 1.5rem 0 0;
+}
+.flight-log-metrics div {
+  display: grid;
+  gap: 0.25rem;
+}
+.flight-log-metrics dt,
+.flight-log-tools label > span,
+.flight-log-collections legend {
+  color: #70879b;
+  font:
+    0.56rem "Space Mono",
+    monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.flight-log-metrics dd {
+  margin: 0;
+  color: #d8e8f5;
+  font:
+    700 1rem "Space Mono",
+    monospace;
 }
 .flight-log-console nav {
   display: grid;
@@ -1609,6 +1635,105 @@ p {
   margin: 0;
   color: #82a4bd;
   font-size: 0.78rem;
+}
+.flight-log-tools {
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--line);
+  background: rgba(6, 15, 26, 0.9);
+}
+.flight-log-tools__heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.flight-log-tools__heading h2 {
+  margin: 0.35rem 0 0;
+  font-size: clamp(1.45rem, 3vw, 2.2rem);
+}
+.flight-log-tools__heading > p {
+  margin: 0;
+  color: var(--cyan);
+  font:
+    0.68rem "Space Mono",
+    monospace;
+  text-transform: uppercase;
+}
+.flight-log-tools__controls {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(190px, 0.35fr);
+  gap: 1rem;
+}
+.flight-log-tools label {
+  display: grid;
+  gap: 0.55rem;
+}
+.flight-log-tools input[type="search"],
+.flight-log-tools select {
+  width: 100%;
+  min-height: 50px;
+  padding: 0.8rem 1rem;
+  border: 1px solid #304359;
+  border-radius: 0;
+  background: #050e19;
+  color: #e7f2fc;
+}
+.flight-log-collections {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  border: 0;
+}
+.flight-log-collections legend {
+  margin-bottom: 0.7rem;
+}
+.flight-log-collections input {
+  position: absolute;
+  opacity: 0;
+}
+.flight-log-collections label {
+  cursor: pointer;
+}
+.flight-log-collections label > span {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 46px;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid #304359;
+}
+.flight-log-collections strong {
+  color: #9db3c6;
+}
+.flight-log-collections input:checked + span {
+  border-color: var(--cyan);
+  background: rgba(72, 217, 239, 0.09);
+  color: #fff;
+}
+.flight-log-collections input:focus-visible + span {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+.flight-log-clear {
+  margin-top: 1rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #8fb3ca;
+  cursor: pointer;
+  font:
+    0.62rem "Space Mono",
+    monospace;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+.flight-log-no-results {
+  margin-bottom: 4rem;
 }
 .saved-journey-grid {
   display: grid;
@@ -4104,6 +4229,12 @@ p {
   .flight-log-console {
     grid-template-columns: 1fr;
   }
+  .flight-log-tools__controls {
+    grid-template-columns: 1fr;
+  }
+  .flight-log-collections {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
   .flight-log-backup {
     grid-column: 1;
   }
@@ -4466,6 +4597,13 @@ p {
   .flight-log-console nav,
   .saved-journey-grid {
     grid-template-columns: 1fr;
+  }
+  .flight-log-tools__heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .flight-log-collections {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .case-study__metrics {
     grid-template-columns: 1fr;

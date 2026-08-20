@@ -291,6 +291,13 @@ test("loads APOD, saves it, and preserves it in the Flight Log", async ({
   await page.getByRole("link", { name: "Flight Log" }).click();
   await expect(page).toHaveURL(/\/favorites$/);
   await expect(page.getByRole("heading", { name: apod.title })).toBeVisible();
+  await page.getByRole("radio", { name: /APOD/ }).click();
+  await expect(page).toHaveURL(/collection=apod/);
+  await page.getByLabel("Search saved records").fill("no matching record");
+  await expect(page.getByText("No saved records match")).toBeVisible();
+  await page.getByRole("button", { name: "Clear archive controls" }).click();
+  await expect(page).toHaveURL(/\/favorites$/);
+  await expect(page.getByRole("heading", { name: apod.title })).toBeVisible();
 });
 
 test("keeps archive dates in the URL", async ({ page }) => {

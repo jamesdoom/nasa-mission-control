@@ -1,7 +1,8 @@
 import { useState, type ChangeEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { ApodPanel } from "../components/ApodPanel";
 import { AsteroidCard } from "../components/AsteroidCard";
+import { FlightLogControls } from "../components/FlightLogControls";
 import { MediaCard } from "../components/MediaCard";
 import { MissionCard } from "../components/MissionCard";
 import { useAsteroidFavorites } from "../hooks/useAsteroidFavorites";
@@ -14,8 +15,17 @@ import {
   createFlightLogBackup,
   restoreFlightLogBackup,
 } from "../utils/flightLogBackup";
+import {
+  flightLogCollectionFrom,
+  flightLogSortFrom,
+  matchesFlightLogSearch,
+  sortFlightLogItems,
+  type FlightLogCollection,
+  type FlightLogSort,
+} from "../utils/flightLogFilters";
 
 export function FavoritesPage() {
+  const [params, setParams] = useSearchParams();
   const favorites = useFavorites();
   const asteroidFavorites = useAsteroidFavorites();
   const missionFavorites = useMissionFavorites();
@@ -23,6 +33,9 @@ export function FavoritesPage() {
   const journeyFavorites = useJourneyFavorites();
   const recent = useRecentlyViewed();
   const [backupStatus, setBackupStatus] = useState("");
+  const query = params.get("q") ?? "";
+  const collection = flightLogCollectionFrom(params.get("collection"));
+  const sort = flightLogSortFrom(params.get("sort"));
   const isEmpty =
     favorites.favorites.length === 0 &&
     asteroidFavorites.favorites.length === 0 &&
@@ -35,6 +48,13 @@ export function FavoritesPage() {
     missionFavorites.favorites.length +
     mediaFavorites.favorites.length +
     journeyFavorites.favorites.length;
+  const activeCollectionCount = [
+    favorites.favorites,
+    asteroidFavorites.favorites,
+    missionFavorites.favorites,
+    mediaFavorites.favorites,
+    journeyFavorites.favorites,
+  ].filter((items) => items.length > 0).length;
   const sections = [
     {
       id: "journeys",
@@ -58,6 +78,105 @@ export function FavoritesPage() {
     },
     { id: "apod", label: "APOD", count: favorites.favorites.length },
   ];
+  const filteredJourneys = sortFlightLogItems(
+    journeyFavorites.favorites.filter((journey) =>
+      matchesFlightLogSearch(query, [
+        journey.title,
+        journey.summary,
+        journey.code,
+      ]),
+    ),
+    sort,
+    (journey) => journey.title,
+  );
+  const filteredAsteroids = sortFlightLogItems(
+    asteroidFavorites.favorites.filter((asteroid) =>
+      matchesFlightLogSearch(query, [asteroid.name, asteroid.id]),
+    ),
+    sort,
+    (asteroid) => asteroid.name,
+  );
+  const filteredMissions = sortFlightLogItems(
+    missionFavorites.favorites.filter((mission) =>
+      matchesFlightLogSearch(query, [
+        mission.name,
+        mission.program,
+        mission.destination,
+        mission.dek,
+      ]),
+    ),
+    sort,
+    (mission) => mission.name,
+  );
+  const filteredMedia = sortFlightLogItems(
+    mediaFavorites.favorites.filter((item) =>
+      matchesFlightLogSearch(query, [
+        item.title,
+        item.description,
+        item.center,
+        ...item.keywords,
+      ]),
+    ),
+    sort,
+    (item) => item.title,
+  );
+  const filteredApod = sortFlightLogItems(
+    favorites.favorites.filter((apod) =>
+      matchesFlightLogSearch(query, [
+        apod.title,
+        apod.explanation,
+        apod.date,
+        apod.copyright,
+      ]),
+    ),
+    sort,
+    (apod) => apod.title,
+  );
+  const collectionCounts: Record<
+    Exclude<FlightLogCollection, "all">,
+    number
+  > = {
+    journeys: filteredJourneys.length,
+    asteroids: filteredAsteroids.length,
+    missions: filteredMissions.length,
+    media: filteredMedia.length,
+    apod: filteredApod.length,
+  };
+  const visibleSavedCount =
+    collection === "all"
+      ? Object.values(collectionCounts).reduce(
+          (total, count) => total + count,
+          0,
+        )
+      : collectionCounts[collection];
+  const allCollectionCounts: Record<FlightLogCollection, number> = {
+    all: savedCount,
+    journeys: journeyFavorites.favorites.length,
+    asteroids: asteroidFavorites.favorites.length,
+    missions: missionFavorites.favorites.length,
+    media: mediaFavorites.favorites.length,
+    apod: favorites.favorites.length,
+  };
+
+  function updateControls(
+    updates: Partial<{
+      q: string;
+      collection: FlightLogCollection;
+      sort: FlightLogSort;
+    }>,
+  ) {
+    const next = new URLSearchParams(params);
+    const nextQuery = updates.q ?? query;
+    const nextCollection = updates.collection ?? collection;
+    const nextSort = updates.sort ?? sort;
+    if (nextQuery) next.set("q", nextQuery);
+    else next.delete("q");
+    if (nextCollection !== "all") next.set("collection", nextCollection);
+    else next.delete("collection");
+    if (nextSort !== "default") next.set("sort", nextSort);
+    else next.delete("sort");
+    setParams(next, { replace: updates.q !== undefined });
+  }
 
   function downloadBackup(): void {
     const blob = new Blob([createFlightLogBackup(localStorage)], {
@@ -115,6 +234,16 @@ export function FavoritesPage() {
             Jump to a collection or create a portable backup. Imports replace
             matching browser-local records only; no data is uploaded.
           </p>
+          <dl className="flight-log-metrics">
+            <div>
+              <dt>Active collections</dt>
+              <dd>{activeCollectionCount}/5</dd>
+            </div>
+            <div>
+              <dt>Recent activity</dt>
+              <dd>{recent.items.length}</dd>
+            </div>
+          </dl>
         </div>
         <nav aria-label="Saved Flight Log collections">
           {sections.map((section) =>
@@ -152,6 +281,20 @@ export function FavoritesPage() {
           </p>
         </div>
       </section>
+      {!isEmpty && (
+        <FlightLogControls
+          query={query}
+          collection={collection}
+          sort={sort}
+          savedCount={savedCount}
+          visibleCount={visibleSavedCount}
+          counts={allCollectionCounts}
+          onQueryChange={(value) => updateControls({ q: value })}
+          onCollectionChange={(value) => updateControls({ collection: value })}
+          onSortChange={(value) => updateControls({ sort: value })}
+          onClear={() => setParams({}, { replace: true })}
+        />
+      )}
       {isEmpty ? (
         <div className="empty-state">
           <span aria-hidden="true">✦</span>
@@ -165,142 +308,161 @@ export function FavoritesPage() {
           </Link>
         </div>
       ) : null}
-      {journeyFavorites.favorites.length > 0 && (
-        <section className="flight-log-section" id="journeys">
-          <div className="section-heading">
-            <div>
-              <p className="kicker">
-                <span />
-                Saved investigations
-              </p>
-              <h2>Guided discovery paths</h2>
+      {!isEmpty && visibleSavedCount === 0 && (
+        <div className="empty-state flight-log-no-results">
+          <span aria-hidden="true">⌁</span>
+          <h2>No saved records match</h2>
+          <p>Adjust the search or collection filter to reopen the archive.</p>
+          <button
+            className="button"
+            type="button"
+            onClick={() => setParams({}, { replace: true })}
+          >
+            Clear archive controls
+          </button>
+        </div>
+      )}
+      {(collection === "all" || collection === "journeys") &&
+        filteredJourneys.length > 0 && (
+          <section className="flight-log-section" id="journeys">
+            <div className="section-heading">
+              <div>
+                <p className="kicker">
+                  <span />
+                  Saved investigations
+                </p>
+                <h2>Guided discovery paths</h2>
+              </div>
             </div>
-          </div>
-          <div className="saved-journey-grid">
-            {journeyFavorites.favorites.map((journey) => (
-              <article key={journey.id}>
-                <p className="eyebrow">{journey.code}</p>
-                <h3>{journey.title}</h3>
-                <p>{journey.summary}</p>
-                <div>
-                  <Link to={`/discover#${journey.id}`}>Resume path →</Link>
+            <div className="saved-journey-grid">
+              {filteredJourneys.map((journey) => (
+                <article key={journey.id}>
+                  <p className="eyebrow">{journey.code}</p>
+                  <h3>{journey.title}</h3>
+                  <p>{journey.summary}</p>
+                  <div>
+                    <Link to={`/discover#${journey.id}`}>Resume path →</Link>
+                    <button
+                      type="button"
+                      onClick={() => journeyFavorites.toggle(journey)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+      {(collection === "all" || collection === "asteroids") &&
+        filteredAsteroids.length > 0 && (
+          <section className="flight-log-section" id="asteroids">
+            <div className="section-heading">
+              <div>
+                <p className="kicker">
+                  <span />
+                  Tracked objects
+                </p>
+                <h2>Asteroid encounters</h2>
+              </div>
+            </div>
+            <div className="asteroid-list">
+              {filteredAsteroids.map((asteroid) => (
+                <AsteroidCard
+                  key={asteroid.id}
+                  asteroid={asteroid}
+                  saved
+                  onToggle={() => asteroidFavorites.toggle(asteroid)}
+                  detailQuery={new URLSearchParams({
+                    startDate: asteroid.approach.date,
+                    endDate: asteroid.approach.date,
+                  }).toString()}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+      {(collection === "all" || collection === "missions") &&
+        filteredMissions.length > 0 && (
+          <section className="flight-log-section" id="missions">
+            <div className="section-heading">
+              <div>
+                <p className="kicker">
+                  <span />
+                  Pinned flight history
+                </p>
+                <h2>Mission records</h2>
+              </div>
+            </div>
+            <div className="mission-grid">
+              {filteredMissions.map((mission) => (
+                <div className="flight-log-saved-card" key={mission.slug}>
+                  <MissionCard mission={mission} />
                   <button
                     type="button"
-                    onClick={() => journeyFavorites.toggle(journey)}
+                    onClick={() => missionFavorites.toggle(mission)}
+                    aria-label={`Remove ${mission.name} from Flight Log`}
                   >
                     Remove
                   </button>
                 </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      )}
-      {asteroidFavorites.favorites.length > 0 && (
-        <section className="flight-log-section" id="asteroids">
-          <div className="section-heading">
-            <div>
-              <p className="kicker">
-                <span />
-                Tracked objects
-              </p>
-              <h2>Asteroid encounters</h2>
+              ))}
             </div>
-          </div>
-          <div className="asteroid-list">
-            {asteroidFavorites.favorites.map((asteroid) => (
-              <AsteroidCard
-                key={asteroid.id}
-                asteroid={asteroid}
-                saved
-                onToggle={() => asteroidFavorites.toggle(asteroid)}
-                detailQuery={new URLSearchParams({
-                  startDate: asteroid.approach.date,
-                  endDate: asteroid.approach.date,
-                }).toString()}
-              />
-            ))}
-          </div>
-        </section>
-      )}
-      {missionFavorites.favorites.length > 0 && (
-        <section className="flight-log-section" id="missions">
-          <div className="section-heading">
-            <div>
-              <p className="kicker">
-                <span />
-                Pinned flight history
-              </p>
-              <h2>Mission records</h2>
-            </div>
-          </div>
-          <div className="mission-grid">
-            {missionFavorites.favorites.map((mission) => (
-              <div className="flight-log-saved-card" key={mission.slug}>
-                <MissionCard mission={mission} />
-                <button
-                  type="button"
-                  onClick={() => missionFavorites.toggle(mission)}
-                  aria-label={`Remove ${mission.name} from Flight Log`}
-                >
-                  Remove
-                </button>
+          </section>
+        )}
+      {(collection === "all" || collection === "media") &&
+        filteredMedia.length > 0 && (
+          <section className="flight-log-section" id="media">
+            <div className="section-heading">
+              <div>
+                <p className="kicker">
+                  <span />
+                  Saved NASA assets
+                </p>
+                <h2>Media discoveries</h2>
               </div>
-            ))}
-          </div>
-        </section>
-      )}
-      {mediaFavorites.favorites.length > 0 && (
-        <section className="flight-log-section" id="media">
-          <div className="section-heading">
-            <div>
-              <p className="kicker">
-                <span />
-                Saved NASA assets
-              </p>
-              <h2>Media discoveries</h2>
             </div>
-          </div>
-          <div className="media-grid">
-            {mediaFavorites.favorites.map((item) => (
-              <div className="flight-log-saved-card" key={item.nasaId}>
-                <MediaCard item={item} />
-                <button
-                  type="button"
-                  onClick={() => mediaFavorites.toggle(item)}
-                  aria-label={`Remove ${item.title} from Flight Log`}
-                >
-                  Remove
-                </button>
+            <div className="media-grid">
+              {filteredMedia.map((item) => (
+                <div className="flight-log-saved-card" key={item.nasaId}>
+                  <MediaCard item={item} />
+                  <button
+                    type="button"
+                    onClick={() => mediaFavorites.toggle(item)}
+                    aria-label={`Remove ${item.title} from Flight Log`}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+      {(collection === "all" || collection === "apod") &&
+        filteredApod.length > 0 && (
+          <section className="flight-log-section" id="apod">
+            <div className="section-heading">
+              <div>
+                <p className="kicker">
+                  <span />
+                  Saved observations
+                </p>
+                <h2>APOD discoveries</h2>
               </div>
-            ))}
-          </div>
-        </section>
-      )}
-      {favorites.favorites.length > 0 && (
-        <section className="flight-log-section" id="apod">
-          <div className="section-heading">
-            <div>
-              <p className="kicker">
-                <span />
-                Saved observations
-              </p>
-              <h2>APOD discoveries</h2>
             </div>
-          </div>
-          <div className="favorites-grid">
-            {favorites.favorites.map((apod) => (
-              <ApodPanel
-                key={apod.date}
-                apod={apod}
-                saved
-                onToggle={() => favorites.toggle(apod)}
-                compact
-              />
-            ))}
-          </div>
-        </section>
-      )}
+            <div className="favorites-grid">
+              {filteredApod.map((apod) => (
+                <ApodPanel
+                  key={apod.date}
+                  apod={apod}
+                  saved
+                  onToggle={() => favorites.toggle(apod)}
+                  compact
+                />
+              ))}
+            </div>
+          </section>
+        )}
       {recent.items.length > 0 && (
         <section className="flight-log-section recent-history">
           <div className="section-heading">
