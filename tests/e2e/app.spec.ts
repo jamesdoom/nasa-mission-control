@@ -692,6 +692,10 @@ test("scores and explains source-checked space trivia", async ({ page }) => {
   await page.getByRole("radio", { name: "specialist" }).click();
   await expect(page).toHaveURL(/difficulty=specialist/);
   await expect(page.getByText(/Which spacecraft became/)).toBeVisible();
+  await page.getByRole("radio", { name: "Planets" }).click();
+  await expect(page).toHaveURL(/difficulty=specialist&category=planets/);
+  await expect(page.getByText(/What system lowered Curiosity/)).toBeVisible();
+  await expect(page.getByText("0/1")).toBeVisible();
   await page.locator("main").click({ position: { x: 10, y: 10 } });
   await capturePortfolioScreenshot(page, {
     path: "docs/screenshots/space-trivia.png",

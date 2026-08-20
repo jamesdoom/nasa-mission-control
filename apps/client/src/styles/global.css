@@ -3704,12 +3704,23 @@ p {
   padding-top: 0;
   padding-bottom: 2rem;
 }
+.trivia-filter-stack {
+  display: grid;
+  gap: 1.1rem;
+  min-width: 0;
+}
 .trivia-difficulties {
   border: 0;
   padding: 0;
   margin: 0;
   display: flex;
   gap: 0.7rem;
+}
+.trivia-categories {
+  flex-wrap: wrap;
+}
+.trivia-categories span {
+  min-width: 0;
 }
 .trivia-difficulties legend {
   margin-bottom: 0.7rem;
@@ -4505,6 +4516,9 @@ p {
   }
   .trivia-difficulties span {
     min-width: 0;
+  }
+  .trivia-categories {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .trivia-telemetry > div {
     min-width: 0;

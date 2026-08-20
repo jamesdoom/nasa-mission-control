@@ -3,12 +3,33 @@ import { useSearchParams } from "react-router-dom";
 import { triviaQuestions, type TriviaDifficulty } from "../data/trivia";
 
 const difficulties: TriviaDifficulty[] = ["cadet", "specialist", "commander"];
+const categories = [
+  "all",
+  "moon",
+  "planets",
+  "observatories",
+  "deep-space",
+] as const;
+type TriviaCategoryFilter = (typeof categories)[number];
+const categoryLabels: Record<TriviaCategoryFilter, string> = {
+  all: "All topics",
+  moon: "Moon",
+  planets: "Planets",
+  observatories: "Observatories",
+  "deep-space": "Deep space",
+};
 const bestStreakKey = "mission-control:trivia-best-streak:v1";
 
 function difficultyFrom(value: string | null): TriviaDifficulty {
   return difficulties.includes(value as TriviaDifficulty)
     ? (value as TriviaDifficulty)
     : "cadet";
+}
+
+function categoryFrom(value: string | null): TriviaCategoryFilter {
+  return categories.includes(value as TriviaCategoryFilter)
+    ? (value as TriviaCategoryFilter)
+    : "all";
 }
 
 function readBestStreak(): number {
@@ -19,8 +40,11 @@ function readBestStreak(): number {
 export function TriviaPage() {
   const [params, setParams] = useSearchParams();
   const difficulty = difficultyFrom(params.get("difficulty"));
+  const category = categoryFrom(params.get("category"));
   const questions = triviaQuestions.filter(
-    (question) => question.difficulty === difficulty,
+    (question) =>
+      question.difficulty === difficulty &&
+      (category === "all" || question.category === category),
   );
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
@@ -36,7 +60,17 @@ export function TriviaPage() {
     setScore(0);
     setStreak(0);
     setComplete(false);
-  }, [difficulty]);
+  }, [category, difficulty]);
+
+  function updateFilters(
+    nextDifficulty: TriviaDifficulty,
+    nextCategory: TriviaCategoryFilter,
+  ) {
+    const next = new URLSearchParams();
+    next.set("difficulty", nextDifficulty);
+    if (nextCategory !== "all") next.set("category", nextCategory);
+    setParams(next);
+  }
 
   function answer(choice: number) {
     if (selected !== null || !question) return;
@@ -94,20 +128,36 @@ export function TriviaPage() {
         </div>
       </section>
       <section className="section trivia-console-section">
-        <fieldset className="trivia-difficulties">
-          <legend>Simulation difficulty</legend>
-          {difficulties.map((item) => (
-            <label key={item}>
-              <input
-                type="radio"
-                name="trivia-difficulty"
-                checked={difficulty === item}
-                onChange={() => setParams({ difficulty: item })}
-              />
-              <span>{item}</span>
-            </label>
-          ))}
-        </fieldset>
+        <div className="trivia-filter-stack">
+          <fieldset className="trivia-difficulties">
+            <legend>Simulation difficulty</legend>
+            {difficulties.map((item) => (
+              <label key={item}>
+                <input
+                  type="radio"
+                  name="trivia-difficulty"
+                  checked={difficulty === item}
+                  onChange={() => updateFilters(item, category)}
+                />
+                <span>{item}</span>
+              </label>
+            ))}
+          </fieldset>
+          <fieldset className="trivia-difficulties trivia-categories">
+            <legend>Knowledge channel</legend>
+            {categories.map((item) => (
+              <label key={item}>
+                <input
+                  type="radio"
+                  name="trivia-category"
+                  checked={category === item}
+                  onChange={() => updateFilters(difficulty, item)}
+                />
+                <span>{categoryLabels[item]}</span>
+              </label>
+            ))}
+          </fieldset>
+        </div>
         <div className="trivia-telemetry">
           <div>
             <span>Score</span>
@@ -150,7 +200,9 @@ export function TriviaPage() {
               <span>
                 Question {index + 1} // {questions.length}
               </span>
-              <span>{difficulty} level</span>
+              <span>
+                {difficulty} // {categoryLabels[question.category]}
+              </span>
             </header>
             <h2>{question.prompt}</h2>
             <div className="trivia-choices">

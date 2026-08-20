@@ -1,8 +1,11 @@
 export type TriviaDifficulty = "cadet" | "specialist" | "commander";
+export type TriviaCategory =
+  "moon" | "planets" | "observatories" | "deep-space";
 
 export type TriviaQuestion = {
   id: string;
   difficulty: TriviaDifficulty;
+  category: TriviaCategory;
   prompt: string;
   choices: string[];
   answer: number;
@@ -14,6 +17,7 @@ export const triviaQuestions: TriviaQuestion[] = [
   {
     id: "apollo-destination",
     difficulty: "cadet",
+    category: "moon",
     prompt: "Where did Apollo 11’s lunar module Eagle land?",
     choices: [
       "Ocean of Storms",
@@ -32,6 +36,7 @@ export const triviaQuestions: TriviaQuestion[] = [
   {
     id: "curiosity-target",
     difficulty: "cadet",
+    category: "planets",
     prompt: "Which planet is NASA’s Curiosity rover exploring?",
     choices: ["Venus", "Mars", "Mercury", "Jupiter"],
     answer: 1,
@@ -45,6 +50,7 @@ export const triviaQuestions: TriviaQuestion[] = [
   {
     id: "webb-light",
     difficulty: "cadet",
+    category: "observatories",
     prompt: "Which region of light is central to Webb’s observations?",
     choices: ["Infrared", "Radio", "Gamma ray", "Ultraviolet only"],
     answer: 0,
@@ -56,8 +62,28 @@ export const triviaQuestions: TriviaQuestion[] = [
     },
   },
   {
+    id: "voyager-golden-record",
+    difficulty: "cadet",
+    category: "deep-space",
+    prompt: "Which spacecraft carry NASA’s Golden Record?",
+    choices: [
+      "Voyager 1 and 2",
+      "Pioneer 10 and 11",
+      "New Horizons only",
+      "Cassini and Galileo",
+    ],
+    answer: 0,
+    explanation:
+      "Each Voyager space probe carries a gold-plated record containing sounds and images selected to portray life and culture on Earth.",
+    source: {
+      label: "NASA Voyager Golden Record",
+      url: "https://science.nasa.gov/mission/voyager/voyager-golden-record-overview/",
+    },
+  },
+  {
     id: "voyager-interstellar",
     difficulty: "specialist",
+    category: "deep-space",
     prompt:
       "Which spacecraft became the first human-made object to enter interstellar space?",
     choices: ["Pioneer 10", "Voyager 1", "New Horizons", "Voyager 2"],
@@ -72,6 +98,7 @@ export const triviaQuestions: TriviaQuestion[] = [
   {
     id: "webb-l2",
     difficulty: "specialist",
+    category: "observatories",
     prompt: "Webb operates around which Sun–Earth Lagrange point?",
     choices: ["L1", "L2", "L4", "L5"],
     answer: 1,
@@ -85,6 +112,7 @@ export const triviaQuestions: TriviaQuestion[] = [
   {
     id: "curiosity-landing",
     difficulty: "specialist",
+    category: "planets",
     prompt: "What system lowered Curiosity to the Martian surface?",
     choices: ["Airbags", "Sky crane", "Landing legs", "Impact shell"],
     answer: 1,
@@ -96,8 +124,28 @@ export const triviaQuestions: TriviaQuestion[] = [
     },
   },
   {
+    id: "artemis-destination",
+    difficulty: "specialist",
+    category: "moon",
+    prompt: "What was Artemis I’s destination around the Moon?",
+    choices: [
+      "Low lunar orbit",
+      "The lunar surface",
+      "Distant retrograde orbit",
+      "The Earth–Moon L1 point",
+    ],
+    answer: 2,
+    explanation:
+      "The uncrewed Orion spacecraft used a lunar flyby to enter a distant retrograde orbit, where its deep-space systems could be tested.",
+    source: {
+      label: "NASA Artemis I press kit",
+      url: "https://www.nasa.gov/artemis-i-press-kit/",
+    },
+  },
+  {
     id: "apollo-duration",
     difficulty: "commander",
+    category: "moon",
     prompt: "How long did Apollo 11 remain in flight before splashdown?",
     choices: ["About 4 days", "About 6 days", "About 8 days", "About 12 days"],
     answer: 2,
@@ -111,6 +159,7 @@ export const triviaQuestions: TriviaQuestion[] = [
   {
     id: "voyager-saturn",
     difficulty: "commander",
+    category: "deep-space",
     prompt: "What did Voyager 1 discover at Saturn?",
     choices: [
       "Five moons and the G-ring",
@@ -129,6 +178,7 @@ export const triviaQuestions: TriviaQuestion[] = [
   {
     id: "webb-first-images",
     difficulty: "commander",
+    category: "observatories",
     prompt: "When did Webb’s first full-color science images debut?",
     choices: ["January 2022", "July 2022", "December 2022", "July 2023"],
     answer: 1,
@@ -137,6 +187,25 @@ export const triviaQuestions: TriviaQuestion[] = [
     source: {
       label: "NASA Webb timeline",
       url: "https://science.nasa.gov/mission/webb/webb-mission-timeline/",
+    },
+  },
+  {
+    id: "juno-polar-orbit",
+    difficulty: "commander",
+    category: "planets",
+    prompt: "Why does Juno approach Jupiter over its poles?",
+    choices: [
+      "To avoid the strongest radiation belts",
+      "To remain inside Jupiter’s shadow",
+      "To land on the cloud tops",
+      "To communicate through Saturn",
+    ],
+    answer: 0,
+    explanation:
+      "Juno’s long, looping polar orbit lets it dive between Jupiter and the planet’s most intense radiation belts during close approaches.",
+    source: {
+      label: "NASA Juno mission",
+      url: "https://science.nasa.gov/mission/juno/",
     },
   },
 ];

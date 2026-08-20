@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { triviaQuestions } from "./trivia";
+import {
+  triviaQuestions,
+  type TriviaCategory,
+  type TriviaDifficulty,
+} from "./trivia";
 
 describe("source-checked trivia bank", () => {
   it("provides valid answers, explanations, and official sources", () => {
@@ -14,6 +18,32 @@ describe("source-checked trivia bank", () => {
       expect(new URL(question.source.url).hostname.endsWith("nasa.gov")).toBe(
         true,
       );
+    }
+  });
+
+  it("covers every knowledge category at every difficulty", () => {
+    const difficulties: TriviaDifficulty[] = [
+      "cadet",
+      "specialist",
+      "commander",
+    ];
+    const categories: TriviaCategory[] = [
+      "moon",
+      "planets",
+      "observatories",
+      "deep-space",
+    ];
+
+    for (const difficulty of difficulties) {
+      for (const category of categories) {
+        expect(
+          triviaQuestions.some(
+            (question) =>
+              question.difficulty === difficulty &&
+              question.category === category,
+          ),
+        ).toBe(true);
+      }
     }
   });
 });
