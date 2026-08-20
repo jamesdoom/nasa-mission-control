@@ -235,7 +235,8 @@ The monthly `Mission status review` workflow checks official source availability
 21. **Complete — Content performance phase 13:** expanded synthetic coverage for Mission Archive and Guided Discovery, route transfer evidence, optimized archive card imagery, and enforceable image and transfer budgets.
 22. **Complete — Cosmetic phase 1:** a protected `visual-baseline-v1` rollback point, reusable immersion tokens, layered dashboard star fields, an atmospheric horizon, restrained telemetry motion, and more dimensional instrument surfaces with reduced-motion support.
 23. **Complete — Cosmetic phase 2:** module-specific atmospheric lighting, deeper translucent consoles, dimensional data cards, refined navigation depth, and consistent instrument-page visual language without changing application behavior.
-24. **Next:** review the expanded visual system in production, then selectively explore richer transitions and mission-specific decorative telemetry without increasing cognitive load.
+24. **Complete — Cosmetic phase 3:** brief reduced-motion-aware route arrival transitions and static mission-image telemetry framing, adding navigational polish without persistent animation or asset weight.
+25. **Next:** gather visual feedback from the live design before choosing between deeper mission-specific identity work and a compact user-controlled visual-effects preference.
 
 ## Screenshots
 

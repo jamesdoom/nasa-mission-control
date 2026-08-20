@@ -3325,6 +3325,23 @@ p {
   overflow: hidden;
   border-bottom: 1px solid var(--line);
 }
+.mission-detail__hero::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: clamp(1rem, 2vw, 2rem);
+  background:
+    linear-gradient(var(--cyan), var(--cyan)) left top / 42px 1px no-repeat,
+    linear-gradient(var(--cyan), var(--cyan)) left top / 1px 42px no-repeat,
+    linear-gradient(var(--cyan), var(--cyan)) right top / 42px 1px no-repeat,
+    linear-gradient(var(--cyan), var(--cyan)) right top / 1px 42px no-repeat,
+    linear-gradient(var(--cyan), var(--cyan)) left bottom / 42px 1px no-repeat,
+    linear-gradient(var(--cyan), var(--cyan)) left bottom / 1px 42px no-repeat,
+    linear-gradient(var(--cyan), var(--cyan)) right bottom / 42px 1px no-repeat,
+    linear-gradient(var(--cyan), var(--cyan)) right bottom / 1px 42px no-repeat;
+  opacity: 0.24;
+  pointer-events: none;
+}
 .mission-detail__hero > img,
 .mission-detail__shade {
   position: absolute;

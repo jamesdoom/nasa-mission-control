@@ -34,11 +34,37 @@ const CommandPalette = lazy(() =>
   })),
 );
 
+function prefersReducedMotion() {
+  const matchMedia = Reflect.get(window, "matchMedia") as unknown;
+  if (typeof matchMedia !== "function") return false;
+  const query = Reflect.apply(matchMedia, window, [
+    "(prefers-reduced-motion: reduce)",
+  ]) as unknown;
+  return (
+    typeof query === "object" &&
+    query !== null &&
+    Reflect.get(query, "matches") === true
+  );
+}
+
+function animateRouteArrival(element: HTMLElement) {
+  const animate = Reflect.get(element, "animate") as unknown;
+  if (typeof animate !== "function") return;
+  Reflect.apply(animate, element, [
+    [
+      { opacity: 0.58, transform: "translateY(8px)" },
+      { opacity: 1, transform: "translateY(0)" },
+    ],
+    { duration: 280, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" },
+  ]);
+}
+
 export function AppShell() {
   const [open, setOpen] = useState(false);
   const [modulesOpen, setModulesOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const navigationRef = useRef<HTMLElement>(null);
+  const mainRef = useRef<HTMLElement>(null);
   const location = useLocation();
   const previousPath = useRef(location.pathname);
   const online = useNetworkStatus();
@@ -54,7 +80,9 @@ export function AppShell() {
     setOpen(false);
     setModulesOpen(false);
     if (previousPath.current !== location.pathname) {
-      document.getElementById("main-content")?.focus({ preventScroll: true });
+      mainRef.current?.focus({ preventScroll: true });
+      if (mainRef.current && !prefersReducedMotion())
+        animateRouteArrival(mainRef.current);
       previousPath.current = location.pathname;
     }
   }, [location.pathname]);
@@ -179,7 +207,7 @@ export function AppShell() {
       <p className="sr-only" aria-live="polite" aria-atomic="true">
         {routeTitle} loaded
       </p>
-      <main id="main-content" tabIndex={-1}>
+      <main ref={mainRef} id="main-content" tabIndex={-1}>
         <Outlet />
       </main>
       <footer className="site-footer">
