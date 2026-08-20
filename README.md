@@ -234,7 +234,8 @@ The monthly `Mission status review` workflow checks official source availability
 20. **Complete — Guided Discovery phase 12:** dedicated Hubble, Juno, Cassini, and Artemis I investigation paths with mission continuations, live-instrument context, NASA media searches, official citations, and Flight Log compatibility.
 21. **Complete — Content performance phase 13:** expanded synthetic coverage for Mission Archive and Guided Discovery, route transfer evidence, optimized archive card imagery, and enforceable image and transfer budgets.
 22. **Complete — Cosmetic phase 1:** a protected `visual-baseline-v1` rollback point, reusable immersion tokens, layered dashboard star fields, an atmospheric horizon, restrained telemetry motion, and more dimensional instrument surfaces with reduced-motion support.
-23. **Next:** review the dashboard experiment across devices before extending its visual language to individual mission instruments; consider account synchronization separately if users need cross-device collections.
+23. **Complete — Cosmetic phase 2:** module-specific atmospheric lighting, deeper translucent consoles, dimensional data cards, refined navigation depth, and consistent instrument-page visual language without changing application behavior.
+24. **Next:** review the expanded visual system in production, then selectively explore richer transitions and mission-specific decorative telemetry without increasing cognitive load.
 
 ## Screenshots
 
