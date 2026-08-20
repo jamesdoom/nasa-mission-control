@@ -87,6 +87,7 @@ export function AppShell() {
     setOpen(false);
     setModulesOpen(false);
     if (previousPath.current !== location.pathname) {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
       mainRef.current?.focus({ preventScroll: true });
       if (mainRef.current && !prefersReducedMotion())
         animateRouteArrival(mainRef.current);

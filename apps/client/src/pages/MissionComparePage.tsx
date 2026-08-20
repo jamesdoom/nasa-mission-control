@@ -1,5 +1,6 @@
 import { Link, useSearchParams } from "react-router-dom";
 import { MissionComparisonPicker } from "../components/MissionComparisonPicker";
+import { ProvenancePanel } from "../components/ProvenancePanel";
 import { getMission, missions } from "../data/missions";
 import {
   comparisonTimeline,
@@ -41,6 +42,18 @@ export function MissionComparePage() {
           <strong>{selectedMissions.length}/3 aligned</strong>
           <span>Curated archive data // Not live telemetry</span>
         </aside>
+      </section>
+      <section className="section provenance-section">
+        <ProvenancePanel
+          kind="curated"
+          title="Comparison of reviewed archive records"
+          summary="No live telemetry or inferred mission ranking"
+          details={[
+            "The comparison reuses the same locally maintained records and official sources as Mission Archive.",
+            "Timeline alignment is a date-based presentation of reviewed milestones, not an operational reconstruction.",
+            "Differences in mission duration, distance, and status should be read in each mission’s stated context.",
+          ]}
+        />
       </section>
       <section
         className="section mission-compare-selection"

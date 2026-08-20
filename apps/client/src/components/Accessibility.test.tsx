@@ -15,6 +15,7 @@ import { FavoritesPage } from "../pages/FavoritesPage";
 import { MissionComparePage } from "../pages/MissionComparePage";
 import { ScaleLabPage } from "../pages/ScaleLabPage";
 import { EarthImageViewer } from "./EarthImageViewer";
+import { ProvenancePanel } from "./ProvenancePanel";
 
 const apod: Apod = {
   date: "2024-01-01",
@@ -229,6 +230,21 @@ describe("automated accessibility", () => {
       { initialEntries: ["/scale-lab?profiles=moon,mars,saturn"] },
     );
     const { container } = render(<RouterProvider router={router} />);
+    const results = await axe(container, jsdomAxeOptions);
+    expect(results.violations).toEqual([]);
+  });
+
+  it("finds no detectable violations in evidence provenance guidance", async () => {
+    const { container } = render(
+      <main>
+        <ProvenancePanel
+          kind="curated"
+          title="Reviewed mission record"
+          summary="Source review 2026-08-01"
+          details={["This record links to official NASA sources."]}
+        />
+      </main>,
+    );
     const results = await axe(container, jsdomAxeOptions);
     expect(results.violations).toEqual([]);
   });

@@ -176,6 +176,62 @@ export function AboutPage() {
         </div>
       </section>
 
+      <section
+        className="section evidence-glossary"
+        id="evidence-glossary"
+        aria-labelledby="evidence-glossary-title"
+      >
+        <header>
+          <p className="kicker">
+            <span />
+            Data literacy // Evidence key
+          </p>
+          <h2 id="evidence-glossary-title">How to read Mission Control</h2>
+          <p>
+            Instrument evidence panels use these terms consistently so current
+            retrieval, historical observation, and project-authored context are
+            never mistaken for one another.
+          </p>
+        </header>
+        <dl>
+          <div>
+            <dt>NASA API</dt>
+            <dd>
+              A response retrieved from an official NASA service through the
+              Mission Control server. It may still describe an older event.
+            </dd>
+          </div>
+          <div>
+            <dt>Retrieved</dt>
+            <dd>
+              When this browser received the normalized response—not when the
+              spacecraft, telescope, or sensor made the observation.
+            </dd>
+          </div>
+          <div>
+            <dt>Observed</dt>
+            <dd>
+              The event or capture time supplied in the NASA record, normally
+              shown in UTC when available.
+            </dd>
+          </div>
+          <div>
+            <dt>Curated</dt>
+            <dd>
+              Project-maintained educational material checked against linked
+              official NASA sources on a recorded review date.
+            </dd>
+          </div>
+          <div>
+            <dt>Calculated</dt>
+            <dd>
+              A transparent local calculation made from displayed sourced
+              values; its formula and limitations are stated beside the result.
+            </dd>
+          </div>
+        </dl>
+      </section>
+
       <aside className="section source-note">
         <strong>Data attribution</strong>
         <p>

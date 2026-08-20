@@ -645,7 +645,9 @@ test("shows portfolio evidence, API status, and the expanded mission archive", a
   await page.goto("/missions");
   await page.getByRole("button", { name: /Moon/ }).click();
   await expect(page).toHaveURL(/destination=Moon/);
-  await expect(page.getByRole("heading", { name: "Artemis I" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Artemis I", exact: true }),
+  ).toBeVisible();
   await page
     .getByRole("combobox", { name: "Destination", exact: true })
     .selectOption("Sun");
@@ -744,6 +746,28 @@ test("connects Artemis I to its guided lunar investigation", async ({
     .click();
   await journey.getByRole("link", { name: "Open instrument →" }).nth(1).click();
   await expect(page).toHaveURL(/\/earth$/);
+});
+
+test("opens Artemis I from guided path nine at the top of the record", async ({
+  page,
+}) => {
+  await page.goto("/discover#artemis-return-moon");
+  const journey = page
+    .getByRole("article")
+    .filter({ hasText: "Rehearse a return to the Moon" });
+  await expect(
+    journey.getByRole("heading", { name: "Rehearse a return to the Moon" }),
+  ).toBeVisible();
+  await journey
+    .getByRole("link", { name: "Open instrument →" })
+    .first()
+    .click();
+
+  await expect(page).toHaveURL(/\/missions\/artemis-i$/);
+  await expect(
+    page.getByRole("heading", { name: "Artemis I", exact: true }),
+  ).toBeVisible();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(10);
 });
 
 test("scores and explains source-checked space trivia", async ({ page }) => {

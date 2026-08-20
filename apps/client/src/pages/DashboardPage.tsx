@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ApiError } from "../api/apod";
 import { ApodPanel } from "../components/ApodPanel";
 import { ErrorState, LoadingState } from "../components/AsyncState";
+import { DataStatus } from "../components/DataStatus";
 import { useApod } from "../features/apod/useApod";
 import { useAsteroids } from "../features/asteroids/useAsteroids";
 import { useFavorites } from "../hooks/useFavorites";
@@ -91,11 +92,18 @@ export function DashboardPage() {
             retry={() => void query.refetch()}
           />
         ) : (
-          <ApodPanel
-            apod={query.data}
-            saved={favorites.isFavorite(query.data.date)}
-            onToggle={() => favorites.toggle(query.data)}
-          />
+          <>
+            <DataStatus
+              source="NASA APOD"
+              updatedAt={query.dataUpdatedAt}
+              refreshing={query.isFetching}
+            />
+            <ApodPanel
+              apod={query.data}
+              saved={favorites.isFavorite(query.data.date)}
+              onToggle={() => favorites.toggle(query.data)}
+            />
+          </>
         )}
       </section>
       <section className="section upcoming">

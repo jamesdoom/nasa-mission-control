@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { triviaQuestions, type TriviaDifficulty } from "../data/trivia";
+import { ProvenancePanel } from "../components/ProvenancePanel";
 
 const difficulties: TriviaDifficulty[] = ["cadet", "specialist", "commander"];
 const categories = [
@@ -126,6 +127,18 @@ export function TriviaPage() {
             answer includes context and a direct NASA reference.
           </p>
         </div>
+      </section>
+      <section className="section provenance-section">
+        <ProvenancePanel
+          kind="curated"
+          title="Source-checked educational question bank"
+          summary={`${String(triviaQuestions.length)} locally maintained questions`}
+          details={[
+            "Questions, choices, and explanations are curated content rather than live NASA data.",
+            "Every answer reveals the official NASA source used for verification.",
+            "Scores are session state; only the best streak is stored in this browser.",
+          ]}
+        />
       </section>
       <section className="section trivia-console-section">
         <div className="trivia-filter-stack">

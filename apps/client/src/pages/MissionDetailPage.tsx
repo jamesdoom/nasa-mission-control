@@ -4,6 +4,7 @@ import { getMission, getMissionReviewDueDate } from "../data/missions";
 import { NotFoundPage } from "./NotFoundPage";
 import { useMissionFavorites } from "../hooks/useMissionFavorites";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
+import { ProvenancePanel } from "../components/ProvenancePanel";
 
 const missionDiscovery: Record<
   string,
@@ -120,6 +121,16 @@ export function MissionDetailPage() {
           </p>
         </header>
         <div className="section mission-detail__body">
+          <ProvenancePanel
+            kind="curated"
+            title="Reviewed Mission Archive record"
+            summary={`Source review ${mission.verifiedAt}`}
+            details={[
+              "This narrative is maintained locally and is not a live NASA mission-status feed.",
+              `Its facts and timeline were last checked against the linked official NASA sources on ${mission.verifiedAt}.`,
+              `The next scheduled review is due ${getMissionReviewDueDate(mission)}; source links remain available below for direct verification.`,
+            ]}
+          />
           <section className="mission-overview">
             <div>
               <p className="eyebrow">Mission brief</p>

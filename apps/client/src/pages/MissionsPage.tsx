@@ -1,6 +1,7 @@
 import { Link, useSearchParams } from "react-router-dom";
 import { MissionCard } from "../components/MissionCard";
 import { MissionComparisonPicker } from "../components/MissionComparisonPicker";
+import { ProvenancePanel } from "../components/ProvenancePanel";
 import {
   missionDestinations,
   missions,
@@ -99,6 +100,18 @@ export function MissionsPage() {
           <strong>CURATED DATA</strong>
           <span>Last source review // {latestReview}</span>
         </aside>
+      </section>
+      <section className="section provenance-section">
+        <ProvenancePanel
+          kind="curated"
+          title="Source-checked editorial mission records"
+          summary={`Latest scheduled source review ${latestReview}`}
+          details={[
+            "Mission records are maintained in this repository and are not a live NASA mission-status feed.",
+            "Each record carries its own review date and links to the official NASA pages used to verify its claims.",
+            "Active and extended labels describe status at the recorded review date and are checked by the scheduled mission-review workflow.",
+          ]}
+        />
       </section>
       <section
         className="section mission-destinations"

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { HeartIcon } from "../components/Icons";
+import { ProvenancePanel } from "../components/ProvenancePanel";
 import { discoveryJourneys } from "../data/journeys";
 import { useJourneyFavorites } from "../hooks/useJourneyFavorites";
 
@@ -31,6 +32,18 @@ export function DiscoveryPage() {
           <strong>{discoveryJourneys.length} guided paths</strong>
           <span>27 connected investigation steps</span>
         </aside>
+      </section>
+      <section className="section provenance-section">
+        <ProvenancePanel
+          kind="curated"
+          title="Editorial learning paths"
+          summary="Nine paths connecting live, archive, and curated evidence"
+          details={[
+            "Journey order and explanatory outcomes are maintained locally by this project.",
+            "A path can lead to current API results, NASA archive search results, or a reviewed Mission Control record.",
+            "Every journey includes an official NASA context source; individual destination pages label their own evidence type.",
+          ]}
+        />
       </section>
       <section
         className="section discovery-grid"

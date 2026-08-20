@@ -1,6 +1,6 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { createMemoryRouter, RouterProvider } from "react-router-dom";
+import { createMemoryRouter, Link, RouterProvider } from "react-router-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { AppShell } from "./AppShell";
 
@@ -8,6 +8,7 @@ describe("AppShell reliability behavior", () => {
   afterEach(() => vi.restoreAllMocks());
 
   it("announces and focuses route changes", async () => {
+    vi.spyOn(window, "scrollTo").mockImplementation(() => undefined);
     const user = userEvent.setup();
     const router = createMemoryRouter(
       [
@@ -67,5 +68,40 @@ describe("AppShell reliability behavior", () => {
 
     await user.keyboard("{Escape}");
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("returns to the top when navigating to another pathname", async () => {
+    const scrollTo = vi
+      .spyOn(window, "scrollTo")
+      .mockImplementation(() => undefined);
+    const user = userEvent.setup();
+    const router = createMemoryRouter(
+      [
+        {
+          element: <AppShell />,
+          children: [
+            {
+              path: "/discover",
+              element: <Link to="/missions/artemis-i">Open instrument</Link>,
+            },
+            {
+              path: "/missions/:slug",
+              element: <h1>Artemis I</h1>,
+            },
+          ],
+        },
+      ],
+      { initialEntries: ["/discover"] },
+    );
+
+    render(<RouterProvider router={router} />);
+    await user.click(screen.getByRole("link", { name: "Open instrument" }));
+
+    expect(screen.getByRole("heading", { name: "Artemis I" })).toBeVisible();
+    expect(scrollTo).toHaveBeenCalledWith({
+      top: 0,
+      left: 0,
+      behavior: "auto",
+    });
   });
 });

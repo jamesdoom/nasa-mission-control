@@ -33,6 +33,7 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Destination overview groups and cinematic mission records with richer timelines, related NASA media, photography, credits, and official sources
 - Shareable two- or three-mission comparison workspace with aligned flight profiles and a merged cross-mission chronology
 - Celestial Scale Laboratory with source-checked reference frames, logarithmic distance and diameter comparisons, calculated one-way light time, and shareable controls
+- Expandable evidence panels across live and curated instruments, with retrieval-versus-observation guidance and a shared data-literacy glossary
 - Expanded browser-local Flight Log for APOD, asteroids, guided paths, mission records, and NASA media, with URL-backed search, collection filters, sorting, summaries, and portable backups
 - Runtime-validated recently viewed history with deduplication, bounded storage, and clear controls
 - Twelve source-checked Space Trivia questions with three difficulty levels, four URL-backed knowledge channels, scoring, a persistent best streak, explanations, and NASA citations
@@ -182,7 +183,7 @@ Errors use `{ error: { code, message, requestId } }`; server details and credent
 
 Non-dashboard routes load as independent Vite chunks, so visitors do not download every instrument on first paint. With Speed Insights included, the primary production client chunk is approximately 342 kB (109 kB gzip), still below the approximately 389 kB (119 kB gzip) build measured before route splitting. DM Sans and Space Mono are self-hosted WOFF2 files, imagery is lazy-loaded where appropriate, and the global atmosphere uses responsive WebP sources.
 
-Vercel Speed Insights records production Core Web Vitals by route without adding general-purpose visitor analytics. CI also fails if the largest compressed JavaScript asset exceeds 120 kB, all compressed JavaScript exceeds 160 kB, compressed CSS exceeds 18 kB, or the ten optimized Mission Archive card images exceed 400 kB in aggregate. Run `npm run build && npm run performance:budget` to reproduce the asset evidence locally; see the [performance notes](docs/performance.md) for interpretation and the optimization workflow.
+Vercel Speed Insights records production Core Web Vitals by route without adding general-purpose visitor analytics. CI also fails if the largest compressed JavaScript asset exceeds 120 kB, all compressed JavaScript exceeds 162 kB, compressed CSS exceeds 18 kB, or the ten optimized Mission Archive card images exceed 400 kB in aggregate. Run `npm run build && npm run performance:budget` to reproduce the asset evidence locally; see the [performance notes](docs/performance.md) for interpretation and the optimization workflow.
 
 A separate daily GitHub workflow runs a warmed synthetic audit against the production dashboard, Mission Archive, and Guided Discovery at desktop and mobile sizes plus the About case study and an Artemis I mission record. It fails on HTTP, console, page, same-origin resource, horizontal-overflow, transfer-size, TTFB, FCP, heading-readiness, or CLS regressions and retains its JSON report for 30 days. Run `npm run audit:production` for the same read-only check locally.
 
@@ -250,7 +251,7 @@ The monthly `Mission status review` workflow checks official source availability
 
 ### Next five improvement phases
 
-30. **Phase 6 — Provenance and data literacy:** add reusable source drawers, measurement glossaries, freshness language, and clear live-versus-curated indicators across every instrument.
+30. **Complete — Provenance and data literacy phase 6:** added reusable evidence drawers, honest retrieval-versus-observation language, live, curated, and calculated indicators, a shared glossary, and scheduled-review context throughout the instrument suite.
 31. **Phase 7 — Unified discovery index:** extend command search into a full results experience spanning instruments, missions, guided paths, saved records, and normalized NASA media without introducing a database.
 32. **Phase 8 — Solar-system mission map:** create an accessible, non-WebGL exploration map connecting archive missions to destinations and major milestones, with a structured text alternative and reduced-motion mode.
 33. **Phase 9 — Resilient field console:** add an installable offline shell, deliberate cache/version messaging, and graceful read-only access to curated educational modules while keeping live telemetry honest about connectivity.

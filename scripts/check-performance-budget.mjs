@@ -8,7 +8,7 @@ const missionCardDirectory = path.resolve(
 );
 const limits = {
   largestJavaScriptGzip: 120 * 1024,
-  totalJavaScriptGzip: 160 * 1024,
+  totalJavaScriptGzip: 162 * 1024,
   totalCssGzip: 18 * 1024,
   totalMissionCardImages: 400 * 1024,
 };

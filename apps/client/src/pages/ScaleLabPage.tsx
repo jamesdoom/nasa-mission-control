@@ -1,5 +1,6 @@
 import { Link, useSearchParams } from "react-router-dom";
 import { ScaleProfilePicker } from "../components/ScaleProfilePicker";
+import { ProvenancePanel } from "../components/ProvenancePanel";
 import { getMission } from "../data/missions";
 import { getScaleProfile } from "../data/scaleProfiles";
 import {
@@ -102,6 +103,18 @@ export function ScaleLabPage() {
           <strong>LOG SCALE</strong>
           <span>Orientation model // Not live ephemeris data</span>
         </aside>
+      </section>
+      <section className="section provenance-section">
+        <ProvenancePanel
+          kind="calculated"
+          title="NASA-sourced reference values with local calculations"
+          summary="Curated model · Not live ephemeris data"
+          details={[
+            "Reference distances and diameters come from the official NASA source linked on each profile.",
+            "One-way signal time is calculated locally from the displayed distance at 299,792.458 kilometers per second.",
+            "Profiles can use different origins, averages, approximations, or historical dates and must not be read as simultaneous positions.",
+          ]}
+        />
       </section>
       <section
         className="section scale-console"
