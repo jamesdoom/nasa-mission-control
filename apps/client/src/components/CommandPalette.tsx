@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { discoveryJourneys } from "../data/journeys";
-import { missions } from "../data/missions";
+import { localDiscoveryIndex } from "../data/discoveryIndex";
 import { SearchIcon } from "./Icons";
 
 type Command = {
@@ -13,105 +12,21 @@ type Command = {
   keywords: string;
 };
 
-const instrumentSeeds = [
-  [
-    "dashboard",
-    "Mission Control Dashboard",
-    "Daily briefing and telemetry",
-    "/",
-  ],
-  [
-    "apod",
-    "Astronomy Picture of the Day",
-    "Browse NASA’s daily image or video",
-    "/apod",
-  ],
-  [
-    "asteroids",
-    "Asteroid Watch",
-    "Inspect near-Earth object approaches",
-    "/asteroids",
-  ],
-  [
-    "media",
-    "NASA Media Library",
-    "Search NASA images, video, and audio",
-    "/media",
-  ],
-  [
-    "space-weather",
-    "Space Weather Center",
-    "Review DONKI observations",
-    "/space-weather",
-  ],
-  ["earth", "Earth Observatory", "Explore EPIC and GIBS imagery", "/earth"],
-  [
-    "missions",
-    "Mission Archive",
-    "Browse source-checked mission history",
-    "/missions",
-  ],
-  [
-    "scale-lab",
-    "Celestial Scale Laboratory",
-    "Compare mission distances, sizes, and signal time",
-    "/scale-lab",
-  ],
-  ["trivia", "Space Trivia", "Test source-checked space knowledge", "/trivia"],
-] as const;
+const categoryLabels = {
+  instrument: "Instrument",
+  mission: "Mission",
+  path: "Discovery",
+  saved: "Utility",
+} as const;
 
-const instrumentCommands: Command[] = instrumentSeeds.map(
-  ([id, label, description, to]) => ({
-    id,
-    label,
-    description,
-    to,
-    category: "Instrument",
-    keywords: `${label} ${description}`.toLowerCase(),
-  }),
-);
-
-const utilityCommands: Command[] = [
-  {
-    id: "flight-log",
-    label: "Personal Flight Log",
-    description: "Open saved discoveries and recent history",
-    category: "Utility",
-    to: "/favorites",
-    keywords: "favorites saved collection recent history flight log",
-  },
-  {
-    id: "about",
-    label: "About this project",
-    description: "Review architecture, evidence, and attribution",
-    category: "Utility",
-    to: "/about",
-    keywords: "about architecture portfolio evidence attribution",
-  },
-];
-
-const commands: Command[] = [
-  ...instrumentCommands,
-  ...missions.map((mission) => ({
-    id: `mission-${mission.slug}`,
-    label: mission.name,
-    description: `${mission.destination} · ${mission.statusLabel}`,
-    category: "Mission" as const,
-    to: `/missions/${mission.slug}`,
-    keywords:
-      `${mission.name} ${mission.program} ${mission.destination} ${mission.vehicle}`.toLowerCase(),
-  })),
-  ...discoveryJourneys.map((journey) => ({
-    id: `journey-${journey.id}`,
-    label: journey.title,
-    description: journey.summary,
-    category: "Discovery" as const,
-    to: "/discover",
-    keywords:
-      `${journey.title} ${journey.summary} ${journey.outcome}`.toLowerCase(),
-  })),
-  ...utilityCommands,
-];
+const commands: Command[] = localDiscoveryIndex.map((result) => ({
+  id: result.id,
+  label: result.title,
+  description: result.description,
+  category: categoryLabels[result.kind],
+  to: result.to,
+  keywords: result.keywords,
+}));
 
 export function CommandPalette({ onClose }: { onClose: () => void }) {
   const [query, setQuery] = useState("");
@@ -280,9 +195,18 @@ export function CommandPalette({ onClose }: { onClose: () => void }) {
           )}
         </div>
         <div className="command-palette__footer">
-          <span>↑↓ Navigate</span>
-          <span>Enter Open</span>
-          <span>Esc Close</span>
+          <button
+            type="button"
+            onClick={() => {
+              const params = new URLSearchParams();
+              if (query.trim()) params.set("q", query.trim());
+              void navigate(`/search${params.size > 0 ? `?${params}` : ""}`);
+              onClose();
+            }}
+          >
+            Search NASA media and Flight Log →
+          </button>
+          <span>↑↓ Navigate · Enter Open · Esc Close</span>
         </div>
       </div>
     </div>

@@ -11,6 +11,13 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <DashboardPage /> },
       {
+        path: "search",
+        lazy: async () => ({
+          Component: (await loadLazyRoute(() => import("./pages/SearchPage")))
+            .SearchPage,
+        }),
+      },
+      {
         path: "apod",
         lazy: async () => ({
           Component: (await loadLazyRoute(() => import("./pages/ApodPage")))

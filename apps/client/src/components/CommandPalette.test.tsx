@@ -5,8 +5,12 @@ import { describe, expect, it, vi } from "vitest";
 import { CommandPalette } from "./CommandPalette";
 
 function CurrentLocation() {
+  const location = useLocation();
   return (
-    <output aria-label="Current location">{useLocation().pathname}</output>
+    <output aria-label="Current location">
+      {location.pathname}
+      {location.search}
+    </output>
   );
 }
 
@@ -54,6 +58,36 @@ describe("CommandPalette", () => {
       screen.getByText("No matching mission command."),
     ).toBeInTheDocument();
     await user.keyboard("{Escape}");
+    expect(onClose).toHaveBeenCalledOnce();
+  });
+
+  it("hands a query off to the full discovery index", async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+    render(
+      <MemoryRouter>
+        <Routes>
+          <Route
+            path="*"
+            element={
+              <>
+                <CommandPalette onClose={onClose} />
+                <CurrentLocation />
+              </>
+            }
+          />
+        </Routes>
+      </MemoryRouter>,
+    );
+    await user.type(screen.getByRole("combobox"), "Artemis");
+    await user.click(
+      screen.getByRole("button", {
+        name: "Search NASA media and Flight Log →",
+      }),
+    );
+    expect(screen.getByLabelText("Current location")).toHaveTextContent(
+      "/search?q=Artemis",
+    );
     expect(onClose).toHaveBeenCalledOnce();
   });
 });

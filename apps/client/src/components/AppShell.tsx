@@ -4,6 +4,7 @@ import { MarkIcon, SearchIcon } from "./Icons";
 import { useNetworkStatus } from "../hooks/useNetworkStatus";
 
 const moduleLinks = [
+  { to: "/search", label: "Discovery Index" },
   { to: "/apod", label: "APOD" },
   { to: "/asteroids", label: "Asteroid Watch" },
   { to: "/media", label: "Media Library" },
@@ -17,6 +18,7 @@ const moduleLinks = [
 
 const routeTitles: Record<string, string> = {
   "/": "Dashboard",
+  "/search": "Unified Discovery Index",
   "/apod": "Astronomy Picture of the Day",
   "/asteroids": "Asteroid Watch",
   "/media": "NASA Media Library",

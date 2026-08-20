@@ -16,6 +16,8 @@ import { MissionComparePage } from "../pages/MissionComparePage";
 import { ScaleLabPage } from "../pages/ScaleLabPage";
 import { EarthImageViewer } from "./EarthImageViewer";
 import { ProvenancePanel } from "./ProvenancePanel";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SearchPage } from "../pages/SearchPage";
 
 const apod: Apod = {
   date: "2024-01-01",
@@ -244,6 +246,23 @@ describe("automated accessibility", () => {
           details={["This record links to official NASA sources."]}
         />
       </main>,
+    );
+    const results = await axe(container, jsdomAxeOptions);
+    expect(results.violations).toEqual([]);
+  });
+
+  it("finds no detectable violations in the unified discovery index", async () => {
+    const client = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+    const router = createMemoryRouter(
+      [{ path: "/search", element: <SearchPage /> }],
+      { initialEntries: ["/search"] },
+    );
+    const { container } = render(
+      <QueryClientProvider client={client}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>,
     );
     const results = await axe(container, jsdomAxeOptions);
     expect(results.violations).toEqual([]);

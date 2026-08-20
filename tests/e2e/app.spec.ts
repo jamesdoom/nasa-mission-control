@@ -357,7 +357,7 @@ test("provides an operable mobile navigation menu", async ({ page }) => {
   await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible();
   await page.getByRole("button", { name: /Explore/ }).click();
   await expect(
-    page.getByRole("link", { name: "02 Asteroid Watch", exact: true }),
+    page.getByRole("link", { name: "03 Asteroid Watch", exact: true }),
   ).toBeVisible();
   await capturePortfolioScreenshot(page, {
     path: "docs/screenshots/mobile-navigation.png",
@@ -365,7 +365,7 @@ test("provides an operable mobile navigation menu", async ({ page }) => {
     animations: "disabled",
   });
   await page
-    .getByRole("link", { name: "02 Asteroid Watch", exact: true })
+    .getByRole("link", { name: "03 Asteroid Watch", exact: true })
     .click();
   await expect(
     page.getByRole("heading", { name: "Asteroid Watch" }),
@@ -828,4 +828,39 @@ test("navigates the mission index with global command search", async ({
   await expect(
     page.getByRole("heading", { name: "Parker Solar Probe" }),
   ).toBeVisible();
+});
+
+test("searches local, saved, and NASA records from one discovery index", async ({
+  page,
+}) => {
+  await mockMedia(page);
+  await page.addInitScript(() => {
+    localStorage.setItem(
+      "mission-control:mission-favorites:v1",
+      JSON.stringify(["artemis-i"]),
+    );
+  });
+  await page.goto("/search?q=Artemis");
+
+  await expect(
+    page.getByRole("heading", { name: "Search the mission index" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Rehearse a return to the Moon" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: mediaItem.title }),
+  ).toBeVisible();
+  await page.getByRole("radio", { name: "Flight Log" }).click();
+  await expect(page).toHaveURL(/\/search\?q=Artemis&source=saved$/);
+  await expect(page.getByText("Saved mission · Moon")).toBeVisible();
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth >
+        document.documentElement.clientWidth,
+    ),
+  ).toBe(false);
 });
