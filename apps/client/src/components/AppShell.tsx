@@ -11,6 +11,7 @@ const moduleLinks = [
   { to: "/space-weather", label: "Space Weather" },
   { to: "/earth", label: "Earth" },
   { to: "/missions", label: "Missions" },
+  { to: "/missions/map", label: "Mission Map" },
   { to: "/scale-lab", label: "Scale Lab" },
   { to: "/trivia", label: "Trivia" },
   { to: "/discover", label: "Discovery Paths" },
@@ -26,6 +27,7 @@ const routeTitles: Record<string, string> = {
   "/earth": "Earth Observatory",
   "/missions": "Mission Archive",
   "/missions/compare": "Mission Comparison",
+  "/missions/map": "Solar-system Mission Map",
   "/scale-lab": "Celestial Scale Laboratory",
   "/trivia": "Space Trivia",
   "/discover": "Guided Discovery",
@@ -176,6 +178,10 @@ export function AppShell() {
                 <NavLink
                   key={link.to}
                   to={link.to}
+                  end={
+                    link.to === "/missions" &&
+                    location.pathname === "/missions/map"
+                  }
                   onClick={() => setModulesOpen(false)}
                 >
                   <span>0{index + 1}</span>

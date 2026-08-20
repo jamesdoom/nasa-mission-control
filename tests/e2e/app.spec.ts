@@ -864,3 +864,28 @@ test("searches local, saved, and NASA records from one discovery index", async (
     ),
   ).toBe(false);
 });
+
+test("explores the mission archive through an accessible destination map", async ({
+  page,
+}) => {
+  await page.goto("/missions/map");
+  await expect(
+    page.getByRole("heading", { name: "Solar-system mission map" }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", {
+      name: "Outer Solar System: 3 archive missions",
+    })
+    .click();
+  await expect(page).toHaveURL(/destination=Outer\+Solar\+System/);
+  await expect(page.getByText("3 missions displayed")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Voyager 1" })).toBeVisible();
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth >
+        document.documentElement.clientWidth,
+    ),
+  ).toBe(false);
+});

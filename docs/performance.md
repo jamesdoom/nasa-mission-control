@@ -20,11 +20,11 @@ The check reports gzip sizes and fails when any limit is exceeded:
 | Evidence                 |        Budget |
 | ------------------------ | ------------: |
 | Largest JavaScript asset |   120 kB gzip |
-| All JavaScript assets    |   164 kB gzip |
-| All CSS assets           | 18.25 kB gzip |
+| All JavaScript assets    |   167 kB gzip |
+| All CSS assets           | 19.25 kB gzip |
 | Mission Archive cards    |  400 kB total |
 
-The limits leave a small, deliberate margin above verified builds. Phase 5 raised the CSS ceiling from 16 to 18 kB to accommodate the responsive Celestial Scale Laboratory controls, logarithmic plot, evidence cards, and reduced-width layouts; its measured addition was about 0.6 kB gzip. Phase 6 raised the aggregate JavaScript ceiling from 160 to 162 kB for the reusable provenance disclosure, freshness guidance, glossary, and route-arrival correction. Phase 7 raised aggregate JavaScript to 164 kB and CSS to 18.25 kB for the lazy-loaded unified Discovery Index, including its responsive source controls and mixed-result cards; the largest entry chunk remains independently capped at 120 kB gzip. Raising a limit requires an explanation because a passing budget should not conceal an avoidable regression.
+The limits leave a small, deliberate margin above verified builds. Phase 5 raised the CSS ceiling from 16 to 18 kB to accommodate the responsive Celestial Scale Laboratory controls, logarithmic plot, evidence cards, and reduced-width layouts; its measured addition was about 0.6 kB gzip. Phase 6 raised the aggregate JavaScript ceiling from 160 to 162 kB for the reusable provenance disclosure, freshness guidance, glossary, and route-arrival correction. Phase 7 raised aggregate JavaScript to 164 kB and CSS to 18.25 kB for the lazy-loaded unified Discovery Index. Phase 8 raised aggregate JavaScript to 167 kB and CSS to 19.25 kB for the accessible mission map, orbit plot, responsive controls, and structured record view; the map itself remains a separate 2.19 kB gzip route chunk and the largest entry chunk remains independently capped at 120 kB gzip. Raising a limit requires an explanation because a passing budget should not conceal an avoidable regression.
 
 ## Interpret real-user results
 

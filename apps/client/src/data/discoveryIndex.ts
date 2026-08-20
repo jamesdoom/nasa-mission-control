@@ -51,6 +51,12 @@ const instrumentSeeds = [
     "/missions",
   ],
   [
+    "mission-map",
+    "Solar-system Mission Map",
+    "Trace archive missions across five destination regions",
+    "/missions/map",
+  ],
+  [
     "scale-lab",
     "Celestial Scale Laboratory",
     "Compare distances, sizes, and signal time",

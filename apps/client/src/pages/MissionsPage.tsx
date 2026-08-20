@@ -99,6 +99,7 @@ export function MissionsPage() {
         <aside>
           <strong>CURATED DATA</strong>
           <span>Last source review // {latestReview}</span>
+          <Link to="/missions/map">Open mission map →</Link>
         </aside>
       </section>
       <section className="section provenance-section">

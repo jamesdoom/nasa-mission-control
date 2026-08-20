@@ -18,6 +18,7 @@ import { EarthImageViewer } from "./EarthImageViewer";
 import { ProvenancePanel } from "./ProvenancePanel";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SearchPage } from "../pages/SearchPage";
+import { MissionMapPage } from "../pages/MissionMapPage";
 
 const apod: Apod = {
   date: "2024-01-01",
@@ -264,6 +265,16 @@ describe("automated accessibility", () => {
         <RouterProvider router={router} />
       </QueryClientProvider>,
     );
+    const results = await axe(container, jsdomAxeOptions);
+    expect(results.violations).toEqual([]);
+  });
+
+  it("finds no detectable violations in the solar-system mission map", async () => {
+    const router = createMemoryRouter(
+      [{ path: "/missions/map", element: <MissionMapPage /> }],
+      { initialEntries: ["/missions/map"] },
+    );
+    const { container } = render(<RouterProvider router={router} />);
     const results = await axe(container, jsdomAxeOptions);
     expect(results.violations).toEqual([]);
   });
