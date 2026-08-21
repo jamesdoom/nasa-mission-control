@@ -32,7 +32,10 @@ export function DashboardPage() {
             <h1>
               Explore beyond
               <br />
-              <em>the horizon.</em>
+              <em aria-label="the horizon.">
+                th
+                <span className="hero-outline-e" aria-hidden="true" /> horizon.
+              </em>
             </h1>
             <p className="hero-lede">
               Your daily connection to the universe—NASA imagery, mission data,

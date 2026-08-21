@@ -14,6 +14,12 @@ NASA Mission Control runs as a Vite single-page application with same-origin Exp
 
 These signals do not prove that APOD, NeoWs, DONKI, EPIC, GIBS, or the NASA Image Library is currently available. Each instrument handles its own upstream failure and retry state.
 
+## Offline field console
+
+The production build emits `sw.js` from the exact hashed JavaScript and CSS bundle. The service worker precaches the SPA shell, fonts, compact background, and every route chunk so curated Mission Archive, Guided Discovery, Trivia, Scale Lab, Mission Map, Flight Log, and About content can render without a network after installation. Same-origin static images are cached only after use to avoid a multi-megabyte initial install.
+
+Live `/api` requests bypass the service worker entirely. An offline NASA instrument must therefore show its normal connection failure while the global banner explains local mode; cached data must never be described as newly retrieved telemetry. Run `npm run build && npm run offline:verify` whenever cache strategy or bundling changes. A waiting version is activated only after the user chooses **Update and reload**, which avoids replacing an in-progress session without notice.
+
 ## Curated mission review
 
 ```bash

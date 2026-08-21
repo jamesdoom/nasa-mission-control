@@ -26,5 +26,6 @@ jobs:
       - run: npm run review:missions
       - run: npm run build
       - run: npm run performance:budget
+      - run: npm run offline:verify
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e

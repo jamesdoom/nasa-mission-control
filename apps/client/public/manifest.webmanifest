@@ -1,0 +1,23 @@
+{
+  "name": "NASA Mission Control",
+  "short_name": "Mission Control",
+  "description": "An interactive command center for NASA imagery, missions, and space data.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#050912",
+  "theme_color": "#050912",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    { "name": "Mission Archive", "url": "/missions" },
+    { "name": "Mission Map", "url": "/missions/map" },
+    { "name": "Guided Discovery", "url": "/discover" }
+  ]
+}

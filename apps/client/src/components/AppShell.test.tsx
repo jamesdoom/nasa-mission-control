@@ -43,7 +43,7 @@ describe("AppShell reliability behavior", () => {
       window.dispatchEvent(new Event("offline"));
     });
     expect(screen.getByRole("status")).toHaveTextContent(
-      "Saved Flight Log records remain available",
+      "Cached curated instruments and saved Flight Log records remain available",
     );
     expect(screen.getByText("LOCAL MODE")).toBeInTheDocument();
   });

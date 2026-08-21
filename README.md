@@ -103,6 +103,7 @@ npm run lint
 npm test
 npm run test:e2e
 npm run performance:budget
+npm run offline:verify
 npm run audit:production
 npm run smoke:production
 npm run review:missions
@@ -183,6 +184,8 @@ Discovery Paths are typed, locally curated navigation narratives rather than ano
 
 Errors use `{ error: { code, message, requestId } }`; server details and credentials are never returned. Shared internal contracts live in `packages/shared`, while NASA-specific schemas remain in `apps/server`.
 
+The production build generates an installable, versioned offline field console without caching `/api` traffic. It precaches the application shell and curated route chunks, then caches same-origin static assets as they are visited. Navigation uses the latest network response when possible and falls back to the cached shell offline. Live NASA requests always go to the network, while the global connectivity notice distinguishes cached educational records from current telemetry. New service-worker versions wait for explicit user confirmation before reloading the application. Run `npm run offline:verify` after a production build to confirm every generated JavaScript and CSS asset is represented and API caching remains excluded.
+
 ### Performance strategy
 
 Non-dashboard routes load as independent Vite chunks, so visitors do not download every instrument on first paint. With Speed Insights included, the primary production client chunk is approximately 342 kB (109 kB gzip), still below the approximately 389 kB (119 kB gzip) build measured before route splitting. DM Sans and Space Mono are self-hosted WOFF2 files, imagery is lazy-loaded where appropriate, and the global atmosphere uses responsive WebP sources.
@@ -193,7 +196,7 @@ A separate daily GitHub workflow runs a warmed synthetic audit against the produ
 
 ## Testing
 
-`npm test` covers query and date-range validation, bounded caching, security headers, APOD, NeoWs, Collection+JSON, DONKI, Earth observation behavior, curated mission, scale-profile, and trivia source integrity, timeout/rate-limit/non-JSON/malformed upstream responses, browser error reporting, offline-state messaging, route focus, media rendering, automated accessibility checks, trivia scoring, the UTC clock, and all local favorite stores. `npm run test:e2e` verifies dashboard loading, transient API recovery, URL-backed filters, responsive navigation, all Flight Log content types, Space Weather filtering, the EPIC image sequence, Mission Archive navigation and comparison, celestial scale controls, portfolio status evidence, and Space Trivia in Chromium.
+`npm test` covers query and date-range validation, bounded caching, security headers, APOD, NeoWs, Collection+JSON, DONKI, Earth observation behavior, curated mission, scale-profile, and trivia source integrity, timeout/rate-limit/non-JSON/malformed upstream responses, browser error reporting, offline-state messaging, route focus, media rendering, automated accessibility checks, trivia scoring, the UTC clock, and all local favorite stores. `npm run offline:verify` checks the generated installable shell and its live-API exclusion. `npm run test:e2e` verifies dashboard loading, transient API recovery, URL-backed filters, responsive navigation, all Flight Log content types, Space Weather filtering, the EPIC image sequence, Mission Archive navigation and comparison, celestial scale controls, portfolio status evidence, and Space Trivia in Chromium.
 
 [GitHub Actions](.github/workflows/ci.yml) runs formatting, strict types, lint, all Vitest suites, the production build, and Chromium smoke tests for pushes to `main` and pull requests.
 
@@ -258,7 +261,7 @@ The monthly `Mission status review` workflow checks official source availability
 30. **Complete — Provenance and data literacy phase 6:** added reusable evidence drawers, honest retrieval-versus-observation language, live, curated, and calculated indicators, a shared glossary, and scheduled-review context throughout the instrument suite.
 31. **Complete — Unified discovery index phase 7:** added a shareable full-search experience spanning instruments, missions, guided paths, validated browser-local Flight Log records, and independently loaded normalized NASA media, plus command-palette handoff and source filters.
 32. **Complete — Solar-system mission map phase 8:** added a keyboard-operable, non-WebGL destination plot connecting all archive missions to major milestones, URL-backed regional focus, explicit schematic caveats, a responsive structured text alternative, and reduced-motion compatibility.
-33. **Phase 9 — Resilient field console:** add an installable offline shell, deliberate cache/version messaging, and graceful read-only access to curated educational modules while keeping live telemetry honest about connectivity.
+33. **Complete — Resilient field console phase 9:** added an installable manifest, build-derived versioned precache, network-first navigation fallback, explicit update-and-reload messaging, cached curated routes, and a strict exclusion preventing live `/api` telemetry from being cached.
 34. **Phase 10 — Portfolio narrative release:** add a concise guided product tour, refreshed deterministic screenshots, architecture diagrams, measurable before/after performance evidence, and a polished release case study.
 
 ## Screenshots

@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { MarkIcon, SearchIcon } from "./Icons";
 import { useNetworkStatus } from "../hooks/useNetworkStatus";
+import { FieldConsoleStatus } from "./FieldConsoleStatus";
 
 const moduleLinks = [
   { to: "/search", label: "Discovery Index" },
@@ -214,8 +215,9 @@ export function AppShell() {
         <div className="connectivity-banner" role="status">
           <strong>Network link offline.</strong>
           <span>
-            Saved Flight Log records remain available. Live NASA instruments
-            will reconnect when this browser is online.
+            Cached curated instruments and saved Flight Log records remain
+            available. Live NASA instruments will reconnect when this browser is
+            online; displayed telemetry is never presented as newly fetched.
           </span>
         </div>
       )}
@@ -238,6 +240,7 @@ export function AppShell() {
           Explore NASA media <span aria-hidden="true">↗</span>
         </a>
       </footer>
+      <FieldConsoleStatus />
       {commandOpen ? (
         <Suspense fallback={null}>
           <CommandPalette onClose={() => setCommandOpen(false)} />
