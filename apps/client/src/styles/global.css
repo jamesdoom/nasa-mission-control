@@ -660,25 +660,20 @@ p {
   font-style: normal;
 }
 .hero-outline-e {
-  position: relative;
   display: inline-block;
-  width: 0.48em;
-  height: 0.5em;
-  margin: 0 0.015em;
-  border: 1px solid #71889f;
-  border-right-color: transparent;
-  border-radius: 50%;
-  vertical-align: -0.015em;
+  width: 0.5em;
+  height: 0.52em;
+  margin-inline: 0.01em;
+  overflow: visible;
+  vertical-align: -0.025em;
 }
-.hero-outline-e::after {
-  position: absolute;
-  left: 0.08em;
-  top: 50%;
-  width: 0.4em;
-  height: 1px;
-  background: #71889f;
-  content: "";
-  transform: translateY(-50%);
+.hero-outline-e path {
+  fill: none;
+  stroke: #71889f;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.6;
+  vector-effect: non-scaling-stroke;
 }
 
 .field-console {

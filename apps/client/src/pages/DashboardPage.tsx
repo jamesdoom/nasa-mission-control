@@ -34,7 +34,15 @@ export function DashboardPage() {
               <br />
               <em aria-label="the horizon.">
                 th
-                <span className="hero-outline-e" aria-hidden="true" /> horizon.
+                <svg
+                  className="hero-outline-e"
+                  viewBox="0 0 100 100"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d="M 89 75 C 81 86 70 92 56 92 C 32 92 15 75 15 51 C 15 27 32 10 55 10 C 79 10 92 27 92 52 L 16 52" />
+                </svg>{" "}
+                horizon.
               </em>
             </h1>
             <p className="hero-lede">
