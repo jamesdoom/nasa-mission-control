@@ -1,5 +1,46 @@
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Mission } from "../data/missions";
+
+function MissionCardImage({ mission }: { mission: Mission }) {
+  const imageRef = useRef<HTMLImageElement>(null);
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  useEffect(() => {
+    const image = imageRef.current;
+    if (!image) return;
+    if (!("IntersectionObserver" in window)) {
+      setShouldLoad(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        setShouldLoad(true);
+        observer.disconnect();
+      },
+      { rootMargin: "300px 0px" },
+    );
+    observer.observe(image);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <img
+      ref={imageRef}
+      src={
+        shouldLoad ? `/assets/missions/cards/${mission.slug}.jpg` : undefined
+      }
+      alt={mission.image.alt}
+      width="720"
+      height="480"
+      loading="lazy"
+      decoding="async"
+      fetchPriority="low"
+    />
+  );
+}
 
 export function MissionCard({ mission }: { mission: Mission }) {
   return (
@@ -9,14 +50,7 @@ export function MissionCard({ mission }: { mission: Mission }) {
         aria-label={`Open ${mission.name} mission archive`}
       >
         <div className="mission-card__image">
-          <img
-            src={`/assets/missions/cards/${mission.slug}.jpg`}
-            alt={mission.image.alt}
-            width="720"
-            height="480"
-            loading="lazy"
-            decoding="async"
-          />
+          <MissionCardImage mission={mission} />
           <span className={`mission-status mission-status--${mission.status}`}>
             {mission.statusLabel}
           </span>

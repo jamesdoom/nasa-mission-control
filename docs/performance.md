@@ -54,7 +54,7 @@ The initial Phase 9 baseline was:
 
 These are synthetic observations from one run, not claims about every visitor. The scheduled workflow retains `production-performance.json` artifacts for 30 days so changes can be compared under the same methodology.
 
-The Phase 13 route expansion identified a 1.77 MB desktop Mission Archive transfer caused by all ten full-resolution card images entering the browser's lazy-load threshold. Archive cards now use dedicated 720-pixel derivatives with a 400 kB aggregate build budget, while mission detail records retain their larger source images. The production audit enforces a 1.2 MB same-origin transfer ceiling per scenario. Browser transfer measurements are useful regression signals under consistent conditions, not a replacement for real-user Speed Insights data.
+The Phase 13 route expansion identified a 1.77 MB desktop Mission Archive transfer caused by all ten full-resolution card images entering the browser's lazy-load threshold. Archive cards now use dedicated 720-pixel derivatives with a 400 kB aggregate build budget, while mission detail records retain their larger source images. Card URLs are assigned only when an IntersectionObserver places them within 300 pixels of the viewport, avoiding browser-specific native lazy-load distances that previously requested several below-fold rows during the initial desktop visit. The production audit enforces a 1.2 MB same-origin transfer ceiling per scenario. Browser transfer measurements are useful regression signals under consistent conditions, not a replacement for real-user Speed Insights data.
 
 ## Optimization workflow
 
