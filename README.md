@@ -53,6 +53,7 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Validated, browser-local Flight Log backup and restore for user-controlled continuity without an account
 - User-visible same-origin API health checks with explicit NASA-upstream scope
 - Portfolio case study covering product constraints, architecture, scientific communication, and quality evidence
+- Five-stop guided product tour linking portfolio decisions to working instruments
 - Expanded source-checked Mission Archive with Perseverance and Parker Solar Probe
 - Global offline mode messaging with route-change focus and assistive-technology announcements
 - Scheduled read-only production smoke checks and a documented incident-triage runbook
@@ -102,6 +103,7 @@ npm run typecheck
 npm run lint
 npm test
 npm run test:e2e
+npm run screenshots:update
 npm run performance:budget
 npm run offline:verify
 npm run audit:production
@@ -143,12 +145,13 @@ After a deployment, verify `/api/health`, one live-data route, a lazy-loaded pag
 
 ```mermaid
 flowchart LR
-  Browser[React client] -->|Normalized /api contracts| Express[Express boundary]
-  Express -->|Validated requests + server-only key| Open[api.nasa.gov]
+  Browser[React + TanStack Query] -->|Same-origin normalized contracts| Express[Express + Zod boundary]
+  Express -->|Timeouts, bounded cache, server-only key| Open[api.nasa.gov]
   Express -->|Validated public requests| Images[NASA Image Library]
-  Express -->|WMS imagery| GIBS[Earthdata GIBS]
-  Browser -->|Favorites, history, streak| Local[Browser local storage]
-  Curated[Typed local mission + trivia content] --> Browser
+  Express -->|Exact WMS request| GIBS[Earthdata GIBS]
+  Browser -->|Validated favorites, history, streak| Local[Browser local storage]
+  Curated[Typed missions, trivia, guided paths] --> Browser
+  Shell[Versioned offline shell] -->|Curated routes only| Browser
 ```
 
 The browser calls internal endpoints such as `GET /api/apod?date=YYYY-MM-DD`, `GET /api/asteroids?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD`, `GET /api/media/search?q=apollo&mediaType=image&page=1`, `GET /api/space-weather?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD&category=all`, and `GET /api/earth?date=YYYY-MM-DD&collection=natural`. Express validates each query, calls NASA services, validates important upstream fields, and maps them into deliberately small internal models:
@@ -192,7 +195,7 @@ Non-dashboard routes load as independent Vite chunks, so visitors do not downloa
 
 Vercel Speed Insights records production Core Web Vitals by route without adding general-purpose visitor analytics. CI also fails if the largest compressed JavaScript asset exceeds 120 kB, all compressed JavaScript exceeds 167 kB, compressed CSS exceeds 19.25 kB, or the ten optimized Mission Archive card images exceed 400 kB in aggregate. Run `npm run build && npm run performance:budget` to reproduce the asset evidence locally; see the [performance notes](docs/performance.md) for interpretation and the optimization workflow.
 
-A separate daily GitHub workflow runs a warmed synthetic audit against the production dashboard, Mission Archive, and Guided Discovery at desktop and mobile sizes plus the About case study and an Artemis I mission record. It fails on HTTP, console, page, same-origin resource, horizontal-overflow, transfer-size, TTFB, FCP, heading-readiness, or CLS regressions and retains its JSON report for 30 days. Run `npm run audit:production` for the same read-only check locally.
+A separate daily GitHub workflow runs a warmed synthetic audit against the production dashboard, Mission Archive, and Guided Discovery at desktop and mobile sizes plus the About case study and an Artemis I mission record. It fails on navigation, same-origin console/resource, application page, horizontal-overflow, transfer-size, TTFB, FCP, heading-readiness, or CLS regressions. Third-party embed failures remain in the retained diagnostic evidence without being presented as application regressions. Run `npm run audit:production` for the same read-only check locally.
 
 ## Testing
 
@@ -262,11 +265,13 @@ The monthly `Mission status review` workflow checks official source availability
 31. **Complete — Unified discovery index phase 7:** added a shareable full-search experience spanning instruments, missions, guided paths, validated browser-local Flight Log records, and independently loaded normalized NASA media, plus command-palette handoff and source filters.
 32. **Complete — Solar-system mission map phase 8:** added a keyboard-operable, non-WebGL destination plot connecting all archive missions to major milestones, URL-backed regional focus, explicit schematic caveats, a responsive structured text alternative, and reduced-motion compatibility.
 33. **Complete — Resilient field console phase 9:** added an installable manifest, build-derived versioned precache, network-first navigation fallback, explicit update-and-reload messaging, cached curated routes, and a strict exclusion preventing live `/api` telemetry from being cached.
-34. **Phase 10 — Portfolio narrative release:** add a concise guided product tour, refreshed deterministic screenshots, architecture diagrams, measurable before/after performance evidence, and a polished release case study.
+34. **Complete — Portfolio narrative release phase 10:** added a five-stop guided product tour, refreshed deterministic screenshots, accessible application and repository architecture diagrams, measured performance outcomes, scoped third-party audit diagnostics, and a polished release case study.
 
 ## Screenshots
 
-The captures below use deterministic mocked NASA content so they can be regenerated without consuming API quota.
+The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.
+
+![NASA Mission Control portfolio case study](docs/screenshots/portfolio-case-study.png)
 
 ![Mission Control dashboard](docs/screenshots/dashboard.png)
 

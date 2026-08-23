@@ -1,4 +1,48 @@
+import { Link } from "react-router-dom";
 import { useHealthStatus } from "../features/health/useHealthStatus";
+
+const tourStops = [
+  {
+    signal: "01 // Live boundary",
+    title: "Begin with today’s briefing",
+    description:
+      "See normalized APOD and near-Earth data arrive through a server-owned NASA connection with honest status labels.",
+    to: "/",
+    label: "Open Mission Control",
+  },
+  {
+    signal: "02 // Scientific context",
+    title: "Interrogate an approach",
+    description:
+      "Compare velocity, diameter, and miss distance without turning classification data into a danger claim.",
+    to: "/asteroids",
+    label: "Open Asteroid Watch",
+  },
+  {
+    signal: "03 // Curated evidence",
+    title: "Cross six decades of missions",
+    description:
+      "Filter ten reviewed missions, align timelines, and continue to official NASA evidence.",
+    to: "/missions",
+    label: "Open Mission Archive",
+  },
+  {
+    signal: "04 // Connected learning",
+    title: "Follow a discovery path",
+    description:
+      "Connect live instruments, mission history, and NASA media through one guided question.",
+    to: "/discover",
+    label: "Open Guided Discovery",
+  },
+  {
+    signal: "05 // Resilient return",
+    title: "Review your Flight Log",
+    description:
+      "Revisit saved records locally through an offline shell that never presents cached telemetry as current.",
+    to: "/favorites",
+    label: "Open Flight Log",
+  },
+] as const;
 
 export function AboutPage() {
   const health = useHealthStatus();
@@ -20,6 +64,19 @@ export function AboutPage() {
             that turns public space data into an accessible, cinematic, and
             scientifically responsible command-center experience.
           </p>
+          <div className="about-hero__actions">
+            <a className="button" href="#product-tour">
+              Start the product tour
+            </a>
+            <a
+              className="button button--secondary"
+              href="https://github.com/jamesdoom/nasa-mission-control"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Review the source ↗
+            </a>
+          </div>
         </div>
         <aside className="health-status" aria-labelledby="system-status-title">
           <p className="eyebrow">Production readiness check</p>
@@ -79,15 +136,15 @@ export function AboutPage() {
         </header>
         <div className="case-study__metrics" aria-label="Project scope">
           <div>
-            <strong>08</strong>
-            <span>Mission instruments</span>
+            <strong>11</strong>
+            <span>Connected instrument views</span>
           </div>
           <div>
             <strong>06</strong>
             <span>NASA data services</span>
           </div>
           <div>
-            <strong>06</strong>
+            <strong>10</strong>
             <span>Curated mission records</span>
           </div>
           <div>
@@ -100,79 +157,141 @@ export function AboutPage() {
             <span>01 // Challenge</span>
             <h3>Public APIs are not product contracts</h3>
             <p>
-              NASA services differ in schemas, latency, media behavior, and
-              availability. Raw payloads would create a fragile interface and
-              expose implementation details throughout the client.
+              NASA services differ in shape, latency, and availability. Raw
+              payloads would make the client fragile.
             </p>
           </article>
           <article>
             <span>02 // Architecture</span>
             <h3>A typed server boundary</h3>
             <p>
-              Express validates requests and important upstream responses,
-              applies bounded caching and timeouts, then returns deliberately
-              small shared models to React through TanStack Query.
+              Express validates, times out, caches, and maps upstream data into
+              small shared models for React.
             </p>
           </article>
           <article>
             <span>03 // Product judgment</span>
             <h3>Context before spectacle</h3>
             <p>
-              Potential hazards, space-weather measurements, imagery dates,
-              curated history, and upstream failures are labeled precisely so
-              the visual design never overstates what NASA’s data means.
+              Precise classifications, timestamps, and evidence labels keep the
+              interface from overstating NASA data.
             </p>
           </article>
           <article>
             <span>04 // Quality</span>
             <h3>Evidence in every release</h3>
             <p>
-              Strict TypeScript, linting, unit and accessibility coverage,
-              Playwright journeys, responsive checks, and production builds are
-              required before each phase reaches the deployed portfolio.
+              Strict types, accessibility tests, Playwright journeys, and
+              production audits gate each release.
             </p>
           </article>
+        </div>
+        <div className="case-study__evidence">
+          <figure className="architecture-diagram">
+            <div className="section-heading">
+              <div>
+                <p className="eyebrow">System architecture</p>
+                <h3>A deliberate boundary at every trust change</h3>
+              </div>
+            </div>
+            <ol
+              className="about-grid architecture-flow"
+              aria-label="Mission Control data flow"
+            >
+              <li>
+                <article>
+                  <span>01</span>
+                  <h4>React command console</h4>
+                  <p>Routes, TanStack Query, local Flight Log</p>
+                </article>
+              </li>
+              <li>
+                <article>
+                  <span>02</span>
+                  <h4>Express control boundary</h4>
+                  <p>Zod validation, timeouts, caching, normalized models</p>
+                </article>
+              </li>
+              <li>
+                <article>
+                  <span>03</span>
+                  <h4>Official NASA services</h4>
+                  <p>Server-only key, media APIs, imagery, telemetry</p>
+                </article>
+              </li>
+            </ol>
+            <figcaption>
+              Typed local modules provide curated records; live NASA response
+              shapes never cross the server boundary.
+            </figcaption>
+          </figure>
+          <section
+            className="performance-evidence"
+            aria-labelledby="performance-evidence-title"
+          >
+            <p className="eyebrow">Measured outcome</p>
+            <h3 id="performance-evidence-title">
+              More narrative, less initial payload
+            </h3>
+            <dl>
+              <div>
+                <dt>Mission Archive transfer</dt>
+                <dd>
+                  <strong>1.77 MB</strong>
+                  <span aria-hidden="true">→</span>
+                  <strong>0.86 MB</strong>
+                </dd>
+              </div>
+              <div>
+                <dt>Layout shift in audited routes</dt>
+                <dd>
+                  <strong>0 CLS</strong>
+                </dd>
+              </div>
+              <div>
+                <dt>Largest JavaScript ceiling</dt>
+                <dd>
+                  <strong>120 kB gzip</strong>
+                </dd>
+              </div>
+            </dl>
+            <p>
+              Image derivatives, viewport gates, route chunks, and self-hosted
+              fonts are enforced by repeatable audits.
+            </p>
+          </section>
         </div>
       </section>
 
       <section
-        className="section about-principles"
-        aria-labelledby="principles-title"
+        className="section product-tour"
+        id="product-tour"
+        aria-labelledby="product-tour-title"
       >
         <header>
           <p className="kicker">
             <span />
-            Engineering principles
+            Guided product tour // Five stops
           </p>
-          <h2 id="principles-title">
-            Designed as a system, not a collection of demos
+          <h2 id="product-tour-title">
+            Follow the evidence through Mission Control
           </h2>
+          <p>
+            Each stop connects a product decision to a working instrument. Open
+            one, then return through About for the next signal.
+          </p>
         </header>
-        <div className="about-grid">
-          <article>
-            <span>01</span>
-            <h3>Reliable by design</h3>
-            <p>
-              NASA responses are validated and translated before reaching the
-              interface. Credentials remain server-side.
-            </p>
-          </article>
-          <article>
-            <span>02</span>
-            <h3>Science with context</h3>
-            <p>
-              Measurements are explained plainly, and live observations stay
-              visibly separate from curated content.
-            </p>
-          </article>
-          <article>
-            <span>03</span>
-            <h3>Built for everyone</h3>
-            <p>
-              Keyboard navigation, readable contrast, semantic structure, and
-              reduced motion are first-class requirements.
-            </p>
-          </article>
+        <div className="about-grid product-tour__grid">
+          {tourStops.map((stop) => (
+            <article key={stop.to}>
+              <span>{stop.signal}</span>
+              <h3>{stop.title}</h3>
+              <p>{stop.description}</p>
+              <Link className="text-link" to={stop.to}>
+                {stop.label} →
+              </Link>
+            </article>
+          ))}
         </div>
       </section>
 

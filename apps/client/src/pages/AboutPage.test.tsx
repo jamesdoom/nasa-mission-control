@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { axe } from "vitest-axe";
+import { MemoryRouter } from "react-router-dom";
 import { AboutPage } from "./AboutPage";
 
 describe("AboutPage", () => {
@@ -25,7 +26,9 @@ describe("AboutPage", () => {
     });
     const { container } = render(
       <QueryClientProvider client={queryClient}>
-        <AboutPage />
+        <MemoryRouter>
+          <AboutPage />
+        </MemoryRouter>
       </QueryClientProvider>,
     );
     expect(
@@ -33,6 +36,19 @@ describe("AboutPage", () => {
         name: "Mission Control API online",
       }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: "A deliberate boundary at every trust change",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: "Follow the evidence through Mission Control",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "Open Mission Archive →" }),
+    ).toHaveAttribute("href", "/missions");
     expect(
       screen.getByRole("heading", {
         name: "From unstable public data to a dependable learning experience",

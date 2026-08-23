@@ -59,12 +59,25 @@ function round(value) {
   return value === null ? null : Math.round(value * 10) / 10;
 }
 
+function scopeForUrl(url) {
+  if (!url) return "unscoped";
+  try {
+    return new URL(url).origin === baseUrl.origin
+      ? "same-origin"
+      : "third-party";
+  } catch {
+    return "unscoped";
+  }
+}
+
 function enforce(result) {
   const failures = [];
   if (result.status !== 200)
     failures.push(`HTTP status ${String(result.status)}`);
   if (result.consoleErrors.length > 0) failures.push("browser console errors");
   if (result.pageErrors.length > 0) failures.push("uncaught page errors");
+  if (result.sameOriginResourceErrors.length > 0)
+    failures.push("same-origin HTTP resource errors");
   if (result.failedSameOriginResources.length > 0)
     failures.push("failed same-origin resources");
   if (result.horizontalOverflow) failures.push("horizontal overflow");
@@ -97,12 +110,27 @@ try {
     });
     const page = await context.newPage();
     const consoleErrors = [];
+    const consoleDiagnostics = [];
     const pageErrors = [];
     const failedSameOriginResources = [];
+    const sameOriginResourceErrors = [];
+    const thirdPartyResourceErrors = [];
     page.on("console", (message) => {
-      if (message.type() === "error") consoleErrors.push(message.text());
+      if (message.type() !== "error") return;
+      const sourceUrl = message.location().url || null;
+      const scope = scopeForUrl(sourceUrl);
+      const diagnostic = { text: message.text(), sourceUrl, scope };
+      consoleDiagnostics.push(diagnostic);
+      if (scope === "same-origin") consoleErrors.push(diagnostic);
     });
     page.on("pageerror", (error) => pageErrors.push(error.message));
+    page.on("response", (response) => {
+      if (response.status() < 400) return;
+      const resourceError = { url: response.url(), status: response.status() };
+      if (new URL(response.url()).origin === baseUrl.origin)
+        sameOriginResourceErrors.push(resourceError);
+      else thirdPartyResourceErrors.push(resourceError);
+    });
     page.on("requestfailed", (request) => {
       if (new URL(request.url()).origin === baseUrl.origin)
         failedSameOriginResources.push(request.url());
@@ -188,7 +216,10 @@ try {
         imageCount: observed.imageCount,
       },
       consoleErrors,
+      consoleDiagnostics,
       pageErrors,
+      sameOriginResourceErrors,
+      thirdPartyResourceErrors,
       failedSameOriginResources,
     };
     results.push({ ...result, failures: enforce(result) });

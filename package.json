@@ -14,6 +14,7 @@
     "typecheck": "npm run typecheck -w @mission-control/shared && npm run typecheck -w @mission-control/server && npm run typecheck -w @mission-control/client && tsc -p tsconfig.json --pretty false",
     "test": "npm run test --workspaces --if-present",
     "test:e2e": "playwright test",
+    "screenshots:update": "node scripts/update-portfolio-screenshots.mjs",
     "performance:budget": "node scripts/check-performance-budget.mjs",
     "offline:verify": "node scripts/check-offline-shell.mjs",
     "audit:production": "node scripts/production-performance-audit.mjs",

@@ -42,7 +42,7 @@ Small samples are directional rather than conclusive. Before changing code, conf
 npm run audit:production
 ```
 
-The audit warms the production origin once to keep runner DNS and TLS setup from masquerading as application TTFB, then checks the dashboard at desktop and mobile sizes, the About case study, the Mission Archive at desktop and mobile sizes, an Artemis I mission record, and Guided Discovery at desktop and mobile sizes. It records connection-plus-response time separately while budgeting server TTFB, FCP, heading readiness, CLS, and same-origin encoded transfer size. It also fails on non-200 navigation, console or page errors, failed same-origin resources, and horizontal overflow.
+The audit warms the production origin once to keep runner DNS and TLS setup from masquerading as application TTFB, then checks the dashboard at desktop and mobile sizes, the About case study, the Mission Archive at desktop and mobile sizes, an Artemis I mission record, and Guided Discovery at desktop and mobile sizes. It records connection-plus-response time separately while budgeting server TTFB, FCP, heading readiness, CLS, and same-origin encoded transfer size. It also fails on non-200 navigation, same-origin console or HTTP resource errors, application page errors, failed same-origin requests, and horizontal overflow. Console and HTTP failures from third-party embeds remain in the JSON diagnostics but do not fail the application-controlled gate.
 
 The initial Phase 9 baseline was:
 
@@ -55,6 +55,8 @@ The initial Phase 9 baseline was:
 These are synthetic observations from one run, not claims about every visitor. The scheduled workflow retains `production-performance.json` artifacts for 30 days so changes can be compared under the same methodology.
 
 The Phase 13 route expansion identified a 1.77 MB desktop Mission Archive transfer caused by all ten full-resolution card images entering the browser's lazy-load threshold. Archive cards now use dedicated 720-pixel derivatives with a 400 kB aggregate build budget, while mission detail records retain their larger source images. Card URLs are assigned only when an IntersectionObserver places them within 300 pixels of the viewport, avoiding browser-specific native lazy-load distances that previously requested several below-fold rows during the initial desktop visit. The production audit enforces a 1.2 MB same-origin transfer ceiling per scenario. Browser transfer measurements are useful regression signals under consistent conditions, not a replacement for real-user Speed Insights data.
+
+The Phase 10 portfolio baseline records that Mission Archive work as a reduction from approximately 1.77 MB to 0.86 MB on the audited desktop route, with zero measured layout shift. These values are reproducible evidence from the synthetic workflow, not a guarantee for every connection or device.
 
 ## Optimization workflow
 

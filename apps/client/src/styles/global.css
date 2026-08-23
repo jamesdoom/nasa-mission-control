@@ -1211,6 +1211,12 @@ p {
   font-size: 1.08rem;
   line-height: 1.75;
 }
+.about-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
 .health-status {
   margin-top: 3rem;
   padding: 1.5rem;
@@ -1249,18 +1255,18 @@ p {
   box-shadow: 0 0 12px rgba(255, 179, 64, 0.75);
 }
 .case-study,
-.about-principles {
+.product-tour {
   padding-top: clamp(4rem, 9vw, 8rem);
   padding-bottom: clamp(4rem, 9vw, 8rem);
   border-top: 1px solid var(--line);
 }
 .case-study > header,
-.about-principles > header {
+.product-tour > header {
   max-width: 900px;
   margin-bottom: 3rem;
 }
 .case-study > header h2,
-.about-principles > header h2 {
+.product-tour > header h2 {
   margin: 0.8rem 0 0;
   font-size: clamp(2.4rem, 6vw, 5rem);
   line-height: 1;
@@ -1318,12 +1324,109 @@ p {
   color: #8da3b7;
   line-height: 1.7;
 }
-.about-principles {
+.case-study__evidence {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+  gap: 1px;
+  margin-top: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.architecture-diagram,
+.performance-evidence {
+  margin: 0;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  background: #07101b;
+}
+.architecture-diagram h3,
+.performance-evidence h3 {
+  margin: 0.7rem 0 0;
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+}
+.architecture-flow {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.architecture-flow li {
+  min-width: 0;
+  list-style: none;
+}
+.architecture-diagram figcaption,
+.performance-evidence > p,
+.product-tour header > p {
+  color: #8299ad;
+  line-height: 1.65;
+}
+.architecture-flow h4 {
+  margin: 1rem 0 0.5rem;
+  font-size: 1.05rem;
+}
+.architecture-diagram figcaption {
+  max-width: 75ch;
+  margin-top: 1.5rem;
+  font-size: 0.78rem;
+}
+.performance-evidence dl {
+  display: grid;
+  gap: 1px;
+  margin: 2rem 0;
+  background: var(--line);
+}
+.performance-evidence dl > div {
+  padding: 1rem;
+  background: #071522;
+}
+.performance-evidence dt {
+  color: #8299ad;
+  font-size: 0.72rem;
+}
+.performance-evidence dd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 0.5rem 0 0;
+  color: var(--cyan);
+}
+.product-tour {
   padding-bottom: 3rem;
 }
-.about-principles + .source-note {
+.product-tour > header > p {
+  max-width: 70ch;
+}
+.product-tour__grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.product-tour__grid article > span {
+  color: var(--cyan);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+}
+.product-tour + .evidence-glossary {
+  margin-top: 3rem;
+}
+.evidence-glossary + .source-note {
   margin-top: 0;
   margin-bottom: 5rem;
+}
+@media (max-width: 1120px) {
+  .case-study__evidence {
+    grid-template-columns: 1fr;
+  }
+  .product-tour__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 760px) {
+  .about-hero__actions,
+  .about-hero__actions .button {
+    width: 100%;
+  }
+  .architecture-flow,
+  .product-tour__grid {
+    grid-template-columns: 1fr;
+  }
 }
 .source-note a {
   color: var(--cyan);

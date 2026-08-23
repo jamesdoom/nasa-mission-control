@@ -21,6 +21,7 @@
 - `npm run dev`: run client and server.
 - `npm run typecheck`, `npm run lint`, `npm test`, `npm run build`: quality gates.
 - `npm run test:e2e`: run Playwright smoke tests against a local Vite server.
+- `npm run screenshots:update`: regenerate deterministic portfolio screenshots through tested Playwright flows.
 - `npm run performance:budget`: verify the built client stays within documented compressed asset budgets.
 - `npm run audit:production`: capture desktop/mobile production performance evidence and enforce stability budgets.
 - `npm run smoke:production`: run read-only public health and SPA rewrite checks against the deployed site.

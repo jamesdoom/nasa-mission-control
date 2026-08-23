@@ -642,6 +642,28 @@ test("shows portfolio evidence, API status, and the expanded mission archive", a
       name: "From unstable public data to a dependable learning experience",
     }),
   ).toBeVisible();
+  await expect(
+    page.getByRole("heading", {
+      name: "Follow the evidence through Mission Control",
+    }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "Open Mission Archive →" }),
+  ).toHaveAttribute("href", "/missions");
+  await capturePortfolioScreenshot(page, {
+    path: "docs/screenshots/portfolio-case-study.png",
+    fullPage: true,
+    animations: "disabled",
+  });
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth >
+        document.documentElement.clientWidth,
+    ),
+  ).toBe(false);
+  await page.setViewportSize({ width: 1280, height: 720 });
   await page.goto("/missions");
   await page.getByRole("button", { name: /Moon/ }).click();
   await expect(page).toHaveURL(/destination=Moon/);
