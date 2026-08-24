@@ -54,6 +54,17 @@ describe("AboutPage", () => {
         name: "From unstable public data to a dependable learning experience",
       }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "Share product feedback ↗" }),
+    ).toHaveAttribute("href", expect.stringContaining("template=feedback.yml"));
+    expect(
+      screen.getByRole("link", {
+        name: "Report an accessibility barrier ↗",
+      }),
+    ).toHaveAttribute(
+      "href",
+      expect.stringContaining("template=accessibility.yml"),
+    );
     await userEvent.click(
       screen.getByRole("button", { name: "Run status check" }),
     );

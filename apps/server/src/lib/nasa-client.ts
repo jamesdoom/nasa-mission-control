@@ -256,7 +256,7 @@ export class NasaClient {
       const response = await this.fetchImpl(url, {
         headers: {
           accept: "application/json",
-          "user-agent": "NASA-Mission-Control/0.2",
+          "user-agent": "NASA-Mission-Control/1.0.0",
         },
         signal: AbortSignal.timeout(this.options.timeoutMs),
       });

@@ -1,6 +1,6 @@
 {
   "name": "nasa-mission-control",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "workspaces": [
@@ -22,6 +22,7 @@
     "smoke:production": "node scripts/production-smoke.mjs",
     "smoke:journeys": "node scripts/production-journey-smoke.mjs",
     "drill:resilience": "npm run test -w @mission-control/server -- src/test/reliability.test.ts src/test/apod.test.ts src/test/contract-fixtures.test.ts",
+    "release:check": "node scripts/check-release.mjs",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

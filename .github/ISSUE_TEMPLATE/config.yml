@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Operational status and limitations
+    url: https://github.com/jamesdoom/nasa-mission-control/blob/main/docs/public-status.md
+    about: Check current monitoring scope and known service limits before reporting an outage.

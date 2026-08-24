@@ -25,3 +25,5 @@ the page itself reflows.
 Accessibility regressions should be reported through the repository issue
 tracker with the route, browser, assistive technology, expected result, and
 reproduction steps. Do not include private Flight Log content in a report.
+
+Use the dedicated [accessibility report](https://github.com/jamesdoom/nasa-mission-control/issues/new?template=accessibility.yml). The public workflow, ownership, and triage targets are documented in [continuous-improvement.md](continuous-improvement.md).

@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  verify-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Verify semantic version, lockfile, changelog, and tag
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: npm run release:check
+      - run: npm run format:check
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      - run: npm run performance:budget
+      - name: Publish immutable GitHub release record
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          prerelease=""
+          if [[ "$GITHUB_REF_NAME" == *-* ]]; then prerelease="--prerelease"; fi
+          gh release create "$GITHUB_REF_NAME" --verify-tag --generate-notes --title "$GITHUB_REF_NAME" $prerelease

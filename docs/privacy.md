@@ -32,3 +32,7 @@ the site’s browser storage. Runtime-log and Speed Insights retention is govern
 by the configured Vercel plan; GitHub smoke/performance artifacts are retained
 for 30 days. This project has no account-level access or deletion request flow
 because it does not hold account records.
+
+## Feedback and accessibility reports
+
+Feedback is optional and uses public GitHub issue forms; the application does not add an analytics or feedback database. Forms instruct reporters not to include personal information or private Flight Log content. GitHub processes submitted issue data under its own policies. Users who do not want a public report should not submit the form.

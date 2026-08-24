@@ -1,0 +1,45 @@
+name: Monthly product review
+
+on:
+  schedule:
+    - cron: "23 14 3 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  open-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Open one accountable review issue for this month
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const month = new Date().toISOString().slice(0, 7)
+            const title = `Monthly product review — ${month}`
+            const existing = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'all',
+              per_page: 100,
+            })
+            if (existing.some((issue) => issue.title === title)) return
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              assignees: [context.repo.owner],
+              body: [
+                'Use `docs/continuous-improvement.md` and attach links—not private visitor data.',
+                '',
+                '- [ ] Reliability: smoke results, upstream categories, cache/stale ratios, incidents',
+                '- [ ] Performance: desktop/mobile evidence and budget movement',
+                '- [ ] Accessibility: automated checks, manual keyboard/screen-reader session, reports',
+                '- [ ] Content: mission review deadlines, source changes, learning claims',
+                '- [ ] Feedback: triage new feedback/accessibility issues and record themes',
+                '- [ ] Backlog: update evidence, impact, confidence, effort, owner, and next action',
+                '- [ ] Public status: update `docs/public-status.md` if capabilities or limits changed',
+              ].join('\n'),
+            })

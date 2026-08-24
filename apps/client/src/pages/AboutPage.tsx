@@ -371,6 +371,10 @@ export function AboutPage() {
               ["Privacy notice", "privacy.md"],
               ["Accessibility status", "accessibility.md"],
               ["Incident and rollback procedures", "operations.md"],
+              ["Public operational status", "public-status.md"],
+              ["Release process and channels", "release-process.md"],
+              ["Continuous improvement", "continuous-improvement.md"],
+              ["Prioritized backlog", "improvement-backlog.md"],
             ] as const
           ).map(([label, document]) => (
             <article key={document}>
@@ -387,6 +391,28 @@ export function AboutPage() {
             </article>
           ))}
         </div>
+        <div className="about-hero__actions">
+          <a
+            className="button"
+            href="https://github.com/jamesdoom/nasa-mission-control/issues/new?template=feedback.yml"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Share product feedback ↗
+          </a>
+          <a
+            className="button button--secondary"
+            href="https://github.com/jamesdoom/nasa-mission-control/issues/new?template=accessibility.yml"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Report an accessibility barrier ↗
+          </a>
+        </div>
+        <p className="source-note">
+          Reports are public. Please do not include personal information or
+          private Flight Log content.
+        </p>
       </section>
 
       <aside className="section source-note">
