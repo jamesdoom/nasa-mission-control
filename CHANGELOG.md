@@ -4,6 +4,10 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ## [Unreleased]
 
+### Fixed
+
+- Prevent automated TypeScript major upgrades from being grouped with tooling that does not yet support them, and pin deployment builds to Node.js 22.
+
 ### Planned
 
 - Priorities are selected through the evidence review in `docs/improvement-backlog.md`.
