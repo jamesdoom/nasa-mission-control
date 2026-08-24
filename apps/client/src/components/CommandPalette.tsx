@@ -11,11 +11,32 @@ type Command = {
   to: string;
   keywords: string;
 };
+const RECENT_SEARCHES_KEY = "mission-control:command-search-history:v1";
+const suggestions = ["Moon", "Mars", "Heliophysics", "Live", "Curated"];
+
+function readRecentSearches(): string[] {
+  try {
+    const parsed: unknown = JSON.parse(
+      localStorage.getItem(RECENT_SEARCHES_KEY) ?? "[]",
+    );
+    return Array.isArray(parsed)
+      ? parsed
+          .filter(
+            (item): item is string =>
+              typeof item === "string" && item.length <= 100,
+          )
+          .slice(0, 5)
+      : [];
+  } catch {
+    return [];
+  }
+}
 
 const categoryLabels = {
   instrument: "Instrument",
   mission: "Mission",
   path: "Discovery",
+  story: "Discovery",
   saved: "Utility",
 } as const;
 
@@ -31,6 +52,7 @@ const commands: Command[] = localDiscoveryIndex.map((result) => ({
 export function CommandPalette({ onClose }: { onClose: () => void }) {
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
+  const [recentSearches, setRecentSearches] = useState(readRecentSearches);
   const dialogRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const results = useMemo(() => {
@@ -58,8 +80,22 @@ export function CommandPalette({ onClose }: { onClose: () => void }) {
 
   function select(command: Command | undefined) {
     if (!command) return;
+    rememberQuery(query);
     void navigate(command.to);
     onClose();
+  }
+
+  function rememberQuery(value: string) {
+    const normalized = value.trim();
+    if (!normalized) return;
+    const next = [
+      normalized,
+      ...recentSearches.filter(
+        (item) => item.toLocaleLowerCase() !== normalized.toLocaleLowerCase(),
+      ),
+    ].slice(0, 5);
+    setRecentSearches(next);
+    localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(next));
   }
 
   function handleKeyDown(event: React.KeyboardEvent) {
@@ -158,6 +194,38 @@ export function CommandPalette({ onClose }: { onClose: () => void }) {
           {results.length} commands available
         </p>
         <div
+          className="command-palette__suggestions"
+          aria-label={
+            query ? "Suggested filters" : "Recent searches and suggestions"
+          }
+        >
+          {!query &&
+            recentSearches.map((item) => (
+              <button
+                key={item}
+                type="button"
+                onClick={() => {
+                  setQuery(item);
+                  setActiveIndex(0);
+                }}
+              >
+                Recent: {item}
+              </button>
+            ))}
+          {suggestions.map((item) => (
+            <button
+              key={item}
+              type="button"
+              onClick={() => {
+                setQuery(item);
+                setActiveIndex(0);
+              }}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+        <div
           id="command-results"
           className="command-palette__results"
           role="listbox"
@@ -194,10 +262,21 @@ export function CommandPalette({ onClose }: { onClose: () => void }) {
             ))
           )}
         </div>
+        {results[activeIndex] ? (
+          <aside className="command-palette__preview" aria-live="polite">
+            <span className="telemetry">Keyboard preview</span>
+            <strong>{results[activeIndex].label}</strong>
+            <p>{results[activeIndex].description}</p>
+            <small>
+              {results[activeIndex].category} · Enter opens this record
+            </small>
+          </aside>
+        ) : null}
         <div className="command-palette__footer">
           <button
             type="button"
             onClick={() => {
+              rememberQuery(query);
               const params = new URLSearchParams();
               if (query.trim()) params.set("q", query.trim());
               void navigate(`/search${params.size > 0 ? `?${params}` : ""}`);

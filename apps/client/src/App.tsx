@@ -18,6 +18,14 @@ const router = createBrowserRouter([
         }),
       },
       {
+        path: "investigate",
+        lazy: async () => ({
+          Component: (
+            await loadLazyRoute(() => import("./pages/InvestigationPage"))
+          ).InvestigationPage,
+        }),
+      },
+      {
         path: "apod",
         lazy: async () => ({
           Component: (await loadLazyRoute(() => import("./pages/ApodPage")))

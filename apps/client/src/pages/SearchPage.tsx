@@ -7,8 +7,11 @@ import { DataStatus } from "../components/DataStatus";
 import { MediaCard } from "../components/MediaCard";
 import { ProvenancePanel } from "../components/ProvenancePanel";
 import {
+  localDiscoveryIndex,
   matchesDiscoveryQuery,
+  relatedDiscoveryResults,
   searchDiscoveryIndex,
+  type DiscoveryFacets,
   type DiscoveryResult,
   type DiscoveryResultKind,
 } from "../data/discoveryIndex";
@@ -24,6 +27,7 @@ const sources = [
   "instrument",
   "mission",
   "path",
+  "story",
   "saved",
   "media",
 ] as const;
@@ -33,6 +37,7 @@ const sourceLabels: Record<SearchSource, string> = {
   instrument: "Instruments",
   mission: "Missions",
   path: "Guided paths",
+  story: "Science stories",
   saved: "Flight Log",
   media: "NASA media",
 };
@@ -40,6 +45,7 @@ const kindLabels: Record<DiscoveryResultKind, string> = {
   instrument: "Instrument",
   mission: "Mission",
   path: "Guided path",
+  story: "Science story",
   saved: "Flight Log",
 };
 
@@ -63,16 +69,44 @@ function savedResult(
     to,
     kind: "saved",
     keywords: keywords.filter(Boolean).join(" ").toLocaleLowerCase(),
+    metadata: {
+      destination: "Personal",
+      era: "Local",
+      evidence: "curated",
+      topics: ["Saved"],
+      instrument: "Flight Log",
+    },
   };
 }
 
-function SearchResultCard({ result }: { result: DiscoveryResult }) {
+function SearchResultCard({
+  result,
+  selected,
+  onToggle,
+}: {
+  result: DiscoveryResult;
+  selected: boolean;
+  onToggle: () => void;
+}) {
   return (
     <article className="discovery-result-card">
       <span>{kindLabels[result.kind]}</span>
       <h4>{result.title}</h4>
       <p>{result.description}</p>
+      <div className="discovery-result-card__metadata">
+        <span>{result.metadata.destination}</span>
+        <span>{result.metadata.era}</span>
+        <span>{result.metadata.evidence}</span>
+      </div>
       <Link to={result.to}>Open record →</Link>
+      <button
+        type="button"
+        className="button button--secondary"
+        aria-pressed={selected}
+        onClick={onToggle}
+      >
+        {selected ? "Remove from investigation" : "Add to investigation"}
+      </button>
     </article>
   );
 }
@@ -81,6 +115,14 @@ export function SearchPage() {
   const [params, setParams] = useSearchParams();
   const query = params.get("q")?.trim() ?? "";
   const source = sourceFrom(params.get("source"));
+  const destination = params.get("destination") ?? "";
+  const era = params.get("era") ?? "";
+  const evidence = params.get("evidence") ?? "";
+  const topic = params.get("topic") ?? "";
+  const workspaceIds = (params.get("workspace") ?? "")
+    .split(",")
+    .filter(Boolean)
+    .slice(0, 6);
   const [draft, setDraft] = useState(query);
   const apod = useFavorites();
   const asteroids = useAsteroidFavorites();
@@ -95,16 +137,57 @@ export function SearchPage() {
 
   useEffect(() => setDraft(query), [query]);
 
-  const localResults = useMemo(
-    () =>
-      source === "saved" || source === "media"
-        ? []
-        : searchDiscoveryIndex(
-            query,
-            source === "all" ? undefined : (source as DiscoveryResultKind),
-          ),
-    [query, source],
+  const localResults = useMemo(() => {
+    const facets: DiscoveryFacets = {};
+    if (destination) facets.destination = destination;
+    if (era) facets.era = era;
+    if (evidence)
+      facets.evidence = evidence as
+        "live" | "latest" | "curated" | "calculated";
+    if (topic) facets.topic = topic;
+    return source === "saved" || source === "media"
+      ? []
+      : searchDiscoveryIndex(
+          query,
+          source === "all" ? undefined : source,
+          facets,
+        );
+  }, [destination, era, evidence, query, source, topic]);
+  const facetOptions = useMemo(
+    () => ({
+      destinations: [
+        ...new Set(
+          localDiscoveryIndex.map((item) => item.metadata.destination),
+        ),
+      ].sort(),
+      eras: [
+        ...new Set(localDiscoveryIndex.map((item) => item.metadata.era)),
+      ].sort(),
+      topics: [
+        ...new Set(localDiscoveryIndex.flatMap((item) => item.metadata.topics)),
+      ].sort(),
+    }),
+    [],
   );
+  const workspaceRecords = workspaceIds
+    .map((id) => localDiscoveryIndex.find((item) => item.id === id))
+    .filter((item): item is DiscoveryResult => Boolean(item));
+  const recommendations = relatedDiscoveryResults(workspaceRecords, 3);
+
+  function mutateParams(changes: Record<string, string | undefined>) {
+    const next = new URLSearchParams(params);
+    for (const [key, value] of Object.entries(changes)) {
+      if (value) next.set(key, value);
+      else next.delete(key);
+    }
+    setParams(next);
+  }
+  function toggleWorkspace(id: string) {
+    const next = workspaceIds.includes(id)
+      ? workspaceIds.filter((item) => item !== id)
+      : [...workspaceIds, id].slice(-6);
+    mutateParams({ workspace: next.length ? next.join(",") : undefined });
+  }
   const savedResults = useMemo(() => {
     const records = [
       ...paths.favorites.map((item) =>
@@ -176,17 +259,14 @@ export function SearchPage() {
 
   function submit(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
-    const next = new URLSearchParams();
+    const next = new URLSearchParams(params);
     if (draft.trim()) next.set("q", draft.trim());
-    if (source !== "all") next.set("source", source);
+    else next.delete("q");
     setParams(next);
   }
 
   function updateSource(nextSource: SearchSource) {
-    const next = new URLSearchParams();
-    if (query) next.set("q", query);
-    if (nextSource !== "all") next.set("source", nextSource);
-    setParams(next);
+    mutateParams({ source: nextSource === "all" ? undefined : nextSource });
   }
 
   return (
@@ -246,7 +326,131 @@ export function SearchPage() {
             </label>
           ))}
         </fieldset>
+        <fieldset className="search-facet-filter">
+          <legend>Refine indexed records</legend>
+          <label>
+            Destination
+            <select
+              value={destination}
+              onChange={(event) =>
+                mutateParams({ destination: event.target.value || undefined })
+              }
+            >
+              <option value="">Any destination</option>
+              {facetOptions.destinations.map((value) => (
+                <option key={value}>{value}</option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Mission era
+            <select
+              value={era}
+              onChange={(event) =>
+                mutateParams({ era: event.target.value || undefined })
+              }
+            >
+              <option value="">Any era</option>
+              {facetOptions.eras.map((value) => (
+                <option key={value}>{value}</option>
+              ))}
+            </select>
+          </label>
+          <label>
+            Evidence
+            <select
+              value={evidence}
+              onChange={(event) =>
+                mutateParams({ evidence: event.target.value || undefined })
+              }
+            >
+              <option value="">Any evidence</option>
+              <option value="live">Live</option>
+              <option value="latest">Latest available</option>
+              <option value="curated">Curated</option>
+              <option value="calculated">Calculated</option>
+            </select>
+          </label>
+          <label>
+            Scientific topic
+            <select
+              value={topic}
+              onChange={(event) =>
+                mutateParams({ topic: event.target.value || undefined })
+              }
+            >
+              <option value="">Any topic</option>
+              {facetOptions.topics.map((value) => (
+                <option key={value}>{value}</option>
+              ))}
+            </select>
+          </label>
+          {destination || era || evidence || topic ? (
+            <button
+              type="button"
+              onClick={() =>
+                mutateParams({
+                  destination: undefined,
+                  era: undefined,
+                  evidence: undefined,
+                  topic: undefined,
+                })
+              }
+            >
+              Clear facets
+            </button>
+          ) : null}
+        </fieldset>
       </section>
+      {workspaceRecords.length > 0 ? (
+        <section
+          className="section investigation-tray"
+          aria-labelledby="investigation-tray-title"
+        >
+          <div>
+            <p className="kicker">
+              <span />
+              Investigation workspace
+            </p>
+            <h2 id="investigation-tray-title">
+              {workspaceRecords.length} connected records
+            </h2>
+            <p>
+              Selection is encoded in this URL, so this investigation can be
+              shared or resumed.
+            </p>
+          </div>
+          <div>
+            {workspaceRecords.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => toggleWorkspace(item.id)}
+                aria-label={`Remove ${item.title}`}
+              >
+                {item.title} ×
+              </button>
+            ))}
+          </div>
+          <Link
+            className="button"
+            to={`/investigate?records=${workspaceIds.join(",")}`}
+          >
+            Open investigation →
+          </Link>
+          {recommendations.length > 0 ? (
+            <p>
+              <strong>Suggested next:</strong>{" "}
+              {recommendations
+                .map(
+                  ({ result, reasons }) =>
+                    `${result.title} (${reasons[0] ?? "shared metadata"})`,
+                )
+                .join(" · ")}
+            </p>
+          ) : null}
+        </section>
+      ) : null}
       <section className="section provenance-section">
         <ProvenancePanel
           kind="live"
@@ -283,7 +487,12 @@ export function SearchPage() {
             <h3 id="local-results-title">Mission Control</h3>
             <div className="discovery-results-grid">
               {localResults.map((result) => (
-                <SearchResultCard key={result.id} result={result} />
+                <SearchResultCard
+                  key={result.id}
+                  result={result}
+                  selected={workspaceIds.includes(result.id)}
+                  onToggle={() => toggleWorkspace(result.id)}
+                />
               ))}
             </div>
           </section>
@@ -293,7 +502,12 @@ export function SearchPage() {
             <h3 id="saved-results-title">Your Flight Log</h3>
             <div className="discovery-results-grid">
               {savedResults.map((result) => (
-                <SearchResultCard key={result.id} result={result} />
+                <SearchResultCard
+                  key={result.id}
+                  result={result}
+                  selected={false}
+                  onToggle={() => undefined}
+                />
               ))}
             </div>
           </section>

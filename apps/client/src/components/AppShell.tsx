@@ -21,6 +21,7 @@ const moduleGroups: readonly ModuleGroup[] = [
     label: "Explore NASA",
     links: [
       { to: "/search", label: "Search everything" },
+      { to: "/investigate", label: "Investigation Workspace" },
       { to: "/media", label: "Media Library" },
       { to: "/missions", label: "Mission Archive" },
       { to: "/missions/map", label: "Mission Map" },
@@ -40,6 +41,7 @@ const moduleLinks = moduleGroups.flatMap((group) => group.links);
 const routeTitles: Record<string, string> = {
   "/": "Dashboard",
   "/search": "Unified Discovery Index",
+  "/investigate": "Investigation Workspace",
   "/apod": "Astronomy Picture of the Day",
   "/asteroids": "Asteroid Watch",
   "/media": "NASA Media Library",

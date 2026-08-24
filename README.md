@@ -283,6 +283,7 @@ The monthly `Mission status review` workflow checks official source availability
 36. **Complete — Scientific storytelling phase 2:** added three source-checked narrative collections about Mars habitability, the Sun–Earth system, and cosmic observatories, with shareable routes, four evidence-labeled chapters, bounded “why it matters” framing, concise chronologies, official NASA verification links, and editorial-integrity coverage.
 37. **Complete — Local-first personalization phase 3:** added bounded notes, tags, custom collections, saved Flight Log views, persistent mission-comparison bookmarks, on-device continuation prompts, and staged backup previews with explicit merge or replace conflict handling.
 38. **Complete — Production operations and public release phase 5:** added twice-hourly multi-route uptime checks, upstream/cache/latency telemetry, preview-deployment gates, critical browser-local continuity smoke tests, rollback and incident procedures, public privacy/accessibility/limitation disclosures, updated architecture evidence, and refreshed release captures.
+39. **Complete — Search and discovery intelligence phase 1:** added URL-backed destination, era, evidence, and scientific-topic facets; explicit metadata recommendations; recent-query command search with keyboard previews; and shareable six-record investigation workspaces spanning missions, observation instruments, media archives, guided paths, and science stories.
 
 ## Screenshots
 
