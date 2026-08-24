@@ -20,6 +20,7 @@ import { EvidenceGuide } from "./EvidenceGuide";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SearchPage } from "../pages/SearchPage";
 import { MissionMapPage } from "../pages/MissionMapPage";
+import { StoryCollectionPage } from "../pages/StoryCollectionPage";
 
 const apod: Apod = {
   date: "2024-01-01",
@@ -284,6 +285,16 @@ describe("automated accessibility", () => {
     const router = createMemoryRouter(
       [{ path: "/missions/map", element: <MissionMapPage /> }],
       { initialEntries: ["/missions/map"] },
+    );
+    const { container } = render(<RouterProvider router={router} />);
+    const results = await axe(container, jsdomAxeOptions);
+    expect(results.violations).toEqual([]);
+  });
+
+  it("finds no detectable violations in a scientific story collection", async () => {
+    const router = createMemoryRouter(
+      [{ path: "/stories/:storyId", element: <StoryCollectionPage /> }],
+      { initialEntries: ["/stories/sun-earth-connection"] },
     );
     const { container } = render(<RouterProvider router={router} />);
     const results = await axe(container, jsdomAxeOptions);

@@ -392,6 +392,240 @@ a {
   gap: 0.75rem;
   margin-top: 1rem;
 }
+
+.story-collection-index {
+  padding-top: 1rem;
+}
+.story-collection-index .section-heading > p,
+.story-chapters .section-heading > p {
+  max-width: 40ch;
+  color: #8196aa;
+  line-height: 1.6;
+}
+.story-collection-index > div:last-child {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+.story-collection-index article {
+  display: flex;
+  min-height: 270px;
+  flex-direction: column;
+  padding: clamp(1.4rem, 3vw, 2rem);
+  background: #07111d;
+}
+.story-collection-index h3 {
+  margin: 1rem 0 0;
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+}
+.story-collection-index article > p:not(.eyebrow) {
+  color: #93a6b8;
+  line-height: 1.65;
+}
+.story-collection-index a {
+  margin-top: auto;
+  color: var(--cyan);
+}
+.story-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
+  column-gap: clamp(2rem, 6vw, 6rem);
+  align-items: end;
+  padding-top: clamp(5rem, 10vw, 9rem);
+}
+.story-hero > .text-link,
+.story-hero > .kicker,
+.story-hero > h1,
+.story-hero > .story-hero__question,
+.story-hero > p:not(.kicker) {
+  grid-column: 1;
+}
+.story-hero > .text-link {
+  width: max-content;
+  margin-bottom: 3rem;
+}
+.story-hero h1 {
+  max-width: 15ch;
+  margin: 1rem 0;
+  font-size: clamp(3rem, 7vw, 6.8rem);
+  line-height: 0.96;
+  letter-spacing: -0.06em;
+}
+.story-hero__question {
+  max-width: 44ch;
+  color: #d7e9f7;
+  font-size: clamp(1.2rem, 2.4vw, 1.65rem);
+  line-height: 1.45;
+}
+.story-hero > p:last-of-type {
+  max-width: 62ch;
+  color: #8fa5b8;
+  line-height: 1.7;
+}
+.story-hero aside {
+  grid-column: 2;
+  grid-row: 2 / span 5;
+  padding: 1.5rem;
+  border-top: 2px solid var(--amber);
+  background: rgba(12, 24, 38, 0.88);
+}
+.story-hero aside small,
+.story-chapter__takeaway strong {
+  color: var(--amber);
+  font:
+    0.62rem "Space Mono",
+    monospace;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.story-hero aside p {
+  margin-bottom: 0;
+  color: #b9cad8;
+  line-height: 1.7;
+}
+.story-chapters > ol {
+  display: grid;
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: var(--line);
+  list-style: none;
+}
+.story-chapters > ol > li {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr);
+  background: #07111d;
+}
+.story-chapter__number {
+  padding: 1.5rem;
+  color: #3f607b;
+  font:
+    700 1.8rem "Space Mono",
+    monospace;
+}
+.story-chapters article {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.5fr);
+  gap: 0.7rem 2rem;
+  padding: 1.5rem;
+  border-left: 1px solid var(--line);
+}
+.story-chapters header,
+.story-chapters h3,
+.story-chapters article > p,
+.story-chapters .button {
+  grid-column: 1;
+}
+.story-chapters header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+.story-chapters header small {
+  color: #748ba0;
+  font:
+    0.62rem "Space Mono",
+    monospace;
+  text-transform: uppercase;
+}
+.evidence-badge {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid currentColor;
+  color: #77d9ea;
+  font:
+    0.57rem "Space Mono",
+    monospace;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.evidence-badge--latest {
+  color: #7dc2ff;
+}
+.evidence-badge--curated {
+  color: #e6b66a;
+}
+.evidence-badge--calculated {
+  color: #b6a1ff;
+}
+.story-chapters h3 {
+  margin: 0.25rem 0;
+  font-size: clamp(1.45rem, 3vw, 2.2rem);
+}
+.story-chapters article > p,
+.story-chapter__takeaway p {
+  color: #8ea4b7;
+  line-height: 1.65;
+}
+.story-chapter__takeaway {
+  grid-column: 2;
+  grid-row: 1 / span 4;
+  padding: 1rem;
+  border-left: 1px solid var(--line);
+}
+.story-chapters .button {
+  width: max-content;
+  margin-top: 0.5rem;
+}
+.story-timeline,
+.story-sources {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.55fr) minmax(0, 1.45fr);
+  gap: clamp(2rem, 6vw, 6rem);
+}
+.story-timeline > div > p:last-child,
+.story-sources > div > p:last-child {
+  color: #8095a9;
+}
+.story-timeline h2,
+.story-sources h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+.story-timeline ol,
+.story-sources ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.story-timeline li {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 1.2rem;
+  padding: 1.2rem 0;
+  border-top: 1px solid var(--line);
+}
+.story-timeline time {
+  color: var(--cyan);
+  font:
+    0.72rem "Space Mono",
+    monospace;
+}
+.story-timeline h3 {
+  margin: 0;
+}
+.story-timeline li p {
+  margin-bottom: 0;
+  color: #8ba0b3;
+  line-height: 1.6;
+}
+.story-sources li {
+  border-top: 1px solid var(--line);
+}
+.story-sources a {
+  display: flex;
+  min-height: 64px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #c5d8e7;
+  text-decoration: none;
+}
+.story-sources a:hover {
+  color: var(--cyan);
+}
 .module-nav a:hover,
 .module-nav a.active {
   border-color: #2e485d;
@@ -5154,8 +5388,31 @@ p {
   }
   .journey-start__grid,
   .evidence-guide,
-  .discovery-jump {
+  .discovery-jump,
+  .story-hero,
+  .story-timeline,
+  .story-sources {
     grid-template-columns: 1fr;
+  }
+  .story-hero aside {
+    grid-column: 1;
+    grid-row: auto;
+    margin-top: 1.5rem;
+  }
+  .story-collection-index > div:last-child {
+    grid-template-columns: 1fr;
+  }
+  .story-collection-index article {
+    min-height: 220px;
+  }
+  .story-chapters article {
+    grid-template-columns: 1fr;
+  }
+  .story-chapter__takeaway {
+    grid-column: 1;
+    grid-row: auto;
+    border-left: 0;
+    border-top: 1px solid var(--line);
   }
   .section {
     padding-left: 1.15rem;
@@ -5425,6 +5682,22 @@ p {
   }
   .filter-heading {
     align-items: flex-start;
+  }
+  .story-chapters > ol > li {
+    grid-template-columns: 1fr;
+  }
+  .story-chapter__number {
+    padding-bottom: 0;
+  }
+  .story-chapters article {
+    padding: 1rem;
+    border-left: 0;
+  }
+  .story-chapters .button {
+    width: 100%;
+  }
+  .story-timeline li {
+    grid-template-columns: 1fr;
   }
   .empty-state__actions,
   .empty-state__actions .button {

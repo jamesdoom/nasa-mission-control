@@ -51,6 +51,7 @@ const routeTitles: Record<string, string> = {
   "/scale-lab": "Celestial Scale Laboratory",
   "/trivia": "Space Trivia",
   "/discover": "Guided Discovery",
+  "/stories": "Science Story",
   "/favorites": "Personal Flight Log",
   "/about": "About",
 };

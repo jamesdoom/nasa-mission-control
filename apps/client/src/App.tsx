@@ -125,6 +125,14 @@ const router = createBrowserRouter([
         }),
       },
       {
+        path: "stories/:storyId",
+        lazy: async () => ({
+          Component: (
+            await loadLazyRoute(() => import("./pages/StoryCollectionPage"))
+          ).StoryCollectionPage,
+        }),
+      },
+      {
         path: "favorites",
         lazy: async () => ({
           Component: (

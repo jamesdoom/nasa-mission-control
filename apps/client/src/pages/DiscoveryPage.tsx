@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { HeartIcon } from "../components/Icons";
 import { ProvenancePanel } from "../components/ProvenancePanel";
 import { discoveryJourneys } from "../data/journeys";
+import { storyCollections } from "../data/storyCollections";
 import { useJourneyFavorites } from "../hooks/useJourneyFavorites";
 
 export function DiscoveryPage() {
@@ -44,6 +45,37 @@ export function DiscoveryPage() {
             "Every journey includes an official NASA context source; individual destination pages label their own evidence type.",
           ]}
         />
+      </section>
+      <section
+        className="section story-collection-index"
+        id="science-stories"
+        aria-labelledby="science-stories-title"
+      >
+        <div className="section-heading">
+          <div>
+            <p className="kicker">
+              <span />
+              Narrative collections
+            </p>
+            <h2 id="science-stories-title">Investigate one big question</h2>
+          </div>
+          <p>
+            Four connected chapters with evidence labels, chronology, and
+            official NASA sources.
+          </p>
+        </div>
+        <div>
+          {storyCollections.map((story) => (
+            <article key={story.id}>
+              <p className="eyebrow">
+                {story.code} · {story.duration}
+              </p>
+              <h3>{story.title}</h3>
+              <p>{story.question}</p>
+              <Link to={`/stories/${story.id}`}>Begin science story →</Link>
+            </article>
+          ))}
+        </div>
       </section>
       <nav
         className="section discovery-jump"

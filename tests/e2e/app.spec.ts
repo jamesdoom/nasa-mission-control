@@ -787,6 +787,32 @@ test("follows a guided discovery path into mission history and back", async ({
   await expect(page).toHaveURL(/\/discover#moon-then-now$/);
 });
 
+test("follows a source-checked science story into its first evidence chapter", async ({
+  page,
+}) => {
+  await page.goto("/discover#science-stories");
+  await expect(
+    page.getByRole("heading", { name: "Investigate one big question" }),
+  ).toBeVisible();
+  await page
+    .getByRole("link", { name: "Begin science story →" })
+    .first()
+    .click();
+  await expect(page).toHaveURL(/\/stories\/mars-habitability$/);
+  await expect(
+    page.getByRole("heading", { name: "Reading the record of a wetter Mars" }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Habitability is not evidence", { exact: false }),
+  ).toBeVisible();
+  await expect(page.getByText("Curated record").first()).toBeVisible();
+  await page.getByRole("link", { name: "Open chapter 1 →" }).click();
+  await expect(page).toHaveURL(/\/missions\/curiosity$/);
+  await expect(
+    page.getByRole("heading", { name: "Curiosity", exact: true, level: 1 }),
+  ).toBeVisible();
+});
+
 test("connects Artemis I to its guided lunar investigation", async ({
   page,
 }) => {

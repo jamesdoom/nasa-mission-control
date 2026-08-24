@@ -19,7 +19,7 @@ describe("DiscoveryPage", () => {
         name: "Follow the evidence across Mission Control",
       }),
     ).toBeInTheDocument();
-    expect(screen.getAllByRole("article")).toHaveLength(9);
+    expect(container.querySelectorAll(".journey-card")).toHaveLength(9);
     expect(
       screen.getByText("27 connected investigation steps"),
     ).toBeInTheDocument();
