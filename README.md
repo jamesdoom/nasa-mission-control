@@ -288,6 +288,7 @@ The monthly `Mission status review` workflow checks official source availability
 41. **Complete — Guided learning and progress phase 3:** added three objective-led learning tracks spanning stories, missions, live instruments, and trivia; validated browser-local progress, reflection, reset, backup, and export controls; source-backed knowledge checks and completion summaries; and responsive educator session plans with print activity layouts.
 42. **Complete — Platform resilience and data quality phase 4:** added independent per-host NASA circuit breakers, bounded and explicitly marked stale fallback, process-scoped cache and failure telemetry, sanitized APOD and NeoWs contract fixtures, actionable schema-drift logs, and a repeatable degraded-mode and recovery drill.
 43. **Complete — Public launch and continuous improvement phase 5:** established SemVer-based preview, release-candidate, and stable channels; a validated 1.0.0 changelog and tag workflow; privacy-conscious product and accessibility intake; accountable monthly evidence reviews; a bounded public operational-status summary; and a scored post-launch improvement backlog.
+44. **Complete — Release integrity and automation phase 1:** added dry-run clean-install validation, tested CI/preview/release workflow contracts, complete tagged-release quality gates, bounded weekly dependency updates, and an inspect-first rollback policy before the stable 1.0.0 release.
 
 ## Screenshots
 

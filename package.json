@@ -22,7 +22,10 @@
     "smoke:production": "node scripts/production-smoke.mjs",
     "smoke:journeys": "node scripts/production-journey-smoke.mjs",
     "drill:resilience": "npm run test -w @mission-control/server -- src/test/reliability.test.ts src/test/apod.test.ts src/test/contract-fixtures.test.ts",
+    "lockfile:check": "npm ci --ignore-scripts --dry-run",
     "release:check": "node scripts/check-release.mjs",
+    "release:workflow-check": "node scripts/check-release-workflows.mjs",
+    "release:preflight": "npm run lockfile:check && npm run release:check && npm run release:workflow-check && npm run drill:resilience && npm run review:missions && npm run build && npm run performance:budget && npm run offline:verify",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

@@ -17,6 +17,7 @@ All notable changes are documented here. This project follows [Semantic Versioni
 - Browser-local Flight Log personalization, backup, learning progress, and offline curated shell.
 - Privacy-conscious production checks, performance budgets, client-failure reporting, upstream telemetry, circuit breakers, stale fallback, contract fixtures, and recovery drills.
 - Public release, feedback, accessibility-reporting, operational-status, and continuous-improvement workflows.
+- Reproducible clean-install preflight, release-workflow contract checks, bounded dependency updates, and full tagged-release quality gates.
 
 ### Security
 
