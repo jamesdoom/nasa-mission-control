@@ -15,6 +15,7 @@ import type {
   SpaceWeatherFeed,
 } from "@mission-control/shared";
 import { HttpError } from "./http-error.js";
+import { logger } from "./logger.js";
 
 const nasaApodSchema = z.object({
   date: z.string(),
@@ -233,6 +234,38 @@ export class NasaClient {
     this.fetchImpl = options.fetchImpl ?? fetch;
   }
 
+  private async fetchUpstream(url: URL): Promise<Response> {
+    const startedAt = performance.now();
+    try {
+      const response = await this.fetchImpl(url, {
+        headers: {
+          accept: "application/json",
+          "user-agent": "NASA-Mission-Control/0.2",
+        },
+        signal: AbortSignal.timeout(this.options.timeoutMs),
+      });
+      logger.info("upstream.request_complete", {
+        upstream: url.hostname,
+        upstreamPath: url.pathname,
+        status: response.status,
+        durationMs: Math.round(performance.now() - startedAt),
+        outcome: response.ok ? "success" : "http_error",
+      });
+      return response;
+    } catch (error: unknown) {
+      logger.error("upstream.request_failed", {
+        upstream: url.hostname,
+        upstreamPath: url.pathname,
+        durationMs: Math.round(performance.now() - startedAt),
+        outcome:
+          error instanceof Error && error.name === "TimeoutError"
+            ? "timeout"
+            : "network_error",
+      });
+      throw error;
+    }
+  }
+
   async getApod(date: string): Promise<Apod> {
     const url = new URL("https://api.nasa.gov/planetary/apod");
     url.search = new URLSearchParams({
@@ -243,13 +276,7 @@ export class NasaClient {
 
     let response: Response;
     try {
-      response = await this.fetchImpl(url, {
-        headers: {
-          accept: "application/json",
-          "user-agent": "NASA-Mission-Control/0.1",
-        },
-        signal: AbortSignal.timeout(this.options.timeoutMs),
-      });
+      response = await this.fetchUpstream(url);
     } catch (error: unknown) {
       const message =
         error instanceof Error && error.name === "TimeoutError"
@@ -726,13 +753,7 @@ export class NasaClient {
   private async requestJson(url: URL): Promise<unknown> {
     let response: Response;
     try {
-      response = await this.fetchImpl(url, {
-        headers: {
-          accept: "application/json",
-          "user-agent": "NASA-Mission-Control/0.2",
-        },
-        signal: AbortSignal.timeout(this.options.timeoutMs),
-      });
+      response = await this.fetchUpstream(url);
     } catch (error: unknown) {
       const message =
         error instanceof Error && error.name === "TimeoutError"

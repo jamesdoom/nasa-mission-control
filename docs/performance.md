@@ -58,6 +58,14 @@ The Phase 13 route expansion identified a 1.77 MB desktop Mission Archive transf
 
 The Phase 10 portfolio baseline records that Mission Archive work as a reduction from approximately 1.77 MB to 0.86 MB on the audited desktop route, with zero measured layout shift. These values are reproducible evidence from the synthetic workflow, not a guarantee for every connection or device.
 
+The Phase 5 public-release audit on 2026-08-24 passed all eight scenarios with
+zero CLS, no same-origin console/resource/page failures, and no horizontal
+overflow. Warm-route TTFB ranged from 33.3 to 58.3 ms; FCP ranged from 88 to 264
+ms; and same-origin transfer ranged from 663.7 to 980.4 kB. The companion route
+check observed health at 989 ms, archive APOD at 698 ms, media search at 1,000
+ms, and cached SPA rewrites at 35–45 ms. These are one synthetic run retained as
+release evidence, not an uptime or visitor-performance guarantee.
+
 ## Optimization workflow
 
 1. Identify the affected route and metric in Speed Insights.

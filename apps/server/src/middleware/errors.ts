@@ -32,6 +32,8 @@ export const requestLogger: RequestHandler = (request, response, next) => {
       path,
       status: response.statusCode,
       durationMs: Math.round(performance.now() - startedAt),
+      originCache: response.getHeader("x-cache")?.toString(),
+      edgeCache: response.getHeader("x-vercel-cache")?.toString(),
     });
   });
   next();

@@ -28,11 +28,17 @@ jobs:
         env:
           PRODUCTION_URL: https://nasa-mission-control-alpha.vercel.app
         run: npm run audit:production
+      - name: Verify critical journeys and local continuity
+        env:
+          PRODUCTION_URL: https://nasa-mission-control-alpha.vercel.app
+        run: npm run smoke:journeys
       - name: Upload performance evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: production-performance
-          path: artifacts/production-performance.json
+          path: |
+            artifacts/production-performance.json
+            artifacts/production-journeys.json
           if-no-files-found: error
           retention-days: 30

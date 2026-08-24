@@ -351,6 +351,44 @@ export function AboutPage() {
         </dl>
       </section>
 
+      <section className="section case-study" aria-labelledby="release-title">
+        <header>
+          <p className="kicker">
+            <span />
+            Public release // Operating boundaries
+          </p>
+          <h2 id="release-title">Evidence, limitations, and user rights</h2>
+          <p>
+            Release documentation states what is monitored, what remains local,
+            and where this educational project stops short of an operational
+            service.
+          </p>
+        </header>
+        <div className="case-study__grid">
+          {(
+            [
+              ["Service limitations", "service-limitations.md"],
+              ["Privacy notice", "privacy.md"],
+              ["Accessibility status", "accessibility.md"],
+              ["Incident and rollback procedures", "operations.md"],
+            ] as const
+          ).map(([label, document]) => (
+            <article key={document}>
+              <span>Release document</span>
+              <h3>{label}</h3>
+              <a
+                className="text-link"
+                href={`https://github.com/jamesdoom/nasa-mission-control/blob/main/docs/${document}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Read the public document ↗
+              </a>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <aside className="section source-note">
         <strong>Data attribution</strong>
         <p>

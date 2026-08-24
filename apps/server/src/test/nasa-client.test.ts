@@ -1,7 +1,42 @@
 import { describe, expect, it, vi } from "vitest";
 import { NasaClient } from "../lib/nasa-client.js";
+import { logger } from "../lib/logger.js";
 
 describe("NasaClient", () => {
+  it("records bounded upstream reliability signals without query values", async () => {
+    const log = vi.spyOn(logger, "info").mockImplementation(() => undefined);
+    const fetchImpl = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          date: "2024-01-01",
+          title: "Orbit",
+          explanation: "Test",
+          media_type: "image",
+          url: "https://example.com/image.jpg",
+        }),
+        { status: 200, headers: { "content-type": "application/json" } },
+      ),
+    );
+    const client = new NasaClient({
+      apiKey: "secret-key",
+      timeoutMs: 1000,
+      fetchImpl,
+    });
+    await client.getApod("2024-01-01");
+    expect(log).toHaveBeenCalledWith(
+      "upstream.request_complete",
+      expect.objectContaining({
+        upstream: "api.nasa.gov",
+        upstreamPath: "/planetary/apod",
+        status: 200,
+        outcome: "success",
+      }),
+    );
+    expect(JSON.stringify(log.mock.calls)).not.toContain("secret-key");
+    expect(JSON.stringify(log.mock.calls)).not.toContain("2024-01-01");
+    log.mockRestore();
+  });
+
   it("maps timeouts, rate limits, non-JSON, and malformed JSON to stable errors", async () => {
     const cases: { result: Promise<Response>; code: string }[] = [
       {

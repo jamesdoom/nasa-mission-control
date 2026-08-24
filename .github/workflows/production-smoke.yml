@@ -2,7 +2,7 @@ name: Production smoke
 
 on:
   schedule:
-    - cron: "17 */6 * * *"
+    - cron: "17,47 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -21,7 +21,15 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 22
-      - name: Check public health contract and SPA rewrite
+      - name: Check critical public routes and contracts
         env:
           PRODUCTION_URL: https://nasa-mission-control-alpha.vercel.app
         run: node scripts/production-smoke.mjs
+      - name: Upload uptime and API evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-smoke
+          path: artifacts/production-smoke.json
+          if-no-files-found: error
+          retention-days: 30

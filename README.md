@@ -56,16 +56,18 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Five-stop guided product tour linking portfolio decisions to working instruments
 - Expanded source-checked Mission Archive with Perseverance and Parker Solar Probe
 - Global offline mode messaging with route-change focus and assistive-technology announcements
-- Scheduled read-only production smoke checks and a documented incident-triage runbook
+- Twice-hourly uptime/API checks, deployment-triggered preview verification, daily critical-journey audits, retained evidence, and documented incident/rollback procedures
 - Vercel Speed Insights for route-level Core Web Vitals plus CI-enforced compressed asset budgets
 - Shared Vercel CDN caching for successful public NASA responses, with live/archive freshness policies
 - Daily desktop/mobile production performance audits with downloadable evidence and stability budgets
 - Task-oriented first-visit routes, intent-grouped navigation, plain-language evidence onboarding, and documented privacy-conscious usability testing
 - Three shareable scientific story collections connecting evidence-labeled chapters, concise chronologies, bounded claims, and current official NASA sources
+- Local-first notes, tags, custom collections, saved filter views, comparison bookmarks, and preview-first backup merge controls
+- Public service limitations, privacy notice, accessibility status, production architecture, and operations runbook
 
 ## Planned modules
 
-Optional account synchronization, deployment observability, and additional source-checked mission records. The legacy NASA Earth and Mars Rover APIs are archived and will not be used.
+Optional account synchronization, an externally paged log/trace drain, and additional source-checked mission records. The legacy NASA Earth and Mars Rover APIs are archived and will not be used.
 
 ## Stack
 
@@ -110,6 +112,7 @@ npm run performance:budget
 npm run offline:verify
 npm run audit:production
 npm run smoke:production
+npm run smoke:journeys
 npm run review:missions
 npm run build
 npm run format:check
@@ -137,11 +140,11 @@ The root `vercel.json` builds the shared contracts and Vite client, preserves `/
 
 ### Production monitoring
 
-Every API request emits a structured completion record containing its request ID, method, route path, status, and duration. Unexpected server errors and sanitized browser runtime failures appear in Vercel Runtime Logs as `request.unhandled_error` and `client.runtime_error`. Client reports contain only the error category, a bounded message, and the URL pathname—never query parameters, stack traces, local-storage values, or NASA credentials.
+Every API request emits a structured completion record containing its request ID, method, route path, status, duration, and available origin/edge cache result. NASA calls emit separate upstream host/path, status, duration, and outcome records without query values. Unexpected server errors and sanitized browser runtime failures appear in Vercel Runtime Logs as `request.unhandled_error` and `client.runtime_error`. Client reports contain only the error category, a bounded message, and the URL pathname—never query parameters, stack traces, local-storage values, or NASA credentials.
 
 Successful public NASA responses use short browser caching plus targeted Vercel CDN caching. Live feeds remain fresh for five minutes at the CDN; historical APOD, dated EPIC observations, and media detail records use longer archive policies. Empty Earth observations, validation failures, upstream failures, health checks, and client-error reports are never cached. `x-cache` describes the origin function’s bounded memory cache, while Vercel’s `x-vercel-cache` header describes edge delivery. See the [cache policy](docs/caching.md) for exact limits and diagnostics.
 
-After a deployment, verify `/api/health`, one live-data route, a lazy-loaded page, and a retry flow. The About page exposes a user-triggered, no-store check of the same-origin Express health route and carefully labels it as application availability—not proof that every NASA upstream is healthy. A scheduled GitHub workflow runs the same public health-contract and SPA-rewrite smoke checks every six hours. Review Runtime Logs for 5xx responses and repeated `client.runtime_error` events. See the [production operations runbook](docs/operations.md) for manual verification, triage, and alerting limits. This lightweight baseline does not replace third-party uptime monitoring; add that only if the project gains a production service-level target.
+After a deployment, verify `/api/health`, normalized APOD and media contracts, validation failures, lazy-loaded routes, and browser-local continuity. The About page exposes a user-triggered, no-store check of the same-origin Express health route and carefully labels it as application availability—not proof that every NASA upstream is healthy. GitHub checks critical routes twice per hour, validates each preview deployment, and runs daily browser/performance journeys with retained JSON evidence. Review Runtime Logs for 5xx responses and repeated `upstream.request_failed` or `client.runtime_error` events. See the [production operations runbook](docs/operations.md) for thresholds, triage, incident response, and rollback. This baseline does not claim an external pager or contractual SLA.
 
 ## Architecture
 
@@ -154,7 +157,15 @@ flowchart LR
   Browser -->|Validated favorites, history, streak| Local[Browser local storage]
   Curated[Typed missions, trivia, guided paths] --> Browser
   Shell[Versioned offline shell] -->|Curated routes only| Browser
+  Actions[GitHub uptime + preview + journey checks] --> Express
+  Actions --> Browser
+  Express --> Logs[Sanitized Vercel runtime logs]
+  Browser --> Vitals[Vercel Speed Insights]
 ```
+
+See the expanded [production architecture](docs/architecture.md), [service
+limitations](docs/service-limitations.md), [privacy notice](docs/privacy.md),
+and [accessibility status](docs/accessibility.md).
 
 The browser calls internal endpoints such as `GET /api/apod?date=YYYY-MM-DD`, `GET /api/asteroids?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD`, `GET /api/media/search?q=apollo&mediaType=image&page=1`, `GET /api/space-weather?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD&category=all`, and `GET /api/earth?date=YYYY-MM-DD&collection=natural`. Express validates each query, calls NASA services, validates important upstream fields, and maps them into deliberately small internal models:
 
@@ -271,6 +282,7 @@ The monthly `Mission status review` workflow checks official source availability
 35. **Complete — Experience refinement phase 1:** replaced the stale instrument roadmap with three task-oriented starting routes, grouped navigation by user intent, clarified live/latest/curated/calculated evidence, improved archive recovery and Flight Log onboarding, added 44-pixel touch targets, 320-pixel reflow and forced-colors support, and documented a privacy-conscious usability script with before/after evidence.
 36. **Complete — Scientific storytelling phase 2:** added three source-checked narrative collections about Mars habitability, the Sun–Earth system, and cosmic observatories, with shareable routes, four evidence-labeled chapters, bounded “why it matters” framing, concise chronologies, official NASA verification links, and editorial-integrity coverage.
 37. **Complete — Local-first personalization phase 3:** added bounded notes, tags, custom collections, saved Flight Log views, persistent mission-comparison bookmarks, on-device continuation prompts, and staged backup previews with explicit merge or replace conflict handling.
+38. **Complete — Production operations and public release phase 5:** added twice-hourly multi-route uptime checks, upstream/cache/latency telemetry, preview-deployment gates, critical browser-local continuity smoke tests, rollback and incident procedures, public privacy/accessibility/limitation disclosures, updated architecture evidence, and refreshed release captures.
 
 ## Screenshots
 
