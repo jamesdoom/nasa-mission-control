@@ -2304,6 +2304,205 @@ p {
 .flight-log-no-results {
   margin-bottom: 4rem;
 }
+.flight-log-saved-views,
+.comparison-bookmarks {
+  margin: 1.5rem 0 4rem;
+  padding: clamp(1.2rem, 3vw, 1.8rem);
+  border: 1px solid var(--line);
+  background: rgba(6, 15, 26, 0.88);
+}
+.flight-log-saved-views {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.65fr) minmax(0, 1.35fr);
+  gap: 1.5rem 2rem;
+}
+.flight-log-saved-views h2,
+.comparison-bookmarks h3 {
+  margin: 0.35rem 0;
+}
+.flight-log-saved-views p,
+.comparison-bookmarks p {
+  color: #8096aa;
+  line-height: 1.6;
+}
+.flight-log-saved-views form,
+.comparison-bookmarks form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 0.75rem;
+}
+.flight-log-saved-views label,
+.comparison-bookmarks label,
+.record-personalization label {
+  display: grid;
+  gap: 0.45rem;
+  color: #8ba0b4;
+  font:
+    0.65rem "Space Mono",
+    monospace;
+  text-transform: uppercase;
+}
+.flight-log-saved-views input,
+.comparison-bookmarks input,
+.record-personalization input,
+.record-personalization textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 0.75rem;
+  border: 1px solid #304359;
+  background: #050e19;
+  color: #edf5ff;
+  font:
+    0.9rem "DM Sans",
+    sans-serif;
+  text-transform: none;
+}
+.flight-log-saved-views ul,
+.comparison-bookmarks ul {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.flight-log-saved-views li,
+.comparison-bookmarks li {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid var(--line);
+  background: #081321;
+}
+.flight-log-saved-views li a,
+.comparison-bookmarks li a {
+  padding: 0.65rem 0 0.65rem 0.8rem;
+  color: var(--cyan);
+}
+.flight-log-saved-views li button,
+.comparison-bookmarks li button {
+  align-self: stretch;
+  border: 0;
+  border-left: 1px solid var(--line);
+  background: transparent;
+  color: #8da1b4;
+  cursor: pointer;
+}
+.record-personalization {
+  position: relative;
+  z-index: 4;
+  border: 1px solid var(--line);
+  background: #081321;
+}
+.record-personalization summary {
+  min-height: 44px;
+  padding: 0.75rem 1rem;
+  color: #9cb2c5;
+  cursor: pointer;
+  font-size: 0.78rem;
+}
+.record-personalization form {
+  padding: 0 1rem 1rem;
+}
+.record-personalization form > div {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+}
+.record-personalization textarea {
+  resize: vertical;
+}
+.record-personalization form > p {
+  color: #72d6a6;
+  font-size: 0.76rem;
+}
+.record-personalization__summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0 1rem 1rem;
+}
+.record-personalization__summary strong,
+.record-personalization__summary span {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid #31506a;
+  color: #a9bfd0;
+  font-size: 0.7rem;
+}
+.record-personalization__summary strong {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+.record-personalization__summary p {
+  flex-basis: 100%;
+  margin: 0.4rem 0 0;
+  color: #b3c4d2;
+  line-height: 1.55;
+}
+.flight-log-personalized-record {
+  min-width: 0;
+}
+.flight-log-personalized-record > .record-personalization {
+  margin-top: -1px;
+}
+.flight-log-saved-card > .record-personalization {
+  margin-top: 0;
+}
+.comparison-bookmarks {
+  margin-bottom: 0;
+}
+.comparison-bookmarks form {
+  margin: 1rem 0;
+}
+.flight-log-backup__preview {
+  grid-column: 1 / -1;
+  padding: 0.8rem;
+  border: 1px solid var(--amber);
+  background: rgba(90, 55, 11, 0.15);
+}
+.flight-log-backup__preview button {
+  min-height: 44px;
+  margin: 0.3rem 0.3rem 0 0;
+  border: 1px solid #52677a;
+  background: #0b1724;
+  color: #d5e4ef;
+  cursor: pointer;
+}
+.continuation-suggestions > div:last-child {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+.continuation-suggestions a {
+  display: flex;
+  min-height: 88px;
+  align-items: center;
+  padding: 1rem;
+  background: #081321;
+  color: var(--cyan);
+  text-decoration: none;
+}
+@media (max-width: 760px) {
+  .flight-log-saved-views,
+  .flight-log-saved-views form,
+  .comparison-bookmarks form,
+  .record-personalization form > div,
+  .continuation-suggestions > div:last-child {
+    grid-template-columns: 1fr;
+  }
+  .flight-log-saved-views ul {
+    grid-column: 1;
+  }
+  .flight-log-saved-views .button,
+  .comparison-bookmarks .button {
+    width: 100%;
+  }
+}
 .saved-journey-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

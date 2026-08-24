@@ -5,6 +5,7 @@ import { AsteroidCard } from "../components/AsteroidCard";
 import { FlightLogControls } from "../components/FlightLogControls";
 import { MediaCard } from "../components/MediaCard";
 import { MissionCard } from "../components/MissionCard";
+import { RecordPersonalization } from "../components/RecordPersonalization";
 import { useAsteroidFavorites } from "../hooks/useAsteroidFavorites";
 import { useFavorites } from "../hooks/useFavorites";
 import { useJourneyFavorites } from "../hooks/useJourneyFavorites";
@@ -12,8 +13,14 @@ import { useMediaFavorites } from "../hooks/useMediaFavorites";
 import { useMissionFavorites } from "../hooks/useMissionFavorites";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
 import {
+  annotationKey,
+  useFlightLogPersonalization,
+} from "../hooks/useFlightLogPersonalization";
+import {
   createFlightLogBackup,
+  previewFlightLogBackup,
   restoreFlightLogBackup,
+  type FlightLogBackupPreview,
 } from "../utils/flightLogBackup";
 import {
   flightLogCollectionFrom,
@@ -32,7 +39,12 @@ export function FavoritesPage() {
   const mediaFavorites = useMediaFavorites();
   const journeyFavorites = useJourneyFavorites();
   const recent = useRecentlyViewed();
+  const personalization = useFlightLogPersonalization();
   const [backupStatus, setBackupStatus] = useState("");
+  const [pendingBackup, setPendingBackup] = useState<
+    { text: string; preview: FlightLogBackupPreview } | undefined
+  >();
+  const [viewName, setViewName] = useState("");
   const query = params.get("q") ?? "";
   const collection = flightLogCollectionFrom(params.get("collection"));
   const sort = flightLogSortFrom(params.get("sort"));
@@ -78,12 +90,19 @@ export function FavoritesPage() {
     },
     { id: "apod", label: "APOD", count: favorites.favorites.length },
   ];
+  function personalValues(key: string): string[] {
+    const annotation = personalization.annotations[key];
+    return annotation
+      ? [annotation.note, annotation.collection, ...annotation.tags]
+      : [];
+  }
   const filteredJourneys = sortFlightLogItems(
     journeyFavorites.favorites.filter((journey) =>
       matchesFlightLogSearch(query, [
         journey.title,
         journey.summary,
         journey.code,
+        ...personalValues(annotationKey("journey", journey.id)),
       ]),
     ),
     sort,
@@ -91,7 +110,11 @@ export function FavoritesPage() {
   );
   const filteredAsteroids = sortFlightLogItems(
     asteroidFavorites.favorites.filter((asteroid) =>
-      matchesFlightLogSearch(query, [asteroid.name, asteroid.id]),
+      matchesFlightLogSearch(query, [
+        asteroid.name,
+        asteroid.id,
+        ...personalValues(annotationKey("asteroid", asteroid.id)),
+      ]),
     ),
     sort,
     (asteroid) => asteroid.name,
@@ -103,6 +126,7 @@ export function FavoritesPage() {
         mission.program,
         mission.destination,
         mission.dek,
+        ...personalValues(annotationKey("mission", mission.slug)),
       ]),
     ),
     sort,
@@ -115,6 +139,7 @@ export function FavoritesPage() {
         item.description,
         item.center,
         ...item.keywords,
+        ...personalValues(annotationKey("media", item.nasaId)),
       ]),
     ),
     sort,
@@ -127,6 +152,7 @@ export function FavoritesPage() {
         apod.explanation,
         apod.date,
         apod.copyright,
+        ...personalValues(annotationKey("apod", apod.date)),
       ]),
     ),
     sort,
@@ -198,11 +224,12 @@ export function FavoritesPage() {
     event.target.value = "";
     if (!file) return;
     try {
-      const restored = restoreFlightLogBackup(await file.text(), localStorage);
-      setBackupStatus(
-        `Restored ${String(restored)} Flight Log records. Reloading…`,
-      );
-      window.setTimeout(() => window.location.reload(), 400);
+      const text = await file.text();
+      setPendingBackup({
+        text,
+        preview: previewFlightLogBackup(text, localStorage),
+      });
+      setBackupStatus("Backup checked. Choose merge or replace to continue.");
     } catch (error) {
       setBackupStatus(
         error instanceof Error
@@ -210,6 +237,20 @@ export function FavoritesPage() {
           : "The backup could not be restored.",
       );
     }
+  }
+
+  function applyBackup(strategy: "merge" | "replace") {
+    if (!pendingBackup) return;
+    const restored = restoreFlightLogBackup(
+      pendingBackup.text,
+      localStorage,
+      strategy,
+    );
+    setBackupStatus(
+      `${strategy === "merge" ? "Merged" : "Replaced"} ${String(restored)} supported browser records. Reloading…`,
+    );
+    setPendingBackup(undefined);
+    window.setTimeout(() => window.location.reload(), 400);
   }
   return (
     <section className="section page-section">
@@ -279,6 +320,35 @@ export function FavoritesPage() {
           <p role="status" aria-live="polite">
             {backupStatus}
           </p>
+          {pendingBackup ? (
+            <div className="flight-log-backup__preview">
+              <strong>Backup ready for review</strong>
+              <p>
+                Exported{" "}
+                {new Date(
+                  pendingBackup.preview.exportedAt,
+                ).toLocaleDateString()}{" "}
+                · {pendingBackup.preview.supportedRecords} supported records ·{" "}
+                {pendingBackup.preview.existingRecords} overlap with this
+                browser.
+              </p>
+              <button type="button" onClick={() => applyBackup("merge")}>
+                Merge, keep local conflicts
+              </button>
+              <button type="button" onClick={() => applyBackup("replace")}>
+                Replace supported records
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setPendingBackup(undefined);
+                  setBackupStatus("Import cancelled. No data changed.");
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          ) : null}
         </div>
       </section>
       {!isEmpty && (
@@ -295,6 +365,67 @@ export function FavoritesPage() {
           onClear={() => setParams({}, { replace: true })}
         />
       )}
+      {!isEmpty ? (
+        <section
+          className="flight-log-saved-views"
+          aria-labelledby="saved-views-title"
+        >
+          <div>
+            <p className="eyebrow">Reusable filters</p>
+            <h2 id="saved-views-title">Saved Flight Log views</h2>
+            <p>
+              Store the current search, collection, and sort controls on this
+              device.
+            </p>
+          </div>
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              personalization.saveView(viewName, params.toString());
+              setViewName("");
+            }}
+          >
+            <label>
+              View name
+              <input
+                value={viewName}
+                maxLength={40}
+                placeholder="e.g. Mars missions"
+                onChange={(event) => setViewName(event.target.value)}
+              />
+            </label>
+            <button
+              className="button button--secondary"
+              type="submit"
+              disabled={!viewName.trim()}
+            >
+              Save current view
+            </button>
+          </form>
+          {personalization.savedViews.length > 0 ? (
+            <ul>
+              {personalization.savedViews.map((view) => (
+                <li key={view.id}>
+                  <Link
+                    to={view.query ? `/favorites?${view.query}` : "/favorites"}
+                  >
+                    {view.name}
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => personalization.removeView(view.id)}
+                    aria-label={`Delete saved view ${view.name}`}
+                  >
+                    Delete
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="flight-log-saved-views__empty">No saved views yet.</p>
+          )}
+        </section>
+      ) : null}
       {isEmpty ? (
         <div className="empty-state">
           <span aria-hidden="true">✦</span>
@@ -355,6 +486,20 @@ export function FavoritesPage() {
                       Remove
                     </button>
                   </div>
+                  <RecordPersonalization
+                    title={journey.title}
+                    annotation={
+                      personalization.annotations[
+                        annotationKey("journey", journey.id)
+                      ]
+                    }
+                    onSave={(values) =>
+                      personalization.saveAnnotation(
+                        annotationKey("journey", journey.id),
+                        values,
+                      )
+                    }
+                  />
                 </article>
               ))}
             </div>
@@ -374,16 +519,34 @@ export function FavoritesPage() {
             </div>
             <div className="asteroid-list">
               {filteredAsteroids.map((asteroid) => (
-                <AsteroidCard
+                <div
+                  className="flight-log-personalized-record"
                   key={asteroid.id}
-                  asteroid={asteroid}
-                  saved
-                  onToggle={() => asteroidFavorites.toggle(asteroid)}
-                  detailQuery={new URLSearchParams({
-                    startDate: asteroid.approach.date,
-                    endDate: asteroid.approach.date,
-                  }).toString()}
-                />
+                >
+                  <AsteroidCard
+                    asteroid={asteroid}
+                    saved
+                    onToggle={() => asteroidFavorites.toggle(asteroid)}
+                    detailQuery={new URLSearchParams({
+                      startDate: asteroid.approach.date,
+                      endDate: asteroid.approach.date,
+                    }).toString()}
+                  />
+                  <RecordPersonalization
+                    title={asteroid.name}
+                    annotation={
+                      personalization.annotations[
+                        annotationKey("asteroid", asteroid.id)
+                      ]
+                    }
+                    onSave={(values) =>
+                      personalization.saveAnnotation(
+                        annotationKey("asteroid", asteroid.id),
+                        values,
+                      )
+                    }
+                  />
+                </div>
               ))}
             </div>
           </section>
@@ -411,6 +574,20 @@ export function FavoritesPage() {
                   >
                     Remove
                   </button>
+                  <RecordPersonalization
+                    title={mission.name}
+                    annotation={
+                      personalization.annotations[
+                        annotationKey("mission", mission.slug)
+                      ]
+                    }
+                    onSave={(values) =>
+                      personalization.saveAnnotation(
+                        annotationKey("mission", mission.slug),
+                        values,
+                      )
+                    }
+                  />
                 </div>
               ))}
             </div>
@@ -439,6 +616,20 @@ export function FavoritesPage() {
                   >
                     Remove
                   </button>
+                  <RecordPersonalization
+                    title={item.title}
+                    annotation={
+                      personalization.annotations[
+                        annotationKey("media", item.nasaId)
+                      ]
+                    }
+                    onSave={(values) =>
+                      personalization.saveAnnotation(
+                        annotationKey("media", item.nasaId),
+                        values,
+                      )
+                    }
+                  />
                 </div>
               ))}
             </div>
@@ -458,13 +649,28 @@ export function FavoritesPage() {
             </div>
             <div className="favorites-grid">
               {filteredApod.map((apod) => (
-                <ApodPanel
-                  key={apod.date}
-                  apod={apod}
-                  saved
-                  onToggle={() => favorites.toggle(apod)}
-                  compact
-                />
+                <div className="flight-log-personalized-record" key={apod.date}>
+                  <ApodPanel
+                    apod={apod}
+                    saved
+                    onToggle={() => favorites.toggle(apod)}
+                    compact
+                  />
+                  <RecordPersonalization
+                    title={apod.title}
+                    annotation={
+                      personalization.annotations[
+                        annotationKey("apod", apod.date)
+                      ]
+                    }
+                    onSave={(values) =>
+                      personalization.saveAnnotation(
+                        annotationKey("apod", apod.date),
+                        values,
+                      )
+                    }
+                  />
+                </div>
               ))}
             </div>
           </section>
@@ -507,6 +713,50 @@ export function FavoritesPage() {
           </ol>
         </section>
       )}
+      {!isEmpty ? (
+        <section
+          className="flight-log-section continuation-suggestions"
+          aria-labelledby="continue-title"
+        >
+          <div className="section-heading">
+            <div>
+              <p className="kicker">
+                <span />
+                On-device suggestions
+              </p>
+              <h2 id="continue-title">Continue your exploration</h2>
+            </div>
+            <p>
+              Based only on saved collections and recent activity in this
+              browser.
+            </p>
+          </div>
+          <div>
+            {missionFavorites.favorites.length >= 2 ? (
+              <Link
+                to={`/missions/compare?missions=${missionFavorites.favorites
+                  .slice(0, 3)
+                  .map((mission) => mission.slug)
+                  .join(",")}`}
+              >
+                Compare saved missions →
+              </Link>
+            ) : (
+              <Link to="/missions">Add another mission →</Link>
+            )}
+            {journeyFavorites.favorites[0] ? (
+              <Link to={`/discover#${journeyFavorites.favorites[0].id}`}>
+                Resume {journeyFavorites.favorites[0].title} →
+              </Link>
+            ) : (
+              <Link to="/discover#science-stories">
+                Begin a science story →
+              </Link>
+            )}
+            <Link to="/search">Search across Mission Control →</Link>
+          </div>
+        </section>
+      ) : null}
     </section>
   );
 }

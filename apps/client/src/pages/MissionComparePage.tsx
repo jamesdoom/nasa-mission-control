@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { MissionComparisonPicker } from "../components/MissionComparisonPicker";
 import { ProvenancePanel } from "../components/ProvenancePanel";
@@ -7,6 +8,7 @@ import {
   missionSelectionFrom,
   toggleMissionSelection,
 } from "../utils/missionComparison";
+import { useFlightLogPersonalization } from "../hooks/useFlightLogPersonalization";
 
 export function MissionComparePage() {
   const [params, setParams] = useSearchParams();
@@ -15,6 +17,8 @@ export function MissionComparePage() {
     .map(getMission)
     .filter((mission) => mission !== undefined);
   const timeline = comparisonTimeline(selectedMissions);
+  const personalization = useFlightLogPersonalization();
+  const [bookmarkName, setBookmarkName] = useState("");
 
   function toggle(slug: string) {
     const next = toggleMissionSelection(selectedSlugs, slug);
@@ -74,6 +78,62 @@ export function MissionComparePage() {
           selected={selectedSlugs}
           onToggle={toggle}
         />
+        <div className="comparison-bookmarks">
+          <div>
+            <p className="eyebrow">Saved configurations</p>
+            <h3>Revisit this comparison</h3>
+            <p>
+              Bookmarks stay only in this browser and preserve the selected
+              mission slugs.
+            </p>
+          </div>
+          {selectedMissions.length >= 2 ? (
+            <form
+              onSubmit={(event) => {
+                event.preventDefault();
+                personalization.saveComparison(
+                  bookmarkName ||
+                    selectedMissions.map((mission) => mission.name).join(" / "),
+                  `/missions/compare?missions=${selectedSlugs.join(",")}`,
+                );
+                setBookmarkName("");
+              }}
+            >
+              <label>
+                Bookmark name
+                <input
+                  value={bookmarkName}
+                  maxLength={60}
+                  placeholder={selectedMissions
+                    .map((mission) => mission.name)
+                    .join(" / ")}
+                  onChange={(event) => setBookmarkName(event.target.value)}
+                />
+              </label>
+              <button className="button button--secondary" type="submit">
+                Save comparison
+              </button>
+            </form>
+          ) : null}
+          {personalization.comparisonBookmarks.length > 0 ? (
+            <ul>
+              {personalization.comparisonBookmarks.map((bookmark) => (
+                <li key={bookmark.id}>
+                  <Link to={bookmark.path}>{bookmark.name}</Link>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      personalization.removeComparison(bookmark.id)
+                    }
+                    aria-label={`Delete comparison bookmark ${bookmark.name}`}
+                  >
+                    Delete
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </div>
       </section>
       {selectedMissions.length < 2 ? (
         <section className="section mission-compare-empty">

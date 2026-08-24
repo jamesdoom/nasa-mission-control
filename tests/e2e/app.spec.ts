@@ -291,6 +291,21 @@ test("loads APOD, saves it, and preserves it in the Flight Log", async ({
   await page.getByRole("link", { name: "Flight Log" }).click();
   await expect(page).toHaveURL(/\/favorites$/);
   await expect(page.getByRole("heading", { name: apod.title })).toBeVisible();
+  await page.getByText("Add note or tags", { exact: true }).click();
+  await page.getByLabel("Personal note").fill("Revisit for nebula colors");
+  await page.getByLabel("Custom collection").fill("Deep sky study");
+  await page.getByLabel("Tags").fill("nebula, color");
+  await page.getByRole("button", { name: "Save details" }).click();
+  await expect(
+    page.getByText("Personal details saved on this device."),
+  ).toBeVisible();
+  await page.getByLabel("Search saved records").fill("Deep sky study");
+  await expect(page.getByRole("heading", { name: apod.title })).toBeVisible();
+  await page.getByLabel("View name").fill("Deep sky notes");
+  await page.getByRole("button", { name: "Save current view" }).click();
+  await expect(
+    page.getByRole("link", { name: "Deep sky notes" }),
+  ).toBeVisible();
   await page.getByRole("radio", { name: /APOD/ }).click();
   await expect(page).toHaveURL(/collection=apod/);
   await page.getByLabel("Search saved records").fill("no matching record");
@@ -624,6 +639,15 @@ test("compares mission profiles across a merged chronology", async ({
   ).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Across mission time" }),
+  ).toBeVisible();
+  await page.getByLabel("Bookmark name").fill("Moon program comparison");
+  await page.getByRole("button", { name: "Save comparison" }).click();
+  await expect(
+    page.getByRole("link", { name: "Moon program comparison" }),
+  ).toBeVisible();
+  await page.reload();
+  await expect(
+    page.getByRole("link", { name: "Moon program comparison" }),
   ).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
   expect(
