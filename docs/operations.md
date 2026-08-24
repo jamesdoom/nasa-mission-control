@@ -11,9 +11,12 @@ NASA Mission Control runs as a Vite single-page application with same-origin Exp
 - `Mission status review` runs monthly, checks curated review deadlines and official NASA source availability, and retains its evidence for 90 days. It deliberately requires a human to confirm changing mission statuses.
 - Vercel Runtime Logs contain structured request completion records, normalized upstream duration/outcome records, cache results, and sanitized `client.runtime_error` reports.
 - Successful NASA routes expose `x-vercel-cache` for CDN diagnostics and `x-cache` for origin-memory diagnostics; see [caching.md](caching.md).
+- `/api/health/reliability` exposes no-store, process-scoped cache ratios, categorized upstream failures, validation failures, and breaker state. Runtime Logs provide the durable timeline when retained or drained.
 - The About page offers a user-triggered health check. It verifies the application API only.
 
 These signals do not prove that APOD, NeoWs, DONKI, EPIC, GIBS, or the NASA Image Library is currently available. Each instrument handles its own upstream failure and retry state.
+
+Run `npm run drill:resilience` before releases that change NASA schemas, caching, or error handling. The full degraded-mode drill and evidence template are documented in [platform-resilience-phase-4.md](platform-resilience-phase-4.md).
 
 ## Offline field console
 

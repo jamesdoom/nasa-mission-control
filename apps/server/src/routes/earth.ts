@@ -4,11 +4,8 @@ import type { EarthObservation } from "@mission-control/shared";
 import { MemoryCache } from "../lib/cache.js";
 import { HttpError } from "../lib/http-error.js";
 import type { NasaClient } from "../lib/nasa-client.js";
-import {
-  archiveNasaCache,
-  liveNasaCache,
-  sendSharedJson,
-} from "../lib/response-cache.js";
+import { sendResilient } from "../lib/resilient-route.js";
+import { archiveNasaCache, liveNasaCache } from "../lib/response-cache.js";
 
 const querySchema = z
   .object({
@@ -65,26 +62,17 @@ export function createEarthRouter(
     const date = validateDate(parsed.data.date);
     const cachePolicy = date ? archiveNasaCache : liveNasaCache;
     const cacheKey = `${parsed.data.collection}:${date ?? "latest"}`;
-    const cached = cache.get(cacheKey);
-    if (cached) {
-      sendSharedJson(response, cached, "HIT", cachePolicy);
-      return;
-    }
-    const observation = await nasa.getEarthObservation(
-      parsed.data.collection,
-      date,
-    );
-    const hasImages = observation.images.length > 0;
-    if (hasImages) {
-      cache.set(cacheKey, observation, cacheTtlMs);
-    }
-    if (hasImages) {
-      sendSharedJson(response, observation, "MISS", cachePolicy);
-    } else {
-      response.setHeader("cache-control", "no-store");
-      response.setHeader("x-cache", "MISS");
-      response.json(observation);
-    }
+    await sendResilient({
+      response,
+      cache,
+      cacheName: "earth",
+      key: cacheKey,
+      ttlMs: cacheTtlMs,
+      staleTtlMs: date ? 604_800_000 : 3_600_000,
+      policy: cachePolicy,
+      load: () => nasa.getEarthObservation(parsed.data.collection, date),
+      cacheable: (observation) => observation.images.length > 0,
+    });
   });
   return router;
 }

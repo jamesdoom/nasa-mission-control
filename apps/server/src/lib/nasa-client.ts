@@ -16,6 +16,11 @@ import type {
 } from "@mission-control/shared";
 import { HttpError } from "./http-error.js";
 import { logger } from "./logger.js";
+import {
+  CircuitBreaker,
+  reliability,
+  type UpstreamFailure,
+} from "./reliability.js";
 
 const nasaApodSchema = z.object({
   date: z.string(),
@@ -229,12 +234,23 @@ type NasaClientOptions = {
 
 export class NasaClient {
   private readonly fetchImpl: typeof fetch;
+  private readonly breaker = new CircuitBreaker();
 
   constructor(private readonly options: NasaClientOptions) {
     this.fetchImpl = options.fetchImpl ?? fetch;
   }
 
   private async fetchUpstream(url: URL): Promise<Response> {
+    const upstream = url.hostname;
+    reliability.request(upstream);
+    if (!this.breaker.permit(upstream)) {
+      reliability.failure(upstream, "circuit_open");
+      throw new HttpError(
+        503,
+        "UPSTREAM_UNAVAILABLE",
+        "NASA is temporarily isolated after repeated failures. Please retry shortly.",
+      );
+    }
     const startedAt = performance.now();
     try {
       const response = await this.fetchImpl(url, {
@@ -251,8 +267,30 @@ export class NasaClient {
         durationMs: Math.round(performance.now() - startedAt),
         outcome: response.ok ? "success" : "http_error",
       });
+      if (response.ok) {
+        this.breaker.success(upstream);
+        reliability.success(upstream);
+      } else {
+        const category: UpstreamFailure =
+          response.status === 429
+            ? "rate_limit"
+            : response.status >= 500
+              ? "http_5xx"
+              : "http_4xx";
+        reliability.failure(upstream, category);
+        if (response.status === 429 || response.status >= 500)
+          this.breaker.failure(upstream);
+        else this.breaker.success(upstream);
+      }
       return response;
     } catch (error: unknown) {
+      if (error instanceof HttpError) throw error;
+      const category: UpstreamFailure =
+        error instanceof Error && error.name === "TimeoutError"
+          ? "timeout"
+          : "network";
+      reliability.failure(upstream, category);
+      this.breaker.failure(upstream);
       logger.error("upstream.request_failed", {
         upstream: url.hostname,
         upstreamPath: url.pathname,
@@ -314,13 +352,17 @@ export class NasaClient {
       );
     }
 
-    const parsed = nasaApodSchema.safeParse(await this.parseJson(response));
-    if (!parsed.success)
+    const parsed = nasaApodSchema.safeParse(
+      await this.parseJson(response, url),
+    );
+    if (!parsed.success) {
+      this.schemaDrift(url, parsed.error.issues);
       throw new HttpError(
         502,
         "UPSTREAM_UNAVAILABLE",
         "NASA returned data in an unexpected format.",
       );
+    }
     const item = parsed.data;
     const copyright = item.copyright?.trim();
     return {
@@ -433,6 +475,7 @@ export class NasaClient {
     const response = await this.requestJson(url);
     const parsed = nasaAsteroidFeedSchema.safeParse(response);
     if (!parsed.success) {
+      this.schemaDrift(url, parsed.error.issues);
       throw new HttpError(
         502,
         "UPSTREAM_UNAVAILABLE",
@@ -513,6 +556,7 @@ export class NasaClient {
     url.search = params.toString();
     const parsed = mediaSearchSchema.safeParse(await this.requestJson(url));
     if (!parsed.success) {
+      this.schemaDrift(url, parsed.error.issues);
       throw new HttpError(
         502,
         "UPSTREAM_UNAVAILABLE",
@@ -545,6 +589,12 @@ export class NasaClient {
     const manifest = mediaManifestSchema.safeParse(manifestResponse);
     const result = search.success ? search.data.collection.items[0] : undefined;
     if (!result || !manifest.success) {
+      const issues = !search.success
+        ? search.error.issues
+        : !manifest.success
+          ? manifest.error.issues
+          : [];
+      this.schemaDrift(searchUrl, issues);
       throw new HttpError(
         502,
         "UPSTREAM_UNAVAILABLE",
@@ -735,6 +785,15 @@ export class NasaClient {
   }
 
   private spaceWeatherFormatError(): never {
+    reliability.failure("api.nasa.gov", "schema_validation");
+    this.breaker.failure("api.nasa.gov");
+    logger.error("upstream.schema_drift", {
+      upstream: "api.nasa.gov",
+      upstreamPath: "/DONKI",
+      issueCount: 1,
+      firstIssuePath: "normalized-event",
+      firstIssueCode: "invalid_shape",
+    });
     throw new HttpError(
       502,
       "UPSTREAM_UNAVAILABLE",
@@ -743,6 +802,15 @@ export class NasaClient {
   }
 
   private earthFormatError(): never {
+    reliability.failure("epic.gsfc.nasa.gov", "schema_validation");
+    this.breaker.failure("epic.gsfc.nasa.gov");
+    logger.error("upstream.schema_drift", {
+      upstream: "epic.gsfc.nasa.gov",
+      upstreamPath: "/api",
+      issueCount: 1,
+      firstIssuePath: "normalized-observation",
+      firstIssueCode: "invalid_shape",
+    });
     throw new HttpError(
       502,
       "UPSTREAM_UNAVAILABLE",
@@ -789,13 +857,27 @@ export class NasaClient {
         "NASA returned an unexpected response.",
       );
     }
-    return this.parseJson(response);
+    return this.parseJson(response, url);
   }
 
-  private async parseJson(response: Response): Promise<unknown> {
+  private schemaDrift(url: URL, issues: z.ZodIssue[]): void {
+    reliability.failure(url.hostname, "schema_validation");
+    this.breaker.failure(url.hostname);
+    logger.error("upstream.schema_drift", {
+      upstream: url.hostname,
+      upstreamPath: url.pathname,
+      issueCount: issues.length,
+      firstIssuePath: issues[0]?.path.join(".") ?? "root",
+      firstIssueCode: issues[0]?.code ?? "unknown",
+    });
+  }
+
+  private async parseJson(response: Response, url: URL): Promise<unknown> {
     try {
       return (await response.json()) as unknown;
     } catch {
+      reliability.failure(url.hostname, "malformed_json");
+      this.breaker.failure(url.hostname);
       throw new HttpError(
         502,
         "UPSTREAM_UNAVAILABLE",

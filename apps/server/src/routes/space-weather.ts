@@ -4,7 +4,8 @@ import type { SpaceWeatherFeed } from "@mission-control/shared";
 import { MemoryCache } from "../lib/cache.js";
 import { HttpError } from "../lib/http-error.js";
 import type { NasaClient } from "../lib/nasa-client.js";
-import { liveNasaCache, sendSharedJson } from "../lib/response-cache.js";
+import { sendResilient } from "../lib/resilient-route.js";
+import { liveNasaCache } from "../lib/response-cache.js";
 
 const dayMs = 86_400_000;
 const datePattern = /^\d{4}-\d{2}-\d{2}$/;
@@ -73,14 +74,16 @@ export function createSpaceWeatherRouter(
       );
     const { category } = parsed.data;
     const cacheKey = `${startDate}:${endDate}:${category}`;
-    const cached = cache.get(cacheKey);
-    if (cached) {
-      sendSharedJson(response, cached, "HIT", liveNasaCache);
-      return;
-    }
-    const feed = await nasa.getSpaceWeather(startDate, endDate, category);
-    cache.set(cacheKey, feed, cacheTtlMs);
-    sendSharedJson(response, feed, "MISS", liveNasaCache);
+    await sendResilient({
+      response,
+      cache,
+      cacheName: "space-weather",
+      key: cacheKey,
+      ttlMs: cacheTtlMs,
+      staleTtlMs: 3_600_000,
+      policy: liveNasaCache,
+      load: () => nasa.getSpaceWeather(startDate, endDate, category),
+    });
   });
   return router;
 }

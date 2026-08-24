@@ -4,11 +4,8 @@ import type { MediaDetail, MediaSearch } from "@mission-control/shared";
 import { MemoryCache } from "../lib/cache.js";
 import { HttpError } from "../lib/http-error.js";
 import type { NasaClient } from "../lib/nasa-client.js";
-import {
-  archiveNasaCache,
-  mediaSearchCache,
-  sendSharedJson,
-} from "../lib/response-cache.js";
+import { sendResilient } from "../lib/resilient-route.js";
+import { archiveNasaCache, mediaSearchCache } from "../lib/response-cache.js";
 
 const pageSize = 24;
 const searchSchema = z
@@ -44,14 +41,16 @@ export function createMediaRouter(
     }
     const { q, mediaType, page } = parsed.data;
     const cacheKey = `${q.toLowerCase()}:${mediaType}:${String(page)}`;
-    const cached = searchCache.get(cacheKey);
-    if (cached) {
-      sendSharedJson(response, cached, "HIT", mediaSearchCache);
-      return;
-    }
-    const result = await nasa.searchMedia(q, mediaType, page, pageSize);
-    searchCache.set(cacheKey, result, cacheTtlMs);
-    sendSharedJson(response, result, "MISS", mediaSearchCache);
+    await sendResilient({
+      response,
+      cache: searchCache,
+      cacheName: "media-search",
+      key: cacheKey,
+      ttlMs: cacheTtlMs,
+      staleTtlMs: 86_400_000,
+      policy: mediaSearchCache,
+      load: () => nasa.searchMedia(q, mediaType, page, pageSize),
+    });
   });
 
   router.get("/:nasaId", async (request, response) => {
@@ -59,14 +58,16 @@ export function createMediaRouter(
     if (!parsed.success) {
       throw new HttpError(400, "INVALID_REQUEST", "Invalid NASA media ID.");
     }
-    const cached = detailCache.get(parsed.data);
-    if (cached) {
-      sendSharedJson(response, cached, "HIT", archiveNasaCache);
-      return;
-    }
-    const detail = await nasa.getMediaDetail(parsed.data);
-    detailCache.set(parsed.data, detail, cacheTtlMs);
-    sendSharedJson(response, detail, "MISS", archiveNasaCache);
+    await sendResilient({
+      response,
+      cache: detailCache,
+      cacheName: "media-detail",
+      key: parsed.data,
+      ttlMs: cacheTtlMs,
+      staleTtlMs: 604_800_000,
+      policy: archiveNasaCache,
+      load: () => nasa.getMediaDetail(parsed.data),
+    });
   });
 
   return router;

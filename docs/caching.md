@@ -1,5 +1,7 @@
 # NASA response cache policy
 
+Origin memory entries retain a bounded stale copy after freshness expires. A retryable upstream or server failure may use it according to the data-class windows in [platform-resilience-phase-4.md](platform-resilience-phase-4.md). Stale fallback is never silent: `x-cache: STALE`, `x-data-status: stale-fallback`, `Age`, and HTTP `Warning: 110` distinguish it from a cache hit or fresh retrieval.
+
 NASA Mission Control caches only successful, public, normalized NASA responses. The data contains no accounts, cookies, personalization, or credentials, so identical URLs can be shared safely across visitors.
 
 ## Cache layers

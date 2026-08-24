@@ -4,7 +4,8 @@ import type { AsteroidFeed } from "@mission-control/shared";
 import { MemoryCache } from "../lib/cache.js";
 import { HttpError } from "../lib/http-error.js";
 import type { NasaClient } from "../lib/nasa-client.js";
-import { liveNasaCache, sendSharedJson } from "../lib/response-cache.js";
+import { sendResilient } from "../lib/resilient-route.js";
+import { liveNasaCache } from "../lib/response-cache.js";
 
 const dayMs = 86_400_000;
 const datePattern = /^\d{4}-\d{2}-\d{2}$/;
@@ -72,14 +73,16 @@ export function createAsteroidRouter(
       );
     }
     const cacheKey = `${startDate}:${endDate}`;
-    const cached = cache.get(cacheKey);
-    if (cached) {
-      sendSharedJson(response, cached, "HIT", liveNasaCache);
-      return;
-    }
-    const feed = await nasa.getAsteroidFeed(startDate, endDate);
-    cache.set(cacheKey, feed, cacheTtlMs);
-    sendSharedJson(response, feed, "MISS", liveNasaCache);
+    await sendResilient({
+      response,
+      cache,
+      cacheName: "asteroids",
+      key: cacheKey,
+      ttlMs: cacheTtlMs,
+      staleTtlMs: 3_600_000,
+      policy: liveNasaCache,
+      load: () => nasa.getAsteroidFeed(startDate, endDate),
+    });
   });
   return router;
 }

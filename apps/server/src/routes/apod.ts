@@ -3,12 +3,9 @@ import { z } from "zod";
 import { APOD_EARLIEST_DATE, type Apod } from "@mission-control/shared";
 import { MemoryCache } from "../lib/cache.js";
 import { HttpError } from "../lib/http-error.js";
+import { sendResilient } from "../lib/resilient-route.js";
 import type { NasaClient } from "../lib/nasa-client.js";
-import {
-  archiveNasaCache,
-  liveNasaCache,
-  sendSharedJson,
-} from "../lib/response-cache.js";
+import { archiveNasaCache, liveNasaCache } from "../lib/response-cache.js";
 
 const datePattern = /^\d{4}-\d{2}-\d{2}$/;
 const querySchema = z
@@ -58,14 +55,16 @@ export function createApodRouter(
       );
     const date = validateDate(parsed.data.date ?? utcToday());
     const cachePolicy = date === utcToday() ? liveNasaCache : archiveNasaCache;
-    const cached = cache.get(date);
-    if (cached) {
-      sendSharedJson(response, cached, "HIT", cachePolicy);
-      return;
-    }
-    const apod = await nasa.getApod(date);
-    cache.set(date, apod, cacheTtlMs);
-    sendSharedJson(response, apod, "MISS", cachePolicy);
+    await sendResilient({
+      response,
+      cache,
+      cacheName: "apod",
+      key: date,
+      ttlMs: cacheTtlMs,
+      staleTtlMs: date === utcToday() ? 3_600_000 : 604_800_000,
+      policy: cachePolicy,
+      load: () => nasa.getApod(date),
+    });
   });
   return router;
 }

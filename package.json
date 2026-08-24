@@ -21,6 +21,7 @@
     "review:missions": "node scripts/review-mission-status.mjs",
     "smoke:production": "node scripts/production-smoke.mjs",
     "smoke:journeys": "node scripts/production-journey-smoke.mjs",
+    "drill:resilience": "npm run test -w @mission-control/server -- src/test/reliability.test.ts src/test/apod.test.ts src/test/contract-fixtures.test.ts",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

@@ -4,6 +4,7 @@ import helmet from "helmet";
 import path from "node:path";
 import type { Env } from "./config/env.js";
 import { NasaClient } from "./lib/nasa-client.js";
+import { reliability } from "./lib/reliability.js";
 import {
   errorHandler,
   notFound,
@@ -46,6 +47,10 @@ export function createApp(
       service: "mission-control-api",
       checkedAt: new Date().toISOString(),
     });
+  });
+  app.get("/api/health/reliability", (_request, response) => {
+    response.setHeader("cache-control", "no-store");
+    response.json(reliability.snapshot());
   });
   app.use("/api/client-errors", createClientErrorRouter());
   app.use(

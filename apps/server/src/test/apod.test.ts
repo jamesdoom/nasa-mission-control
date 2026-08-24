@@ -9,6 +9,7 @@ import type {
 import { createApp } from "../app.js";
 import type { Env } from "../config/env.js";
 import type { NasaClient } from "../lib/nasa-client.js";
+import { HttpError } from "../lib/http-error.js";
 
 const env: Env = {
   NODE_ENV: "test",
@@ -77,6 +78,40 @@ describe("GET /api/apod", () => {
     expect(body.error).toMatchObject({ retryable: true });
     expect(recovered.status).toBe(200);
     expect(getApod).toHaveBeenCalledTimes(2);
+  });
+
+  it("serves an explicitly marked stale value during a retryable upstream failure", async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    const getApod = vi
+      .fn()
+      .mockResolvedValueOnce(apod)
+      .mockRejectedValueOnce(
+        new HttpError(503, "UPSTREAM_UNAVAILABLE", "NASA unavailable"),
+      );
+    const app = createApp({ ...env, NASA_CACHE_TTL_MS: 10 }, {
+      getApod,
+    } as unknown as NasaClient);
+    await request(app).get("/api/apod?date=2024-01-01");
+    vi.advanceTimersByTime(11);
+    const degraded = await request(app).get("/api/apod?date=2024-01-01");
+    expect(degraded.status).toBe(200);
+    expect(degraded.body).toEqual(apod);
+    expect(degraded.headers["x-cache"]).toBe("STALE");
+    expect(degraded.headers["x-data-status"]).toBe("stale-fallback");
+    expect(degraded.headers.warning).toContain("Response is stale");
+    vi.useRealTimers();
+  });
+
+  it("exposes process-scoped reliability counters without caching", async () => {
+    const app = createApp(env, { getApod: vi.fn() } as unknown as NasaClient);
+    const response = await request(app).get("/api/health/reliability");
+    expect(response.status).toBe(200);
+    expect(response.headers["cache-control"]).toBe("no-store");
+    expect(response.body).toMatchObject({
+      scope: "current-process",
+      upstreams: {},
+      caches: {},
+    });
   });
 
   it("ignores hosting metadata while validating documented parameters", async () => {
