@@ -21,6 +21,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SearchPage } from "../pages/SearchPage";
 import { MissionMapPage } from "../pages/MissionMapPage";
 import { StoryCollectionPage } from "../pages/StoryCollectionPage";
+import { LearningCenterPage } from "../pages/LearningCenterPage";
 
 const apod: Apod = {
   date: "2024-01-01",
@@ -295,6 +296,16 @@ describe("automated accessibility", () => {
     const router = createMemoryRouter(
       [{ path: "/stories/:storyId", element: <StoryCollectionPage /> }],
       { initialEntries: ["/stories/sun-earth-connection"] },
+    );
+    const { container } = render(<RouterProvider router={router} />);
+    const results = await axe(container, jsdomAxeOptions);
+    expect(results.violations).toEqual([]);
+  });
+
+  it("finds no detectable violations in the learning center", async () => {
+    const router = createMemoryRouter(
+      [{ path: "/learn", element: <LearningCenterPage /> }],
+      { initialEntries: ["/learn?track=mars-evidence"] },
     );
     const { container } = render(<RouterProvider router={router} />);
     const results = await axe(container, jsdomAxeOptions);

@@ -31,6 +31,7 @@ const moduleGroups: readonly ModuleGroup[] = [
     label: "Learn and compare",
     links: [
       { to: "/discover", label: "Guided Discovery" },
+      { to: "/learn", label: "Learning Center" },
       { to: "/scale-lab", label: "Scale Lab" },
       { to: "/trivia", label: "Space Trivia" },
     ],
@@ -53,6 +54,7 @@ const routeTitles: Record<string, string> = {
   "/scale-lab": "Celestial Scale Laboratory",
   "/trivia": "Space Trivia",
   "/discover": "Guided Discovery",
+  "/learn": "Learning Center",
   "/stories": "Science Story",
   "/favorites": "Personal Flight Log",
   "/about": "About",

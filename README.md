@@ -285,6 +285,7 @@ The monthly `Mission status review` workflow checks official source availability
 38. **Complete — Production operations and public release phase 5:** added twice-hourly multi-route uptime checks, upstream/cache/latency telemetry, preview-deployment gates, critical browser-local continuity smoke tests, rollback and incident procedures, public privacy/accessibility/limitation disclosures, updated architecture evidence, and refreshed release captures.
 39. **Complete — Search and discovery intelligence phase 1:** added URL-backed destination, era, evidence, and scientific-topic facets; explicit metadata recommendations; recent-query command search with keyboard previews; and shareable six-record investigation workspaces spanning missions, observation instruments, media archives, guided paths, and science stories.
 40. **Complete — Deeper scientific analysis phase 2:** added seven-day APOD archive trends, daily asteroid encounter analysis, URL-backed DONKI multi-event alignment, EPIC observation timelines, defined mission comparison fields, and exportable sourced CSV summaries, with explicit evidence classes and semantic tables beside every visualization.
+41. **Complete — Guided learning and progress phase 3:** added three objective-led learning tracks spanning stories, missions, live instruments, and trivia; validated browser-local progress, reflection, reset, backup, and export controls; source-backed knowledge checks and completion summaries; and responsive educator session plans with print activity layouts.
 
 ## Screenshots
 

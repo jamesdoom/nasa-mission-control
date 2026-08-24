@@ -125,6 +125,14 @@ const router = createBrowserRouter([
         }),
       },
       {
+        path: "learn",
+        lazy: async () => ({
+          Component: (
+            await loadLazyRoute(() => import("./pages/LearningCenterPage"))
+          ).LearningCenterPage,
+        }),
+      },
+      {
         path: "discover",
         lazy: async () => ({
           Component: (

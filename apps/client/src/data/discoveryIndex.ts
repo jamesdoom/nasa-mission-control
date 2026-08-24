@@ -80,6 +80,12 @@ const instrumentSeeds = [
     "/discover",
   ],
   [
+    "learn",
+    "Learning Center",
+    "Complete source-backed educational tracks",
+    "/learn",
+  ],
+  [
     "favorites",
     "Personal Flight Log",
     "Open saved discoveries and recent history",
@@ -170,6 +176,13 @@ const instrumentMetadata: Record<string, DiscoveryResult["metadata"]> = {
     evidence: "curated",
     topics: ["learning", "investigation"],
     instrument: "Guided Discovery",
+  },
+  learn: {
+    destination: "Multiple",
+    era: "Current",
+    evidence: "curated",
+    topics: ["learning", "education"],
+    instrument: "Learning Center",
   },
   favorites: {
     destination: "Personal",

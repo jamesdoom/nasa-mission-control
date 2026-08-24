@@ -9,6 +9,7 @@ const storageKeys = [
   "mission-control:recently-viewed:v1",
   "mission-control:trivia-best-streak:v1",
   "mission-control:flight-log-personalization:v1",
+  "mission-control:learning-progress:v1",
 ] as const;
 
 type StorageKey = (typeof storageKeys)[number];
