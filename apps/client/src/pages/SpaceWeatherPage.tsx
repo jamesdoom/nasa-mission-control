@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { ApiError } from "../api/apod";
 import { ErrorState, LoadingState } from "../components/AsyncState";
 import { DataStatus } from "../components/DataStatus";
+import { DonkiComparison } from "../components/ScientificAnalysis";
 import { ContinueExploring } from "../components/ContinueExploring";
 import { SpaceWeatherCard } from "../components/SpaceWeatherCard";
 import { useSpaceWeather } from "../features/space-weather/useSpaceWeather";
@@ -21,6 +22,10 @@ export function SpaceWeatherPage() {
   const startDate = params.get("startDate") ?? utcDate(-7);
   const endDate = params.get("endDate") ?? utcDate();
   const category = categoryFrom(params.get("category"));
+  const comparisonIds = (params.get("compare") ?? "")
+    .split(",")
+    .filter(Boolean)
+    .slice(0, 3);
   const [draftStart, setDraftStart] = useState(startDate);
   const [draftEnd, setDraftEnd] = useState(endDate);
   const query = useSpaceWeather(startDate, endDate, category);
@@ -38,6 +43,15 @@ export function SpaceWeatherPage() {
   function submit(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
     setParams({ startDate: draftStart, endDate: draftEnd, category });
+  }
+  function toggleComparison(id: string) {
+    const nextIds = comparisonIds.includes(id)
+      ? comparisonIds.filter((item) => item !== id)
+      : [...comparisonIds, id].slice(-3);
+    const next = new URLSearchParams(params);
+    if (nextIds.length) next.set("compare", nextIds.join(","));
+    else next.delete("compare");
+    setParams(next);
   }
 
   return (
@@ -219,9 +233,30 @@ export function SpaceWeatherPage() {
               updatedAt={query.dataUpdatedAt}
               refreshing={query.isFetching}
             />
+            <DonkiComparison
+              events={query.data.events.filter((event) =>
+                comparisonIds.includes(event.id),
+              )}
+            />
+            <p className="source-note">
+              Select two or three event records below to align their published
+              fields. Selection is preserved in the URL.
+            </p>
             <div className="weather-grid">
               {query.data.events.map((item) => (
-                <SpaceWeatherCard key={item.id} event={item} />
+                <div className="weather-compare-card" key={item.id}>
+                  <button
+                    type="button"
+                    className="button button--secondary"
+                    aria-pressed={comparisonIds.includes(item.id)}
+                    onClick={() => toggleComparison(item.id)}
+                  >
+                    {comparisonIds.includes(item.id)
+                      ? "Remove from comparison"
+                      : "Compare event"}
+                  </button>
+                  <SpaceWeatherCard event={item} />
+                </div>
               ))}
             </div>
           </>

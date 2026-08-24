@@ -6,6 +6,7 @@ import { ErrorState, LoadingState } from "../components/AsyncState";
 import { DataStatus } from "../components/DataStatus";
 import { ContinueExploring } from "../components/ContinueExploring";
 import { EarthImageViewer } from "../components/EarthImageViewer";
+import { EarthTimelineAnalysis } from "../components/ScientificAnalysis";
 import { useEarthObservation } from "../features/earth/useEarthObservation";
 import { earthExplorationLinks } from "../data/contextualLinks";
 
@@ -170,6 +171,7 @@ export function EarthPage() {
               )}
               onSelect={selectImage}
             />
+            <EarthTimelineAnalysis images={query.data.images} />
           </>
         )}
       </section>

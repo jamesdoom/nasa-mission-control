@@ -9,6 +9,7 @@ import {
 } from "../components/AsteroidComparison";
 import { ErrorState, LoadingState } from "../components/AsyncState";
 import { DataStatus } from "../components/DataStatus";
+import { AsteroidTrendAnalysis } from "../components/ScientificAnalysis";
 import { useAsteroids } from "../features/asteroids/useAsteroids";
 import { useAsteroidFavorites } from "../hooks/useAsteroidFavorites";
 import { utcDate } from "../utils/dates";
@@ -199,13 +200,16 @@ export function AsteroidsPage() {
           </aside>
 
           {asteroids.length > 0 ? (
-            <AsteroidComparison
-              asteroids={asteroids}
-              metric={metric}
-              onMetricChange={(nextMetric) =>
-                setParams({ startDate, endDate, sort, metric: nextMetric })
-              }
-            />
+            <>
+              <AsteroidTrendAnalysis asteroids={query.data.asteroids} />
+              <AsteroidComparison
+                asteroids={asteroids}
+                metric={metric}
+                onMetricChange={(nextMetric) =>
+                  setParams({ startDate, endDate, sort, metric: nextMetric })
+                }
+              />
+            </>
           ) : null}
 
           {asteroids.length === 0 ? (

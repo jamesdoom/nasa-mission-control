@@ -25,6 +25,43 @@ export function MissionComparePage() {
     setParams(next.length > 0 ? { missions: next.join(",") } : {});
   }
 
+  function exportSummary() {
+    const header = [
+      "Mission",
+      "Program",
+      "Destination",
+      "Vehicle",
+      "Launch UTC date",
+      "Status",
+      "Primary objective",
+      "NASA source",
+    ];
+    const quote = (value: string) => `"${value.replaceAll('"', '""')}"`;
+    const csv = [
+      header,
+      ...selectedMissions.map((mission) => [
+        mission.name,
+        mission.program,
+        mission.destination,
+        mission.vehicle,
+        mission.launchDate,
+        mission.statusLabel,
+        mission.objective,
+        mission.sources[0]?.url ?? "",
+      ]),
+    ]
+      .map((row) => row.map(quote).join(","))
+      .join("\n");
+    const url = URL.createObjectURL(
+      new Blob([csv], { type: "text/csv;charset=utf-8" }),
+    );
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `mission-comparison-${selectedSlugs.join("-")}.csv`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+  }
+
   return (
     <>
       <section className="section mission-compare-intro">
@@ -161,6 +198,77 @@ export function MissionComparePage() {
                 </p>
                 <h2 id="comparison-matrix-title">Mission parameters</h2>
               </div>
+              <button
+                className="button button--secondary"
+                type="button"
+                onClick={exportSummary}
+              >
+                Export accessible CSV summary
+              </button>
+            </div>
+            <div className="table-scroll mission-definition-table">
+              <table>
+                <caption>
+                  Common definitions applied to every compared mission
+                </caption>
+                <thead>
+                  <tr>
+                    <th>Field</th>
+                    <th>Definition</th>
+                    <th>Evidence class</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Launch</th>
+                    <td>
+                      UTC calendar date of launch as stated by the cited NASA
+                      mission record.
+                    </td>
+                    <td>
+                      <span className="evidence-class evidence-class--curated">
+                        curated
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Destination</th>
+                    <td>
+                      Primary destination category used consistently by this
+                      archive; it may simplify multi-target trajectories.
+                    </td>
+                    <td>
+                      <span className="evidence-class evidence-class--curated">
+                        curated
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Status</th>
+                    <td>
+                      Reviewed archive label: active, extended, or completed—not
+                      live spacecraft telemetry.
+                    </td>
+                    <td>
+                      <span className="evidence-class evidence-class--curated">
+                        curated
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Chronology</th>
+                    <td>
+                      Milestones sorted by ISO date; ordering is calculated
+                      while milestone content is curated.
+                    </td>
+                    <td>
+                      <span className="evidence-class evidence-class--calculated">
+                        calculated
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
             <div
               className={

@@ -6,7 +6,8 @@ import { ApodPanel } from "../components/ApodPanel";
 import { ContinueExploring } from "../components/ContinueExploring";
 import { ErrorState, LoadingState } from "../components/AsyncState";
 import { DataStatus } from "../components/DataStatus";
-import { useApod } from "../features/apod/useApod";
+import { ApodHistoryAnalysis } from "../components/ScientificAnalysis";
+import { useApod, useApodHistory } from "../features/apod/useApod";
 import { useFavorites } from "../hooks/useFavorites";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
 import { contextualLinksForText } from "../data/contextualLinks";
@@ -19,6 +20,7 @@ export function ApodPage() {
   const [draftDate, setDraftDate] = useState(selectedDate);
   useEffect(() => setDraftDate(selectedDate), [selectedDate]);
   const query = useApod(selectedDate);
+  const history = useApodHistory(selectedDate, 7, query.isSuccess);
   const favorites = useFavorites();
   const recent = useRecentlyViewed();
   const error = query.error instanceof ApiError ? query.error : undefined;
@@ -92,6 +94,9 @@ export function ApodPage() {
             saved={favorites.isFavorite(query.data.date)}
             onToggle={() => favorites.toggle(query.data)}
           />
+          {!history.isPending && !history.isError ? (
+            <ApodHistoryAnalysis items={history.data} />
+          ) : null}
           <ContinueExploring
             links={contextualLinksForText(
               `${query.data.title} ${query.data.explanation}`,
