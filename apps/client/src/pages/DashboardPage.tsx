@@ -4,6 +4,7 @@ import { ApiError } from "../api/apod";
 import { ApodPanel } from "../components/ApodPanel";
 import { ErrorState, LoadingState } from "../components/AsyncState";
 import { DataStatus } from "../components/DataStatus";
+import { EvidenceGuide } from "../components/EvidenceGuide";
 import { useApod } from "../features/apod/useApod";
 import { useAsteroids } from "../features/asteroids/useAsteroids";
 import { useFavorites } from "../hooks/useFavorites";
@@ -106,83 +107,52 @@ export function DashboardPage() {
           </>
         )}
       </section>
-      <section className="section upcoming">
+      <section className="section journey-start" aria-labelledby="start-title">
         <div className="section-heading">
           <div>
             <p className="kicker">
               <span />
-              Expansion roadmap
+              Choose your route
             </p>
-            <h2>More instruments coming online</h2>
+            <h2 id="start-title">Start with one clear path</h2>
           </div>
+          <p>Every route is available without an account.</p>
         </div>
-        <div className="module-grid">
-          <Link className="module-card module-card--active" to="/asteroids">
-            <span>02</span>
-            <small>Instrument online</small>
-            <h3>Asteroid Watch</h3>
+        <div className="journey-start__grid">
+          <Link className="journey-start__card" to="/asteroids">
+            <small>About 3 minutes · Live data</small>
+            <h3>See what is passing Earth</h3>
             {asteroidQuery.data ? (
               <p>
                 {asteroidQuery.data.totalCount} approaches in the next seven
-                days; {asteroidQuery.data.potentiallyHazardousCount} carry
-                NASA’s potentially hazardous classification.
+                days, explained with responsible risk context.
               </p>
             ) : (
               <p>
-                Near-Earth object encounters translated into clear, responsible
-                science.
+                Explore near-Earth encounters with responsible risk context.
               </p>
             )}
+            <span>Open Asteroid Watch →</span>
           </Link>
-          <Link className="module-card module-card--active" to="/media">
-            <span>03</span>
-            <small>Instrument online</small>
-            <h3>Media Library</h3>
+          <Link className="journey-start__card" to="/missions">
+            <small>About 5 minutes · Curated history</small>
+            <h3>Follow a landmark mission</h3>
+            <p>Browse source-checked flight histories from Apollo to Webb.</p>
+            <span>Open Mission Archive →</span>
+          </Link>
+          <Link className="journey-start__card" to="/discover">
+            <small>10–15 minutes · Guided learning</small>
+            <h3>Investigate a space question</h3>
             <p>
-              Search the NASA Image and Video Library across decades of
-              exploration.
+              Connect observations, mission history, and NASA media in order.
             </p>
-          </Link>
-          <Link className="module-card module-card--active" to="/space-weather">
-            <span>04</span>
-            <small>Instrument online</small>
-            <h3>Space Weather</h3>
-            <p>
-              Solar flares, coronal mass ejections, and geomagnetic conditions.
-            </p>
-          </Link>
-          <Link className="module-card module-card--active" to="/earth">
-            <span>05</span>
-            <small>Instrument online</small>
-            <h3>Earth Observatory</h3>
-            <p>Sunlit EPIC sequences and daily MODIS Terra global imagery.</p>
-          </Link>
-          <Link className="module-card module-card--active" to="/missions">
-            <span>06</span>
-            <small>Archive online</small>
-            <h3>Mission Archive</h3>
-            <p>Source-checked flight histories from Apollo to Webb.</p>
-          </Link>
-          <Link className="module-card module-card--active" to="/trivia">
-            <span>07</span>
-            <small>Simulation online</small>
-            <h3>Space Trivia</h3>
-            <p>
-              Source-checked mission knowledge with explanations after every
-              answer.
-            </p>
-          </Link>
-          <Link className="module-card module-card--active" to="/discover">
-            <span>08</span>
-            <small>Guidance online</small>
-            <h3>Discovery Paths</h3>
-            <p>
-              Follow evidence across live observations, mission history, and
-              NASA’s media archive.
-            </p>
+            <span>Choose a Discovery Path →</span>
           </Link>
         </div>
       </section>
+      <div className="section evidence-guide-wrap">
+        <EvidenceGuide />
+      </div>
     </>
   );
 }

@@ -357,19 +357,70 @@ test("provides an operable mobile navigation menu", async ({ page }) => {
   await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible();
   await page.getByRole("button", { name: /Explore/ }).click();
   await expect(
-    page.getByRole("link", { name: "03 Asteroid Watch", exact: true }),
+    page.getByRole("link", { name: "Asteroid Watch", exact: true }),
   ).toBeVisible();
   await capturePortfolioScreenshot(page, {
     path: "docs/screenshots/mobile-navigation.png",
     fullPage: false,
     animations: "disabled",
   });
-  await page
-    .getByRole("link", { name: "03 Asteroid Watch", exact: true })
-    .click();
+  await page.getByRole("link", { name: "Asteroid Watch", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "Asteroid Watch" }),
   ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth >
+        document.documentElement.clientWidth,
+    ),
+  ).toBe(false);
+});
+
+test("guides a first visit through clear, accessible starting choices", async ({
+  page,
+}) => {
+  await mockApod(page);
+  await mockAsteroids(page);
+  await page.goto("/");
+
+  await expect(
+    page.getByRole("heading", { name: "Start with one clear path" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: /See what is passing Earth/ }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: /Follow a landmark mission/ }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: /Investigate a space question/ }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Know what the data labels mean" }),
+  ).toBeVisible();
+
+  await page.getByRole("button", { name: /Explore/ }).click();
+  const explore = page.getByRole("navigation", { name: "Primary" });
+  await expect(explore.getByText("Observe now")).toBeVisible();
+  await expect(explore.getByText("Explore NASA")).toBeVisible();
+  await expect(explore.getByText("Learn and compare")).toBeVisible();
+});
+
+test("keeps primary journey controls usable at a 320px zoom-equivalent width", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 700 });
+  await mockApod(page);
+  await mockAsteroids(page);
+  await page.goto("/");
+  const menu = page.getByRole("button", { name: "Toggle navigation" });
+  await expect(menu).toBeVisible();
+  const menuBox = await menu.boundingBox();
+  expect(menuBox?.width ?? 0).toBeGreaterThanOrEqual(44);
+  expect(menuBox?.height ?? 0).toBeGreaterThanOrEqual(44);
+  await menu.click();
+  await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible();
   expect(
     await page.evaluate(
       () =>

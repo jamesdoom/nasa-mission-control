@@ -43,7 +43,6 @@ html {
 }
 body {
   margin: 0;
-  min-width: 320px;
   min-height: 100vh;
   background:
     linear-gradient(rgba(3, 8, 18, 0.91), rgba(3, 8, 18, 0.97)),
@@ -194,22 +193,29 @@ a {
   z-index: 40;
   top: calc(100% + 1px);
   left: 50%;
-  width: 430px;
+  width: min(660px, calc(100vw - 2rem));
   padding: 0.75rem;
   transform: translateX(-50%);
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1px;
   border: 1px solid #26394d;
   background: rgba(5, 12, 22, 0.98);
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
 }
+.module-nav__group {
+  min-width: 0;
+  padding: 0.55rem;
+  border-right: 1px solid #26394d;
+}
+.module-nav__group:last-child {
+  border-right: 0;
+}
 .module-nav--open {
   display: grid;
 }
 .module-nav p {
-  grid-column: 1 / -1;
   margin: 0;
-  padding: 0.6rem 0.75rem 0.9rem;
+  padding: 0.5rem 0.55rem 0.7rem;
   color: #6e8398;
   font:
     0.57rem "Space Mono",
@@ -222,11 +228,169 @@ a {
   align-items: center;
   gap: 0.75rem;
   min-height: 48px;
-  padding: 0.7rem;
+  padding: 0.7rem 0.55rem;
   border: 1px solid transparent;
   color: #a2b4c5;
   text-decoration: none;
   font-size: 0.78rem;
+}
+
+.journey-start {
+  border-top: 1px solid var(--line);
+}
+.journey-start .section-heading > p {
+  max-width: 30ch;
+  color: #8196aa;
+}
+.journey-start__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+.journey-start__card {
+  display: flex;
+  min-height: 250px;
+  flex-direction: column;
+  padding: clamp(1.4rem, 3vw, 2.2rem);
+  background: #070f1b;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    background-color 180ms ease,
+    transform 180ms ease;
+}
+.journey-start__card:hover,
+.journey-start__card:focus-visible {
+  background: #0b1827;
+}
+.journey-start__card small {
+  color: var(--amber);
+  font:
+    0.62rem/1.5 "Space Mono",
+    monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.journey-start__card h3 {
+  margin: 1rem 0 0;
+  font-size: clamp(1.35rem, 2.5vw, 1.8rem);
+}
+.journey-start__card p {
+  color: #91a5b7;
+  line-height: 1.65;
+}
+.journey-start__card > span {
+  margin-top: auto;
+  color: var(--cyan);
+  font-size: 0.78rem;
+}
+.evidence-guide-wrap {
+  padding-top: 0;
+}
+.evidence-guide {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.75fr) minmax(0, 1.5fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  padding: clamp(1.3rem, 3vw, 2rem);
+  border: 1px solid var(--line);
+  background: rgba(6, 15, 26, 0.88);
+}
+.evidence-guide h2 {
+  margin: 0.4rem 0 0.7rem;
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+}
+.evidence-guide p,
+.evidence-guide dd {
+  color: #8fa4b7;
+  line-height: 1.55;
+}
+.evidence-guide dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  background: var(--line);
+}
+.evidence-guide dl > div {
+  padding: 1rem;
+  background: #081321;
+}
+.evidence-guide dt {
+  color: var(--cyan);
+  font:
+    0.68rem "Space Mono",
+    monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.evidence-guide dd {
+  margin: 0.45rem 0 0;
+  font-size: 0.82rem;
+}
+.filter-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+.filter-heading h2 {
+  margin: 0.3rem 0 0;
+  font-size: 1.35rem;
+}
+.filter-heading button {
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--cyan);
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+  cursor: pointer;
+}
+.discovery-jump {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.65fr) minmax(0, 1.35fr);
+  gap: 2rem;
+  padding-top: 1rem;
+  padding-bottom: 3rem;
+}
+.discovery-jump h2 {
+  margin: 0.4rem 0;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+}
+.discovery-jump p {
+  color: #8398ab;
+  line-height: 1.6;
+}
+.discovery-jump > div:last-child {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.discovery-jump a {
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  background: #081321;
+  color: #b8cad9;
+  text-decoration: none;
+}
+.discovery-jump a:hover,
+.discovery-jump a:focus-visible {
+  background: #0d1c2b;
+  color: #fff;
+}
+.empty-state__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
 }
 .module-nav a:hover,
 .module-nav a.active {
@@ -443,6 +607,7 @@ a {
 }
 .menu-button {
   display: none;
+  flex: 0 0 44px;
   background: none;
   border: 0;
   color: white;
@@ -718,6 +883,12 @@ p {
   }
   .field-console button {
     grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 360px) {
+  .command-trigger {
+    display: none;
   }
 }
 .hero-lede,
@@ -4966,11 +5137,25 @@ p {
     box-shadow: none;
     background: #091421;
   }
+  .module-nav__group {
+    padding: 0;
+    border-right: 0;
+    border-bottom: 1px solid #26394d;
+  }
+  .module-nav__group:last-child {
+    border-bottom: 0;
+  }
   .module-nav p {
-    display: none;
+    display: block;
+    padding: 0.8rem 1.5rem 0.35rem;
   }
   .module-nav a {
     padding-left: 1.5rem;
+  }
+  .journey-start__grid,
+  .evidence-guide,
+  .discovery-jump {
+    grid-template-columns: 1fr;
   }
   .section {
     padding-left: 1.15rem;
@@ -5227,6 +5412,56 @@ p {
   .recent-history li {
     grid-template-columns: 1fr;
     gap: 0.4rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .journey-start__card {
+    min-height: 210px;
+  }
+  .evidence-guide dl,
+  .discovery-jump > div:last-child {
+    grid-template-columns: 1fr;
+  }
+  .filter-heading {
+    align-items: flex-start;
+  }
+  .empty-state__actions,
+  .empty-state__actions .button {
+    width: 100%;
+  }
+}
+
+@media (pointer: coarse) {
+  button,
+  select,
+  input,
+  .nav a,
+  .text-link,
+  .discovery-jump a {
+    min-height: 44px;
+  }
+}
+
+@media (forced-colors: active) {
+  .button,
+  .journey-start__card,
+  .evidence-guide,
+  .module-nav,
+  .state-panel,
+  .mission-filters {
+    border: 1px solid CanvasText;
+  }
+  .status-dot,
+  .kicker > span {
+    background: CanvasText;
+    box-shadow: none;
+  }
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible {
+    outline: 3px solid Highlight;
   }
 }
 @media (max-width: 560px) {

@@ -60,6 +60,7 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Vercel Speed Insights for route-level Core Web Vitals plus CI-enforced compressed asset budgets
 - Shared Vercel CDN caching for successful public NASA responses, with live/archive freshness policies
 - Daily desktop/mobile production performance audits with downloadable evidence and stability budgets
+- Task-oriented first-visit routes, intent-grouped navigation, plain-language evidence onboarding, and documented privacy-conscious usability testing
 
 ## Planned modules
 
@@ -193,7 +194,7 @@ The production build generates an installable, versioned offline field console w
 
 Non-dashboard routes load as independent Vite chunks, so visitors do not download every instrument on first paint. With Speed Insights included, the primary production client chunk is approximately 342 kB (109 kB gzip), still below the approximately 389 kB (119 kB gzip) build measured before route splitting. DM Sans and Space Mono are self-hosted WOFF2 files, imagery is lazy-loaded where appropriate, and the global atmosphere uses responsive WebP sources.
 
-Vercel Speed Insights records production Core Web Vitals by route without adding general-purpose visitor analytics. CI also fails if the largest compressed JavaScript asset exceeds 120 kB, all compressed JavaScript exceeds 167 kB, compressed CSS exceeds 19.25 kB, or the ten optimized Mission Archive card images exceed 400 kB in aggregate. Run `npm run build && npm run performance:budget` to reproduce the asset evidence locally; see the [performance notes](docs/performance.md) for interpretation and the optimization workflow.
+Vercel Speed Insights records production Core Web Vitals by route without adding general-purpose visitor analytics. CI also fails if the largest compressed JavaScript asset exceeds 120 kB, all compressed JavaScript exceeds 168 kB, compressed CSS exceeds 20.5 kB, or the ten optimized Mission Archive card images exceed 400 kB in aggregate. Run `npm run build && npm run performance:budget` to reproduce the asset evidence locally; see the [performance notes](docs/performance.md) for interpretation and the optimization workflow.
 
 A separate daily GitHub workflow runs a warmed synthetic audit against the production dashboard, Mission Archive, and Guided Discovery at desktop and mobile sizes plus the About case study and an Artemis I mission record. It fails on navigation, same-origin console/resource, application page, horizontal-overflow, transfer-size, TTFB, FCP, heading-readiness, or CLS regressions. Third-party embed failures remain in the retained diagnostic evidence without being presented as application regressions. Run `npm run audit:production` for the same read-only check locally.
 
@@ -266,6 +267,7 @@ The monthly `Mission status review` workflow checks official source availability
 32. **Complete — Solar-system mission map phase 8:** added a keyboard-operable, non-WebGL destination plot connecting all archive missions to major milestones, URL-backed regional focus, explicit schematic caveats, a responsive structured text alternative, and reduced-motion compatibility.
 33. **Complete — Resilient field console phase 9:** added an installable manifest, build-derived versioned precache, network-first navigation fallback, explicit update-and-reload messaging, cached curated routes, and a strict exclusion preventing live `/api` telemetry from being cached.
 34. **Complete — Portfolio narrative release phase 10:** added a five-stop guided product tour, refreshed deterministic screenshots, accessible application and repository architecture diagrams, measured performance outcomes, scoped third-party audit diagnostics, and a polished release case study.
+35. **Complete — Experience refinement phase 1:** replaced the stale instrument roadmap with three task-oriented starting routes, grouped navigation by user intent, clarified live/latest/curated/calculated evidence, improved archive recovery and Flight Log onboarding, added 44-pixel touch targets, 320-pixel reflow and forced-colors support, and documented a privacy-conscious usability script with before/after evidence.
 
 ## Screenshots
 

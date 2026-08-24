@@ -4,19 +4,38 @@ import { MarkIcon, SearchIcon } from "./Icons";
 import { useNetworkStatus } from "../hooks/useNetworkStatus";
 import { FieldConsoleStatus } from "./FieldConsoleStatus";
 
-const moduleLinks = [
-  { to: "/search", label: "Discovery Index" },
-  { to: "/apod", label: "APOD" },
-  { to: "/asteroids", label: "Asteroid Watch" },
-  { to: "/media", label: "Media Library" },
-  { to: "/space-weather", label: "Space Weather" },
-  { to: "/earth", label: "Earth" },
-  { to: "/missions", label: "Missions" },
-  { to: "/missions/map", label: "Mission Map" },
-  { to: "/scale-lab", label: "Scale Lab" },
-  { to: "/trivia", label: "Trivia" },
-  { to: "/discover", label: "Discovery Paths" },
-];
+type ModuleLink = { to: string; label: string };
+type ModuleGroup = { label: string; links: readonly ModuleLink[] };
+
+const moduleGroups: readonly ModuleGroup[] = [
+  {
+    label: "Observe now",
+    links: [
+      { to: "/apod", label: "Daily image" },
+      { to: "/asteroids", label: "Asteroid Watch" },
+      { to: "/space-weather", label: "Space Weather" },
+      { to: "/earth", label: "Earth Observatory" },
+    ],
+  },
+  {
+    label: "Explore NASA",
+    links: [
+      { to: "/search", label: "Search everything" },
+      { to: "/media", label: "Media Library" },
+      { to: "/missions", label: "Mission Archive" },
+      { to: "/missions/map", label: "Mission Map" },
+    ],
+  },
+  {
+    label: "Learn and compare",
+    links: [
+      { to: "/discover", label: "Guided Discovery" },
+      { to: "/scale-lab", label: "Scale Lab" },
+      { to: "/trivia", label: "Space Trivia" },
+    ],
+  },
+] as const;
+const moduleLinks = moduleGroups.flatMap((group) => group.links);
 
 const routeTitles: Record<string, string> = {
   "/": "Dashboard",
@@ -174,20 +193,20 @@ export function AppShell() {
                 modulesOpen ? "module-nav module-nav--open" : "module-nav"
               }
             >
-              <p>Mission instruments</p>
-              {moduleLinks.map((link, index) => (
-                <NavLink
-                  key={link.to}
-                  to={link.to}
-                  end={
-                    link.to === "/missions" &&
-                    location.pathname === "/missions/map"
-                  }
-                  onClick={() => setModulesOpen(false)}
-                >
-                  <span>0{index + 1}</span>
-                  {link.label}
-                </NavLink>
+              {moduleGroups.map((group) => (
+                <div className="module-nav__group" key={group.label}>
+                  <p>{group.label}</p>
+                  {group.links.map((link) => (
+                    <NavLink
+                      key={link.to}
+                      to={link.to}
+                      end={link.to === "/missions"}
+                      onClick={() => setModulesOpen(false)}
+                    >
+                      {link.label}
+                    </NavLink>
+                  ))}
+                </div>
               ))}
             </div>
           </div>

@@ -16,6 +16,7 @@ import { MissionComparePage } from "../pages/MissionComparePage";
 import { ScaleLabPage } from "../pages/ScaleLabPage";
 import { EarthImageViewer } from "./EarthImageViewer";
 import { ProvenancePanel } from "./ProvenancePanel";
+import { EvidenceGuide } from "./EvidenceGuide";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SearchPage } from "../pages/SearchPage";
 import { MissionMapPage } from "../pages/MissionMapPage";
@@ -246,6 +247,16 @@ describe("automated accessibility", () => {
           summary="Source review 2026-08-01"
           details={["This record links to official NASA sources."]}
         />
+      </main>,
+    );
+    const results = await axe(container, jsdomAxeOptions);
+    expect(results.violations).toEqual([]);
+  });
+
+  it("finds no detectable violations in the evidence label onboarding", async () => {
+    const { container } = render(
+      <main>
+        <EvidenceGuide />
       </main>,
     );
     const results = await axe(container, jsdomAxeOptions);

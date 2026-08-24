@@ -301,11 +301,17 @@ export function FavoritesPage() {
           <h2>No discoveries logged yet</h2>
           <p>
             Save an observation, tracked object, mission, or NASA media asset
-            and it will appear here.
+            with its heart or save control. Your first record will appear here
+            and remain only on this device.
           </p>
-          <Link className="button" to="/apod">
-            Explore the archive
-          </Link>
+          <div className="empty-state__actions">
+            <Link className="button" to="/apod">
+              Save today’s image
+            </Link>
+            <Link className="button button--secondary" to="/missions">
+              Browse missions
+            </Link>
+          </div>
         </div>
       ) : null}
       {!isEmpty && visibleSavedCount === 0 && (

@@ -82,6 +82,14 @@ export function MissionsPage() {
     setParams(next);
   }
 
+  function clearFilters() {
+    const next = new URLSearchParams(params);
+    next.delete("destination");
+    next.delete("vehicle");
+    next.delete("status");
+    setParams(next);
+  }
+
   return (
     <>
       <section className="section missions-intro">
@@ -155,6 +163,17 @@ export function MissionsPage() {
         </div>
       </section>
       <section className="section mission-filter-section">
+        <div className="filter-heading">
+          <div>
+            <p className="eyebrow">Optional filters</p>
+            <h2>Refine the archive</h2>
+          </div>
+          {destination !== "all" || vehicle !== "all" || status !== "all" ? (
+            <button type="button" onClick={clearFilters}>
+              Clear filters
+            </button>
+          ) : null}
+        </div>
         <div className="mission-filters" aria-label="Mission filters">
           <label>
             Destination
@@ -256,8 +275,17 @@ export function MissionsPage() {
           <div className="state-panel">
             <div>
               <strong>No missions match this telemetry profile</strong>
-              <p>Adjust one or more archive filters.</p>
+              <p>
+                Clear the filters to return to all ten source-checked missions.
+              </p>
             </div>
+            <button
+              className="button button--secondary"
+              type="button"
+              onClick={clearFilters}
+            >
+              Show all missions
+            </button>
           </div>
         ) : (
           <div className="mission-grid">

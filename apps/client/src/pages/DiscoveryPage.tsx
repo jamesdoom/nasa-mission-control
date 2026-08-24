@@ -45,6 +45,26 @@ export function DiscoveryPage() {
           ]}
         />
       </section>
+      <nav
+        className="section discovery-jump"
+        aria-label="Choose a discovery path"
+      >
+        <div>
+          <p className="eyebrow">Choose by question</p>
+          <h2>Where would you like to begin?</h2>
+          <p>
+            Each path gives you the steps in order. You can leave and resume at
+            any time.
+          </p>
+        </div>
+        <div>
+          {discoveryJourneys.map((journey) => (
+            <a href={`#${journey.id}`} key={journey.id}>
+              {journey.title}
+            </a>
+          ))}
+        </div>
+      </nav>
       <section
         className="section discovery-grid"
         aria-label="Guided discovery paths"
