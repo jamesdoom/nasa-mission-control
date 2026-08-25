@@ -20,6 +20,11 @@ describe("LearningCenterPage", () => {
     })[0];
     if (!firstStep) throw new Error("Expected a learning step checkbox.");
     await userEvent.click(firstStep);
+    for (const step of screen
+      .getAllByRole("checkbox", { name: "Mark step complete" })
+      .slice(1)) {
+      await userEvent.click(step);
+    }
     await userEvent.click(
       screen.getByRole("radio", {
         name: "The environment may once have been habitable",
@@ -45,5 +50,16 @@ describe("LearningCenterPage", () => {
       "href",
       "https://science.nasa.gov/mission/msl-curiosity/",
     );
+    expect(
+      screen.getByRole("heading", { name: "Track complete" }),
+    ).toBeVisible();
+    expect(screen.getByText("4 of 4")).toBeVisible();
+    expect(screen.getByText("Saved locally")).toBeVisible();
+    expect(
+      screen.getByText(/not a credential or a claim of scientific mastery/i),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("heading", { name: "Learner evidence sheet" }),
+    ).toBeVisible();
   });
 });

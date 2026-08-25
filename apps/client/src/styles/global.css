@@ -7097,6 +7097,49 @@ p {
 .completion-summary {
   background: color-mix(in srgb, var(--cyan) 7%, transparent);
 }
+.completion-summary__evidence {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-block: 1rem;
+}
+.completion-summary__evidence > div {
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+}
+.completion-summary__evidence dt {
+  font-weight: 700;
+}
+.completion-summary__limit {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.educator-guide__worksheet {
+  margin-block: 1.5rem;
+  padding: 1rem;
+  border: 1px dashed var(--line);
+}
+.educator-guide__worksheet p > span,
+.educator-guide__worksheet li > span,
+.worksheet-lines {
+  display: block;
+  min-height: 2.5rem;
+  margin-top: 0.5rem;
+  border-bottom: 1px solid var(--line);
+}
+.educator-guide__worksheet li {
+  margin-block: 1rem;
+}
+.worksheet-lines {
+  min-height: 6rem;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 1.45rem,
+    var(--line) 1.5rem
+  );
+  border: 0;
+}
 .educator-guide dl {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -7119,7 +7162,8 @@ p {
     grid-column: auto;
   }
   .learning-sequence,
-  .educator-guide dl {
+  .educator-guide dl,
+  .completion-summary__evidence {
     grid-template-columns: 1fr;
   }
 }
@@ -7152,6 +7196,19 @@ p {
   }
   .learning-sequence {
     grid-template-columns: 1fr 1fr;
+  }
+  .completion-summary__evidence,
+  .educator-guide dl {
+    grid-template-columns: 1fr 1fr;
+  }
+  .learning-sequence li,
+  .completion-summary__evidence > div,
+  .educator-guide dl > div,
+  .educator-guide__worksheet li {
+    break-inside: avoid;
+  }
+  .educator-guide__worksheet {
+    border-color: #555 !important;
   }
   a {
     color: #000 !important;

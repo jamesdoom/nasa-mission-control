@@ -445,6 +445,51 @@ test("keeps primary journey controls usable at a 320px zoom-equivalent width", a
   ).toBe(false);
 });
 
+test("keeps a learning session operable with keyboard and accessibility preferences", async ({
+  page,
+}) => {
+  await page.emulateMedia({
+    reducedMotion: "reduce",
+    forcedColors: "active",
+  });
+  await page.setViewportSize({ width: 320, height: 700 });
+  await page.goto("/learn?track=mars-evidence");
+
+  const firstStep = page
+    .getByRole("checkbox", {
+      name: "Mark step complete",
+    })
+    .first();
+  await firstStep.focus();
+  await page.keyboard.press("Space");
+  await expect(firstStep).toBeChecked();
+
+  const firstAnswer = page.getByRole("radio").first();
+  await firstAnswer.focus();
+  await page.keyboard.press("ArrowDown");
+  await expect(
+    page.getByRole("radio", {
+      name: "The environment may once have been habitable",
+    }),
+  ).toBeChecked();
+  await page.getByRole("button", { name: "Check answer" }).focus();
+  await page.keyboard.press("Enter");
+  await expect(page.getByText("Correct.")).toBeVisible();
+  expect(
+    await page.evaluate(
+      () =>
+        document.documentElement.scrollWidth >
+        document.documentElement.clientWidth,
+    ),
+  ).toBe(false);
+
+  await page.emulateMedia({ media: "print" });
+  await expect(
+    page.getByRole("heading", { name: "Learner evidence sheet" }),
+  ).toBeVisible();
+  await expect(page.locator(".site-header")).toBeHidden();
+});
+
 test("explores, sorts, opens, and saves an asteroid encounter", async ({
   page,
 }) => {

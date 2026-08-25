@@ -250,6 +250,30 @@ export function LearningCenterPage() {
               ? `You completed all resources, passed the knowledge check, and recorded a reflection for “${track.title}.”`
               : `${String(record.completedSteps.length)} of ${String(track.steps.length)} resources complete · knowledge check ${record.checkPassed ? "passed" : "pending"} · reflection ${record.reflection ? "saved" : "pending"}.`}
           </p>
+          <dl className="completion-summary__evidence">
+            <div>
+              <dt>Learning objective</dt>
+              <dd>{track.objective}</dd>
+            </div>
+            <div>
+              <dt>Resources reviewed</dt>
+              <dd>
+                {record.completedSteps.length} of {track.steps.length}
+              </dd>
+            </div>
+            <div>
+              <dt>Knowledge check</dt>
+              <dd>{record.checkPassed ? "Passed" : "Not yet passed"}</dd>
+            </div>
+            <div>
+              <dt>Evidence reflection</dt>
+              <dd>{record.reflection ? "Saved locally" : "Not yet saved"}</dd>
+            </div>
+          </dl>
+          <p className="completion-summary__limit">
+            Completion records participation in this guided activity. It is not
+            a credential or a claim of scientific mastery.
+          </p>
         </section>
         <section
           className="educator-guide"
@@ -297,6 +321,33 @@ export function LearningCenterPage() {
               <dd>Respond to the prompt using at least two sources.</dd>
             </div>
           </dl>
+          <section
+            className="educator-guide__worksheet"
+            aria-labelledby="worksheet-title"
+          >
+            <h4 id="worksheet-title">Learner evidence sheet</h4>
+            <p>
+              Participant code (no name): <span aria-hidden="true" />
+            </p>
+            <p>
+              Session date: <span aria-hidden="true" />
+            </p>
+            <ol>
+              {track.steps.map((step) => (
+                <li key={step.id}>
+                  <strong>{step.title}:</strong> Record one observation and the
+                  evidence that supports it.
+                  <span aria-hidden="true" />
+                </li>
+              ))}
+            </ol>
+            <h4>Repeat-session retrieval</h4>
+            <p>
+              Before reopening the resources, explain the objective in your own
+              words and identify one claim you can support with evidence.
+            </p>
+            <span className="worksheet-lines" aria-hidden="true" />
+          </section>
           <h4>Official sources</h4>
           <ul>
             {track.sources.map((source) => (
