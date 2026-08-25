@@ -1,5 +1,7 @@
 # Evidence-driven improvement backlog
 
+The content-improvement Phase 1 baseline is recorded in [content-inventory-phase-1.md](content-inventory-phase-1.md). Its highest-priority editorial action is deeper trivia coverage within the existing channels; product categories and features remain unchanged.
+
 Reviewed 2026-08-25. Scores follow `continuous-improvement.md`; they are starting hypotheses for the first post-launch monthly review, not promises.
 
 | Priority | Candidate                                    | Production or usability evidence                                                                                             | Score | Owner                         | Next measurable action                                                                                                  |

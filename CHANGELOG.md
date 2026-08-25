@@ -6,6 +6,9 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Added
 
+- Phase 1 content inventory and quality baseline covering every existing editorial area, ownership, risk priority, review status, dated-source standards, and evidence vocabulary.
+- A release-gated content inventory check and an expanded monthly editorial review prompt.
+
 - Add sanitized DONKI, EPIC, and NASA Media contract fixtures with actionable required-field schema-drift mutations for every NASA upstream.
 - Add daily, privacy-conscious reliability evidence with rolling 30-day route, cache, stale fallback, validation, upstream-category, and latency summaries.
 - Add a de-identified repeat-session learning and accessibility research protocol, measurable comprehension rubric, and assistive-technology session matrix.

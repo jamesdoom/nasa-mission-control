@@ -64,6 +64,7 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Three shareable scientific story collections connecting evidence-labeled chapters, concise chronologies, bounded claims, and current official NASA sources
 - Local-first notes, tags, custom collections, saved filter views, comparison bookmarks, and preview-first backup merge controls
 - Public service limitations, privacy notice, accessibility status, production architecture, and operations runbook
+- A ranked content inventory, accountable editorial ownership, review status, and shared standards for sourcing, dates, terminology, accessibility, and evidence labels
 
 ## Planned modules
 
@@ -71,11 +72,11 @@ Optional account synchronization, an externally paged log/trace drain, and addit
 
 ## Stack
 
-React, Vite, strict TypeScript, React Router, TanStack Query, Node.js, Express, Helmet, Zod, CSS, npm workspaces, Vitest, React Testing Library, axe-core, Playwright, ESLint, and Prettier.
+React, Vite, strict TypeScript, React Router, a bounded product-specific query cache, Node.js, Express, Helmet, Zod, CSS, npm workspaces, Vitest, React Testing Library, axe-core, Playwright, ESLint, and Prettier.
 
 ## Local setup
 
-Requirements: Node.js 20.19+ and npm 10+.
+Requirements: Node.js 22 and npm 10+.
 
 ```bash
 npm install
@@ -114,6 +115,7 @@ npm run audit:production
 npm run smoke:production
 npm run smoke:journeys
 npm run review:missions
+npm run review:content
 npm run build
 npm run format:check
 ```
@@ -293,6 +295,7 @@ The monthly `Mission status review` workflow checks official source availability
 46. **Complete — Data contracts and reliability evidence phase 3:** added sanitized DONKI, EPIC, and NASA Media fixtures; required-field mutation coverage for every NASA upstream; actionable schema-drift evidence; and private daily artifacts with rolling 30-day cache, stale, validation, failure, and latency trends.
 47. **Complete — Learning outcomes and accessibility phase 4:** added de-identified repeat-session and first-visit protocols, a comprehension rubric, an assistive-technology session matrix, learning-specific keyboard/contrast/motion/reflow checks, improved completion and print evidence, and documented maintainer acceptance. No learning-effectiveness claim is made without a larger measured sample.
 48. **Complete — Performance and continuous improvement phase 5:** recovered 10.3 kB of total JavaScript gzip, tightened budgets to retain 5.6 kB headroom, added rolling route and asset evidence, completed the first owned five-domain review, refreshed operating disclosures, re-scored the backlog, and published an evidence-driven next roadmap.
+49. **Complete — Content inventory and quality baseline phase 1:** inventoried and ranked every existing editorial area, assigned accountable owners and review states, documented freshness and citation gaps, standardized evidence terminology and dated source review, corrected stale setup copy, and added release-gated inventory drift detection.
 
 ## Screenshots
 
