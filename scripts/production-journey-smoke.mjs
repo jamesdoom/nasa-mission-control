@@ -9,6 +9,7 @@ const baseUrl = new URL(
 const outputPath = path.resolve(
   process.env.JOURNEY_REPORT ?? "artifacts/production-journeys.json",
 );
+const diagnosticDirectory = path.dirname(outputPath);
 if (baseUrl.protocol !== "https:")
   throw new Error("Production journey checks require HTTPS.");
 
@@ -63,23 +64,64 @@ page.on("console", (message) => {
 
 async function step(name, action) {
   const startedAt = performance.now();
-  try {
-    await action();
-    steps.push({
-      name,
-      status: "ok",
-      durationMs: Math.round(performance.now() - startedAt),
-    });
-  } catch (error) {
-    const message =
-      error instanceof Error ? error.message.split("\n")[0] : "UnknownError";
-    failures.push(`${name}: ${message}`);
-    steps.push({
-      name,
-      status: "failed",
-      durationMs: Math.round(performance.now() - startedAt),
-      error: message,
-    });
+  const attempts = [];
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    const attemptStartedAt = performance.now();
+    try {
+      await action();
+      attempts.push({
+        attempt,
+        status: "ok",
+        durationMs: Math.round(performance.now() - attemptStartedAt),
+      });
+      steps.push({
+        name,
+        status: "ok",
+        durationMs: Math.round(performance.now() - startedAt),
+        attempts,
+      });
+      return;
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message.split("\n").slice(0, 4).join(" | ")
+          : "UnknownError";
+      attempts.push({
+        attempt,
+        status: "failed",
+        durationMs: Math.round(performance.now() - attemptStartedAt),
+        error: message,
+        url: page.url(),
+      });
+      if (attempt === 1) continue;
+
+      await mkdir(diagnosticDirectory, { recursive: true });
+      const screenshot = path.join(
+        diagnosticDirectory,
+        `production-journey-${name}.png`,
+      );
+      let screenshotName = null;
+      let screenshotError = null;
+      try {
+        await page.screenshot({ path: screenshot, fullPage: true });
+        screenshotName = path.basename(screenshot);
+      } catch (error) {
+        screenshotError =
+          error instanceof Error
+            ? error.message.split("\n")[0]
+            : "UnknownError";
+      }
+      failures.push(`${name}: ${message}`);
+      steps.push({
+        name,
+        status: "failed",
+        durationMs: Math.round(performance.now() - startedAt),
+        error: message,
+        screenshot: screenshotName,
+        screenshotError,
+        attempts,
+      });
+    }
   }
 }
 
@@ -99,9 +141,16 @@ await step("curated-mission-route", async () => {
 await step("flight-log-local-continuity", async () => {
   await page.goto(new URL("/favorites", baseUrl).href, {
     waitUntil: "domcontentloaded",
+    timeout: 15_000,
   });
-  await page.getByRole("heading", { name: "Apollo 11" }).waitFor();
-  await page.getByText("Edit personal details", { exact: true }).click();
+  const missionRecord = page.locator(".flight-log-saved-card").filter({
+    has: page.getByRole("heading", { name: "Apollo 11" }),
+  });
+  await missionRecord.waitFor({ timeout: 10_000 });
+  await missionRecord
+    .locator("summary")
+    .filter({ hasText: /^Edit personal details$/ })
+    .click({ timeout: 10_000 });
   await page
     .locator(".record-personalization__summary p")
     .filter({ hasText: "Release continuity check" })
@@ -144,7 +193,7 @@ const report = {
   steps,
   failures,
 };
-await mkdir(path.dirname(outputPath), { recursive: true });
+await mkdir(diagnosticDirectory, { recursive: true });
 await writeFile(outputPath, `${JSON.stringify(report, null, 2)}\n`, "utf8");
 console.log(JSON.stringify(report));
 if (report.status !== "ok") process.exitCode = 1;

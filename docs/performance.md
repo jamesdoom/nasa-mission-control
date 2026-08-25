@@ -66,6 +66,13 @@ check observed health at 989 ms, archive APOD at 698 ms, media search at 1,000
 ms, and cached SPA rewrites at 35–45 ms. These are one synthetic run retained as
 release evidence, not an uptime or visitor-performance guarantee.
 
+The Phase 2 operational audit on 2026-08-25 again passed all eight scenarios,
+with TTFB from 7.2 to 33.3 ms, FCP from 60 to 276 ms, zero CLS, and transfers
+below 1 MB. Its companion Flight Log journey had one transient click timeout
+that passed immediately when reproduced. Production journey checks now retain
+per-attempt timing and URL evidence, retry once, and capture a screenshot only
+after the second failure; see [operational-evidence-phase-2.md](operational-evidence-phase-2.md).
+
 ## Optimization workflow
 
 1. Identify the affected route and metric in Speed Insights.

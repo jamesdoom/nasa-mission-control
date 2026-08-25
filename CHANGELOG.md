@@ -7,6 +7,7 @@ All notable changes are documented here. This project follows [Semantic Versioni
 ### Fixed
 
 - Prevent automated TypeScript major upgrades from being grouped with tooling that does not yet support them, and pin deployment builds to Node.js 22.
+- Reduce transient production-journey alerts with bounded retries, scoped semantic locators, per-attempt diagnostics, and screenshots after repeated failures.
 
 ### Planned
 

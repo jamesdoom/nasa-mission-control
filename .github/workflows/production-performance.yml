@@ -40,5 +40,6 @@ jobs:
           path: |
             artifacts/production-performance.json
             artifacts/production-journeys.json
+            artifacts/production-journey-*.png
           if-no-files-found: error
           retention-days: 30
