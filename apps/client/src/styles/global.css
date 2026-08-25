@@ -1458,6 +1458,18 @@ p {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+.explanation--expanded {
+  display: block;
+  overflow: visible;
+}
+.explanation-toggle {
+  margin-top: 0.75rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
 .apod-copy .text-link {
   margin-top: 1rem;
 }

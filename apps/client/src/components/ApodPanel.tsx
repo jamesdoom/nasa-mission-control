@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import type { Apod } from "@mission-control/shared";
 import { HeartIcon } from "./Icons";
 import { ApodMedia } from "./ApodMedia";
@@ -13,6 +14,11 @@ export function ApodPanel({
   onToggle: () => void;
   compact?: boolean;
 }) {
+  const [explanationExpanded, setExplanationExpanded] = useState(false);
+  const explanationId = `apod-explanation-${apod.date}`;
+
+  useEffect(() => setExplanationExpanded(false), [apod.date]);
+
   return (
     <article
       className={compact ? "apod-panel apod-panel--compact" : "apod-panel"}
@@ -40,7 +46,25 @@ export function ApodPanel({
         </div>
         <h2>{apod.title}</h2>
         {apod.copyright && <p className="credit">Credit: {apod.copyright}</p>}
-        <p className="explanation">{apod.explanation}</p>
+        <p
+          className={
+            explanationExpanded
+              ? "explanation explanation--expanded"
+              : "explanation"
+          }
+          id={explanationId}
+        >
+          {apod.explanation}
+        </p>
+        <button
+          className="text-link explanation-toggle"
+          type="button"
+          aria-controls={explanationId}
+          aria-expanded={explanationExpanded}
+          onClick={() => setExplanationExpanded((expanded) => !expanded)}
+        >
+          {explanationExpanded ? "Show less" : "Continue reading"}
+        </button>
         {apod.hdUrl && (
           <a
             className="text-link"
