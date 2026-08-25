@@ -6,6 +6,8 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Added
 
+- Expand Space Trivia from 12 to 64 reviewed questions while retaining the existing four channels and three difficulty levels.
+- Add visible source-review dates and integrity coverage for duplicate prompts, answer-position bias, readability, stable wording, category balance, and official NASA citations.
 - Phase 1 content inventory and quality baseline covering every existing editorial area, ownership, risk priority, review status, dated-source standards, and evidence vocabulary.
 - A release-gated content inventory check and an expanded monthly editorial review prompt.
 

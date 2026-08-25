@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { triviaQuestions, type TriviaDifficulty } from "../data/trivia";
+import {
+  loadTriviaQuestions,
+  resetTriviaCache,
+  triviaQuestionCount,
+  type TriviaDifficulty,
+  type TriviaQuestion,
+} from "../data/trivia";
 import { ProvenancePanel } from "../components/ProvenancePanel";
 
 const difficulties: TriviaDifficulty[] = ["cadet", "specialist", "commander"];
@@ -42,7 +48,10 @@ export function TriviaPage() {
   const [params, setParams] = useSearchParams();
   const difficulty = difficultyFrom(params.get("difficulty"));
   const category = categoryFrom(params.get("category"));
-  const questions = triviaQuestions.filter(
+  const [questionBank, setQuestionBank] = useState<TriviaQuestion[]>([]);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [loadAttempt, setLoadAttempt] = useState(0);
+  const questions = questionBank.filter(
     (question) =>
       question.difficulty === difficulty &&
       (category === "all" || question.category === category),
@@ -54,6 +63,22 @@ export function TriviaPage() {
   const [bestStreak, setBestStreak] = useState(readBestStreak);
   const [complete, setComplete] = useState(false);
   const question = questions[index];
+
+  useEffect(() => {
+    let active = true;
+    setLoadError(null);
+    void loadTriviaQuestions()
+      .then((loaded) => {
+        if (active) setQuestionBank(loaded);
+      })
+      .catch(() => {
+        if (active)
+          setLoadError("The curated question bank could not be loaded.");
+      });
+    return () => {
+      active = false;
+    };
+  }, [loadAttempt]);
 
   useEffect(() => {
     setIndex(0);
@@ -132,7 +157,7 @@ export function TriviaPage() {
         <ProvenancePanel
           kind="curated"
           title="Source-checked educational question bank"
-          summary={`${String(triviaQuestions.length)} locally maintained questions`}
+          summary={`${String(triviaQuestionCount)} locally maintained questions`}
           details={[
             "Questions, choices, and explanations are curated content rather than live NASA data.",
             "Every answer reveals the official NASA source used for verification.",
@@ -189,7 +214,32 @@ export function TriviaPage() {
         </div>
       </section>
       <section className="section trivia-stage" aria-live="polite">
-        {complete ? (
+        {loadError ? (
+          <div className="state-panel state-panel--error" role="alert">
+            <div>
+              <strong>Question bank unavailable</strong>
+              <p>{loadError}</p>
+            </div>
+            <button
+              className="button button--secondary"
+              type="button"
+              onClick={() => {
+                resetTriviaCache();
+                setLoadAttempt((value) => value + 1);
+              }}
+            >
+              Retry loading questions
+            </button>
+          </div>
+        ) : questionBank.length === 0 ? (
+          <div className="state-panel" role="status">
+            <span className="loader" />
+            <div>
+              <strong>Loading curated question bank</strong>
+              <p>Checking the locally maintained content record…</p>
+            </div>
+          </div>
+        ) : complete ? (
           <div className="trivia-complete">
             <p className="eyebrow">Simulation complete</p>
             <span>
@@ -251,6 +301,7 @@ export function TriviaPage() {
                 <a href={question.source.url} target="_blank" rel="noreferrer">
                   Verify with {question.source.label} ↗
                 </a>
+                <small>Source reviewed {question.verifiedAt}</small>
                 <button className="button" type="button" onClick={next}>
                   {index === questions.length - 1
                     ? "Complete simulation"

@@ -28,6 +28,8 @@ The limits leave a small, deliberate margin above verified builds. Phase 5 raise
 
 Continuous improvement phase 5 replaced the general-purpose client query dependency with a bounded 100-entry cache tailored to the product's actual fetch state, retry, refetch, placeholder, timestamp, and freshness needs. Total JavaScript fell from 188.7 to 178.4 kB gzip and the entry chunk fell from 110.3 to 100.0 kB, recovering 10.3 kB total. The budgets were tightened to 184 kB total and 110 kB largest, preserving at least 5 kB measured headroom rather than treating the reduction as permission for immediate growth.
 
+Content improvement phase 2 expanded the trivia bank from 12 to 64 records while moving curated question data into a runtime-validated, offline-precached static JSON asset. The verified build measures 177.3 kB total JavaScript gzip, leaving 6.7 kB below the existing aggregate budget; richer editorial content therefore does not consume the protected JavaScript margin.
+
 ## Interpret real-user results
 
 Use the Vercel project’s Speed Insights view after production has received enough traffic. Evaluate routes independently and use the standard “good” thresholds as goals:

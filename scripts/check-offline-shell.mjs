@@ -27,6 +27,9 @@ if (!serviceWorker.includes('url.pathname.startsWith("/api/")')) {
     "Service worker must exclude live API requests from caching.",
   );
 }
+if (!serviceWorker.includes('"/content/trivia.json"')) {
+  throw new Error("Offline shell must precache the curated trivia bank.");
+}
 if (
   !indexHtml.includes('rel="manifest"') ||
   manifest.display !== "standalone"
@@ -39,6 +42,7 @@ console.log(
     status: "ok",
     precachedBuildAssets: requiredAssets.length,
     apiCaching: "excluded",
+    curatedTrivia: "precached",
     display: manifest.display,
   }),
 );

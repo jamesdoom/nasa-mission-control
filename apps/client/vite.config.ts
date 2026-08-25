@@ -17,6 +17,7 @@ function fieldConsolePlugin(): Plugin {
         "/index.html",
         "/favicon.svg",
         "/manifest.webmanifest",
+        "/content/trivia.json",
         "/assets/fonts/dm-sans-latin.woff2",
         "/assets/fonts/space-mono-bold-latin.woff2",
         "/assets/fonts/space-mono-regular-latin.woff2",

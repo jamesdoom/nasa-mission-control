@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 
 const files = {
   missions: "apps/client/src/data/missions.ts",
-  trivia: "apps/client/src/data/trivia.ts",
+  trivia: "apps/client/public/content/trivia.json",
   stories: "apps/client/src/data/storyCollections.ts",
   learning: "apps/client/src/data/learningTracks.ts",
   journeys: "apps/client/src/data/journeys.ts",
@@ -24,7 +24,7 @@ const countRecords = (source, key) =>
 
 const counts = {
   missions: countRecords(contents.missions, "slug"),
-  trivia: countRecords(contents.trivia, "id"),
+  trivia: JSON.parse(contents.trivia).length,
   stories: countRecords(contents.stories, "id"),
   learning: countRecords(contents.learning, "id"),
   journeys: countRecords(contents.journeys, "id"),
@@ -33,7 +33,7 @@ const counts = {
 
 const expectedCounts = {
   missions: 10,
-  trivia: 12,
+  trivia: 64,
   stories: 3,
   learning: 3,
   journeys: 9,
