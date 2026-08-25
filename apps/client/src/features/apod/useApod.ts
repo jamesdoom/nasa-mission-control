@@ -1,7 +1,7 @@
-import { useQueries, useQuery } from "@tanstack/react-query";
+import { useApiQuery } from "../../hooks/useApiQuery";
 import { getApod } from "../../api/apod";
 export function useApod(date?: string) {
-  return useQuery({
+  return useApiQuery({
     queryKey: ["apod", date ?? "today"],
     queryFn: () => getApod(date),
     staleTime: 5 * 60 * 1000,
@@ -16,18 +16,11 @@ export function useApodHistory(endDate: string, days = 7, enabled = true) {
     date.setUTCDate(end.getUTCDate() - (days - index - 1));
     return date.toISOString().slice(0, 10);
   });
-  return useQueries({
-    queries: dates.map((date) => ({
-      queryKey: ["apod", date],
-      queryFn: () => getApod(date),
-      staleTime: 24 * 60 * 60 * 1000,
-      retry: 1,
-      enabled,
-    })),
-    combine: (results) => ({
-      data: results.flatMap((result) => (result.data ? [result.data] : [])),
-      isPending: results.some((result) => result.isPending),
-      isError: results.some((result) => result.isError),
-    }),
+  return useApiQuery({
+    queryKey: ["apod-history", ...dates],
+    queryFn: () => Promise.all(dates.map((date) => getApod(date))),
+    staleTime: 24 * 60 * 60 * 1000,
+    retry: 1,
+    enabled,
   });
 }

@@ -1,5 +1,7 @@
 # Accessibility status
 
+Reviewed 2026-08-25.
+
 NASA Mission Control targets WCAG 2.2 AA patterns but does not claim third-party
 certification or universal conformance.
 

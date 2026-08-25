@@ -26,7 +26,7 @@ The `Monthly product review` workflow opens one issue on the third day of each m
 | Content accuracy | Mission review artifact, source changes, learning claims                                      | Content reviewer (maintainer until delegated) | Corrected facts, review dates, or explicit no-change record |
 | User feedback    | Structured issues and usability-session notes                                                 | Product owner (repository owner)              | Themes, rejected assumptions, prioritized candidates        |
 
-Update `public-status.md`, limitations, privacy, and accessibility status whenever the evidence changes their claims. Close the review issue only after updating `improvement-backlog.md` or recording that evidence did not justify reprioritization.
+Update `public-status.md`, limitations, privacy, accessibility status, and the changelog whenever the evidence changes their claims. Close the review issue only after updating `improvement-backlog.md` or recording that evidence did not justify reprioritization. Every stable or release-candidate release repeats the backlog scoring and links the applicable monthly review.
 
 ## Structured usability session
 

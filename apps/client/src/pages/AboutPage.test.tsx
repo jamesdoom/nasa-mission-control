@@ -1,4 +1,3 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -10,26 +9,23 @@ describe("AboutPage", () => {
   afterEach(() => vi.unstubAllGlobals());
 
   it("presents project evidence and a refreshable API status", async () => {
-    const fetchMock = vi.fn().mockResolvedValue(
-      new Response(
-        JSON.stringify({
-          status: "ok",
-          service: "mission-control-api",
-          checkedAt: "2026-08-19T14:00:00.000Z",
-        }),
-        { status: 200, headers: { "content-type": "application/json" } },
+    const fetchMock = vi.fn().mockImplementation(() =>
+      Promise.resolve(
+        new Response(
+          JSON.stringify({
+            status: "ok",
+            service: "mission-control-api",
+            checkedAt: "2026-08-19T14:00:00.000Z",
+          }),
+          { status: 200, headers: { "content-type": "application/json" } },
+        ),
       ),
     );
     vi.stubGlobal("fetch", fetchMock);
-    const queryClient = new QueryClient({
-      defaultOptions: { queries: { retry: false } },
-    });
     const { container } = render(
-      <QueryClientProvider client={queryClient}>
-        <MemoryRouter>
-          <AboutPage />
-        </MemoryRouter>
-      </QueryClientProvider>,
+      <MemoryRouter>
+        <AboutPage />
+      </MemoryRouter>,
     );
     expect(
       await screen.findByRole("heading", {
@@ -65,6 +61,7 @@ describe("AboutPage", () => {
       "href",
       expect.stringContaining("template=accessibility.yml"),
     );
+    expect(fetchMock).toHaveBeenCalledTimes(1);
     await userEvent.click(
       screen.getByRole("button", { name: "Run status check" }),
     );

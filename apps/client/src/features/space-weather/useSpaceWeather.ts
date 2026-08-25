@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useApiQuery } from "../../hooks/useApiQuery";
 import type { SpaceWeatherCategory } from "@mission-control/shared";
 import { getSpaceWeather } from "../../api/space-weather";
 
@@ -7,9 +7,9 @@ export function useSpaceWeather(
   endDate: string,
   category: SpaceWeatherCategory | "all",
 ) {
-  return useQuery({
+  return useApiQuery({
     queryKey: ["space-weather", startDate, endDate, category],
     queryFn: () => getSpaceWeather(startDate, endDate, category),
-    placeholderData: (previous) => previous,
+    placeholderData: true,
   });
 }

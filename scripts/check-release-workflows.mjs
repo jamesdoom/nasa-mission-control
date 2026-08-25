@@ -74,6 +74,11 @@ const requirements = [
     files.trends,
     "name: reliability-history",
   ],
+  [
+    "performance restores asset trends",
+    await readFile(".github/workflows/production-performance.yml", "utf8"),
+    "asset-budget-trend.json",
+  ],
 ];
 
 const failures = requirements

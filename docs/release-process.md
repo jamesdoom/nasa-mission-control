@@ -21,13 +21,13 @@ Vercel’s Git integration deploys branches and `main`. A GitHub release is a so
 
 ## Repeatable checklist
 
-1. Triage the monthly review and select issues with evidence, owner, and acceptance criteria.
+1. Triage the monthly review, re-score `improvement-backlog.md`, and select issues with evidence, owner, and acceptance criteria.
 2. Update all workspace versions and `package-lock.json`; move shipped entries from Unreleased into a dated changelog section.
 3. Run `npm run release:preflight`, then the remaining definition-of-done gates. The preflight performs a dry-run clean install, validates versions and workflow contracts, exercises degraded mode, reviews curated mission freshness, and verifies build, performance, and offline output.
 4. Push the reviewed commit and verify CI, preview smoke, critical journeys, accessibility, and production budgets.
 5. Optionally tag an exact release candidate, conduct the structured session in `continuous-improvement.md`, and fix findings through a new version.
 6. Create an annotated stable tag (`git tag -a vX.Y.Z -m "vX.Y.Z"`) on the approved commit and push that tag. The release workflow revalidates version, lockfile, changelog, tests, build, and budgets before publishing the GitHub release.
-7. Confirm the production deployment commit, run `npm run smoke:production`, scan runtime errors, and update `public-status.md` if capabilities or limitations changed.
+7. Confirm the production deployment commit, run `npm run smoke:production`, scan runtime errors, update `public-status.md` if capabilities or limitations changed, and record the release-driven backlog score.
 8. For a harmful release, follow the documented Vercel rollback and publish a corrective patch/changelog entry. Never move an existing public tag.
 
 The workflow grants write access only to release contents on tag runs. Deployment credentials are not stored or required by the release workflow. Configure `quality` and `Preview smoke / verify` as required checks in GitHub branch protection when the repository plan supports rulesets; the repository workflows cannot enforce their own required-check status.

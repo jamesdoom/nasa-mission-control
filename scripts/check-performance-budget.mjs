@@ -1,4 +1,4 @@
-import { readdir, readFile, stat } from "node:fs/promises";
+import { mkdir, readdir, readFile, stat, writeFile } from "node:fs/promises";
 import { gzipSync } from "node:zlib";
 import path from "node:path";
 
@@ -7,8 +7,8 @@ const missionCardDirectory = path.resolve(
   "apps/client/dist/assets/missions/cards",
 );
 const limits = {
-  largestJavaScriptGzip: 120 * 1024,
-  totalJavaScriptGzip: 191 * 1024,
+  largestJavaScriptGzip: 110 * 1024,
+  totalJavaScriptGzip: 184 * 1024,
   totalCssGzip: 23 * 1024,
   totalMissionCardImages: 400 * 1024,
 };
@@ -86,22 +86,73 @@ enforce(
   limits.totalMissionCardImages,
 );
 
-console.log(
-  JSON.stringify({
-    status: "ok",
-    assets: {
-      javascriptFiles: javascript.length,
-      largestJavaScriptGzipKb: kilobytes(largestJavaScript),
-      totalJavaScriptGzipKb: kilobytes(totalJavaScript),
-      totalCssGzipKb: kilobytes(totalCss),
-      missionCardImageFiles: missionCardImages.length,
-      totalMissionCardImagesKb: kilobytes(totalMissionCardImages),
+const result = {
+  status: "ok",
+  assets: {
+    javascriptFiles: javascript.length,
+    largestJavaScriptGzipKb: kilobytes(largestJavaScript),
+    totalJavaScriptGzipKb: kilobytes(totalJavaScript),
+    totalCssGzipKb: kilobytes(totalCss),
+    missionCardImageFiles: missionCardImages.length,
+    totalMissionCardImagesKb: kilobytes(totalMissionCardImages),
+  },
+  budgetsKb: {
+    largestJavaScriptGzip: kilobytes(limits.largestJavaScriptGzip),
+    totalJavaScriptGzip: kilobytes(limits.totalJavaScriptGzip),
+    totalCssGzip: kilobytes(limits.totalCssGzip),
+    totalMissionCardImages: kilobytes(limits.totalMissionCardImages),
+  },
+  headroomKb: {
+    largestJavaScriptGzip: kilobytes(
+      limits.largestJavaScriptGzip - largestJavaScript,
+    ),
+    totalJavaScriptGzip: kilobytes(
+      limits.totalJavaScriptGzip - totalJavaScript,
+    ),
+    totalCssGzip: kilobytes(limits.totalCssGzip - totalCss),
+  },
+};
+
+const reportPath = process.env.ASSET_BUDGET_REPORT;
+if (reportPath) {
+  let previous = { samples: [] };
+  try {
+    previous = JSON.parse(
+      await readFile(
+        process.env.ASSET_BUDGET_PREVIOUS ??
+          "artifacts/previous/asset-budget-trend.json",
+        "utf8",
+      ),
+    );
+  } catch (error) {
+    if (error?.code !== "ENOENT") throw error;
+  }
+  const now = new Date();
+  const cutoff = now.valueOf() - 90 * 86_400_000;
+  const samples = [
+    ...(Array.isArray(previous.samples) ? previous.samples : []),
+    { measuredAt: now.toISOString(), ...result.assets },
+  ].filter((sample) => Date.parse(sample.measuredAt) >= cutoff);
+  const first = samples[0];
+  const latest = samples.at(-1);
+  const history = {
+    schemaVersion: 1,
+    generatedAt: now.toISOString(),
+    retentionDays: 90,
+    samples,
+    trend: {
+      sampleCount: samples.length,
+      totalJavaScriptGzipDeltaKb: Number(
+        (latest.totalJavaScriptGzipKb - first.totalJavaScriptGzipKb).toFixed(1),
+      ),
+      totalCssGzipDeltaKb: Number(
+        (latest.totalCssGzipKb - first.totalCssGzipKb).toFixed(1),
+      ),
+      currentHeadroomKb: result.headroomKb,
     },
-    budgetsKb: {
-      largestJavaScriptGzip: kilobytes(limits.largestJavaScriptGzip),
-      totalJavaScriptGzip: kilobytes(limits.totalJavaScriptGzip),
-      totalCssGzip: kilobytes(limits.totalCssGzip),
-      totalMissionCardImages: kilobytes(limits.totalMissionCardImages),
-    },
-  }),
-);
+  };
+  await mkdir(path.dirname(path.resolve(reportPath)), { recursive: true });
+  await writeFile(reportPath, `${JSON.stringify(history, null, 2)}\n`, "utf8");
+}
+
+console.log(JSON.stringify(result));

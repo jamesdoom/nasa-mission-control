@@ -9,10 +9,12 @@ All notable changes are documented here. This project follows [Semantic Versioni
 - Add sanitized DONKI, EPIC, and NASA Media contract fixtures with actionable required-field schema-drift mutations for every NASA upstream.
 - Add daily, privacy-conscious reliability evidence with rolling 30-day route, cache, stale fallback, validation, upstream-category, and latency summaries.
 - Add a de-identified repeat-session learning and accessibility research protocol, measurable comprehension rubric, and assistive-technology session matrix.
+- Add rolling compressed-asset trend evidence and an accountable five-domain monthly product review.
 
 ### Changed
 
 - Expand learning completion summaries and educator print sheets with semantic evidence status, delayed-retrieval prompts, source observation space, and explicit limits on mastery claims.
+- Replace the general client query dependency with a bounded product-specific cache, recovering 10.3 kB gzip while preserving retries, refetch, freshness, placeholder data, and timestamps.
 
 ### Fixed
 

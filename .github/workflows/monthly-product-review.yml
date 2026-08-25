@@ -41,5 +41,7 @@ jobs:
                 '- [ ] Feedback: triage new feedback/accessibility issues and record themes',
                 '- [ ] Backlog: update evidence, impact, confidence, effort, owner, and next action',
                 '- [ ] Public status: update `docs/public-status.md` if capabilities or limits changed',
+                '- [ ] Governance: confirm privacy, accessibility, changelog, and release documentation remain current',
+                '- [ ] Release scoring: re-score the backlog after any release since the prior review',
               ].join('\n'),
             })

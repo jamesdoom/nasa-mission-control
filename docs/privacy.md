@@ -1,5 +1,7 @@
 # Privacy notice
 
+Reviewed 2026-08-25.
+
 NASA Mission Control does not provide accounts, advertising, cross-device
 profiles, or a project-owned visitor database.
 

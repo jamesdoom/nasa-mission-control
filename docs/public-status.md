@@ -7,6 +7,7 @@
 - Application health and normalized APOD/media contracts twice per hour through scheduled GitHub Actions, with one bounded retry.
 - Critical SPA routes, cache headers, response latency thresholds, and invalid-request behavior.
 - Daily desktop/mobile performance and browser-local continuity journeys.
+- Daily compressed-asset measurements carried in a private 90-day trend artifact.
 - Daily normalized-route samples with a rolling 30-day reliability summary retained through private workflow artifacts.
 - Monthly curated mission review deadlines and official source availability.
 - Per-process upstream categories, schema validation failures, circuit state, cache outcomes, and explicitly marked stale fallback through structured Runtime Logs.

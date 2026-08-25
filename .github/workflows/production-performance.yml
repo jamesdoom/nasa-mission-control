@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: production-performance
@@ -23,6 +24,19 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Restore prior asset-budget trend
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          previous="$(gh run list --workflow production-performance.yml --status success --limit 1 --json databaseId --jq '.[0].databaseId // empty')"
+          if [[ -n "$previous" ]]; then
+            gh run download "$previous" --name production-performance --dir artifacts/previous
+          fi
+      - run: npm run build
+      - name: Capture compressed asset-budget trend
+        env:
+          ASSET_BUDGET_REPORT: artifacts/asset-budget-trend.json
+        run: npm run performance:budget
       - run: npx playwright install --with-deps chromium
       - name: Audit production dashboard and key content routes
         env:
@@ -41,5 +55,6 @@ jobs:
             artifacts/production-performance.json
             artifacts/production-journeys.json
             artifacts/production-journey-*.png
+            artifacts/asset-budget-trend.json
           if-no-files-found: error
           retention-days: 30

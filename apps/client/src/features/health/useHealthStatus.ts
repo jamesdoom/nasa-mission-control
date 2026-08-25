@@ -1,8 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useApiQuery } from "../../hooks/useApiQuery";
 import { getHealthStatus } from "../../api/health";
 
 export function useHealthStatus() {
-  return useQuery({
+  return useApiQuery({
     queryKey: ["health"],
     queryFn: getHealthStatus,
     staleTime: 30_000,
