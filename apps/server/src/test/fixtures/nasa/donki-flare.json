@@ -1,0 +1,15 @@
+[
+  {
+    "flrID": "2024-05-10T00:10:00-FLR-001",
+    "instruments": [{ "displayName": "GOES-P: EXIS 1.0-8.0" }],
+    "beginTime": "2024-05-10T00:10Z",
+    "peakTime": "2024-05-10T00:13Z",
+    "endTime": "2024-05-10T00:22Z",
+    "classType": "M1.3",
+    "sourceLocation": "S22W35",
+    "activeRegionNum": 13664,
+    "note": "",
+    "link": "https://webtools.ccmc.gsfc.nasa.gov/DONKI/view/FLR/30665/-1",
+    "linkedEvents": null
+  }
+]

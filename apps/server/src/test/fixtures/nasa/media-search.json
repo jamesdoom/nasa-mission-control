@@ -1,0 +1,27 @@
+{
+  "collection": {
+    "metadata": { "total_hits": 5909 },
+    "items": [
+      {
+        "data": [
+          {
+            "center": "HQ",
+            "date_created": "2018-06-18T00:00:00Z",
+            "description": "Full color logo for the 50th anniversary of the Apollo program",
+            "keywords": ["Apollo", "anniversary", "logo"],
+            "media_type": "image",
+            "nasa_id": "APOLLO_50TH_FULL_COLOR",
+            "title": "Apollo 50th anniversary logo"
+          }
+        ],
+        "links": [
+          {
+            "href": "https://images-assets.nasa.gov/image/APOLLO_50TH_FULL_COLOR/APOLLO_50TH_FULL_COLOR~thumb.jpg",
+            "rel": "preview",
+            "render": "image"
+          }
+        ]
+      }
+    ]
+  }
+}

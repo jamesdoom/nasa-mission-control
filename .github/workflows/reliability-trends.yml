@@ -1,0 +1,49 @@
+name: Reliability trends
+
+on:
+  schedule:
+    - cron: "17 12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: reliability-trends
+  cancel-in-progress: false
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Restore the previous rolling history
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          previous="$(gh run list --workflow reliability-trends.yml --status success --limit 1 --json databaseId --jq '.[0].databaseId // empty')"
+          if [[ -n "$previous" ]]; then
+            gh run download "$previous" --name reliability-history --dir artifacts/previous
+          fi
+      - name: Capture production evidence and evaluate thresholds
+        run: npm run reliability:capture
+      - name: Publish readable run summary
+        if: always()
+        run: cat artifacts/reliability-summary.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Retain rolling history
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: reliability-history
+          path: |
+            artifacts/reliability-history.json
+            artifacts/reliability-summary.md
+          retention-days: 90
+          if-no-files-found: error

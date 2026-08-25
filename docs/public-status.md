@@ -1,12 +1,13 @@
 # Public operational status
 
-**Current summary (reviewed 2026-08-24):** NASA Mission Control’s application health endpoint, critical routes, and selected browser journeys are checked automatically. The project has no contractual uptime target and does not claim continuous availability.
+**Current summary (reviewed 2026-08-25):** NASA Mission Control’s application health endpoint, critical routes, and selected browser journeys are checked automatically. The project has no contractual uptime target and does not claim continuous availability.
 
 ## What is checked
 
 - Application health and normalized APOD/media contracts twice per hour through scheduled GitHub Actions, with one bounded retry.
 - Critical SPA routes, cache headers, response latency thresholds, and invalid-request behavior.
 - Daily desktop/mobile performance and browser-local continuity journeys.
+- Daily normalized-route samples with a rolling 30-day reliability summary retained through private workflow artifacts.
 - Monthly curated mission review deadlines and official source availability.
 - Per-process upstream categories, schema validation failures, circuit state, cache outcomes, and explicitly marked stale fallback through structured Runtime Logs.
 
@@ -18,6 +19,6 @@ Curated routes and a previously installed offline shell can remain usable during
 
 ## Monitoring limits
 
-GitHub schedules can be delayed or disabled, Vercel Runtime Logs are not a dedicated external pager, in-process counters reset when an instance restarts, and no public incident-history service or SLA is claimed. Failures in scheduled checks create visible repository workflow failures; maintainers own review during active maintenance.
+GitHub schedules can be delayed or disabled, artifact deletion can restart the rolling history, Vercel Runtime Logs are not a dedicated external pager, in-process counters reset when an instance restarts, and no public incident-history service or SLA is claimed. Failures in scheduled checks create visible repository workflow failures; maintainers own review during active maintenance.
 
 For current details, inspect the repository’s [Actions history](https://github.com/jamesdoom/nasa-mission-control/actions), `operations.md`, and `service-limitations.md`. Product feedback and accessibility barriers should use the structured repository forms linked from the About page. Do not submit private Flight Log data.

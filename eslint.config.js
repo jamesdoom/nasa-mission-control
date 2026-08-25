@@ -19,7 +19,7 @@ export default tseslint.config(
     languageOptions: {
       parserOptions: {
         projectService: {
-          allowDefaultProject: ["scripts/*.mjs"],
+          allowDefaultProject: ["scripts/*.mjs", "scripts/lib/*.mjs"],
         },
         tsconfigRootDir: import.meta.dirname,
       },
@@ -46,7 +46,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ["scripts/*.mjs"],
+    files: ["scripts/**/*.mjs"],
     ...tseslint.configs.disableTypeChecked,
   },
   prettier,

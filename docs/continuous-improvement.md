@@ -18,13 +18,13 @@ These are maintenance targets, not a support contract or guaranteed response tim
 
 The `Monthly product review` workflow opens one issue on the third day of each month and assigns the repository owner. The owner links evidence and completes all five domains:
 
-| Domain           | Evidence                                                             | Decision owner                                | Required output                                             |
-| ---------------- | -------------------------------------------------------------------- | --------------------------------------------- | ----------------------------------------------------------- |
-| Reliability      | Smoke runs, incidents, upstream/error categories, cache/stale ratios | Maintainer                                    | Trend, incident actions, threshold changes                  |
-| Performance      | Desktop/mobile artifact, asset budgets, route regressions            | Maintainer                                    | Budget decision and targeted issue                          |
-| Accessibility    | Axe suite, keyboard/screen-reader/reflow session, public reports     | Maintainer                                    | Barrier severity and verified remediation plan              |
-| Content accuracy | Mission review artifact, source changes, learning claims             | Content reviewer (maintainer until delegated) | Corrected facts, review dates, or explicit no-change record |
-| User feedback    | Structured issues and usability-session notes                        | Product owner (repository owner)              | Themes, rejected assumptions, prioritized candidates        |
+| Domain           | Evidence                                                                                      | Decision owner                                | Required output                                             |
+| ---------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------- | ----------------------------------------------------------- |
+| Reliability      | Rolling 30-day artifact, smoke runs, incidents, upstream/error categories, cache/stale ratios | Maintainer                                    | Trend, incident actions, threshold changes                  |
+| Performance      | Desktop/mobile artifact, asset budgets, route regressions                                     | Maintainer                                    | Budget decision and targeted issue                          |
+| Accessibility    | Axe suite, keyboard/screen-reader/reflow session, public reports                              | Maintainer                                    | Barrier severity and verified remediation plan              |
+| Content accuracy | Mission review artifact, source changes, learning claims                                      | Content reviewer (maintainer until delegated) | Corrected facts, review dates, or explicit no-change record |
+| User feedback    | Structured issues and usability-session notes                                                 | Product owner (repository owner)              | Themes, rejected assumptions, prioritized candidates        |
 
 Update `public-status.md`, limitations, privacy, and accessibility status whenever the evidence changes their claims. Close the review issue only after updating `improvement-backlog.md` or recording that evidence did not justify reprioritization.
 

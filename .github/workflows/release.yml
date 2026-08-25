@@ -24,6 +24,7 @@ jobs:
           RELEASE_TAG: ${{ github.ref_name }}
         run: npm run release:check
       - run: npm run release:workflow-check
+      - run: npm run reliability:check
       - run: npm run format:check
       - run: npm run typecheck
       - run: npm run lint

@@ -21,6 +21,7 @@ jobs:
       - run: npm ci
       - run: npm run release:check
       - run: npm run release:workflow-check
+      - run: npm run reliability:check
       - run: npm run format:check
       - run: npm run typecheck
       - run: npm run lint

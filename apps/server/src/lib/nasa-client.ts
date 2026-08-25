@@ -388,7 +388,10 @@ export class NasaClient {
     const available = epicAvailableSchema.safeParse(
       await this.requestJson(availableUrl),
     );
-    if (!available.success) this.earthFormatError();
+    if (!available.success) {
+      this.schemaDrift(availableUrl, available.error.issues);
+      this.earthFormatError();
+    }
     const latestAvailableDate = available.data[0]?.date.slice(0, 10);
     if (!latestAvailableDate) this.earthFormatError();
     const date = requestedDate ?? latestAvailableDate;
@@ -403,7 +406,10 @@ export class NasaClient {
     if (images.success && images.data.length === 0 && dateIsListed) {
       images = imageListSchema.safeParse(await this.requestJson(imagesUrl));
     }
-    if (!images.success) this.earthFormatError();
+    if (!images.success) {
+      this.schemaDrift(imagesUrl, images.error.issues);
+      this.earthFormatError();
+    }
     if (images.data.length === 0 && dateIsListed) {
       throw new HttpError(
         503,
@@ -651,14 +657,21 @@ export class NasaClient {
           endDate,
           api_key: this.options.apiKey,
         }).toString();
-        return { category: eventCategory, data: await this.requestJson(url) };
+        return {
+          category: eventCategory,
+          data: await this.requestJson(url),
+          url,
+        };
       }),
     );
     const events: SpaceWeatherEvent[] = [];
     for (const response of responses) {
       if (response.category === "flare") {
         const parsed = z.array(donkiFlareSchema).safeParse(response.data);
-        if (!parsed.success) this.spaceWeatherFormatError();
+        if (!parsed.success) {
+          this.schemaDrift(response.url, parsed.error.issues);
+          this.spaceWeatherFormatError();
+        }
         for (const event of parsed.data) {
           const classType = textOrFallback(event.classType, "unclassified");
           events.push({
@@ -692,7 +705,10 @@ export class NasaClient {
         }
       } else if (response.category === "cme") {
         const parsed = z.array(donkiCmeSchema).safeParse(response.data);
-        if (!parsed.success) this.spaceWeatherFormatError();
+        if (!parsed.success) {
+          this.schemaDrift(response.url, parsed.error.issues);
+          this.spaceWeatherFormatError();
+        }
         for (const event of parsed.data) {
           const analysis =
             event.cmeAnalyses?.find((item) => item.isMostAccurate) ??
@@ -732,7 +748,10 @@ export class NasaClient {
         }
       } else {
         const parsed = z.array(donkiStormSchema).safeParse(response.data);
-        if (!parsed.success) this.spaceWeatherFormatError();
+        if (!parsed.success) {
+          this.schemaDrift(response.url, parsed.error.issues);
+          this.spaceWeatherFormatError();
+        }
         for (const event of parsed.data) {
           const peak = event.allKpIndex.reduce<z.infer<
             typeof donkiKpSchema
@@ -785,15 +804,6 @@ export class NasaClient {
   }
 
   private spaceWeatherFormatError(): never {
-    reliability.failure("api.nasa.gov", "schema_validation");
-    this.breaker.failure("api.nasa.gov");
-    logger.error("upstream.schema_drift", {
-      upstream: "api.nasa.gov",
-      upstreamPath: "/DONKI",
-      issueCount: 1,
-      firstIssuePath: "normalized-event",
-      firstIssueCode: "invalid_shape",
-    });
     throw new HttpError(
       502,
       "UPSTREAM_UNAVAILABLE",
@@ -802,15 +812,6 @@ export class NasaClient {
   }
 
   private earthFormatError(): never {
-    reliability.failure("epic.gsfc.nasa.gov", "schema_validation");
-    this.breaker.failure("epic.gsfc.nasa.gov");
-    logger.error("upstream.schema_drift", {
-      upstream: "epic.gsfc.nasa.gov",
-      upstreamPath: "/api",
-      issueCount: 1,
-      firstIssuePath: "normalized-observation",
-      firstIssueCode: "invalid_shape",
-    });
     throw new HttpError(
       502,
       "UPSTREAM_UNAVAILABLE",

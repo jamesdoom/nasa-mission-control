@@ -34,7 +34,7 @@ jobs:
               body: [
                 'Use `docs/continuous-improvement.md` and attach links—not private visitor data.',
                 '',
-                '- [ ] Reliability: smoke results, upstream categories, cache/stale ratios, incidents',
+                '- [ ] Reliability: link the latest Reliability trends summary; review upstream categories, cache/stale ratios, validation failures, latency, and incidents',
                 '- [ ] Performance: desktop/mobile evidence and budget movement',
                 '- [ ] Accessibility: automated checks, manual keyboard/screen-reader session, reports',
                 '- [ ] Content: mission review deadlines, source changes, learning claims',

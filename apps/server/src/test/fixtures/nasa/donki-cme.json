@@ -1,0 +1,20 @@
+[
+  {
+    "activityID": "2024-05-10T02:12:00-CME-001",
+    "startTime": "2024-05-10T02:12Z",
+    "instruments": [{ "displayName": "SOHO: LASCO/C2" }],
+    "sourceLocation": "N30E90",
+    "activeRegionNum": null,
+    "note": "A wide flux-rope feature was observed behind the limb.",
+    "link": "https://webtools.ccmc.gsfc.nasa.gov/DONKI/view/CME/30788/-1",
+    "cmeAnalyses": [
+      {
+        "isMostAccurate": true,
+        "halfAngle": 41,
+        "speed": 232,
+        "type": "S"
+      }
+    ],
+    "linkedEvents": null
+  }
+]

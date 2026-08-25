@@ -4,6 +4,11 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ## [Unreleased]
 
+### Added
+
+- Add sanitized DONKI, EPIC, and NASA Media contract fixtures with actionable required-field schema-drift mutations for every NASA upstream.
+- Add daily, privacy-conscious reliability evidence with rolling 30-day route, cache, stale fallback, validation, upstream-category, and latency summaries.
+
 ### Fixed
 
 - Prevent automated TypeScript major upgrades from being grouped with tooling that does not yet support them, and pin deployment builds to Node.js 22.

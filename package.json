@@ -18,6 +18,8 @@
     "performance:budget": "node scripts/check-performance-budget.mjs",
     "offline:verify": "node scripts/check-offline-shell.mjs",
     "audit:production": "node scripts/production-performance-audit.mjs",
+    "reliability:capture": "node scripts/capture-reliability-trend.mjs",
+    "reliability:check": "node scripts/check-reliability-trends.mjs",
     "review:missions": "node scripts/review-mission-status.mjs",
     "smoke:production": "node scripts/production-smoke.mjs",
     "smoke:journeys": "node scripts/production-journey-smoke.mjs",
@@ -25,7 +27,7 @@
     "lockfile:check": "npm ci --ignore-scripts --dry-run",
     "release:check": "node scripts/check-release.mjs",
     "release:workflow-check": "node scripts/check-release-workflows.mjs",
-    "release:preflight": "npm run lockfile:check && npm run release:check && npm run release:workflow-check && npm run drill:resilience && npm run review:missions && npm run build && npm run performance:budget && npm run offline:verify",
+    "release:preflight": "npm run lockfile:check && npm run release:check && npm run release:workflow-check && npm run reliability:check && npm run drill:resilience && npm run review:missions && npm run build && npm run performance:budget && npm run offline:verify",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

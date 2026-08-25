@@ -4,6 +4,7 @@ const files = {
   ci: await readFile(".github/workflows/ci.yml", "utf8"),
   release: await readFile(".github/workflows/release.yml", "utf8"),
   preview: await readFile(".github/workflows/preview-smoke.yml", "utf8"),
+  trends: await readFile(".github/workflows/reliability-trends.yml", "utf8"),
   operations: await readFile("docs/operations.md", "utf8"),
 };
 
@@ -16,6 +17,11 @@ const requirements = [
     "npm run release:workflow-check",
   ],
   ["CI runs browser journeys", files.ci, "npm run test:e2e"],
+  [
+    "CI validates reliability aggregation",
+    files.ci,
+    "npm run reliability:check",
+  ],
   ["release tags use SemVer shape", files.release, '"v*.*.*"'],
   [
     "release validates the exact tag",
@@ -31,6 +37,11 @@ const requirements = [
   ["release reviews mission sources", files.release, "npm run review:missions"],
   ["release verifies offline output", files.release, "npm run offline:verify"],
   ["release runs browser journeys", files.release, "npm run test:e2e"],
+  [
+    "release validates reliability aggregation",
+    files.release,
+    "npm run reliability:check",
+  ],
   ["release publishes only after gates", files.release, "gh release create"],
   [
     "preview checks successful deployments",
@@ -51,6 +62,17 @@ const requirements = [
     "rollback has production verification",
     files.operations,
     "npm run smoke:production",
+  ],
+  ["reliability trends run daily", files.trends, 'cron: "17 12 * * *"'],
+  [
+    "reliability trends restore prior evidence",
+    files.trends,
+    "gh run download",
+  ],
+  [
+    "reliability trends retain rolling evidence",
+    files.trends,
+    "name: reliability-history",
   ],
 ];
 
