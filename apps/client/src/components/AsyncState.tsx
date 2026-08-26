@@ -1,10 +1,16 @@
-export function LoadingState() {
+export function LoadingState({
+  title = "Loading NASA data",
+  detail = "Requesting and validating the selected records…",
+}: {
+  title?: string;
+  detail?: string;
+}) {
   return (
     <div className="state-panel" role="status">
       <span className="loader" />
       <div>
-        <strong>Acquiring deep-space signal</strong>
-        <p>Contacting the NASA data network…</p>
+        <strong>{title}</strong>
+        <p>{detail}</p>
       </div>
     </div>
   );
@@ -21,7 +27,7 @@ export function ErrorState({
   return (
     <div className="state-panel state-panel--error" role="alert">
       <div>
-        <strong>Telemetry interrupted</strong>
+        <strong>NASA data unavailable</strong>
         <p>{message}</p>
         {requestId && <small>Reference: {requestId}</small>}
       </div>
@@ -30,7 +36,7 @@ export function ErrorState({
         type="button"
         onClick={retry}
       >
-        Retry transmission
+        Try again
       </button>
     </div>
   );

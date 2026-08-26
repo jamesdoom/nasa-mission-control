@@ -9,6 +9,7 @@ import { EarthImageViewer } from "../components/EarthImageViewer";
 import { EarthTimelineAnalysis } from "../components/ScientificAnalysis";
 import { useEarthObservation } from "../features/earth/useEarthObservation";
 import { earthExplorationLinks } from "../data/contextualLinks";
+import { DataContextPanel } from "../components/DataContextPanel";
 
 function collectionFrom(value: string | null): EarthCollection {
   return value === "enhanced" ? "enhanced" : "natural";
@@ -124,9 +125,15 @@ export function EarthPage() {
           ))}
         </fieldset>
       </section>
+      <section className="section">
+        <DataContextPanel kind="epic" />
+      </section>
       <section className="section earth-results" aria-live="polite">
         {query.isPending ? (
-          <LoadingState />
+          <LoadingState
+            title="Loading EPIC imagery"
+            detail="Checking available dates and requesting NASA image metadata…"
+          />
         ) : query.isError ? (
           <ErrorState
             message={error?.message ?? "An unexpected error occurred."}
@@ -142,7 +149,8 @@ export function EarthPage() {
               </strong>
               <p>
                 NASA lists {query.data.latestAvailableDate} as the latest date
-                in this collection.
+                in this collection. No frames can mean a normal archive gap or
+                delayed processing; it does not describe Earth conditions.
               </p>
               <button
                 className="button button--secondary"
@@ -162,6 +170,7 @@ export function EarthPage() {
               source="NASA DSCOVR EPIC"
               updatedAt={query.dataUpdatedAt}
               refreshing={query.isFetching}
+              data={query.data}
             />
             <EarthImageViewer
               images={query.data.images}

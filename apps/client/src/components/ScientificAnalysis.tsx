@@ -126,7 +126,7 @@ export function AsteroidTrendAnalysis({
               <th>Date</th>
               <th>Approaches</th>
               <th>Potentially hazardous classification</th>
-              <th>Closest observed approach</th>
+              <th>Closest catalog approach</th>
             </tr>
           </thead>
           <tbody>
@@ -212,9 +212,7 @@ export function DonkiComparison({
                   </a>
                 </th>
                 <td>
-                  <EvidenceBadge
-                    kind={event.category === "cme" ? "modeled" : "observed"}
-                  />{" "}
+                  <EvidenceBadge kind="observed" />{" "}
                   {event.category.toUpperCase()}
                 </td>
                 <td>{event.startTimeUtc}</td>

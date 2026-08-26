@@ -13,6 +13,7 @@ import { AsteroidTrendAnalysis } from "../components/ScientificAnalysis";
 import { useAsteroids } from "../features/asteroids/useAsteroids";
 import { useAsteroidFavorites } from "../hooks/useAsteroidFavorites";
 import { utcDate } from "../utils/dates";
+import { DataContextPanel } from "../components/DataContextPanel";
 
 type SortMode = "closest" | "largest" | "fastest";
 const sortModes: SortMode[] = ["closest", "largest", "fastest"];
@@ -134,9 +135,13 @@ export function AsteroidsPage() {
         </button>
         <small>NASA NeoWs supports ranges no more than seven days apart.</small>
       </form>
+      <DataContextPanel kind="asteroids" />
 
       {query.isPending ? (
-        <LoadingState />
+        <LoadingState
+          title="Loading close-approach records"
+          detail="Requesting the selected UTC date window from NASA/JPL NeoWs…"
+        />
       ) : query.isError ? (
         <ErrorState
           message={
@@ -151,6 +156,7 @@ export function AsteroidsPage() {
             source="NASA/JPL NeoWs"
             updatedAt={query.dataUpdatedAt}
             refreshing={query.isFetching}
+            data={query.data}
           />
           <div className="asteroid-summary" aria-label="Encounter summary">
             <div>
@@ -216,7 +222,11 @@ export function AsteroidsPage() {
             <div className="empty-state asteroid-empty">
               <span aria-hidden="true">0</span>
               <h2>No approaches in this window</h2>
-              <p>Try another date range to continue the scan.</p>
+              <p>
+                NeoWs returned no cataloged approaches for this request. This
+                does not mean no small objects exist or that the sky was
+                continuously observed; try another date range.
+              </p>
             </div>
           ) : (
             <div className="asteroid-list">

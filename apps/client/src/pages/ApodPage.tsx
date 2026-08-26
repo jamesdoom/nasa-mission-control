@@ -11,6 +11,7 @@ import { useApod, useApodHistory } from "../features/apod/useApod";
 import { useFavorites } from "../hooks/useFavorites";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
 import { contextualLinksForText } from "../data/contextualLinks";
+import { DataContextPanel } from "../components/DataContextPanel";
 
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -74,8 +75,12 @@ export function ApodPage() {
         </div>
         <small>Archive begins {APOD_EARLIEST_DATE}. Dates use UTC.</small>
       </form>
+      <DataContextPanel kind="apod" />
       {query.isPending ? (
-        <LoadingState />
+        <LoadingState
+          title="Loading the selected APOD record"
+          detail="Requesting the archive date and validating NASA’s response…"
+        />
       ) : query.isError ? (
         <ErrorState
           message={error?.message ?? "An unexpected error occurred."}
@@ -88,6 +93,7 @@ export function ApodPage() {
             source="NASA APOD"
             updatedAt={query.dataUpdatedAt}
             refreshing={query.isFetching}
+            data={query.data}
           />
           <ApodPanel
             apod={query.data}

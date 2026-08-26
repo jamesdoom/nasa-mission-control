@@ -5,6 +5,7 @@ import type {
   MediaType,
 } from "@mission-control/shared";
 import { ApiError } from "./apod";
+import { readResponseJson } from "./responseStatus";
 
 async function request<T>(url: string, fallback: string): Promise<T> {
   const response = await fetch(url, {
@@ -23,7 +24,7 @@ async function request<T>(url: string, fallback: string): Promise<T> {
       throw new ApiError(fallback);
     }
   }
-  return (await response.json()) as T;
+  return readResponseJson<T>(response);
 }
 
 export function searchMedia(

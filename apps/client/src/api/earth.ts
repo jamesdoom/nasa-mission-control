@@ -4,6 +4,7 @@ import type {
   EarthObservation,
 } from "@mission-control/shared";
 import { ApiError } from "./apod";
+import { readResponseJson } from "./responseStatus";
 
 export async function getEarthObservation(
   collection: EarthCollection,
@@ -28,5 +29,5 @@ export async function getEarthObservation(
       throw new ApiError(fallback);
     }
   }
-  return (await response.json()) as EarthObservation;
+  return readResponseJson<EarthObservation>(response);
 }

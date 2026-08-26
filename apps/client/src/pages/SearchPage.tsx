@@ -542,6 +542,7 @@ export function SearchPage() {
                   source="NASA Image and Video Library"
                   updatedAt={nasaMedia.dataUpdatedAt}
                   refreshing={nasaMedia.isFetching}
+                  data={nasaMedia.data}
                 />
                 <div className="media-grid">
                   {mediaItems.map((item) => (

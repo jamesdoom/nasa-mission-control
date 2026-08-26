@@ -1,5 +1,6 @@
 import type { ApiErrorResponse, AsteroidFeed } from "@mission-control/shared";
 import { ApiError } from "./apod";
+import { readResponseJson } from "./responseStatus";
 
 export async function getAsteroids(
   startDate: string,
@@ -23,5 +24,5 @@ export async function getAsteroids(
       throw new ApiError(fallback);
     }
   }
-  return (await response.json()) as AsteroidFeed;
+  return readResponseJson<AsteroidFeed>(response);
 }

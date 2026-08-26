@@ -9,6 +9,7 @@ import { SpaceWeatherCard } from "../components/SpaceWeatherCard";
 import { useSpaceWeather } from "../features/space-weather/useSpaceWeather";
 import { utcDate } from "../utils/dates";
 import { weatherExplorationLinks } from "../data/contextualLinks";
+import { DataContextPanel } from "../components/DataContextPanel";
 
 const categories = ["all", "flare", "cme", "storm"] as const;
 type Category = (typeof categories)[number];
@@ -135,6 +136,9 @@ export function SpaceWeatherPage() {
           ))}
         </fieldset>
       </section>
+      <section className="section">
+        <DataContextPanel kind="donki" />
+      </section>
       <section
         className="section weather-guide"
         aria-labelledby="weather-guide-title"
@@ -207,12 +211,15 @@ export function SpaceWeatherPage() {
               <span />
               Event chronology
             </p>
-            <h2>Observed activity</h2>
+            <h2>Published event records</h2>
           </div>
           <p>All timestamps shown in UTC</p>
         </div>
         {query.isPending ? (
-          <LoadingState />
+          <LoadingState
+            title="Loading DONKI event records"
+            detail="Requesting and validating the selected research-event window…"
+          />
         ) : query.isError ? (
           <ErrorState
             message={error?.message ?? "An unexpected error occurred."}
@@ -223,7 +230,11 @@ export function SpaceWeatherPage() {
           <div className="state-panel">
             <div>
               <strong>No matching activity recorded</strong>
-              <p>Try a wider date range or another event category.</p>
+              <p>
+                DONKI returned no matching published records. Reporting can be
+                delayed or incomplete, so this does not prove that no physical
+                activity occurred; try a wider date range or another category.
+              </p>
             </div>
           </div>
         ) : (
@@ -232,6 +243,7 @@ export function SpaceWeatherPage() {
               source="NASA DONKI"
               updatedAt={query.dataUpdatedAt}
               refreshing={query.isFetching}
+              data={query.data}
             />
             <DonkiComparison
               events={query.data.events.filter((event) =>

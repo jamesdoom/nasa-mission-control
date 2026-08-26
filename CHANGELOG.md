@@ -6,6 +6,8 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Added
 
+- Add consistent freshness, interpretation, limitation, and official-source guidance to every existing live-data journey.
+- Preserve and announce explicitly stale NASA fallbacks when current upstream data is unavailable.
 - Add source-reviewed instrument, result, continuing-status, evidence-caption, terminology, reflection, and completion content across every existing mission, science story, and learning track.
 - Add exact educational-enrichment coverage tests so new or renamed records cannot silently omit the Phase 3 content standard.
 - Expand Space Trivia from 12 to 64 reviewed questions while retaining the existing four channels and three difficulty levels.
@@ -20,6 +22,7 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Changed
 
+- Clarify source-specific loading and empty states, catalog-versus-observed asteroid approaches, and observed DONKI events versus modeled analysis fields.
 - Expand learning completion summaries and educator print sheets with semantic evidence status, delayed-retrieval prompts, source observation space, and explicit limits on mastery claims.
 - Replace the general client query dependency with a bounded product-specific cache, recovering 10.3 kB gzip while preserving retries, refetch, freshness, placeholder data, and timestamps.
 

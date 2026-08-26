@@ -7,6 +7,8 @@ import { contextualLinksForText } from "../data/contextualLinks";
 import { useMediaDetail } from "../features/media/useMedia";
 import { useMediaFavorites } from "../hooks/useMediaFavorites";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
+import { DataContextPanel } from "../components/DataContextPanel";
+import { DataStatus } from "../components/DataStatus";
 
 export function MediaDetailPage() {
   const nasaId = useParams().nasaId ?? "";
@@ -26,7 +28,10 @@ export function MediaDetailPage() {
   if (query.isPending)
     return (
       <section className="section">
-        <LoadingState />
+        <LoadingState
+          title="Loading NASA Media record"
+          detail="Requesting metadata and available asset files for this NASA ID…"
+        />
       </section>
     );
   if (query.isError)
@@ -46,6 +51,12 @@ export function MediaDetailPage() {
       <Link className="text-link" to="/media">
         ← Return to media search
       </Link>
+      <DataStatus
+        source="NASA Image and Video Library"
+        updatedAt={query.dataUpdatedAt}
+        refreshing={query.isFetching}
+        data={item}
+      />
       <div className="media-detail__grid">
         <div className="media-detail__visual">
           {item.mediaType === "image" &&
@@ -147,6 +158,7 @@ export function MediaDetailPage() {
           </p>
         </div>
       </div>
+      <DataContextPanel kind="media" />
       <ContinueExploring
         links={contextualLinksForText(
           `${item.title} ${item.description} ${item.keywords.join(" ")}`,

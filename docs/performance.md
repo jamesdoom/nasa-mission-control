@@ -32,6 +32,8 @@ Content improvement phase 2 expanded the trivia bank from 12 to 64 records while
 
 Content improvement phase 3 adds reviewed enrichment for all missions, stories, and learning tracks in a shared lazy-loaded 3.6 kB gzip chunk. The verified build measures 181.5 kB total JavaScript gzip, leaving 2.5 kB below the unchanged 184 kB aggregate budget; the main entry remains below its separate 110 kB limit. This is acceptable for the content release but below the earlier 5 kB aggregate target, so later content growth should move editorial payloads to validated static assets before adding more JavaScript-resident copy.
 
+Content improvement phase 4 adds shared interpretation guidance and propagates explicit stale-fallback state into the interface. After copy compression, the verified build measures 183.8 kB total JavaScript gzip and 100.2 kB for the largest chunk, passing the unchanged 184/110 kB limits with 0.2/9.8 kB headroom. Aggregate margin is effectively exhausted; Phase 5 must recover headroom or move shared editorial payloads to validated static content before any further JavaScript growth.
+
 ## Interpret real-user results
 
 Use the Vercel project’s Speed Insights view after production has received enough traffic. Evaluate routes independently and use the standard “good” thresholds as goals:

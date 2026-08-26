@@ -4,6 +4,7 @@ import type {
   SpaceWeatherFeed,
 } from "@mission-control/shared";
 import { ApiError } from "./apod";
+import { readResponseJson } from "./responseStatus";
 
 export async function getSpaceWeather(
   startDate: string,
@@ -29,5 +30,5 @@ export async function getSpaceWeather(
       throw new ApiError(fallback);
     }
   }
-  return (await response.json()) as SpaceWeatherFeed;
+  return readResponseJson<SpaceWeatherFeed>(response);
 }

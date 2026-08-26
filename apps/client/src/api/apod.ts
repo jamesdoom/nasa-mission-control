@@ -1,4 +1,5 @@
 import type { ApiErrorResponse, Apod } from "@mission-control/shared";
+import { readResponseJson } from "./responseStatus";
 
 export class ApiError extends Error {
   constructor(
@@ -29,5 +30,5 @@ export async function getApod(date?: string): Promise<Apod> {
       throw new ApiError(fallback);
     }
   }
-  return (await response.json()) as Apod;
+  return readResponseJson<Apod>(response);
 }

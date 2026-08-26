@@ -355,7 +355,7 @@ test("recovers from a transient APOD failure without losing the selected date", 
   await page.goto("/apod?date=2024-01-01");
   await expect(page.getByText("NASA did not respond in time.")).toBeVisible();
   await expect(page.getByText("Reference: test-recovery")).toBeVisible();
-  await page.getByRole("button", { name: "Retry transmission" }).click();
+  await page.getByRole("button", { name: "Try again" }).click();
   await expect(page.getByRole("heading", { name: apod.title })).toBeVisible();
   await expect(page).toHaveURL(/date=2024-01-01/);
 });

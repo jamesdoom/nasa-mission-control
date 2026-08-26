@@ -5,6 +5,7 @@ import { ErrorState, LoadingState } from "../components/AsyncState";
 import { DataStatus } from "../components/DataStatus";
 import { MediaCard } from "../components/MediaCard";
 import { useMediaSearch } from "../features/media/useMedia";
+import { DataContextPanel } from "../components/DataContextPanel";
 
 const mediaTypes = ["all", "image", "video", "audio"] as const;
 type MediaFilter = (typeof mediaTypes)[number];
@@ -94,6 +95,9 @@ export function MediaLibraryPage() {
           </fieldset>
         </form>
       </section>
+      <section className="section">
+        <DataContextPanel kind="media" />
+      </section>
       <section className="section media-results" aria-live="polite">
         <div className="section-heading">
           <div>
@@ -108,7 +112,10 @@ export function MediaLibraryPage() {
           )}
         </div>
         {result.isPending ? (
-          <LoadingState />
+          <LoadingState
+            title="Searching NASA Media metadata"
+            detail="Matching the query against NASA’s indexed archive records…"
+          />
         ) : result.isError ? (
           <ErrorState
             message={error?.message ?? "An unexpected error occurred."}
@@ -118,7 +125,11 @@ export function MediaLibraryPage() {
         ) : result.data.items.length === 0 ? (
           <div className="state-panel">
             <strong>No signals found</strong>
-            <p>Try a broader mission, spacecraft, or destination.</p>
+            <p>
+              No indexed metadata matched these terms and filters. This does not
+              establish that NASA has no relevant media; try a broader mission,
+              spacecraft, or destination.
+            </p>
           </div>
         ) : (
           <>
@@ -126,6 +137,7 @@ export function MediaLibraryPage() {
               source="NASA Image and Video Library"
               updatedAt={result.dataUpdatedAt}
               refreshing={result.isFetching}
+              data={result.data}
             />
             <div className="media-grid">
               {result.data.items.map((item) => (

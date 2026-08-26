@@ -298,6 +298,7 @@ The monthly `Mission status review` workflow checks official source availability
 49. **Complete — Content inventory and quality baseline phase 1:** inventoried and ranked every existing editorial area, assigned accountable owners and review states, documented freshness and citation gaps, standardized evidence terminology and dated source review, corrected stale setup copy, and added release-gated inventory drift detection.
 50. **Complete — Trivia expansion and refinement phase 2:** expanded the four existing knowledge channels to 64 dated, NASA-sourced questions; balanced difficulty and answer positions; strengthened corrective explanations; and added integrity checks for repetition, readability, stable wording, citations, and review dates without adding categories or features.
 51. **Complete — Missions, stories, and learning content phase 3:** enriched all ten mission records with instruments, results, milestones, and bounded status context; strengthened all three science stories with evidence captions, consistent definitions, and conclusions; and connected all three learning tracks to reviewed evidence through additional reflection prompts and tailored completion summaries.
+52. **Complete — Live-data explanations and context phase 4:** added consistent source, freshness, delay, unit, and limitation guidance for APOD, NeoWs, DONKI, EPIC, and NASA Media; made empty and loading states evidence-safe; corrected observed-versus-modeled language; and exposed explicitly stale server fallbacks in the accessible interface.
 
 ## Screenshots
 

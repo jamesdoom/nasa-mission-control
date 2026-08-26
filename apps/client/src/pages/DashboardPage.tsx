@@ -98,6 +98,7 @@ export function DashboardPage() {
               source="NASA APOD"
               updatedAt={query.dataUpdatedAt}
               refreshing={query.isFetching}
+              data={query.data}
             />
             <ApodPanel
               apod={query.data}
