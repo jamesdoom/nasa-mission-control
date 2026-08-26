@@ -26,7 +26,7 @@ const categories = new Set<TriviaCategory>([
   "deep-space",
 ]);
 let cachedQuestions: TriviaQuestion[] | undefined;
-export const triviaQuestionCount = 64;
+export const triviaQuestionCount = 96;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;

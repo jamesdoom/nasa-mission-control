@@ -29,7 +29,7 @@ export const learningTracks: LearningTrack[] = [
     code: "TRACK // 01",
     title: "How scientists read ancient Mars",
     objective:
-      "Distinguish evidence for past habitability from evidence that life existed.",
+      "Classify Mars evidence, separate habitability from life detection, and source a bounded claim.",
     audience: "Grades 7–12 · Introductory planetary science",
     duration: "45–60 minutes",
     steps: [
@@ -60,8 +60,8 @@ export const learningTracks: LearningTrack[] = [
         id: "trivia",
         kind: "trivia",
         title: "Check planetary knowledge",
-        instruction: "Complete a planets-channel knowledge check.",
-        to: "/trivia?category=planets&difficulty=cadet",
+        instruction: "Complete an intermediate planets-channel check.",
+        to: "/trivia?category=planets&difficulty=specialist",
       },
     ],
     check: {
@@ -81,7 +81,7 @@ export const learningTracks: LearningTrack[] = [
       },
     },
     reflection:
-      "Which observation would strengthen a habitability claim, and which separate observation would be needed to argue for past life?",
+      "State a bounded habitability claim, cite its observation, and name the separate evidence needed to argue for past life.",
     sources: [
       {
         label: "NASA Curiosity",
@@ -98,7 +98,7 @@ export const learningTracks: LearningTrack[] = [
     code: "TRACK // 02",
     title: "From solar event to Earth response",
     objective:
-      "Separate observed flares and storms from modeled CME motion and operational forecasts.",
+      "Classify observations, models, and forecasts in a Sun–Earth sequence without inferring causation from timing.",
     audience: "Grades 8–12 · Earth and space science",
     duration: "40–55 minutes",
     steps: [
@@ -149,7 +149,7 @@ export const learningTracks: LearningTrack[] = [
       },
     },
     reflection:
-      "How would you explain the difference between a research event record and an operational forecast?",
+      "Classify one DONKI field and explain why a research event record cannot replace an operational forecast.",
     sources: [
       {
         label: "NASA Heliophysics",
@@ -166,7 +166,7 @@ export const learningTracks: LearningTrack[] = [
     code: "TRACK // 03",
     title: "Reading the universe across wavelengths",
     objective:
-      "Compare why Hubble and Webb observe different wavelength ranges and scientific targets.",
+      "Compare how wavelength and design shape Hubble and Webb evidence, then source an interpretation.",
     audience: "Grades 6–12 · Astronomy",
     duration: "45–60 minutes",
     steps: [
@@ -196,8 +196,8 @@ export const learningTracks: LearningTrack[] = [
         id: "trivia",
         kind: "trivia",
         title: "Check observatory knowledge",
-        instruction: "Complete the observatories channel.",
-        to: "/trivia?category=observatories&difficulty=cadet",
+        instruction: "Complete the intermediate observatories channel.",
+        to: "/trivia?category=observatories&difficulty=specialist",
       },
     ],
     check: {
@@ -217,7 +217,7 @@ export const learningTracks: LearningTrack[] = [
       },
     },
     reflection:
-      "Choose one astronomical target and explain what a second wavelength could reveal that visible light alone might miss.",
+      "Compare two wavelength views of one target and identify the evidence that limits your conclusion.",
     sources: [
       { label: "NASA Webb", url: "https://science.nasa.gov/mission/webb/" },
       { label: "NASA Hubble", url: "https://science.nasa.gov/mission/hubble/" },

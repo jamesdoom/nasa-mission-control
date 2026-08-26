@@ -26,6 +26,7 @@ const categoryLabels: Record<TriviaCategoryFilter, string> = {
   "deep-space": "Deep space",
 };
 const bestStreakKey = "mission-control:trivia-best-streak:v1";
+const questionHistoryKey = "mission-control:trivia-history:v1";
 
 function difficultyFrom(value: string | null): TriviaDifficulty {
   return difficulties.includes(value as TriviaDifficulty)
@@ -42,6 +43,26 @@ function categoryFrom(value: string | null): TriviaCategoryFilter {
 function readBestStreak(): number {
   const value = Number(localStorage.getItem(bestStreakKey) ?? 0);
   return Number.isInteger(value) && value >= 0 ? value : 0;
+}
+
+function readQuestionHistory(): string {
+  try {
+    return localStorage.getItem(questionHistoryKey) ?? "";
+  } catch {
+    return "";
+  }
+}
+
+function recordQuestion(id: string): void {
+  try {
+    const history = readQuestionHistory().split("|").filter(Boolean);
+    localStorage.setItem(
+      questionHistoryKey,
+      [...history, id].slice(-96).join("|"),
+    );
+  } catch {
+    /* Session scoring still works. */
+  }
 }
 
 export function TriviaPage() {
@@ -69,7 +90,15 @@ export function TriviaPage() {
     setLoadError(null);
     void loadTriviaQuestions()
       .then((loaded) => {
-        if (active) setQuestionBank(loaded);
+        if (active) {
+          const seen = new Set(readQuestionHistory().split("|"));
+          setQuestionBank(
+            [...loaded].sort(
+              (left, right) =>
+                Number(seen.has(left.id)) - Number(seen.has(right.id)),
+            ),
+          );
+        }
       })
       .catch(() => {
         if (active)
@@ -101,6 +130,7 @@ export function TriviaPage() {
   function answer(choice: number) {
     if (selected !== null || !question) return;
     setSelected(choice);
+    recordQuestion(question.id);
     if (choice === question.answer) {
       setScore((value) => value + 1);
       setStreak((value) => {
@@ -161,7 +191,7 @@ export function TriviaPage() {
           details={[
             "Questions, choices, and explanations are curated content rather than live NASA data.",
             "Every answer reveals the official NASA source used for verification.",
-            "Scores are session state; only the best streak is stored in this browser.",
+            "History stays local and unseen questions come first.",
           ]}
         />
       </section>
@@ -252,7 +282,6 @@ export function TriviaPage() {
                   ? "Mission knowledge logged"
                   : "Return to the briefing room"}
             </h2>
-            <p>Your best streak is stored only in this browser.</p>
             <button className="button" type="button" onClick={restart}>
               Run simulation again
             </button>

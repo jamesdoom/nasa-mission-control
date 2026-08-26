@@ -33,7 +33,7 @@ const counts = {
 
 const expectedCounts = {
   missions: 10,
-  trivia: 64,
+  trivia: 96,
   stories: 3,
   learning: 3,
   journeys: 9,

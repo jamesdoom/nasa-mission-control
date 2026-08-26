@@ -30,4 +30,11 @@ test("current editorial evidence satisfies the maintenance targets", async () =>
   assert.equal(report.status, "passed", JSON.stringify(report.failures));
   assert.equal(report.targets.triviaCitationCoveragePercent, 100);
   assert.equal(report.targets.triviaClarityCoveragePercent, 100);
+  assert.equal(report.targets.triviaQuestions, 96);
+  assert.deepEqual(report.targets.triviaByTopic, {
+    moon: 24,
+    planets: 24,
+    observatories: 24,
+    "deep-space": 24,
+  });
 });

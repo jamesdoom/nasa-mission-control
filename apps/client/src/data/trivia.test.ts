@@ -66,15 +66,27 @@ describe("source-checked trivia bank", () => {
     for (const category of categories) {
       expect(
         triviaQuestions.filter((question) => question.category === category),
-      ).toHaveLength(16);
+      ).toHaveLength(24);
+      expect(
+        triviaQuestions.filter(
+          (question) =>
+            question.category === category &&
+            question.difficulty === "specialist",
+        ),
+      ).toHaveLength(9);
+      expect(
+        triviaQuestions.filter(
+          (question) =>
+            question.category === category &&
+            question.difficulty === "commander",
+        ),
+      ).toHaveLength(7);
     }
     const answerCounts = [0, 1, 2, 3].map(
       (position) =>
         triviaQuestions.filter((question) => question.answer === position)
           .length,
     );
-    expect(
-      Math.max(...answerCounts) - Math.min(...answerCounts),
-    ).toBeLessThanOrEqual(4);
+    expect(Math.max(...answerCounts) - Math.min(...answerCounts)).toBe(0);
   });
 });

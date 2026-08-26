@@ -281,7 +281,7 @@
     "id": "moon-same-face",
     "difficulty": "specialist",
     "category": "moon",
-    "prompt": "Why does nearly the same lunar hemisphere face Earth?",
+    "prompt": "What relationship produces the Moon’s synchronous rotation?",
     "choices": [
       "The Moon does not rotate",
       "Earth blocks the far side",
@@ -1124,5 +1124,573 @@
       "url": "https://science.nasa.gov/solar-system/solar-system-facts/"
     },
     "verifiedAt": "2026-08-25"
+  },
+  {
+    "id": "moon-gravity",
+    "difficulty": "cadet",
+    "category": "moon",
+    "prompt": "About how strong is surface gravity on the Moon compared with Earth?",
+    "choices": [
+      "About one-sixth",
+      "About one-half",
+      "About the same",
+      "About twice as strong"
+    ],
+    "answer": 0,
+    "explanation": "The Moon’s surface gravity is about one-sixth of Earth’s, so an object weighs less there even though its mass does not change.",
+    "source": {
+      "label": "NASA Moon facts",
+      "url": "https://science.nasa.gov/moon/facts/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "moon-regolith",
+    "difficulty": "cadet",
+    "category": "moon",
+    "prompt": "What is lunar regolith?",
+    "choices": [
+      "Frozen ocean water",
+      "Loose rock and dust covering the surface",
+      "The Moon’s metallic core",
+      "A layer of thick air"
+    ],
+    "answer": 1,
+    "explanation": "Lunar regolith is the fragmented rock and dust produced as impacts repeatedly break and alter material at the airless surface.",
+    "source": {
+      "label": "NASA Moon facts",
+      "url": "https://science.nasa.gov/moon/facts/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "moon-exosphere",
+    "difficulty": "specialist",
+    "category": "moon",
+    "prompt": "Which description best fits the Moon’s atmosphere?",
+    "choices": [
+      "Dense nitrogen air",
+      "A global cloud layer",
+      "A very thin exosphere",
+      "A permanent oxygen shell"
+    ],
+    "answer": 2,
+    "explanation": "The Moon has an extremely sparse exosphere rather than a substantial atmosphere, so it provides little protection from radiation or impacts.",
+    "source": {
+      "label": "NASA Moon facts",
+      "url": "https://science.nasa.gov/moon/facts/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "moon-maria",
+    "difficulty": "specialist",
+    "category": "moon",
+    "prompt": "What formed the Moon’s dark maria?",
+    "choices": [
+      "Modern liquid oceans",
+      "Windblown dust fields",
+      "Polar ice sheets",
+      "Ancient basaltic lava flows"
+    ],
+    "answer": 3,
+    "explanation": "The dark maria are broad plains of basalt created when ancient lava filled large impact basins; their name reflects an early mistaken ocean interpretation.",
+    "source": {
+      "label": "NASA Moon facts",
+      "url": "https://science.nasa.gov/moon/facts/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "moon-phase-cycle",
+    "difficulty": "specialist",
+    "category": "moon",
+    "prompt": "About how long is one complete cycle of lunar phases?",
+    "choices": [
+      "About 29.5 Earth days",
+      "About 7 Earth days",
+      "About 88 Earth days",
+      "About 365 Earth days"
+    ],
+    "answer": 0,
+    "explanation": "The synodic month, measured from one matching phase to the next, lasts about 29.5 days because Earth and the Moon both move around the Sun.",
+    "source": {
+      "label": "NASA Moon facts",
+      "url": "https://science.nasa.gov/moon/facts/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "moon-polar-ice",
+    "difficulty": "commander",
+    "category": "moon",
+    "prompt": "Why can water ice persist near the lunar poles?",
+    "choices": [
+      "The poles have thick clouds",
+      "Some crater floors remain permanently shadowed",
+      "Ocean currents carry ice there",
+      "The poles never face the Sun"
+    ],
+    "answer": 1,
+    "explanation": "Deep polar depressions can remain in permanent shadow, creating extremely cold traps where water molecules may survive for very long periods.",
+    "source": {
+      "label": "NASA lunar water",
+      "url": "https://science.nasa.gov/moon/moon-water-and-ices/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "moon-synchronous-rotation",
+    "difficulty": "commander",
+    "category": "moon",
+    "prompt": "Why does nearly the same lunar hemisphere face Earth?",
+    "choices": [
+      "The Moon does not rotate",
+      "Earth blocks half the Moon",
+      "Its rotation period matches its orbital period",
+      "Sunlight fixes its orientation"
+    ],
+    "answer": 2,
+    "explanation": "Tidal interaction led to synchronous rotation: the Moon turns once on its axis in about the same time that it completes one orbit around Earth.",
+    "source": {
+      "label": "NASA Moon facts",
+      "url": "https://science.nasa.gov/moon/facts/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "moon-south-pole-interest",
+    "difficulty": "commander",
+    "category": "moon",
+    "prompt": "What makes the lunar south pole scientifically valuable?",
+    "choices": [
+      "It has active volcanoes",
+      "It has a breathable atmosphere",
+      "It always receives direct sunlight",
+      "Shadowed regions may preserve ancient volatiles"
+    ],
+    "answer": 3,
+    "explanation": "Permanently shadowed regions near the south pole can preserve water ice and other volatiles that record lunar history and may support exploration.",
+    "source": {
+      "label": "NASA lunar water",
+      "url": "https://science.nasa.gov/moon/moon-water-and-ices/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "venus-hottest",
+    "difficulty": "cadet",
+    "category": "planets",
+    "prompt": "Which planet has the hottest average surface temperature?",
+    "choices": ["Venus", "Mercury", "Mars", "Jupiter"],
+    "answer": 0,
+    "explanation": "Venus is hotter than Mercury because its dense carbon-dioxide atmosphere traps heat through an intense greenhouse effect.",
+    "source": {
+      "label": "NASA Venus facts",
+      "url": "https://science.nasa.gov/venus/venus-facts/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "mars-moons",
+    "difficulty": "cadet",
+    "category": "planets",
+    "prompt": "What are the names of Mars’s two small moons?",
+    "choices": [
+      "Io and Europa",
+      "Phobos and Deimos",
+      "Titan and Rhea",
+      "Triton and Nereid"
+    ],
+    "answer": 1,
+    "explanation": "Mars has two irregularly shaped moons, Phobos and Deimos; both are much smaller than Earth’s Moon.",
+    "source": {
+      "label": "NASA Mars facts",
+      "url": "https://science.nasa.gov/mars/facts/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "mercury-year",
+    "difficulty": "specialist",
+    "category": "planets",
+    "prompt": "About how long does Mercury take to orbit the Sun?",
+    "choices": [
+      "24 Earth days",
+      "225 Earth days",
+      "88 Earth days",
+      "687 Earth days"
+    ],
+    "answer": 2,
+    "explanation": "Mercury completes an orbit in about 88 Earth days, giving it the shortest year of any planet in the solar system.",
+    "source": {
+      "label": "NASA Mercury facts",
+      "url": "https://science.nasa.gov/mercury/facts/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "mars-olympus-mons",
+    "difficulty": "specialist",
+    "category": "planets",
+    "prompt": "On which planet is Olympus Mons located?",
+    "choices": ["Venus", "Earth", "Jupiter", "Mars"],
+    "answer": 3,
+    "explanation": "Olympus Mons is an enormous shield volcano on Mars, built by repeated lava flows in a region without Earth-like plate motion.",
+    "source": {
+      "label": "NASA Mars facts",
+      "url": "https://science.nasa.gov/mars/facts/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "uranus-tilt",
+    "difficulty": "specialist",
+    "category": "planets",
+    "prompt": "What is unusual about Uranus’s rotation?",
+    "choices": [
+      "It rotates nearly on its side",
+      "It does not rotate",
+      "It rotates once each hour",
+      "Its axis always points at Earth"
+    ],
+    "answer": 0,
+    "explanation": "Uranus has an axial tilt near 98 degrees, so it rotates almost on its side and experiences extreme seasonal geometry.",
+    "source": {
+      "label": "NASA Uranus facts",
+      "url": "https://science.nasa.gov/uranus/facts/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "jupiter-red-spot",
+    "difficulty": "commander",
+    "category": "planets",
+    "prompt": "What is Jupiter’s Great Red Spot?",
+    "choices": [
+      "A solid continent",
+      "A long-lived atmospheric storm",
+      "A volcanic crater",
+      "A reflection from Europa"
+    ],
+    "answer": 1,
+    "explanation": "The Great Red Spot is a vast, persistent storm in Jupiter’s atmosphere; its dimensions and appearance change over time.",
+    "source": {
+      "label": "NASA Jupiter facts",
+      "url": "https://science.nasa.gov/jupiter/jupiter-facts/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "saturn-density",
+    "difficulty": "commander",
+    "category": "planets",
+    "prompt": "Which statement about Saturn’s average density is correct?",
+    "choices": [
+      "It exceeds iron",
+      "It equals Earth’s",
+      "It is lower than liquid water’s",
+      "It cannot be estimated"
+    ],
+    "answer": 2,
+    "explanation": "Saturn’s average density is lower than that of liquid water, although no ocean could actually hold the enormous planet.",
+    "source": {
+      "label": "NASA Saturn facts",
+      "url": "https://science.nasa.gov/saturn/facts/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "neptune-winds",
+    "difficulty": "commander",
+    "category": "planets",
+    "prompt": "What distinguishes winds measured on Neptune?",
+    "choices": [
+      "They occur only underground",
+      "They are slower than a walking person",
+      "They stop during Neptune’s night",
+      "They are among the solar system’s fastest"
+    ],
+    "answer": 3,
+    "explanation": "Despite receiving little sunlight, Neptune has extremely fast atmospheric winds, with measured speeds exceeding 1,000 miles per hour.",
+    "source": {
+      "label": "NASA Neptune facts",
+      "url": "https://science.nasa.gov/neptune/neptune-facts/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "hubble-mirror-size",
+    "difficulty": "cadet",
+    "category": "observatories",
+    "prompt": "About how wide is Hubble’s primary mirror?",
+    "choices": ["2.4 meters", "0.24 meter", "6.5 meters", "24 meters"],
+    "answer": 0,
+    "explanation": "Hubble’s primary mirror is 2.4 meters across and focuses light into instruments that image and analyze astronomical targets.",
+    "source": {
+      "label": "NASA Hubble mission",
+      "url": "https://science.nasa.gov/mission/hubble/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "webb-mirror-size",
+    "difficulty": "cadet",
+    "category": "observatories",
+    "prompt": "About how wide is Webb’s segmented primary mirror?",
+    "choices": ["2.4 meters", "6.5 meters", "65 meters", "650 meters"],
+    "answer": 1,
+    "explanation": "Webb’s 18 hexagonal mirror segments form a primary mirror about 6.5 meters across, providing a large infrared-collecting area.",
+    "source": {
+      "label": "NASA Webb mission",
+      "url": "https://science.nasa.gov/mission/webb/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "tess-transit-method",
+    "difficulty": "specialist",
+    "category": "observatories",
+    "prompt": "What signal does TESS primarily seek when finding exoplanets?",
+    "choices": [
+      "Radio greetings",
+      "Planetary magnetic poles",
+      "Repeated dips in stellar brightness",
+      "Visible spacecraft trails"
+    ],
+    "answer": 2,
+    "explanation": "TESS searches for periodic decreases in a star’s brightness when a planet crosses, or transits, the star from our viewpoint.",
+    "source": {
+      "label": "NASA TESS mission",
+      "url": "https://science.nasa.gov/mission/tess/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "hubble-above-atmosphere",
+    "difficulty": "specialist",
+    "category": "observatories",
+    "prompt": "What advantage comes from Hubble orbiting above most of Earth’s atmosphere?",
+    "choices": [
+      "It becomes weightless forever",
+      "It can photograph through Earth",
+      "It needs no electrical power",
+      "It avoids atmospheric blurring and absorption"
+    ],
+    "answer": 3,
+    "explanation": "Above the atmosphere, Hubble avoids most turbulence and can observe ultraviolet wavelengths that Earth’s air absorbs.",
+    "source": {
+      "label": "NASA Hubble mission",
+      "url": "https://science.nasa.gov/mission/hubble/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "webb-sunshield-layers",
+    "difficulty": "specialist",
+    "category": "observatories",
+    "prompt": "How many layers make up Webb’s deployed sunshield?",
+    "choices": ["Five", "Two", "Ten", "Eighteen"],
+    "answer": 0,
+    "explanation": "Webb’s five-layer sunshield separates the warm spacecraft side from the cold telescope side needed for sensitive infrared observations.",
+    "source": {
+      "label": "NASA Webb sunshield",
+      "url": "https://science.nasa.gov/mission/webb/sunshield/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "spitzer-orbit",
+    "difficulty": "commander",
+    "category": "observatories",
+    "prompt": "Which orbit helped keep Spitzer away from Earth’s heat?",
+    "choices": [
+      "Low Earth orbit",
+      "An Earth-trailing solar orbit",
+      "A lunar surface orbit",
+      "A path inside Mercury’s orbit"
+    ],
+    "answer": 1,
+    "explanation": "Spitzer followed Earth around the Sun in an Earth-trailing orbit, helping the infrared observatory remain cool and reducing terrestrial heat interference.",
+    "source": {
+      "label": "NASA Spitzer mission",
+      "url": "https://science.nasa.gov/mission/spitzer/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "kepler-field",
+    "difficulty": "commander",
+    "category": "observatories",
+    "prompt": "Why did Kepler monitor one star-rich field for years?",
+    "choices": [
+      "To map Earth’s weather",
+      "To steer Voyager",
+      "To detect repeated planetary transits",
+      "To measure lunar soil"
+    ],
+    "answer": 2,
+    "explanation": "Continuous monitoring let Kepler identify recurring brightness dips and confirm orbital periods instead of treating a single dip as sufficient evidence.",
+    "source": {
+      "label": "NASA Kepler mission",
+      "url": "https://science.nasa.gov/mission/kepler/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "chandra-orbit-purpose",
+    "difficulty": "commander",
+    "category": "observatories",
+    "prompt": "Why was Chandra placed in a highly elliptical orbit?",
+    "choices": [
+      "To land on the Moon",
+      "To remain inside Earth’s atmosphere",
+      "To visit Mars each year",
+      "To spend long observing periods above radiation belts"
+    ],
+    "answer": 3,
+    "explanation": "Chandra’s elongated orbit provides long intervals above regions where charged particles would interfere with sensitive X-ray observations.",
+    "source": {
+      "label": "NASA Chandra mission",
+      "url": "https://science.nasa.gov/mission/chandra/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "light-year-distance",
+    "difficulty": "cadet",
+    "category": "deep-space",
+    "prompt": "What does a light-year measure?",
+    "choices": ["Distance", "Time", "Brightness", "Temperature"],
+    "answer": 0,
+    "explanation": "A light-year is the distance light travels in one year, about 5.88 trillion miles or 9.46 trillion kilometers.",
+    "source": {
+      "label": "NASA universe glossary",
+      "url": "https://science.nasa.gov/universe/glossary/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "new-horizons-pluto-year",
+    "difficulty": "cadet",
+    "category": "deep-space",
+    "prompt": "In which year did New Horizons fly past Pluto?",
+    "choices": ["2006", "2015", "1989", "2021"],
+    "answer": 1,
+    "explanation": "New Horizons made the first close reconnaissance of Pluto and its moons on July 14, 2015, after a journey of more than nine years.",
+    "source": {
+      "label": "NASA New Horizons",
+      "url": "https://science.nasa.gov/mission/new-horizons/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "voyager-power-source",
+    "difficulty": "specialist",
+    "category": "deep-space",
+    "prompt": "What supplies electrical power to the Voyager spacecraft?",
+    "choices": [
+      "Solar panels",
+      "Wind turbines",
+      "Radioisotope thermoelectric generators",
+      "Rechargeable lunar batteries"
+    ],
+    "answer": 2,
+    "explanation": "Voyager’s radioisotope thermoelectric generators convert heat from radioactive decay into electricity far beyond useful solar intensity.",
+    "source": {
+      "label": "NASA Voyager mission",
+      "url": "https://science.nasa.gov/mission/voyager/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "deep-space-delay",
+    "difficulty": "specialist",
+    "category": "deep-space",
+    "prompt": "Why can mission control not command a distant spacecraft instantly?",
+    "choices": [
+      "Antennas rotate too slowly",
+      "Computers pause in darkness",
+      "Space has no radio waves",
+      "Radio signals travel at finite light speed"
+    ],
+    "answer": 3,
+    "explanation": "Commands and telemetry are electromagnetic signals limited by light speed, so communication delay grows as spacecraft distance increases.",
+    "source": {
+      "label": "NASA Deep Space Network",
+      "url": "https://www.nasa.gov/communicating-with-missions/dsn/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "dsn-longitude-spacing",
+    "difficulty": "specialist",
+    "category": "deep-space",
+    "prompt": "Why are the three Deep Space Network complexes widely separated?",
+    "choices": [
+      "Earth’s rotation keeps a distant mission visible to at least one site",
+      "Each site communicates with one planet only",
+      "Radio waves cannot cross oceans",
+      "The antennas must avoid all sunlight"
+    ],
+    "answer": 0,
+    "explanation": "Complexes near Goldstone, Madrid, and Canberra are spaced around Earth so another site can acquire a spacecraft as the planet rotates.",
+    "source": {
+      "label": "NASA Deep Space Network",
+      "url": "https://www.nasa.gov/communicating-with-missions/dsn/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "heliopause-definition",
+    "difficulty": "commander",
+    "category": "deep-space",
+    "prompt": "What physical boundary is the heliopause?",
+    "choices": [
+      "The orbit of Neptune",
+      "Where solar wind pressure meets interstellar space",
+      "The outer edge of the Oort Cloud",
+      "Where the Sun’s gravity ends"
+    ],
+    "answer": 1,
+    "explanation": "The heliopause marks the boundary where the outward solar wind is balanced by the surrounding interstellar medium; it is not the end of solar gravity.",
+    "source": {
+      "label": "NASA heliosphere science",
+      "url": "https://science.nasa.gov/heliophysics/focus-areas/heliosphere/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "voyager-two-ice-giants",
+    "difficulty": "commander",
+    "category": "deep-space",
+    "prompt": "Which spacecraft is the only one to visit Uranus and Neptune?",
+    "choices": ["Voyager 1", "New Horizons", "Voyager 2", "Pioneer 11"],
+    "answer": 2,
+    "explanation": "Voyager 2 remains the only spacecraft to have flown past both ice giants, encountering Uranus in 1986 and Neptune in 1989.",
+    "source": {
+      "label": "NASA Voyager 2",
+      "url": "https://science.nasa.gov/mission/voyager/voyager-2/"
+    },
+    "verifiedAt": "2026-08-26"
+  },
+  {
+    "id": "pioneer-plaque-purpose",
+    "difficulty": "commander",
+    "category": "deep-space",
+    "prompt": "What was the Pioneer plaque intended to communicate?",
+    "choices": [
+      "A repair procedure",
+      "A list of launch personnel",
+      "A command sequence",
+      "Information about humanity and the spacecraft’s origin"
+    ],
+    "answer": 3,
+    "explanation": "The plaques on Pioneer 10 and 11 use diagrams to represent humans, the solar system, and the spacecraft’s point of origin.",
+    "source": {
+      "label": "NASA Pioneer 10",
+      "url": "https://science.nasa.gov/mission/pioneer-10/"
+    },
+    "verifiedAt": "2026-08-26"
   }
 ]

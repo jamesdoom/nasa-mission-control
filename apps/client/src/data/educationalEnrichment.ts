@@ -316,25 +316,25 @@ export const learningEnrichment: Record<
 > = {
   "mars-evidence": {
     secondReflection:
-      "Which mission instrument or observation supplies the strongest support for your answer, and what can it not establish?",
+      "Name the instrument, cite its NASA record, and state what the measurement cannot establish.",
     completion:
-      "You compared two Mars missions, separated habitability from life detection, and practiced matching a claim to the evidence that supports it.",
+      "You classified Mars evidence, separated habitability from life detection, and sourced a bounded claim.",
     terms: [scienceTerms.habitability, scienceTerms.spectroscopy],
     verifiedAt: "2026-08-26",
   },
   "sun-earth": {
     secondReflection:
-      "Choose one event field and state whether it is observed, modeled, calculated, or curated before interpreting it.",
+      "Cite that field’s NASA record and name the added measurement needed to connect it to an Earth response.",
     completion:
-      "You traced a Sun–Earth evidence chain and practiced keeping direct measurements, model outputs, and forecasts in their correct roles.",
+      "You classified a Sun–Earth evidence chain and explained why timing proves neither causation nor a forecast.",
     terms: [scienceTerms.corona, scienceTerms.magnetosphere],
     verifiedAt: "2026-08-26",
   },
   "cosmic-observatories": {
     secondReflection:
-      "Cite one Hubble or Webb example and explain why its wavelength range matters to the conclusion.",
+      "Cite the Hubble or Webb example and state which instrument or wavelength limit bounds it.",
     completion:
-      "You compared complementary observatories and connected wavelength, instrument design, and source-backed interpretation.",
+      "You connected observatory wavelength and design to evidence, then sourced a bounded interpretation.",
     terms: [scienceTerms.spectroscopy, scienceTerms.redshift],
     verifiedAt: "2026-08-26",
   },

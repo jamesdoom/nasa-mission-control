@@ -90,8 +90,8 @@
     }
   ],
   "targets": {
-    "minimumTriviaQuestions": 64,
-    "minimumTriviaQuestionsPerExistingTopic": 16,
+    "minimumTriviaQuestions": 96,
+    "minimumTriviaQuestionsPerExistingTopic": 24,
     "maximumTriviaPromptWords": 20,
     "minimumTriviaExplanationWords": 8,
     "maximumTriviaExplanationWords": 55,

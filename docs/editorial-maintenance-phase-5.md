@@ -29,7 +29,7 @@ Releases run the same structural audit. A backlog dated before its latest review
 
 | Measure            | Target                                                                                  | Current baseline |
 | ------------------ | --------------------------------------------------------------------------------------- | ---------------- |
-| Trivia coverage    | At least 64 total and 16 in each of the four existing topics                            | 64; 16 each      |
+| Trivia coverage    | At least 96 total and 24 in each of the four existing topics                            | 96; 24 each      |
 | Reading clarity    | Every trivia prompt at most 20 words; every explanation 8–55 words                      | 100%             |
 | Citation health    | 100% of trivia records cited and dated; minimum source coverage for all curated areas   | 100%; 61 URLs    |
 | Content freshness  | Monthly review within 40 days; stories 120 days; trivia and learning content 210 days   | Current          |

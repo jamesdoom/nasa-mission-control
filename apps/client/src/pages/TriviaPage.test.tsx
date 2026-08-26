@@ -27,7 +27,10 @@ describe("TriviaPage", () => {
       await screen.findByRole("button", { name: /Sea of Tranquility/ }),
     );
     expect(screen.getByText("Correct trajectory")).toBeVisible();
-    expect(screen.getByText("1/24")).toBeVisible();
+    expect(screen.getByText("1/32")).toBeVisible();
+    expect(localStorage.getItem("mission-control:trivia-history:v1")).toContain(
+      "apollo-destination",
+    );
     expect(screen.getByText("Source reviewed 2026-08-25")).toBeVisible();
     expect(
       screen.getByRole("link", { name: /Verify with NASA Apollo 11/ }),
@@ -45,7 +48,7 @@ describe("TriviaPage", () => {
     fireEvent.click(screen.getByRole("radio", { name: "Observatories" }));
 
     expect(screen.getByText(/Which region of light/)).toBeVisible();
-    expect(screen.getByText("0/6")).toBeVisible();
+    expect(screen.getByText("0/8")).toBeVisible();
   });
 
   it("reveals the correction after an incorrect answer", async () => {

@@ -6,6 +6,7 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Added
 
+- Expand the four existing trivia topics to 96 reviewed questions and use bounded browser-local history to prioritize unseen questions on repeat runs.
 - Add accessible mission and story evidence paths plus direct handoffs from reviewed content into the matching guided-learning tracks.
 - Add deterministic visual baselines and overflow checks across mobile, tablet, laptop, large-display, and 200%-zoom-equivalent layouts.
 - Add an owned monthly editorial register, measurable trivia/clarity/citation/freshness targets, and an evidence-scored existing-content backlog.
@@ -26,6 +27,7 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Changed
 
+- Strengthen guided-learning objectives, intermediate trivia handoffs, source-aware reflection prompts, and evidence-specific completion summaries.
 - Standardize mission objectives, curated results, status notes, story evidence captions, definitions, sources, and long-form reading measures.
 - Standardize section rhythm, page headings, filters, source/evidence panels, tables, and async states with shared responsive design tokens.
 - Clarify source-specific loading and empty states, catalog-versus-observed asteroid approaches, and observed DONKI events versus modeled analysis fields.

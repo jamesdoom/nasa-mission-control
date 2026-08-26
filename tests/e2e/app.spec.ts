@@ -949,13 +949,19 @@ test("scores and explains source-checked space trivia", async ({ page }) => {
   await expect(
     page.getByRole("link", { name: /Verify with NASA Apollo 11/ }),
   ).toBeVisible();
+  await page.reload();
+  await expect(
+    page.getByRole("heading", {
+      name: "Which planet is NASA’s Curiosity rover exploring?",
+    }),
+  ).toBeVisible();
   await page.getByRole("radio", { name: "specialist" }).click();
   await expect(page).toHaveURL(/difficulty=specialist/);
   await expect(page.getByText(/Which spacecraft became/)).toBeVisible();
   await page.getByRole("radio", { name: "Planets" }).click();
   await expect(page).toHaveURL(/difficulty=specialist&category=planets/);
   await expect(page.getByText(/What system lowered Curiosity/)).toBeVisible();
-  await expect(page.getByText("0/6")).toBeVisible();
+  await expect(page.getByText("0/9")).toBeVisible();
   await page.locator("main").click({ position: { x: 10, y: 10 } });
   await capturePortfolioScreenshot(page, {
     path: "docs/screenshots/space-trivia.png",
