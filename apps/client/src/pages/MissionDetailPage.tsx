@@ -162,7 +162,7 @@ export function MissionDetailPage() {
           </section>
           {enrichment ? (
             <section
-              className="mission-overview"
+              className="mission-overview mission-overview--evidence"
               aria-labelledby="mission-evidence"
             >
               <div>
@@ -194,7 +194,10 @@ export function MissionDetailPage() {
             </section>
           ) : null}
           {enrichment?.terms.length ? (
-            <aside className="mission-sources" aria-labelledby="mission-terms">
+            <aside
+              className="mission-sources mission-terms"
+              aria-labelledby="mission-terms"
+            >
               <div>
                 <strong id="mission-terms">Terms used on this page</strong>
                 <p>
