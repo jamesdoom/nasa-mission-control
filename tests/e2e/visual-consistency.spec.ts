@@ -87,6 +87,83 @@ test("gives major route families distinct, accessible atmospheres", async ({
   }
 });
 
+test("gives each live-data instrument a recognizable console signal", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1366, height: 900 });
+  await page.route(
+    (url) => url.pathname.startsWith("/api/"),
+    (route) =>
+      route.fulfill({
+        status: 503,
+        contentType: "application/json",
+        body: JSON.stringify({
+          error: {
+            code: "UPSTREAM_UNAVAILABLE",
+            message: "Deterministic instrument-state capture",
+            requestId: "instrument-visual-check",
+            retryable: true,
+          },
+        }),
+      }),
+  );
+  for (const sample of [
+    {
+      path: "/apod?date=2024-01-01",
+      instrument: "apod",
+      signal: "#b69aff",
+      capture: ".date-console",
+    },
+    {
+      path: "/asteroids",
+      instrument: "asteroids",
+      signal: "#ffb65c",
+      capture: ".asteroid-console",
+    },
+    {
+      path: "/space-weather",
+      instrument: "donki",
+      signal: "#ff8bc8",
+      capture: ".weather-console",
+    },
+    {
+      path: "/earth",
+      instrument: "epic",
+      signal: "#5de5c2",
+      capture: ".earth-console",
+    },
+    {
+      path: "/media",
+      instrument: "media",
+      signal: "#83b4ff",
+      capture: ".media-console",
+    },
+  ]) {
+    await page.goto(sample.path);
+    const shell = page.locator(".app-shell");
+    await expect(shell).toHaveAttribute("data-instrument", sample.instrument);
+    expect(
+      await shell.evaluate((element) =>
+        getComputedStyle(element)
+          .getPropertyValue("--instrument-signal")
+          .trim(),
+      ),
+    ).toBe(sample.signal);
+    await expectNoHorizontalOverflow(page);
+    await captureElement(
+      page.locator(sample.capture),
+      `docs/screenshots/instrument-${sample.instrument}.png`,
+    );
+    await page.setViewportSize({ width: 320, height: 800 });
+    await expectNoHorizontalOverflow(page);
+    const controlWidth = await page
+      .locator(sample.capture)
+      .evaluate((element) => element.getBoundingClientRect().width);
+    expect(controlWidth).toBeLessThanOrEqual(320);
+    await page.setViewportSize({ width: 1366, height: 900 });
+  }
+});
+
 test("keeps shared mission patterns aligned across the responsive matrix", async ({
   page,
 }) => {
@@ -200,6 +277,7 @@ test("keeps loading, error, and recovered content panels visually stable", async
   );
   await page.goto("/apod?date=2024-01-01", { waitUntil: "domcontentloaded" });
   const state = page.locator(".state-panel");
+  await expect(state).toHaveClass(/state-panel--loading/);
   await expect(state).toContainText("Loading the selected APOD record");
   await captureElement(state, "docs/screenshots/visual-loading-state.png");
 

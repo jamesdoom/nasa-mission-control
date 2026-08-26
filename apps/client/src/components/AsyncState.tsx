@@ -6,8 +6,8 @@ export function LoadingState({
   detail?: string;
 }) {
   return (
-    <div className="state-panel" role="status">
-      <span className="loader" />
+    <div className="state-panel state-panel--loading" role="status">
+      <span className="loader" aria-hidden="true" />
       <div>
         <strong>{title}</strong>
         <p>{detail}</p>

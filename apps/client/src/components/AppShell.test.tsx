@@ -31,6 +31,30 @@ describe("AppShell reliability behavior", () => {
     );
   });
 
+  it.each([
+    ["/apod", "apod"],
+    ["/asteroids", "asteroids"],
+    ["/space-weather", "donki"],
+    ["/earth", "epic"],
+    ["/media", "media"],
+  ])("identifies the %s data instrument", (path, instrument) => {
+    const router = createMemoryRouter(
+      [
+        {
+          path: "*",
+          element: <AppShell />,
+          children: [{ path: "*", element: <p>Route content</p> }],
+        },
+      ],
+      { initialEntries: [path] },
+    );
+    const { container } = render(<RouterProvider router={router} />);
+    expect(container.querySelector(".app-shell")).toHaveAttribute(
+      "data-instrument",
+      instrument,
+    );
+  });
+
   it("announces and focuses route changes", async () => {
     vi.spyOn(window, "scrollTo").mockImplementation(() => undefined);
     const user = userEvent.setup();

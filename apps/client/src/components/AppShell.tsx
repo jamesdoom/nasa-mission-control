@@ -66,6 +66,7 @@ function titleForPath(pathname: string): string {
 }
 
 type RouteMood = "command" | "mission" | "earth" | "live" | "learning";
+type InstrumentIdentity = "apod" | "asteroids" | "donki" | "epic" | "media";
 
 function moodForPath(pathname: string): RouteMood {
   if (pathname.startsWith("/missions") || pathname.startsWith("/stories"))
@@ -84,6 +85,17 @@ function moodForPath(pathname: string): RouteMood {
   )
     return "learning";
   return "command";
+}
+
+function instrumentForPath(pathname: string): InstrumentIdentity | undefined {
+  const instruments: readonly [string, InstrumentIdentity][] = [
+    ["/apod", "apod"],
+    ["/asteroids", "asteroids"],
+    ["/space-weather", "donki"],
+    ["/earth", "epic"],
+    ["/media", "media"],
+  ];
+  return instruments.find(([route]) => pathname.startsWith(route))?.[1];
 }
 
 const CommandPalette = lazy(() =>
@@ -147,6 +159,7 @@ export function AppShell() {
 
   const routeTitle = titleForPath(location.pathname);
   const routeMood = moodForPath(location.pathname);
+  const instrumentIdentity = instrumentForPath(location.pathname);
 
   useEffect(() => {
     function close(event: MouseEvent) {
@@ -171,6 +184,7 @@ export function AppShell() {
     <div
       className={`app-shell app-shell--${routeMood}`}
       data-route-mood={routeMood}
+      data-instrument={instrumentIdentity}
     >
       <a className="skip-link" href="#main-content">
         Skip to main content

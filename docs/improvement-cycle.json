@@ -114,7 +114,12 @@
       "docs/screenshots/cinematic-mission-320.png",
       "docs/screenshots/cinematic-mission-1366.png",
       "docs/screenshots/cinematic-story-320.png",
-      "docs/screenshots/cinematic-story-1366.png"
+      "docs/screenshots/cinematic-story-1366.png",
+      "docs/screenshots/instrument-apod.png",
+      "docs/screenshots/instrument-asteroids.png",
+      "docs/screenshots/instrument-donki.png",
+      "docs/screenshots/instrument-epic.png",
+      "docs/screenshots/instrument-media.png"
     ],
     "result": "accepted-no-unresolved-regression"
   },
@@ -128,7 +133,7 @@
       "riskReduction": 3,
       "effort": 2,
       "score": 4.5,
-      "nextAction": "Reuse the shared atmosphere and surface tokens before adding route-specific visual code."
+      "nextAction": "Extend the shared instrument and surface tokens before adding route-specific visual code."
     },
     {
       "priority": 2,

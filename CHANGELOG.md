@@ -6,6 +6,8 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Added
 
+- Distinct, tokenized instrument identities for APOD, NeoWs, DONKI, EPIC, and NASA Media with deterministic responsive screenshot evidence.
+- Machine-readable live, stale, and refreshing status hooks plus state-driven loading, degraded, and unavailable presentation.
 - Cinematic mission briefings and sourced story heroes with narrative flight paths, connected chapter transitions, layered evidence captions, refined timelines, and static reduced-motion presentation.
 - A tokenized Mission Control atmosphere with distinct mission, Earth, live-instrument, learning, and command moods, layered starfield depth, and shared readable surfaces.
 
@@ -32,6 +34,8 @@ All notable changes are documented here. This project follows [Semantic Versioni
 - Add rolling compressed-asset trend evidence and an accountable five-domain monthly product review.
 
 ### Changed
+
+- Unify live-data controls, charts, accessible tables, provenance panels, freshness telemetry, and asynchronous states into a shared spacecraft-console presentation.
 
 - Make accessible analysis tables describe their matching chart or timeline, units, timestamps, and evidence origin more explicitly.
 - Count the production `stale-fallback` status directly in reliability trends while retaining current alert and cache thresholds pending a representative rolling sample.

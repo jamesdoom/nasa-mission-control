@@ -24,7 +24,7 @@ test("the improvement-cycle register is current and complete", async () => {
     ["first visit", "missions", "learning", "live data"],
   );
   assert.equal(policy.accessibility.length, 5);
-  assert.equal(policy.visualBaseline.screenshots.length, 16);
+  assert.equal(policy.visualBaseline.screenshots.length, 21);
   assert.ok(policy.limitations.length >= 4);
   policy.backlog.forEach((item, index) => {
     assert.equal(item.priority, index + 1);

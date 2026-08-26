@@ -1679,6 +1679,8 @@ p {
   justify-content: center;
   gap: 1.25rem;
   color: #9db0c3;
+  position: relative;
+  overflow: hidden;
 }
 .state-panel strong {
   color: #fff;
@@ -1691,6 +1693,10 @@ p {
 .state-panel--error {
   border-color: rgba(222, 82, 90, 0.38);
   justify-content: space-between;
+  background:
+    linear-gradient(90deg, rgb(222 82 90 / 0.09), transparent 52%),
+    var(--panel-raised);
+  box-shadow: inset 3px 0 rgb(222 82 90 / 0.8);
 }
 .state-panel small {
   display: block;
@@ -1704,6 +1710,16 @@ p {
   border-top-color: var(--cyan);
   border-radius: 50%;
   animation: spin 1s linear infinite;
+}
+.state-panel--loading {
+  background:
+    linear-gradient(90deg, rgb(70 230 255 / 0.06), transparent 48%),
+    var(--panel-raised);
+  box-shadow: inset 3px 0 var(--instrument-signal, var(--cyan));
+}
+.state-panel--loading .loader {
+  border-top-color: var(--instrument-signal, var(--cyan));
+  box-shadow: 0 0 1rem rgb(var(--instrument-signal-rgb, 70 230 255) / 0.18);
 }
 .upcoming {
   border-top: 1px solid var(--line);
@@ -6366,8 +6382,22 @@ p {
   height: 0.45rem;
   flex: 0 0 auto;
   border-radius: 50%;
-  background: var(--cyan);
-  box-shadow: 0 0 0.75rem var(--cyan);
+  background: var(--instrument-signal, var(--cyan));
+  box-shadow: 0 0 0.75rem var(--instrument-signal, var(--cyan));
+}
+.data-status--stale > p > span:first-child {
+  background: var(--amber);
+  box-shadow: 0 0 0.75rem var(--amber);
+}
+.data-status--refreshing > p > span:first-child {
+  animation: telemetry-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes telemetry-pulse {
+  50% {
+    opacity: 0.42;
+    transform: scale(0.72);
+  }
 }
 
 .provenance-section {
@@ -7233,6 +7263,130 @@ p {
   padding: clamp(1rem, 3vw, 2rem);
   border: 1px solid var(--line);
   background: color-mix(in srgb, var(--panel) 88%, transparent);
+}
+
+/* Spacecraft-inspired instrument layer: identity supports navigation while
+   semantic warning and error colors remain consistent across every feed. */
+.app-shell[data-instrument] {
+  --instrument-signal: #46e6ff;
+  --instrument-signal-rgb: 70 230 255;
+  --instrument-secondary: #3e74ff;
+}
+.app-shell[data-instrument="apod"] {
+  --instrument-signal: #b69aff;
+  --instrument-signal-rgb: 182 154 255;
+  --instrument-secondary: #6b8cff;
+}
+.app-shell[data-instrument="asteroids"] {
+  --instrument-signal: #ffb65c;
+  --instrument-signal-rgb: 255 182 92;
+  --instrument-secondary: #ff7448;
+}
+.app-shell[data-instrument="donki"] {
+  --instrument-signal: #ff8bc8;
+  --instrument-signal-rgb: 255 139 200;
+  --instrument-secondary: #ffb84f;
+}
+.app-shell[data-instrument="epic"] {
+  --instrument-signal: #5de5c2;
+  --instrument-signal-rgb: 93 229 194;
+  --instrument-secondary: #49a8ff;
+}
+.app-shell[data-instrument="media"] {
+  --instrument-signal: #83b4ff;
+  --instrument-signal-rgb: 131 180 255;
+  --instrument-secondary: #9c7cff;
+}
+.app-shell[data-instrument] main {
+  background-image:
+    linear-gradient(
+      180deg,
+      rgb(var(--instrument-signal-rgb) / 0.035),
+      transparent 22rem
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 79px,
+      rgb(var(--instrument-signal-rgb) / 0.015) 80px
+    );
+}
+.app-shell[data-instrument]
+  :is(
+    .date-console,
+    .asteroid-console,
+    .weather-console,
+    .earth-console,
+    .media-console,
+    .analysis-panel
+  ) {
+  border-color: rgb(var(--instrument-signal-rgb) / 0.28);
+  background:
+    linear-gradient(
+      135deg,
+      rgb(var(--instrument-signal-rgb) / 0.075),
+      transparent 38%
+    ),
+    color-mix(in srgb, var(--panel) 92%, transparent);
+  box-shadow:
+    inset 0 1px rgb(var(--instrument-signal-rgb) / 0.16),
+    0 18px 48px rgb(0 0 0 / 0.18);
+}
+.app-shell[data-instrument] :is(input, select, button):focus-visible {
+  outline-color: var(--instrument-signal);
+}
+.app-shell[data-instrument] .analysis-panel {
+  position: relative;
+}
+.app-shell[data-instrument] .analysis-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    var(--instrument-signal),
+    transparent 82%
+  );
+}
+.app-shell[data-instrument] .analysis-bars > span {
+  background: linear-gradient(
+    180deg,
+    var(--instrument-signal),
+    color-mix(in srgb, var(--instrument-secondary) 34%, transparent)
+  );
+  box-shadow: 0 -0.3rem 1rem rgb(var(--instrument-signal-rgb) / 0.16);
+}
+.app-shell[data-instrument] .analysis-timeline span {
+  border-color: var(--instrument-signal);
+  box-shadow: 0 0 0.75rem rgb(var(--instrument-signal-rgb) / 0.14);
+}
+.app-shell[data-instrument] .table-scroll {
+  border: 1px solid rgb(var(--instrument-signal-rgb) / 0.2);
+  scrollbar-color: var(--instrument-signal) var(--panel);
+}
+.app-shell[data-instrument] .table-scroll table {
+  min-width: 100%;
+}
+.app-shell[data-instrument] .table-scroll caption {
+  padding-inline: 0.9rem;
+  color: var(--instrument-signal);
+  font-family: "Space Mono", monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.app-shell[data-instrument] .table-scroll thead {
+  background: rgb(var(--instrument-signal-rgb) / 0.1);
+}
+.app-shell[data-instrument] .table-scroll tbody tr:hover {
+  background: rgb(var(--instrument-signal-rgb) / 0.045);
+}
+.app-shell[data-instrument] .data-status > .provenance-panel {
+  border-color: rgb(var(--instrument-signal-rgb) / 0.28);
+  box-shadow: inset 3px 0 var(--instrument-signal);
+}
+.app-shell[data-instrument] .data-status--stale > .provenance-panel {
+  border-color: rgb(255 184 79 / 0.42);
+  box-shadow: inset 3px 0 var(--amber);
 }
 .evidence-class {
   display: inline-flex;

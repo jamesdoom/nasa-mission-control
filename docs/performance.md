@@ -97,3 +97,5 @@ after the second failure; see [operational-evidence-phase-2.md](operational-evid
 6. Compare production results after the next deployment has accumulated a useful sample.
 
 The dashboard APOD media already reserves layout space, requests its visible image eagerly with high fetch priority, uses responsive candidates when NASA provides an HD URL, and keeps other route modules code-split.
+
+The Phase 3 spacecraft-data presentation build on 2026-08-26 measures 184.6 kB total JavaScript gzip and 24.8 kB CSS gzip. It retains 5.4 kB of JavaScript and 1.2 kB of CSS budget headroom by using one shared instrument-token layer rather than five route-specific component systems.

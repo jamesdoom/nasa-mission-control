@@ -18,8 +18,15 @@ export function DataStatus({
     .slice(0, 16)
     .replace("T", " ");
   const stale = isStaleResponse(data);
+  const statusClassName = [
+    "data-status",
+    stale ? "data-status--stale" : "data-status--live",
+    refreshing ? "data-status--refreshing" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
   return (
-    <div className="data-status">
+    <div className={statusClassName} data-freshness={stale ? "stale" : "live"}>
       <p role="status">
         <span aria-hidden="true" />
         <span>
