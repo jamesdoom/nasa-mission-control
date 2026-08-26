@@ -6,6 +6,7 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Added
 
+- Add deterministic visual baselines and overflow checks across mobile, tablet, laptop, large-display, and 200%-zoom-equivalent layouts.
 - Add an owned monthly editorial register, measurable trivia/clarity/citation/freshness targets, and an evidence-scored existing-content backlog.
 - Add release and scheduled audits for overdue reviews, missing citations, duplicate trivia, stale scoring, readability, coverage, and broken or unreachable source links.
 - Add consistent freshness, interpretation, limitation, and official-source guidance to every existing live-data journey.
@@ -24,6 +25,7 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Changed
 
+- Standardize section rhythm, page headings, filters, source/evidence panels, tables, and async states with shared responsive design tokens.
 - Clarify source-specific loading and empty states, catalog-versus-observed asteroid approaches, and observed DONKI events versus modeled analysis fields.
 - Expand learning completion summaries and educator print sheets with semantic evidence status, delayed-retrieval prompts, source observation space, and explicit limits on mastery claims.
 - Replace the general client query dependency with a bounded product-specific cache, recovering 10.3 kB gzip while preserving retries, refetch, freshness, placeholder data, and timestamps.

@@ -31,6 +31,14 @@
   --amber: #ffb340;
   --muted: #8b9cb1;
   --line: rgba(139, 174, 207, 0.16);
+  --line-strong: rgba(139, 174, 207, 0.3);
+  --panel: #081321;
+  --panel-raised: #091522;
+  --panel-padding: clamp(1.25rem, 3vw, 2rem);
+  --section-space: clamp(3.5rem, 7vw, 7rem);
+  --content-leading: 1.65;
+  --reading-width: 68ch;
+  --control-height: 44px;
   --immersion-cyan: rgba(72, 217, 239, 0.24);
   --immersion-blue: rgba(49, 94, 229, 0.2);
   --immersion-shadow: rgba(0, 3, 10, 0.72);
@@ -861,7 +869,7 @@ main {
 .section {
   max-width: 1380px;
   margin: 0 auto;
-  padding: clamp(4rem, 8vw, 8rem) clamp(1.25rem, 5vw, 5rem);
+  padding: var(--section-space) clamp(1.25rem, 5vw, 5rem);
 }
 .hero {
   max-width: none;
@@ -1300,12 +1308,18 @@ p {
   align-items: end;
   justify-content: space-between;
   gap: 2rem;
-  margin-bottom: 2rem;
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
 }
 .section-heading h2 {
   font-size: clamp(2rem, 4vw, 3.4rem);
   letter-spacing: -0.04em;
   margin: 0;
+}
+.section-heading > p {
+  max-width: 44ch;
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: var(--content-leading);
 }
 .text-link {
   color: var(--cyan);
@@ -1474,9 +1488,9 @@ p {
   margin-top: 1rem;
 }
 .state-panel {
-  border: 1px solid var(--line);
-  background: #09121f;
-  padding: 2rem;
+  border: 1px solid var(--line-strong);
+  background: var(--panel-raised);
+  padding: var(--panel-padding);
   min-height: 150px;
   display: flex;
   align-items: center;
@@ -1489,6 +1503,8 @@ p {
 }
 .state-panel p {
   margin: 0.4rem 0 0;
+  max-width: var(--reading-width);
+  line-height: var(--content-leading);
 }
 .state-panel--error {
   border-color: rgba(222, 82, 90, 0.38);
@@ -1936,7 +1952,7 @@ p {
   pointer-events: none;
 }
 .page-intro {
-  margin-bottom: 3rem;
+  margin-bottom: clamp(2.25rem, 5vw, 3.5rem);
 }
 .discovery-intro {
   padding-top: clamp(4rem, 9vw, 8rem);
@@ -2091,6 +2107,8 @@ p {
 }
 .page-intro h1 {
   font-size: clamp(3rem, 6vw, 6rem);
+  max-width: 18ch;
+  text-wrap: balance;
 }
 .date-console {
   border: 1px solid var(--line);
@@ -2654,10 +2672,10 @@ p {
   color: #8899aa;
 }
 .source-note {
-  margin-top: 2rem;
+  margin-top: clamp(1.5rem, 3vw, 2rem);
   border-left: 2px solid var(--cyan);
-  background: #09131f;
-  padding: 1.5rem 2rem;
+  background: var(--panel-raised);
+  padding: var(--panel-padding);
   color: #8da0b3;
 }
 .source-note strong {
@@ -2665,11 +2683,24 @@ p {
 }
 .source-note p {
   margin: 0.5rem 0 0;
-  line-height: 1.7;
+  max-width: var(--reading-width);
+  line-height: var(--content-leading);
 }
 .source-note .text-link {
   display: inline-block;
   margin-top: 1rem;
+}
+.mission-filters select,
+.search-facet-filter select,
+.date-console input,
+.media-console input {
+  min-width: 0;
+  min-height: var(--control-height);
+}
+.weather-filters,
+.search-source-filter,
+.search-facet-filter {
+  min-width: 0;
 }
 .amber {
   color: var(--amber);
@@ -5667,6 +5698,8 @@ p {
     border-top: 1px solid var(--line);
   }
   .section {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
     padding-left: 1.15rem;
     padding-right: 1.15rem;
   }
@@ -5685,6 +5718,7 @@ p {
   .section-heading {
     align-items: start;
     flex-direction: column;
+    gap: 0.85rem;
   }
   .apod-visual {
     min-height: 340px;
@@ -6986,6 +7020,7 @@ p {
 .table-scroll {
   overflow-x: auto;
   margin-top: 1.25rem;
+  overscroll-behavior-inline: contain;
 }
 .table-scroll table {
   width: 100%;
@@ -7000,9 +7035,10 @@ p {
 }
 .table-scroll th,
 .table-scroll td {
-  padding: 0.7rem;
+  padding: clamp(0.7rem, 1.5vw, 1rem);
   border: 1px solid var(--line);
   vertical-align: top;
+  line-height: 1.5;
 }
 .table-scroll thead {
   background: color-mix(in srgb, var(--cyan) 9%, transparent);
