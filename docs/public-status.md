@@ -14,6 +14,8 @@
 
 A green application health response means the same-origin Express API is responding. It does not prove APOD, NeoWs, DONKI, EPIC, GIBS, the NASA Image and Video Library, or every image asset is available.
 
+The owned improvement-cycle register is checked during monthly review and release preflight. It records technical journey and accessibility coverage, current evidence paths, backlog scores, and unresolved limits. It is an operating control—not evidence of user satisfaction, screen-reader conformance, uptime, or learning effectiveness.
+
 ## Degraded behavior
 
 Curated routes and a previously installed offline shell can remain usable during upstream or network disruption. Live API requests are never served by the service worker. A bounded normalized fallback is labeled `x-cache: STALE`, `x-data-status: stale-fallback`, and HTTP `Warning: 110`; it must not be described as a fresh NASA retrieval.

@@ -5,6 +5,10 @@ const files = {
   release: await readFile(".github/workflows/release.yml", "utf8"),
   preview: await readFile(".github/workflows/preview-smoke.yml", "utf8"),
   trends: await readFile(".github/workflows/reliability-trends.yml", "utf8"),
+  monthly: await readFile(
+    ".github/workflows/monthly-product-review.yml",
+    "utf8",
+  ),
   operations: await readFile("docs/operations.md", "utf8"),
 };
 
@@ -79,6 +83,21 @@ const requirements = [
     "performance restores asset trends",
     await readFile(".github/workflows/production-performance.yml", "utf8"),
     "asset-budget-trend.json",
+  ],
+  [
+    "monthly review validates the improvement cycle",
+    files.monthly,
+    "npm run review:cycle",
+  ],
+  [
+    "monthly review retains improvement evidence",
+    files.monthly,
+    "improvement-cycle-${{ github.run_number }}",
+  ],
+  [
+    "monthly review covers every accessibility mode",
+    files.monthly,
+    "keyboard, screen reader, zoom/reflow, high contrast, reduced motion",
   ],
 ];
 

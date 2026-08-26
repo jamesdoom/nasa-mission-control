@@ -6,6 +6,8 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Added
 
+- Add a machine-checked, owned improvement-cycle register covering usability journeys, accessibility modes, operating evidence, limitations, and backlog scoring.
+- Add monthly and release gates that retain improvement evidence and reject stale ownership, dates, evidence paths, or score arithmetic.
 - Add shared UTC freshness, update-expectation, evidence-class, and stale-fallback guidance across APOD, NeoWs, DONKI, EPIC, and NASA Media experiences.
 - Expand the four existing trivia topics to 96 reviewed questions and use bounded browser-local history to prioritize unseen questions on repeat runs.
 - Add accessible mission and story evidence paths plus direct handoffs from reviewed content into the matching guided-learning tracks.

@@ -16,7 +16,7 @@ These are maintenance targets, not a support contract or guaranteed response tim
 
 ## Monthly evidence review
 
-The `Monthly product review` workflow opens one issue on the third day of each month and assigns the repository owner. The owner links evidence and completes all five domains:
+The `Monthly product review` workflow opens one issue on the third day of each month and assigns the repository owner. Before opening it, `npm run review:cycle` verifies the current owned register, evidence paths, journey and accessibility coverage, limitations, dates, and backlog arithmetic. The owner links evidence and completes all six domains:
 
 | Domain           | Evidence                                                                                      | Decision owner                                | Required output                                             |
 | ---------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------- | ----------------------------------------------------------- |
@@ -25,8 +25,9 @@ The `Monthly product review` workflow opens one issue on the third day of each m
 | Accessibility    | Axe suite, keyboard/screen-reader/reflow session, public reports                              | Maintainer                                    | Barrier severity and verified remediation plan              |
 | Content accuracy | Editorial-health artifact, mission review, source changes, learning claims                    | Content reviewer (maintainer until delegated) | Corrected facts, review dates, targets, or no-change record |
 | User feedback    | Structured issues and usability-session notes                                                 | Product owner (repository owner)              | Themes, rejected assumptions, prioritized candidates        |
+| Visual quality   | Deterministic screenshots, responsive matrix, and reviewed diffs                              | Frontend maintainer                           | Accepted baseline or owned regression action                |
 
-Update `public-status.md`, limitations, privacy, accessibility status, and the changelog whenever the evidence changes their claims. Close the review issue only after updating `improvement-backlog.md` or recording that evidence did not justify reprioritization. Every stable or release-candidate release repeats the backlog scoring and links the applicable monthly review.
+Update `improvement-cycle.json`, `public-status.md`, limitations, privacy, accessibility status, and the changelog whenever evidence changes their claims. Close the review issue only after updating `improvement-backlog.md` or recording that evidence did not justify reprioritization. Every stable or release-candidate release repeats the backlog scoring and links the applicable monthly review.
 
 The monthly workflow runs `npm run review:content:links` before opening the issue and retains its JSON evidence for 90 days; the assigned review issue preserves the durable decisions and links. A definite `404` or `410`, an overdue review, a missing citation, or duplicate trivia fails the workflow after the evidence and assigned issue are preserved. Transient timeouts, throttling, and upstream `5xx` responses remain visible warnings for human review; they do not falsely prove that an editorial source is broken. Update `docs/editorial-maintenance.json` during each review: record the review and next-due dates, re-score every backlog item from traffic, usability evidence, content risk, and effort, and record the release context. The release gate rejects evidence that was scored before its latest editorial review.
 

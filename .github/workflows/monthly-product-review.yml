@@ -21,6 +21,10 @@ jobs:
         id: editorial-audit
         continue-on-error: true
         run: npm run review:content:links
+      - name: Validate owned evidence, usability coverage, accessibility modes, and backlog scoring
+        id: improvement-cycle
+        continue-on-error: true
+        run: npm run review:cycle
       - name: Retain the monthly editorial evidence
         if: always()
         uses: actions/upload-artifact@v6
@@ -28,10 +32,18 @@ jobs:
           name: editorial-health-${{ github.run_number }}
           path: artifacts/editorial-health.json
           retention-days: 90
+      - name: Retain the improvement-cycle evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: improvement-cycle-${{ github.run_number }}
+          path: artifacts/improvement-cycle.json
+          retention-days: 90
       - name: Open one accountable review issue for this month
         uses: actions/github-script@v9
         env:
           EDITORIAL_AUDIT_OUTCOME: ${{ steps.editorial-audit.outcome }}
+          IMPROVEMENT_CYCLE_OUTCOME: ${{ steps.improvement-cycle.outcome }}
         with:
           script: |
             const month = new Date().toISOString().slice(0, 7)
@@ -51,12 +63,13 @@ jobs:
               body: [
                 'Use `docs/continuous-improvement.md` and attach links—not private visitor data.',
                 `Editorial audit: **${process.env.EDITORIAL_AUDIT_OUTCOME}**. Review the retained \`editorial-health-${context.runNumber}\` artifact, including warnings that did not fail the run.`,
+                `Improvement cycle: **${process.env.IMPROVEMENT_CYCLE_OUTCOME}**. Review \`improvement-cycle-${context.runNumber}\` for owners, evidence coverage, pending manual sessions, and scoring.`,
                 '',
                 '- [ ] Reliability: link the latest Reliability trends summary; review upstream categories, cache/stale ratios, validation failures, latency, and incidents',
-                '- [ ] Performance: desktop/mobile evidence and budget movement',
-                '- [ ] Accessibility: automated checks, manual keyboard/screen-reader session, reports',
+                '- [ ] Performance and visuals: route trends, desktop/mobile evidence, asset headroom, and deterministic screenshot diffs',
+                '- [ ] Accessibility: keyboard, screen reader, zoom/reflow, high contrast, reduced motion, automated checks, and reports; blockers outrank cosmetic work',
                 '- [ ] Content: review overdue dates, broken/unreachable sources, missing citations, duplicate trivia, clarity/freshness targets, mission deadlines, terminology, and learning claims',
-                '- [ ] Feedback: triage new feedback/accessibility issues and record themes',
+                '- [ ] Usability and feedback: first visit, missions, learning, and live-data session evidence; triage reports and record themes',
                 '- [ ] Backlog: update evidence, impact, confidence, effort, owner, and next action',
                 '- [ ] Public status: update `docs/public-status.md` if capabilities or limits changed',
                 '- [ ] Governance: confirm privacy, accessibility, changelog, and release documentation remain current',
@@ -64,5 +77,5 @@ jobs:
               ].join('\n'),
             })
       - name: Fail after preserving and assigning actionable evidence
-        if: steps.editorial-audit.outcome == 'failure'
+        if: steps.editorial-audit.outcome == 'failure' || steps.improvement-cycle.outcome == 'failure'
         run: exit 1

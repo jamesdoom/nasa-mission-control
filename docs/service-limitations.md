@@ -18,4 +18,10 @@
   must export backups for portability.
 - The offline shell includes curated routes and previously used static assets;
   live `/api` data is deliberately never cached by the service worker.
+- Automated accessibility and deterministic browser checks do not prove
+  screen-reader usability or comprehension. No multi-participant or completed
+  manual screen-reader sample is currently claimed.
+- Reliability and route-performance history has not yet accumulated a complete
+  representative 30-day window, and the JavaScript build currently passes its
+  aggregate ceiling without rounded headroom.
 - GitHub-scheduled monitoring can be delayed and is not an SLA or 24/7 pager.

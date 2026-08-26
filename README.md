@@ -48,6 +48,7 @@ An original, responsive command-center experience for exploring NASA imagery and
 - URL-backed Asteroid Comparison Lab for miss distance, upper diameter estimate, and Earth-relative velocity
 - Plain-language DONKI measurement guide separating flare class, modeled CME speed, and observed Kp activity
 - Consistent UTC retrieval timestamps, source-specific update expectations, evidence classes, and prominent stale-fallback guidance across live-data routes
+- An owned, machine-checked monthly refinement cycle spanning usability, accessibility, visual/performance trends, reliability, content, feedback, limitations, and backlog scoring
 - Nine guided discovery paths connecting live instruments, NASA media searches, and source-checked mission history
 - Contextual mission-record actions that continue into related observations and guided investigations
 - Saveable guided paths with organized Flight Log collection counts and section shortcuts
@@ -305,6 +306,7 @@ The monthly `Mission status review` workflow checks official source availability
 55. **Complete — Mission and story presentation phase 2:** added consistent in-page evidence paths, clearer objective/result/status hierarchy, standardized evidence captions and definitions, concise provenance, guided-learning handoffs, bounded reading measures, and responsive mission/story regression evidence.
 56. **Complete — Trivia depth and learning quality phase 3:** expanded each existing trivia topic from 16 to 24 reviewed questions with stronger specialist and commander coverage, balanced answers, browser-local unseen-question priority, richer scientific explanations, and strengthened learning objectives, reflections, and completion synthesis.
 57. **Complete — Live-data clarity and reliability experience phase 4:** standardized UTC freshness and update expectations, separated observed, modeled, calculated, and curated evidence, strengthened chart/table equivalence, made stale fallback unmistakable, and corrected durable stale-status aggregation while retaining thresholds until the sample is sufficient.
+58. **Complete — Evidence-led refinement cycle phase 5:** added an owned evidence register and monthly/release gate across four usability journeys, five accessibility modes, visual and route trends, content, feedback, reliability, performance, known limits, and a release-re-scored next roadmap without inventing participant results.
 
 ## Screenshots
 
