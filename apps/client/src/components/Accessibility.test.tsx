@@ -21,6 +21,7 @@ import { SearchPage } from "../pages/SearchPage";
 import { MissionMapPage } from "../pages/MissionMapPage";
 import { StoryCollectionPage } from "../pages/StoryCollectionPage";
 import { LearningCenterPage } from "../pages/LearningCenterPage";
+import { MissionDetailPage } from "../pages/MissionDetailPage";
 
 const apod: Apod = {
   date: "2024-01-01",
@@ -288,6 +289,16 @@ describe("automated accessibility", () => {
     const router = createMemoryRouter(
       [{ path: "/stories/:storyId", element: <StoryCollectionPage /> }],
       { initialEntries: ["/stories/sun-earth-connection"] },
+    );
+    const { container } = render(<RouterProvider router={router} />);
+    const results = await axe(container, jsdomAxeOptions);
+    expect(results.violations).toEqual([]);
+  });
+
+  it("finds no detectable violations in a complete mission evidence record", async () => {
+    const router = createMemoryRouter(
+      [{ path: "/missions/:missionSlug", element: <MissionDetailPage /> }],
+      { initialEntries: ["/missions/juno"] },
     );
     const { container } = render(<RouterProvider router={router} />);
     const results = await axe(container, jsdomAxeOptions);

@@ -1321,6 +1321,17 @@ p {
   color: var(--muted);
   line-height: var(--content-leading);
 }
+.reading-path {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.reading-path a {
+  min-height: var(--control-height);
+  display: inline-flex;
+  align-items: center;
+}
 .text-link {
   color: var(--cyan);
   text-decoration: none;
@@ -4778,7 +4789,6 @@ p {
 .mission-overview--evidence h3 {
   margin-bottom: 1rem;
 }
-.mission-overview--evidence > div:last-child p,
 .mission-overview--evidence > div:last-child li {
   line-height: 1.55;
 }
@@ -4851,6 +4861,9 @@ p {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+:target {
+  scroll-margin-top: 6rem;
 }
 .mission-timeline li {
   position: relative;

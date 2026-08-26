@@ -189,3 +189,42 @@ test("keeps empty and stale-degraded guidance aligned and actionable", async ({
     "docs/screenshots/visual-stale-degraded-state.png",
   );
 });
+
+test("keeps mission and story evidence paths readable at long-form widths", async ({
+  page,
+}) => {
+  for (const width of [320, 768, 1366]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/missions/juno");
+    const missionPath = page.getByRole("navigation", {
+      name: "Mission evidence path",
+    });
+    await expect(missionPath.getByRole("link")).toHaveCount(4);
+    await expectNoHorizontalOverflow(page);
+
+    await page.goto("/stories/mars-habitability");
+    const storyPath = page.getByRole("navigation", {
+      name: "Story evidence path",
+    });
+    await expect(storyPath.getByRole("link")).toHaveCount(4);
+    await expectNoHorizontalOverflow(page);
+    const widestParagraph = await page
+      .locator(".story-chapters p")
+      .evaluateAll((paragraphs) =>
+        Math.max(
+          ...paragraphs.map((item) => item.getBoundingClientRect().width),
+        ),
+      );
+    expect(widestParagraph).toBeLessThanOrEqual(760);
+
+    if (width === 320 || width === 1366) {
+      await page.locator(".skip-link").evaluate((item) => {
+        item.style.visibility = "hidden";
+      });
+      await captureElement(
+        page.locator("#story-chapters"),
+        `docs/screenshots/phase-2-story-${String(width)}.png`,
+      );
+    }
+  }
+});

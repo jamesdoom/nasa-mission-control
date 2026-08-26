@@ -9,7 +9,11 @@ import { getMissionEnrichment } from "../data/educationalEnrichment";
 
 const missionDiscovery: Record<
   string,
-  { journey: string; instrument: string; instrumentLabel: string }
+  {
+    journey: string;
+    instrument: string;
+    instrumentLabel: string;
+  }
 > = {
   "apollo-11": {
     journey: "moon-then-now",
@@ -128,17 +132,28 @@ export function MissionDetailPage() {
             title="Reviewed Mission Archive record"
             summary={`Source review ${mission.verifiedAt}`}
             details={[
-              "This narrative is maintained locally and is not a live NASA mission-status feed.",
-              `Its facts and timeline were last checked against the linked official NASA sources on ${mission.verifiedAt}.`,
-              `The next scheduled review is due ${getMissionReviewDueDate(mission)}; source links remain available below for direct verification.`,
+              `Curated facts and timeline checked ${mission.verifiedAt}; next review due ${getMissionReviewDueDate(mission)}. This is not a live status feed.`,
             ]}
           />
-          <section className="mission-overview">
+          <nav
+            className="source-note reading-path"
+            aria-label="Mission evidence path"
+          >
+            <a href="#mission-brief">Brief</a>
+            <a href="#mission-evidence">Evidence</a>
+            <a href="#mission-timeline">Timeline</a>
+            <a href="#mission-sources">Sources</a>
+          </nav>
+          <section className="mission-overview" id="mission-brief">
             <div>
               <p className="eyebrow">Mission brief</p>
               <h2>Why it mattered</h2>
               <p>{mission.overview}</p>
-              <blockquote>{mission.objective}</blockquote>
+              <blockquote>
+                <strong>Mission objective</strong>
+                <br />
+                <span>{mission.objective}</span>
+              </blockquote>
             </div>
             <dl>
               {mission.facts.map((fact) => (
@@ -180,16 +195,19 @@ export function MissionDetailPage() {
                 </dl>
               </div>
               <div>
-                <h3>Results and continuing status</h3>
+                <span className="evidence-badge evidence-badge--curated">
+                  Curated record
+                </span>
+                <h3>What the evidence established</h3>
                 <ul>
                   {enrichment.results.map((result) => (
                     <li key={result}>{result}</li>
                   ))}
                 </ul>
-                <p>
+                <aside className="source-note">
                   <strong>Status at the latest source review:</strong>{" "}
                   {enrichment.statusNote}
-                </p>
+                </aside>
               </div>
             </section>
           ) : null}
@@ -215,7 +233,7 @@ export function MissionDetailPage() {
               </dl>
             </aside>
           ) : null}
-          <section className="mission-timeline">
+          <section className="mission-timeline" id="mission-timeline">
             <div className="section-heading">
               <div>
                 <p className="kicker">
@@ -281,14 +299,12 @@ export function MissionDetailPage() {
               </div>
             </section>
           ) : null}
-          <aside className="mission-sources">
+          <aside className="mission-sources" id="mission-sources">
             <div>
-              <strong>Curated record</strong>
+              <strong>Official sources</strong>
               <p>
-                This page is maintained locally, not generated from live
-                telemetry. Status and facts were last checked against official
-                NASA sources on {mission.verifiedAt}. The next scheduled status
-                review is due by {getMissionReviewDueDate(mission)}.
+                NASA records checked {mission.verifiedAt}. Next scheduled status
+                review: {getMissionReviewDueDate(mission)}.
               </p>
             </div>
             <ul>

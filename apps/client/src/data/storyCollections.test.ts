@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { storyCollectionById, storyCollections } from "./storyCollections";
+import { learningTracks } from "./learningTracks";
 
 describe("source-checked story collections", () => {
   it("provides unique four-chapter narratives with official sources", () => {
@@ -15,6 +16,9 @@ describe("source-checked story collections", () => {
       expect(
         new Set(story.chapters.map((chapter) => chapter.kind)).size,
       ).toBeGreaterThan(1);
+      expect(
+        learningTracks.some((track) => track.id === story.learningTrackId),
+      ).toBe(true);
       for (const source of story.sources) {
         expect(new URL(source.url).hostname.endsWith("nasa.gov")).toBe(true);
       }

@@ -25,6 +25,12 @@ describe("StoryCollectionPage", () => {
       }),
     ).toBeVisible();
     expect(screen.getAllByRole("link", { name: /NASA/ })).toHaveLength(3);
+    expect(
+      screen.getByRole("navigation", { name: "Story evidence path" }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole("link", { name: "Continue in guided learning" }),
+    ).toHaveAttribute("href", "/learn?track=mars-evidence");
   });
 
   it("offers recovery for an unknown story", () => {

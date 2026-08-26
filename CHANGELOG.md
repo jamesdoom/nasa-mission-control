@@ -6,6 +6,7 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Added
 
+- Add accessible mission and story evidence paths plus direct handoffs from reviewed content into the matching guided-learning tracks.
 - Add deterministic visual baselines and overflow checks across mobile, tablet, laptop, large-display, and 200%-zoom-equivalent layouts.
 - Add an owned monthly editorial register, measurable trivia/clarity/citation/freshness targets, and an evidence-scored existing-content backlog.
 - Add release and scheduled audits for overdue reviews, missing citations, duplicate trivia, stale scoring, readability, coverage, and broken or unreachable source links.
@@ -25,6 +26,7 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Changed
 
+- Standardize mission objectives, curated results, status notes, story evidence captions, definitions, sources, and long-form reading measures.
 - Standardize section rhythm, page headings, filters, source/evidence panels, tables, and async states with shared responsive design tokens.
 - Clarify source-specific loading and empty states, catalog-versus-observed asteroid approaches, and observed DONKI events versus modeled analysis fields.
 - Expand learning completion summaries and educator print sheets with semantic evidence status, delayed-retrieval prompts, source observation space, and explicit limits on mastery claims.

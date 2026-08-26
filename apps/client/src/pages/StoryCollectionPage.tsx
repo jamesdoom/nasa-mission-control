@@ -56,15 +56,24 @@ export function StoryCollectionPage() {
           title="Source-checked narrative collection"
           summary={`Reviewed ${story.verifiedAt} · ${String(story.sources.length)} official NASA sources`}
           details={[
-            "The explanatory sequence is maintained by this project; it is not a NASA-authored lesson or a live mission-status feed.",
-            "Each chapter labels whether its destination is live, latest available, curated, or calculated.",
-            "Claims are deliberately bounded; follow the official sources below for the full scientific context.",
+            "Curated here, not a live NASA status feed. Chapter labels identify the evidence class; official context follows below.",
           ]}
         />
       </section>
 
+      <nav
+        className="section source-note reading-path"
+        aria-label="Story evidence path"
+      >
+        <a href="#story-chapters">Chapters</a>
+        <a href="#story-synthesis">Synthesis</a>
+        <a href="#story-timeline">Chronology</a>
+        <a href="#story-sources">Sources</a>
+      </nav>
+
       <section
         className="section story-chapters"
+        id="story-chapters"
         aria-labelledby="chapters-title"
       >
         <div className="section-heading">
@@ -76,8 +85,7 @@ export function StoryCollectionPage() {
             <h2 id="chapters-title">Follow the story in four chapters</h2>
           </div>
           <p>
-            Open each chapter in order or return later using your browser
-            history.
+            Read in sequence, then carry one bounded claim into the next step.
           </p>
         </div>
         <ol>
@@ -99,10 +107,9 @@ export function StoryCollectionPage() {
                 <p>{chapter.description}</p>
                 {enrichment?.captions[index] ? (
                   <p>
-                    <small>
-                      <strong>Evidence caption:</strong>{" "}
-                      {enrichment.captions[index]}
-                    </small>
+                    <strong>Evidence caption</strong>
+                    <br />
+                    <span>{enrichment.captions[index]}</span>
                   </p>
                 ) : null}
                 <div className="story-chapter__takeaway">
@@ -121,6 +128,7 @@ export function StoryCollectionPage() {
       {enrichment ? (
         <section
           className="section story-timeline"
+          id="story-synthesis"
           aria-labelledby="story-conclusion-title"
         >
           <div>
@@ -144,6 +152,7 @@ export function StoryCollectionPage() {
 
       <section
         className="section story-timeline"
+        id="story-timeline"
         aria-labelledby="story-timeline-title"
       >
         <div>
@@ -169,6 +178,7 @@ export function StoryCollectionPage() {
 
       <section
         className="section story-sources"
+        id="story-sources"
         aria-labelledby="story-sources-title"
       >
         <div>
@@ -187,6 +197,11 @@ export function StoryCollectionPage() {
               </a>
             </li>
           ))}
+          <li>
+            <Link to={`/learn?track=${story.learningTrackId}`}>
+              Continue in guided learning <span aria-hidden="true">→</span>
+            </Link>
+          </li>
         </ul>
       </section>
     </>

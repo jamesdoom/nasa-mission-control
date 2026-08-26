@@ -8,6 +8,7 @@ export type StoryCollection = {
   summary: string;
   whyItMatters: string;
   duration: string;
+  learningTrackId: string;
   chapters: {
     kind: StoryEvidenceKind;
     label: string;
@@ -32,6 +33,7 @@ export const storyCollections: StoryCollection[] = [
     whyItMatters:
       "Habitability is not evidence that life existed. It asks whether an environment had ingredients such as persistent water, useful chemistry, and energy that could have supported organisms.",
     duration: "12–18 minutes",
+    learningTrackId: "mars-evidence",
     chapters: [
       {
         kind: "curated",
@@ -126,6 +128,7 @@ export const storyCollections: StoryCollection[] = [
     whyItMatters:
       "A solar flare, a coronal mass ejection, and a geomagnetic storm describe different physical events. Their records may be connected, but none is a single danger score.",
     duration: "10–15 minutes",
+    learningTrackId: "sun-earth",
     chapters: [
       {
         kind: "curated",
@@ -220,6 +223,7 @@ export const storyCollections: StoryCollection[] = [
     whyItMatters:
       "No telescope sees the whole universe. Orbit, mirror design, instruments, wavelength coverage, and observing strategy determine which questions an observatory can answer.",
     duration: "12–16 minutes",
+    learningTrackId: "cosmic-observatories",
     chapters: [
       {
         kind: "latest",
