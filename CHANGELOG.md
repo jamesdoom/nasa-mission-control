@@ -6,6 +6,8 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Added
 
+- Add an owned monthly editorial register, measurable trivia/clarity/citation/freshness targets, and an evidence-scored existing-content backlog.
+- Add release and scheduled audits for overdue reviews, missing citations, duplicate trivia, stale scoring, readability, coverage, and broken or unreachable source links.
 - Add consistent freshness, interpretation, limitation, and official-source guidance to every existing live-data journey.
 - Preserve and announce explicitly stale NASA fallbacks when current upstream data is unavailable.
 - Add source-reviewed instrument, result, continuing-status, evidence-caption, terminology, reflection, and completion content across every existing mission, science story, and learning track.

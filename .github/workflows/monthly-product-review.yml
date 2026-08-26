@@ -13,8 +13,25 @@ jobs:
   open-review:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - name: Audit content freshness, citations, duplication, clarity, and sources
+        id: editorial-audit
+        continue-on-error: true
+        run: npm run review:content:links
+      - name: Retain the monthly editorial evidence
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: editorial-health-${{ github.run_number }}
+          path: artifacts/editorial-health.json
+          retention-days: 90
       - name: Open one accountable review issue for this month
         uses: actions/github-script@v9
+        env:
+          EDITORIAL_AUDIT_OUTCOME: ${{ steps.editorial-audit.outcome }}
         with:
           script: |
             const month = new Date().toISOString().slice(0, 7)
@@ -33,11 +50,12 @@ jobs:
               assignees: [context.repo.owner],
               body: [
                 'Use `docs/continuous-improvement.md` and attach links—not private visitor data.',
+                `Editorial audit: **${process.env.EDITORIAL_AUDIT_OUTCOME}**. Review the retained \`editorial-health-${context.runNumber}\` artifact, including warnings that did not fail the run.`,
                 '',
                 '- [ ] Reliability: link the latest Reliability trends summary; review upstream categories, cache/stale ratios, validation failures, latency, and incidents',
                 '- [ ] Performance: desktop/mobile evidence and budget movement',
                 '- [ ] Accessibility: automated checks, manual keyboard/screen-reader session, reports',
-                '- [ ] Content: run `npm run review:content`; review inventory, mission deadlines, source changes, terminology, learning claims, and dated verification gaps',
+                '- [ ] Content: review overdue dates, broken/unreachable sources, missing citations, duplicate trivia, clarity/freshness targets, mission deadlines, terminology, and learning claims',
                 '- [ ] Feedback: triage new feedback/accessibility issues and record themes',
                 '- [ ] Backlog: update evidence, impact, confidence, effort, owner, and next action',
                 '- [ ] Public status: update `docs/public-status.md` if capabilities or limits changed',
@@ -45,3 +63,6 @@ jobs:
                 '- [ ] Release scoring: re-score the backlog after any release since the prior review',
               ].join('\n'),
             })
+      - name: Fail after preserving and assigning actionable evidence
+        if: steps.editorial-audit.outcome == 'failure'
+        run: exit 1

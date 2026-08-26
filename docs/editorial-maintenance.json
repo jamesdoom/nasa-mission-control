@@ -1,0 +1,146 @@
+{
+  "reviewedAt": "2026-08-26",
+  "nextReviewDue": "2026-09-30",
+  "backlogScoredAt": "2026-08-26",
+  "releaseReviewed": "unreleased",
+  "areas": [
+    {
+      "area": "Mission Archive and comparison",
+      "owner": "Content reviewer",
+      "traffic": 3,
+      "educationalValue": 3,
+      "contentRisk": 3
+    },
+    {
+      "area": "Space Trivia",
+      "owner": "Learning-content reviewer",
+      "traffic": 3,
+      "educationalValue": 3,
+      "contentRisk": 2
+    },
+    {
+      "area": "Live-data explanations",
+      "owner": "Science editor",
+      "traffic": 3,
+      "educationalValue": 3,
+      "contentRisk": 3
+    },
+    {
+      "area": "Guided learning",
+      "owner": "Learning-content reviewer",
+      "traffic": 2,
+      "educationalValue": 3,
+      "contentRisk": 2
+    },
+    {
+      "area": "Scientific stories",
+      "owner": "Science editor",
+      "traffic": 2,
+      "educationalValue": 3,
+      "contentRisk": 2
+    },
+    {
+      "area": "Guided Discovery",
+      "owner": "Content reviewer",
+      "traffic": 2,
+      "educationalValue": 2,
+      "contentRisk": 2
+    },
+    {
+      "area": "Celestial Scale Laboratory",
+      "owner": "Science editor",
+      "traffic": 2,
+      "educationalValue": 3,
+      "contentRisk": 2
+    },
+    {
+      "area": "Mission map and investigation copy",
+      "owner": "Science editor",
+      "traffic": 2,
+      "educationalValue": 2,
+      "contentRisk": 3
+    },
+    {
+      "area": "Discovery, search, and Flight Log guidance",
+      "owner": "UX content owner",
+      "traffic": 2,
+      "educationalValue": 2,
+      "contentRisk": 1
+    },
+    {
+      "area": "Dashboard and navigation copy",
+      "owner": "UX content owner",
+      "traffic": 3,
+      "educationalValue": 2,
+      "contentRisk": 1
+    },
+    {
+      "area": "Public operating and governance copy",
+      "owner": "Product owner",
+      "traffic": 2,
+      "educationalValue": 1,
+      "contentRisk": 3
+    },
+    {
+      "area": "Repository and contributor documentation",
+      "owner": "Maintainer",
+      "traffic": 1,
+      "educationalValue": 1,
+      "contentRisk": 2
+    }
+  ],
+  "targets": {
+    "minimumTriviaQuestions": 64,
+    "minimumTriviaQuestionsPerExistingTopic": 16,
+    "maximumTriviaPromptWords": 20,
+    "minimumTriviaExplanationWords": 8,
+    "maximumTriviaExplanationWords": 55,
+    "citationCoveragePercent": 100,
+    "maximumDaysSinceEditorialReview": 40,
+    "maximumDaysSinceTriviaVerification": 210,
+    "maximumDaysSinceStoryVerification": 120,
+    "maximumDaysSinceLearningVerification": 210
+  },
+  "backlog": [
+    {
+      "priority": 1,
+      "candidate": "Reverify time-sensitive mission and live-data wording",
+      "owner": "Science editor",
+      "traffic": 3,
+      "usabilityEvidence": 2,
+      "contentRisk": 3,
+      "effort": 2,
+      "score": 4
+    },
+    {
+      "priority": 2,
+      "candidate": "Add reviewed questions within the four existing trivia topics",
+      "owner": "Learning-content reviewer",
+      "traffic": 3,
+      "usabilityEvidence": 2,
+      "contentRisk": 2,
+      "effort": 2,
+      "score": 3.5
+    },
+    {
+      "priority": 3,
+      "candidate": "Recheck Guided Discovery instructions after destination copy changes",
+      "owner": "Content reviewer",
+      "traffic": 2,
+      "usabilityEvidence": 2,
+      "contentRisk": 2,
+      "effort": 2,
+      "score": 3
+    },
+    {
+      "priority": 4,
+      "candidate": "Review scale-profile values and reference-frame explanations",
+      "owner": "Science editor",
+      "traffic": 2,
+      "usabilityEvidence": 1,
+      "contentRisk": 2,
+      "effort": 2,
+      "score": 2.5
+    }
+  ]
+}

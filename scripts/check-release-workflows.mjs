@@ -35,6 +35,7 @@ const requirements = [
   ],
   ["release runs resilience drill", files.release, "npm run drill:resilience"],
   ["release reviews mission sources", files.release, "npm run review:missions"],
+  ["release audits editorial health", files.release, "npm run review:content"],
   ["release verifies offline output", files.release, "npm run offline:verify"],
   ["release runs browser journeys", files.release, "npm run test:e2e"],
   [

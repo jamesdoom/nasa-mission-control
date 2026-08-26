@@ -27,6 +27,7 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: npm run review:missions
+      - run: npm run review:content
       - run: npm run build
       - run: npm run performance:budget
       - run: npm run offline:verify
