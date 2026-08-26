@@ -107,7 +107,7 @@ export const missions: Mission[] = [
         url: "https://www.nasa.gov/history/apollo-11-mission-overview/",
       },
     ],
-    verifiedAt: "2026-08-03",
+    verifiedAt: "2026-08-26",
   },
   {
     slug: "voyager-1",
@@ -177,7 +177,7 @@ export const missions: Mission[] = [
         url: "https://science.nasa.gov/mission/voyager/mission-overview/",
       },
     ],
-    verifiedAt: "2026-08-03",
+    verifiedAt: "2026-08-26",
   },
   {
     slug: "curiosity",
@@ -248,7 +248,7 @@ export const missions: Mission[] = [
         url: "https://science.nasa.gov/mission/msl-curiosity/science/",
       },
     ],
-    verifiedAt: "2026-08-03",
+    verifiedAt: "2026-08-26",
   },
   {
     slug: "webb",
@@ -320,7 +320,7 @@ export const missions: Mission[] = [
         url: "https://science.nasa.gov/mission/webb/webb-mission-timeline/",
       },
     ],
-    verifiedAt: "2026-08-03",
+    verifiedAt: "2026-08-26",
   },
   {
     slug: "perseverance",
@@ -393,7 +393,7 @@ export const missions: Mission[] = [
         url: "https://science.nasa.gov/resource/mars-2020-perseverance-fact-sheet/",
       },
     ],
-    verifiedAt: "2026-08-19",
+    verifiedAt: "2026-08-26",
   },
   {
     slug: "parker-solar-probe",
@@ -468,7 +468,7 @@ export const missions: Mission[] = [
         url: "https://science.nasa.gov/science-research/heliophysics/nasas-parker-solar-probe-makes-history-with-closest-pass-to-sun/",
       },
     ],
-    verifiedAt: "2026-08-19",
+    verifiedAt: "2026-08-26",
   },
   {
     slug: "hubble",
@@ -559,7 +559,7 @@ export const missions: Mission[] = [
         url: "https://science.nasa.gov/mission/hubble/overview/hubble-timeline/",
       },
     ],
-    verifiedAt: "2026-08-19",
+    verifiedAt: "2026-08-26",
   },
   {
     slug: "juno",
@@ -651,7 +651,7 @@ export const missions: Mission[] = [
         url: "https://science.nasa.gov/resource/fact-sheet-juno/",
       },
     ],
-    verifiedAt: "2026-08-19",
+    verifiedAt: "2026-08-26",
   },
   {
     slug: "cassini",
@@ -746,7 +746,7 @@ export const missions: Mission[] = [
         url: "https://science.nasa.gov/mission/cassini/quick-facts/",
       },
     ],
-    verifiedAt: "2026-08-19",
+    verifiedAt: "2026-08-26",
   },
   {
     slug: "artemis-i",
@@ -837,7 +837,7 @@ export const missions: Mission[] = [
         url: "https://www.nasa.gov/reference/artemis-i-mission-timeline/",
       },
     ],
-    verifiedAt: "2026-08-19",
+    verifiedAt: "2026-08-26",
   },
 ];
 

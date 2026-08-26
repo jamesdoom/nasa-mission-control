@@ -5,6 +5,7 @@ import { NotFoundPage } from "./NotFoundPage";
 import { useMissionFavorites } from "../hooks/useMissionFavorites";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
 import { ProvenancePanel } from "../components/ProvenancePanel";
+import { getMissionEnrichment } from "../data/educationalEnrichment";
 
 const missionDiscovery: Record<
   string,
@@ -77,6 +78,7 @@ export function MissionDetailPage() {
   }, [mission, recent.record]);
   if (!mission) return <NotFoundPage />;
   const discovery = missionDiscovery[mission.slug];
+  const enrichment = getMissionEnrichment(mission.slug);
   return (
     <>
       <article className="mission-detail">
@@ -158,6 +160,58 @@ export function MissionDetailPage() {
               ))}
             </div>
           </section>
+          {enrichment ? (
+            <section
+              className="mission-overview"
+              aria-labelledby="mission-evidence"
+            >
+              <div>
+                <p className="eyebrow">Instruments and evidence</p>
+                <h2 id="mission-evidence">
+                  How the mission answered its question
+                </h2>
+                <dl>
+                  {enrichment.instruments.map((instrument) => (
+                    <div key={instrument.name}>
+                      <dt>{instrument.name}</dt>
+                      <dd>{instrument.purpose}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+              <div>
+                <h3>Results and continuing status</h3>
+                <ul>
+                  {enrichment.results.map((result) => (
+                    <li key={result}>{result}</li>
+                  ))}
+                </ul>
+                <p>
+                  <strong>Status at the latest source review:</strong>{" "}
+                  {enrichment.statusNote}
+                </p>
+              </div>
+            </section>
+          ) : null}
+          {enrichment?.terms.length ? (
+            <aside className="mission-sources" aria-labelledby="mission-terms">
+              <div>
+                <strong id="mission-terms">Terms used on this page</strong>
+                <p>
+                  Concise definitions preserve the limits of the scientific
+                  claims above.
+                </p>
+              </div>
+              <dl>
+                {enrichment.terms.map((item) => (
+                  <div key={item.term}>
+                    <dt>{item.term}</dt>
+                    <dd>{item.definition}</dd>
+                  </div>
+                ))}
+              </dl>
+            </aside>
+          ) : null}
           <section className="mission-timeline">
             <div className="section-heading">
               <div>

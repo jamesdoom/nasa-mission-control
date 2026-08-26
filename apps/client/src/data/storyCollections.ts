@@ -114,7 +114,7 @@ export const storyCollections: StoryCollection[] = [
         url: "https://science.nasa.gov/mission/mars-2020-perseverance/",
       },
     ],
-    verifiedAt: "2026-08-24",
+    verifiedAt: "2026-08-26",
   },
   {
     id: "sun-earth-connection",
@@ -208,7 +208,7 @@ export const storyCollections: StoryCollection[] = [
         url: "https://ccmc.gsfc.nasa.gov/tools/DONKI/",
       },
     ],
-    verifiedAt: "2026-08-24",
+    verifiedAt: "2026-08-26",
   },
   {
     id: "cosmic-observatories",
@@ -302,7 +302,7 @@ export const storyCollections: StoryCollection[] = [
         url: "https://science.nasa.gov/mission/webb/early-universe/",
       },
     ],
-    verifiedAt: "2026-08-24",
+    verifiedAt: "2026-08-26",
   },
 ];
 

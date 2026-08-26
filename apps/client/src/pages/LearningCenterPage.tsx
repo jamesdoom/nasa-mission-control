@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { learningTrackById, learningTracks } from "../data/learningTracks";
 import { useLearningProgress } from "../hooks/useLearningProgress";
+import { learningEnrichment } from "../data/educationalEnrichment";
 
 function download(name: string, content: string) {
   const url = URL.createObjectURL(
@@ -18,6 +19,7 @@ export function LearningCenterPage() {
   const [params, setParams] = useSearchParams();
   const track = learningTrackById(params.get("track") ?? undefined);
   const progress = useLearningProgress();
+  const enrichment = learningEnrichment[track.id];
   const record = progress.tracks[track.id] ?? {
     completedSteps: [],
     checkPassed: false,
@@ -217,6 +219,7 @@ export function LearningCenterPage() {
           <p className="eyebrow">Reflection</p>
           <h3 id="reflection-title">Explain the evidence in your own words</h3>
           <p>{track.reflection}</p>
+          {enrichment ? <p>{enrichment.secondReflection}</p> : null}
           <label>
             Your response
             <textarea
@@ -247,7 +250,8 @@ export function LearningCenterPage() {
           </h3>
           <p>
             {complete
-              ? `You completed all resources, passed the knowledge check, and recorded a reflection for “${track.title}.”`
+              ? (enrichment?.completion ??
+                `You completed all resources, passed the knowledge check, and recorded a reflection for “${track.title}.”`)
               : `${String(record.completedSteps.length)} of ${String(track.steps.length)} resources complete · knowledge check ${record.checkPassed ? "passed" : "pending"} · reflection ${record.reflection ? "saved" : "pending"}.`}
           </p>
           <dl className="completion-summary__evidence">
@@ -270,6 +274,20 @@ export function LearningCenterPage() {
               <dd>{record.reflection ? "Saved locally" : "Not yet saved"}</dd>
             </div>
           </dl>
+          {enrichment ? (
+            <div>
+              <h4>Terms to carry forward</h4>
+              <dl className="completion-summary__evidence">
+                {enrichment.terms.map((item) => (
+                  <div key={item.term}>
+                    <dt>{item.term}</dt>
+                    <dd>{item.definition}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p>Learning content source review: {enrichment.verifiedAt}</p>
+            </div>
+          ) : null}
           <p className="completion-summary__limit">
             Completion records participation in this guided activity. It is not
             a credential or a claim of scientific mastery.

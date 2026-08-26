@@ -4,6 +4,7 @@ import {
   storyCollectionById,
   type StoryEvidenceKind,
 } from "../data/storyCollections";
+import { storyEnrichment } from "../data/educationalEnrichment";
 
 const evidenceLabels: Record<StoryEvidenceKind, string> = {
   live: "Live retrieval",
@@ -28,6 +29,7 @@ export function StoryCollectionPage() {
       </section>
     );
   }
+  const enrichment = storyEnrichment[story.id];
 
   return (
     <>
@@ -95,6 +97,14 @@ export function StoryCollectionPage() {
                 </header>
                 <h3>{chapter.title}</h3>
                 <p>{chapter.description}</p>
+                {enrichment?.captions[index] ? (
+                  <p>
+                    <small>
+                      <strong>Evidence caption:</strong>{" "}
+                      {enrichment.captions[index]}
+                    </small>
+                  </p>
+                ) : null}
                 <div className="story-chapter__takeaway">
                   <strong>Carry forward</strong>
                   <p>{chapter.takeaway}</p>
@@ -107,6 +117,30 @@ export function StoryCollectionPage() {
           ))}
         </ol>
       </section>
+
+      {enrichment ? (
+        <section
+          className="section story-timeline"
+          aria-labelledby="story-conclusion-title"
+        >
+          <div>
+            <p className="kicker">
+              <span />
+              Synthesis
+            </p>
+            <h2 id="story-conclusion-title">What the sequence supports</h2>
+            <p>{enrichment.conclusion}</p>
+          </div>
+          <dl>
+            {enrichment.terms.map((item) => (
+              <div key={item.term}>
+                <dt>{item.term}</dt>
+                <dd>{item.definition}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      ) : null}
 
       <section
         className="section story-timeline"

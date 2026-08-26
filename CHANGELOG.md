@@ -6,6 +6,8 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Added
 
+- Add source-reviewed instrument, result, continuing-status, evidence-caption, terminology, reflection, and completion content across every existing mission, science story, and learning track.
+- Add exact educational-enrichment coverage tests so new or renamed records cannot silently omit the Phase 3 content standard.
 - Expand Space Trivia from 12 to 64 reviewed questions while retaining the existing four channels and three difficulty levels.
 - Add visible source-review dates and integrity coverage for duplicate prompts, answer-position bias, readability, stable wording, category balance, and official NASA citations.
 - Phase 1 content inventory and quality baseline covering every existing editorial area, ownership, risk priority, review status, dated-source standards, and evidence vocabulary.
