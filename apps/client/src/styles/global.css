@@ -6166,6 +6166,15 @@ p {
   color: #a9baff;
 }
 
+.provenance-panel--stale {
+  border-color: color-mix(in srgb, var(--amber) 55%, var(--line));
+}
+
+.provenance-panel--stale .provenance-panel__kind {
+  color: var(--amber);
+  border-color: currentColor;
+}
+
 .provenance-panel summary > span:nth-child(2) {
   display: grid;
   gap: 0.16rem;

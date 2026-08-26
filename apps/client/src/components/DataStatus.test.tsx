@@ -20,9 +20,23 @@ describe("DataStatus", () => {
     );
     expect(screen.getByRole("status")).toHaveTextContent("Stale fallback");
     expect(
-      screen.getByText(
-        /NASA was unavailable; showing an older validated response/,
-      ),
+      screen.getByText(/Current fetch failed · older validated response/),
     ).toBeVisible();
+    expect(screen.getByText("STALE DATA")).toBeVisible();
+    expect(screen.getByRole("status")).toHaveTextContent("UTC");
+  });
+
+  it("states a deterministic UTC retrieval timestamp", () => {
+    render(
+      <DataStatus
+        source="NASA DONKI"
+        updatedAt={Date.UTC(2026, 7, 26, 14, 30)}
+        refreshing={false}
+      />,
+    );
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "2026-08-26 14:30 UTC",
+    );
+    expect(screen.getByText(/Validated NASA response/)).toBeVisible();
   });
 });

@@ -77,10 +77,10 @@ describe("ScientificAnalysis", () => {
       </>,
     );
     expect(
-      screen.getByRole("table", { name: /Observed and modeled fields/ }),
+      screen.getByRole("table", { name: /observed or modeled DONKI fields/ }),
     ).toBeVisible();
     expect(
-      screen.getByRole("table", { name: /EPIC timestamps/ }),
+      screen.getByRole("table", { name: /observed EPIC times/ }),
     ).toBeVisible();
   });
 });

@@ -14,6 +14,7 @@ describe("DataContextPanel", () => {
     expect(screen.getByText(title)).toBeVisible();
     expect(screen.getByText("Freshness")).toBeVisible();
     expect(screen.getByText("What is displayed")).toBeVisible();
+    expect(screen.getByText("Evidence labels")).toBeVisible();
     expect(screen.getByText("What it cannot show")).toBeVisible();
     expect(screen.getByRole("link")).toHaveAttribute(
       "href",

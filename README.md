@@ -47,6 +47,7 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Explicit retry metadata, no-store failure responses, and transient-failure recovery coverage
 - URL-backed Asteroid Comparison Lab for miss distance, upper diameter estimate, and Earth-relative velocity
 - Plain-language DONKI measurement guide separating flare class, modeled CME speed, and observed Kp activity
+- Consistent UTC retrieval timestamps, source-specific update expectations, evidence classes, and prominent stale-fallback guidance across live-data routes
 - Nine guided discovery paths connecting live instruments, NASA media searches, and source-checked mission history
 - Contextual mission-record actions that continue into related observations and guided investigations
 - Saveable guided paths with organized Flight Log collection counts and section shortcuts
@@ -303,6 +304,7 @@ The monthly `Mission status review` workflow checks official source availability
 54. **Complete — Visual consistency and responsive polish phase 1:** standardized shared spacing, typography rhythm, filters, evidence/source panels, tables, and async states; added deterministic visual baselines and overflow checks at 320px, tablet, laptop, large-display, and 200%-zoom-equivalent widths.
 55. **Complete — Mission and story presentation phase 2:** added consistent in-page evidence paths, clearer objective/result/status hierarchy, standardized evidence captions and definitions, concise provenance, guided-learning handoffs, bounded reading measures, and responsive mission/story regression evidence.
 56. **Complete — Trivia depth and learning quality phase 3:** expanded each existing trivia topic from 16 to 24 reviewed questions with stronger specialist and commander coverage, balanced answers, browser-local unseen-question priority, richer scientific explanations, and strengthened learning objectives, reflections, and completion synthesis.
+57. **Complete — Live-data clarity and reliability experience phase 4:** standardized UTC freshness and update expectations, separated observed, modeled, calculated, and curated evidence, strengthened chart/table equivalence, made stale fallback unmistakable, and corrected durable stale-status aggregation while retaining thresholds until the sample is sufficient.
 
 ## Screenshots
 

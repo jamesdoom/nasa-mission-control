@@ -53,7 +53,9 @@ export function ApodHistoryAnalysis({ items }: { items: readonly Apod[] }) {
       </div>
       <div className="table-scroll">
         <table>
-          <caption>APOD archive records used in the media-type summary</caption>
+          <caption>
+            Chart-equivalent table: curated APOD records by NASA media type
+          </caption>
           <thead>
             <tr>
               <th scope="col">Date</th>
@@ -123,10 +125,10 @@ export function AsteroidTrendAnalysis({
           </caption>
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Approaches</th>
-              <th>Potentially hazardous classification</th>
-              <th>Closest catalog approach</th>
+              <th scope="col">UTC date</th>
+              <th scope="col">Calculated approaches</th>
+              <th scope="col">NASA/JPL hazard class count</th>
+              <th scope="col">Calculated closest distance (km)</th>
             </tr>
           </thead>
           <tbody>
@@ -192,15 +194,16 @@ export function DonkiComparison({
       <div className="table-scroll">
         <table>
           <caption>
-            Observed and modeled fields published for selected DONKI events
+            Chart-equivalent table of published counts and observed or modeled
+            DONKI fields
           </caption>
           <thead>
             <tr>
-              <th>Event</th>
-              <th>Type</th>
-              <th>Start UTC</th>
-              <th>Location</th>
-              <th>Published measurements</th>
+              <th scope="col">Event</th>
+              <th scope="col">Reported type</th>
+              <th scope="col">Start (UTC)</th>
+              <th scope="col">Reported location</th>
+              <th scope="col">Published measurements</th>
             </tr>
           </thead>
           <tbody>
@@ -261,13 +264,16 @@ export function EarthTimelineAnalysis({
       </div>
       <div className="table-scroll">
         <table>
-          <caption>EPIC timestamps and image-center coordinates</caption>
+          <caption>
+            Timeline-equivalent table of observed EPIC times and center
+            coordinates
+          </caption>
           <thead>
             <tr>
-              <th>Sequence</th>
-              <th>Captured UTC</th>
-              <th>Center latitude</th>
-              <th>Center longitude</th>
+              <th scope="col">Sequence</th>
+              <th scope="col">Captured (UTC)</th>
+              <th scope="col">Observed center latitude (°)</th>
+              <th scope="col">Observed center longitude (°)</th>
             </tr>
           </thead>
           <tbody>

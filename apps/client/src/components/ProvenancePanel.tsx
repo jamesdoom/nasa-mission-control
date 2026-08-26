@@ -1,9 +1,10 @@
-export type ProvenanceKind = "live" | "curated" | "calculated";
+export type ProvenanceKind = "live" | "curated" | "calculated" | "stale";
 
 const kindLabels: Record<ProvenanceKind, string> = {
   live: "NASA API",
   curated: "CURATED",
   calculated: "CALCULATED",
+  stale: "STALE DATA",
 };
 
 export function ProvenancePanel({

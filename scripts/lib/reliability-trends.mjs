@@ -103,7 +103,9 @@ export function summarizeReliability(samples, now = new Date()) {
         (item) => item.originCache === "HIT",
       ).length;
       const stale = observations.filter(
-        (item) => item.originCache === "STALE" || item.dataStatus === "stale",
+        (item) =>
+          item.originCache === "STALE" ||
+          ["stale", "stale-fallback"].includes(item.dataStatus),
       ).length;
       const failures = observations.filter((item) => !item.passed).length;
       return [

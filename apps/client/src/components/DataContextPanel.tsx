@@ -7,6 +7,7 @@ const context: Record<
     sourceUrl: string;
     cadence: string;
     meaning: string;
+    evidence: string;
     limits: string;
   }
 > = {
@@ -17,6 +18,7 @@ const context: Record<
       "APOD is a dated selection, not an observation feed. Its media may have been captured much earlier.",
     meaning:
       "NASA supplies the record. Seven-day media counts are calculated here from available dates.",
+    evidence: "Curated selection; calculated counts.",
     limits:
       "One selection cannot represent sky conditions or event frequency. A missing day can reflect API availability.",
   },
@@ -27,6 +29,7 @@ const context: Record<
       "NeoWs returns catalog predictions for seven days. Values can change as observations improve.",
     meaning:
       "Miss distance and Earth-relative speed describe one approach. Diameter is a range; LD is lunar distance and au is Earth–Sun distance.",
+    evidence: "Observed orbit; modeled diameter; calculated approach.",
     limits:
       "Potentially hazardous is an orbital class, not an impact warning. No single value establishes impact probability.",
   },
@@ -36,7 +39,8 @@ const context: Record<
     cadence:
       "DONKI records can arrive or change after an event. Related records may be added later.",
     meaning:
-      "Flare class and Kp are observations; CME speed is analyzed. Links and timing do not prove causation.",
+      "Flare class and Kp are reported observations; CME speed and arrival estimates are analysis or model outputs. Links and timing do not prove causation.",
+    evidence: "Observed, analyzed, and modeled values.",
     limits:
       "DONKI is preliminary research, not the official U.S. forecast or a safety alert.",
   },
@@ -47,6 +51,7 @@ const context: Record<
       "EPIC repeatedly images sunlit Earth, but the archive is not live video and may lag today.",
     meaning:
       "NASA supplies times and center coordinates. Natural color adjusts visible bands; enhanced color emphasizes land.",
+    evidence: "Observed image and telemetry; processed color.",
     limits:
       "Black edges or gaps can reflect processing, geometry, downlink, or availability. A frame is not a forecast.",
   },
@@ -57,6 +62,7 @@ const context: Record<
       "This archive is not a complete live feed. Records appear when NASA centers update metadata.",
     meaning:
       "Search matches metadata. A supplied creation or publication date may not be the moment depicted.",
+    evidence: "Curated metadata; calculated counts.",
     limits:
       "Counts and order do not measure importance or completeness. Files can be absent or restricted.",
   },
@@ -80,6 +86,10 @@ export function DataContextPanel({ kind }: { kind: DataContextKind }) {
           <div>
             <dt>What is displayed</dt>
             <dd>{item.meaning}</dd>
+          </div>
+          <div>
+            <dt>Evidence labels</dt>
+            <dd>{item.evidence}</dd>
           </div>
           <div>
             <dt>What it cannot show</dt>

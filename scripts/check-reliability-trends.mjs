@@ -46,10 +46,19 @@ history = buildReliabilityHistory(
   },
   now,
 );
-assert.equal(history.summary.sampleCount, 2);
+history = buildReliabilityHistory(
+  history,
+  {
+    checkedAt: "2026-08-25T11:30:00.000Z",
+    routes: [route(true, 200, "MISS", "stale-fallback")],
+    processSnapshot: processSnapshot(1),
+  },
+  now,
+);
+assert.equal(history.summary.sampleCount, 3);
 assert.equal(history.summary.validationFailures, 1);
 assert.equal(history.summary.process.upstreams["api.nasa.gov"].requests, 2);
-assert.equal(history.summary.routes.apod.staleFallbacks, 1);
+assert.equal(history.summary.routes.apod.staleFallbacks, 2);
 assert.ok(history.summary.alerts.includes("schema_validation=1"));
 assert.match(reliabilityMarkdown(history), /Reliability trend summary/);
 console.log(JSON.stringify({ status: "ok", assertions: 6 }));

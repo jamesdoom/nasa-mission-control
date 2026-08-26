@@ -181,7 +181,7 @@ test("keeps empty and stale-degraded guidance aligned and actionable", async ({
   const staleState = page.locator(".data-status");
   await expect(staleState).toContainText("Stale fallback");
   await expect(staleState).toContainText(
-    "NASA was unavailable; showing an older validated response",
+    "Current fetch failed · older validated response",
   );
   await expectNoHorizontalOverflow(page);
   await captureElement(

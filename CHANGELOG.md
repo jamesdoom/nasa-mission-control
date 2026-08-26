@@ -6,6 +6,7 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Added
 
+- Add shared UTC freshness, update-expectation, evidence-class, and stale-fallback guidance across APOD, NeoWs, DONKI, EPIC, and NASA Media experiences.
 - Expand the four existing trivia topics to 96 reviewed questions and use bounded browser-local history to prioritize unseen questions on repeat runs.
 - Add accessible mission and story evidence paths plus direct handoffs from reviewed content into the matching guided-learning tracks.
 - Add deterministic visual baselines and overflow checks across mobile, tablet, laptop, large-display, and 200%-zoom-equivalent layouts.
@@ -27,6 +28,8 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Changed
 
+- Make accessible analysis tables describe their matching chart or timeline, units, timestamps, and evidence origin more explicitly.
+- Count the production `stale-fallback` status directly in reliability trends while retaining current alert and cache thresholds pending a representative rolling sample.
 - Strengthen guided-learning objectives, intermediate trivia handoffs, source-aware reflection prompts, and evidence-specific completion summaries.
 - Standardize mission objectives, curated results, status notes, story evidence captions, definitions, sources, and long-form reading measures.
 - Standardize section rhythm, page headings, filters, source/evidence panels, tables, and async states with shared responsive design tokens.
