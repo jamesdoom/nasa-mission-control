@@ -38,6 +38,8 @@ Content improvement phase 4 adds shared interpretation guidance and propagates e
 
 Immersive art-direction phase 1 adds a shared route-atmosphere classifier and a tokenized, CSS-only depth layer for mission, Earth, live-instrument, learning, and command surfaces. The verified build measures about 184 kB JavaScript and 23.9 kB CSS gzip. The aggregate ceilings are reset to 190 kB JavaScript and 26 kB CSS, leaving roughly 6 kB and 2 kB of measured room while keeping the largest entry limit unchanged. This is a deliberate visual-system allocation; later phases must reuse these tokens rather than adding independent atmospheric frameworks.
 
+Cinematic missions and stories phase 2 reuses the shared atmosphere rather than introducing another rendering system. Sourced story-image metadata, semantic hero figures, mission flight-path navigation, and the responsive narrative structure bring the verified build to 184.5 kB JavaScript and 24.1 kB CSS gzip, retaining 5.5 kB and 1.9 kB beneath the existing aggregate ceilings. The NASA images are existing optimized local mission assets, so the phase adds no new image transfer payload.
+
 ## Interpret real-user results
 
 Use the Vercel project’s Speed Insights view after production has received enough traffic. Evaluate routes independently and use the standard “good” thresholds as goals:

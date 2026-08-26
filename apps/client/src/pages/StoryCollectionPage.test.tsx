@@ -16,6 +16,12 @@ describe("StoryCollectionPage", () => {
         name: "Reading the record of a wetter Mars",
       }),
     ).toBeVisible();
+    expect(
+      screen.getByRole("img", {
+        name: "Curiosity rover self-portrait at the Namib Dune on Mars",
+      }),
+    ).toHaveAttribute("src", "/assets/missions/curiosity.jpg");
+    expect(screen.getByText(/Image: NASA/)).toBeVisible();
     expect(screen.getAllByRole("link", { name: /Open chapter/ })).toHaveLength(
       4,
     );
@@ -24,7 +30,7 @@ describe("StoryCollectionPage", () => {
         exact: false,
       }),
     ).toBeVisible();
-    expect(screen.getAllByRole("link", { name: /NASA/ })).toHaveLength(3);
+    expect(screen.getAllByRole("link", { name: /NASA/ })).toHaveLength(4);
     expect(
       screen.getByRole("navigation", { name: "Story evidence path" }),
     ).toBeVisible();

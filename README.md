@@ -308,6 +308,7 @@ The monthly `Mission status review` workflow checks official source availability
 57. **Complete — Live-data clarity and reliability experience phase 4:** standardized UTC freshness and update expectations, separated observed, modeled, calculated, and curated evidence, strengthened chart/table equivalence, made stale fallback unmistakable, and corrected durable stale-status aggregation while retaining thresholds until the sample is sufficient.
 58. **Complete — Evidence-led refinement cycle phase 5:** added an owned evidence register and monthly/release gate across four usability journeys, five accessibility modes, visual and route trends, content, feedback, reliability, performance, known limits, and a release-re-scored next roadmap without inventing participant results.
 59. **Complete — Immersive art direction phase 1:** established shared color, surface, depth, border, typography, spacing, and elevation tokens; added restrained route atmospheres for missions, Earth, live instruments, learning, and command views; preserved readable foreground surfaces and forced-color behavior; and added route-family regression evidence.
+60. **Complete — Cinematic missions and stories phase 2:** strengthened full-frame mission imagery, added objective-to-evidence flight paths, gave every science story a sourced NASA hero, connected chapters and chronology through one visual progression, refined evidence captions and outcome panels, and verified static reduced-motion equivalents across mobile, tablet, and laptop layouts.
 
 ## Screenshots
 

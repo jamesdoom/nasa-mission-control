@@ -6,6 +6,7 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Added
 
+- Cinematic mission briefings and sourced story heroes with narrative flight paths, connected chapter transitions, layered evidence captions, refined timelines, and static reduced-motion presentation.
 - A tokenized Mission Control atmosphere with distinct mission, Earth, live-instrument, learning, and command moods, layered starfield depth, and shared readable surfaces.
 
 - Add a machine-checked, owned improvement-cycle register covering usability journeys, accessibility modes, operating evidence, limitations, and backlog scoring.

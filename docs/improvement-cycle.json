@@ -110,7 +110,11 @@
       "docs/screenshots/atmosphere-mission.png",
       "docs/screenshots/atmosphere-earth.png",
       "docs/screenshots/atmosphere-live.png",
-      "docs/screenshots/atmosphere-learning.png"
+      "docs/screenshots/atmosphere-learning.png",
+      "docs/screenshots/cinematic-mission-320.png",
+      "docs/screenshots/cinematic-mission-1366.png",
+      "docs/screenshots/cinematic-story-320.png",
+      "docs/screenshots/cinematic-story-1366.png"
     ],
     "result": "accepted-no-unresolved-regression"
   },

@@ -33,21 +33,36 @@ export function StoryCollectionPage() {
 
   return (
     <>
-      <article className="section story-hero">
-        <Link className="text-link" to="/discover#science-stories">
-          ← All science stories
-        </Link>
-        <p className="kicker">
-          <span />
-          {story.code} · {story.duration}
-        </p>
-        <h1>{story.title}</h1>
-        <p className="story-hero__question">{story.question}</p>
-        <p>{story.summary}</p>
-        <aside>
-          <small>Why this matters</small>
-          <p>{story.whyItMatters}</p>
-        </aside>
+      <article className="story-hero">
+        <figure className="story-hero__visual">
+          <img
+            src={story.image.src}
+            alt={story.image.alt}
+            fetchPriority="high"
+          />
+          <figcaption>
+            Image: {story.image.credit} //{" "}
+            <a href={story.image.sourceUrl} target="_blank" rel="noreferrer">
+              NASA source ↗
+            </a>
+          </figcaption>
+        </figure>
+        <div className="section story-hero__content">
+          <Link className="text-link" to="/discover#science-stories">
+            ← All science stories
+          </Link>
+          <p className="kicker">
+            <span />
+            {story.code} · {story.duration}
+          </p>
+          <h1>{story.title}</h1>
+          <p className="story-hero__question">{story.question}</p>
+          <p>{story.summary}</p>
+          <aside>
+            <small>Why this matters</small>
+            <p>{story.whyItMatters}</p>
+          </aside>
+        </div>
       </article>
 
       <section className="section provenance-section">
@@ -106,11 +121,10 @@ export function StoryCollectionPage() {
                 <h3>{chapter.title}</h3>
                 <p>{chapter.description}</p>
                 {enrichment?.captions[index] ? (
-                  <p>
+                  <aside className="story-chapter__caption">
                     <strong>Evidence caption</strong>
-                    <br />
-                    <span>{enrichment.captions[index]}</span>
-                  </p>
+                    <p>{enrichment.captions[index]}</p>
+                  </aside>
                 ) : null}
                 <div className="story-chapter__takeaway">
                   <strong>Carry forward</strong>

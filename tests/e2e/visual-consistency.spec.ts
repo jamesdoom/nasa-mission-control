@@ -291,3 +291,48 @@ test("keeps mission and story evidence paths readable at long-form widths", asyn
     }
   }
 });
+
+test("frames mission and story journeys cinematically with static reduced motion", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  for (const width of [320, 768, 1366]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/missions/webb");
+    const flightPlan = page.getByRole("navigation", {
+      name: "Mission narrative sequence",
+    });
+    await expect(flightPlan.getByRole("link")).toHaveCount(3);
+    await expectNoHorizontalOverflow(page);
+    expect(
+      await page
+        .locator(".mission-detail__hero > img")
+        .evaluate((image) => getComputedStyle(image).animationDuration),
+    ).toMatch(/^(0\.01ms|1e-05s)$/);
+
+    await page.goto("/stories/cosmic-observatories");
+    await expect(
+      page.getByRole("img", {
+        name: "James Webb Space Telescope standing fully assembled during testing",
+      }),
+    ).toBeVisible();
+    await expectNoHorizontalOverflow(page);
+    expect(
+      await page
+        .locator(".story-hero__visual img")
+        .evaluate((image) => getComputedStyle(image).animationDuration),
+    ).toMatch(/^(0\.01ms|1e-05s)$/);
+
+    if (width === 320 || width === 1366) {
+      await captureElement(
+        page.locator(".story-hero"),
+        `docs/screenshots/cinematic-story-${String(width)}.png`,
+      );
+      await page.goto("/missions/webb");
+      await captureElement(
+        page.locator(".mission-detail__hero"),
+        `docs/screenshots/cinematic-mission-${String(width)}.png`,
+      );
+    }
+  }
+});

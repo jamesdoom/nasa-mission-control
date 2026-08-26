@@ -87,7 +87,11 @@ export function MissionDetailPage() {
     <>
       <article className="mission-detail">
         <header className="mission-detail__hero">
-          <img src={mission.image.src} alt={mission.image.alt} />
+          <img
+            src={mission.image.src}
+            alt={mission.image.alt}
+            fetchPriority="high"
+          />
           <div className="mission-detail__shade" />
           <div className="mission-detail__heading">
             <Link className="text-link" to="/missions">
@@ -99,6 +103,23 @@ export function MissionDetailPage() {
             </p>
             <h1>{mission.name}</h1>
             <p>{mission.dek}</p>
+            <nav
+              className="mission-flight-plan"
+              aria-label="Mission narrative sequence"
+            >
+              <a href="#mission-brief">
+                <span>01</span>
+                <strong>Objective</strong>
+              </a>
+              <a href="#mission-evidence">
+                <span>02</span>
+                <strong>Evidence</strong>
+              </a>
+              <a href="#mission-timeline">
+                <span>03</span>
+                <strong>Chronology</strong>
+              </a>
+            </nav>
             <div>
               <span
                 className={`mission-status mission-status--${mission.status}`}

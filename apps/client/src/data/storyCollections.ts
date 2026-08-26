@@ -9,6 +9,12 @@ export type StoryCollection = {
   whyItMatters: string;
   duration: string;
   learningTrackId: string;
+  image: {
+    src: string;
+    alt: string;
+    credit: string;
+    sourceUrl: string;
+  };
   chapters: {
     kind: StoryEvidenceKind;
     label: string;
@@ -34,6 +40,12 @@ export const storyCollections: StoryCollection[] = [
       "Habitability is not evidence that life existed. It asks whether an environment had ingredients such as persistent water, useful chemistry, and energy that could have supported organisms.",
     duration: "12–18 minutes",
     learningTrackId: "mars-evidence",
+    image: {
+      src: "/assets/missions/curiosity.jpg",
+      alt: "Curiosity rover self-portrait at the Namib Dune on Mars",
+      credit: "NASA / JPL-Caltech / MSSS",
+      sourceUrl: "https://images.nasa.gov/details/PIA20316",
+    },
     chapters: [
       {
         kind: "curated",
@@ -129,6 +141,12 @@ export const storyCollections: StoryCollection[] = [
       "A solar flare, a coronal mass ejection, and a geomagnetic storm describe different physical events. Their records may be connected, but none is a single danger score.",
     duration: "10–15 minutes",
     learningTrackId: "sun-earth",
+    image: {
+      src: "/assets/missions/parker-solar-probe.jpg",
+      alt: "Delta IV Heavy engines launching NASA’s Parker Solar Probe at night",
+      credit: "NASA / Bill Ingalls",
+      sourceUrl: "https://science.nasa.gov/resource/parker-solar-probe-launch/",
+    },
     chapters: [
       {
         kind: "curated",
@@ -224,6 +242,13 @@ export const storyCollections: StoryCollection[] = [
       "No telescope sees the whole universe. Orbit, mirror design, instruments, wavelength coverage, and observing strategy determine which questions an observatory can answer.",
     duration: "12–16 minutes",
     learningTrackId: "cosmic-observatories",
+    image: {
+      src: "/assets/missions/webb.jpg",
+      alt: "James Webb Space Telescope standing fully assembled during testing",
+      credit: "NASA / Chris Gunn",
+      sourceUrl:
+        "https://images.nasa.gov/details/GSFC_20171208_Archive_e000356",
+    },
     chapters: [
       {
         kind: "latest",
