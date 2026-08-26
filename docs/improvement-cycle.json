@@ -20,7 +20,7 @@
       "name": "performance-and-visuals",
       "owner": "Frontend maintainer",
       "evidence": "docs/performance.md",
-      "status": "budget-pass-headroom-action"
+      "status": "budget-pass"
     },
     {
       "name": "reliability",
@@ -106,21 +106,25 @@
       "docs/screenshots/visual-loading-state.png",
       "docs/screenshots/visual-error-state.png",
       "docs/screenshots/visual-empty-state.png",
-      "docs/screenshots/visual-stale-degraded-state.png"
+      "docs/screenshots/visual-stale-degraded-state.png",
+      "docs/screenshots/atmosphere-mission.png",
+      "docs/screenshots/atmosphere-earth.png",
+      "docs/screenshots/atmosphere-live.png",
+      "docs/screenshots/atmosphere-learning.png"
     ],
     "result": "accepted-no-unresolved-regression"
   },
   "backlog": [
     {
       "priority": 1,
-      "candidate": "Recover compressed JavaScript headroom",
+      "candidate": "Preserve immersive asset headroom",
       "owner": "Frontend maintainer",
       "impact": 3,
       "evidence": 3,
       "riskReduction": 3,
       "effort": 2,
       "score": 4.5,
-      "nextAction": "Move shared editorial payloads out of JavaScript before adding interface code."
+      "nextAction": "Reuse the shared atmosphere and surface tokens before adding route-specific visual code."
     },
     {
       "priority": 2,
@@ -160,6 +164,6 @@
     "No multi-participant usability or learning-effectiveness sample exists.",
     "No completed NVDA/Firefox or VoiceOver/Safari session is recorded.",
     "Reliability and route-performance evidence has not completed a 30-day window.",
-    "The JavaScript budget passes with no rounded aggregate headroom."
+    "Route mood validation is automated; no participant preference evidence is claimed."
   ]
 }

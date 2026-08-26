@@ -32,8 +32,8 @@
   --muted: #8b9cb1;
   --line: rgba(139, 174, 207, 0.16);
   --line-strong: rgba(139, 174, 207, 0.3);
-  --panel: #081321;
-  --panel-raised: #091522;
+  --panel: var(--surface);
+  --panel-raised: var(--surface-raised);
   --panel-padding: clamp(1.25rem, 3vw, 2rem);
   --section-space: clamp(3.5rem, 7vw, 7rem);
   --content-leading: 1.65;
@@ -42,6 +42,14 @@
   --immersion-cyan: rgba(72, 217, 239, 0.24);
   --immersion-blue: rgba(49, 94, 229, 0.2);
   --immersion-shadow: rgba(0, 3, 10, 0.72);
+  --black: #030914;
+  --text: #edf5ff;
+  --surface: rgba(7, 17, 29, 0.88);
+  --surface-raised: rgba(10, 24, 39, 0.94);
+  --shadow-panel: 0 24px 70px rgba(0, 3, 10, 0.34);
+  --radius-control: 2px;
+  --mood-primary: 72 217 239;
+  --mood-secondary: 62 116 255;
 }
 * {
   box-sizing: border-box;
@@ -67,12 +75,67 @@ body {
     #050912;
 }
 .app-shell {
+  position: relative;
+  min-height: 100vh;
+  isolation: isolate;
   background: linear-gradient(
     to bottom,
     rgba(3, 8, 18, 0.12),
     rgba(3, 8, 18, 0.86) 54rem,
     rgba(3, 8, 18, 0.96)
   );
+}
+.app-shell::before,
+.app-shell::after {
+  position: fixed;
+  inset: 76px 0 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+}
+.app-shell::before {
+  background:
+    radial-gradient(
+      circle at 82% 12%,
+      rgb(var(--mood-primary) / 0.13),
+      transparent 30rem
+    ),
+    radial-gradient(
+      circle at 12% 48%,
+      rgb(var(--mood-secondary) / 0.09),
+      transparent 34rem
+    );
+}
+.app-shell::after {
+  opacity: 0.18;
+  background-image: radial-gradient(
+    circle,
+    rgb(218 238 255 / 0.72) 0 0.6px,
+    transparent 0.9px
+  );
+  background-position: 17px 11px;
+  background-size: 79px 67px;
+  mask-image: linear-gradient(to bottom, #000, transparent 88%);
+}
+.app-shell--mission {
+  --mood-primary: 81 194 255;
+  --mood-secondary: 75 102 255;
+}
+.app-shell--earth {
+  --mood-primary: 68 224 190;
+  --mood-secondary: 38 116 255;
+}
+.app-shell--live {
+  --mood-primary: 72 217 239;
+  --mood-secondary: 255 179 64;
+}
+.app-shell--learning {
+  --mood-primary: 160 132 255;
+  --mood-secondary: 72 217 239;
+}
+.app-shell > main {
+  position: relative;
+  z-index: 0;
 }
 body::before {
   content: "";
@@ -6020,6 +6083,10 @@ p {
 }
 
 @media (forced-colors: active) {
+  .app-shell::before,
+  .app-shell::after {
+    display: none;
+  }
   .button,
   .journey-start__card,
   .evidence-guide,

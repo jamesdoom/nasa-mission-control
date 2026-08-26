@@ -7,6 +7,30 @@ import { AppShell } from "./AppShell";
 describe("AppShell reliability behavior", () => {
   afterEach(() => vi.restoreAllMocks());
 
+  it.each([
+    ["/missions", "mission"],
+    ["/earth", "earth"],
+    ["/apod", "live"],
+    ["/learn", "learning"],
+    ["/about", "command"],
+  ])("applies the atmosphere for %s", (path, mood) => {
+    const router = createMemoryRouter(
+      [
+        {
+          path: "*",
+          element: <AppShell />,
+          children: [{ path: "*", element: <p>Route content</p> }],
+        },
+      ],
+      { initialEntries: [path] },
+    );
+    const { container } = render(<RouterProvider router={router} />);
+    expect(container.querySelector(".app-shell")).toHaveAttribute(
+      "data-route-mood",
+      mood,
+    );
+  });
+
   it("announces and focuses route changes", async () => {
     vi.spyOn(window, "scrollTo").mockImplementation(() => undefined);
     const user = userEvent.setup();

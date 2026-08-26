@@ -37,6 +37,56 @@ async function captureElement(locator: Locator, path: string): Promise<void> {
   await locator.screenshot({ path, animations: "disabled" });
 }
 
+test("gives major route families distinct, accessible atmospheres", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1366, height: 768 });
+  await page.route(
+    (url) => url.pathname.startsWith("/api/"),
+    (route) =>
+      route.fulfill({
+        status: 503,
+        contentType: "application/json",
+        body: JSON.stringify({
+          error: {
+            code: "UPSTREAM_UNAVAILABLE",
+            message: "Deterministic atmosphere capture",
+            requestId: "atmosphere-visual-check",
+            retryable: true,
+          },
+        }),
+      }),
+  );
+  for (const sample of [
+    { path: "/missions", mood: "mission", capture: ".missions-intro" },
+    { path: "/earth", mood: "earth", capture: ".earth-intro" },
+    {
+      path: "/apod?date=2024-01-01",
+      mood: "live",
+      capture: ".page-intro",
+    },
+    { path: "/learn", mood: "learning", capture: ".learning-intro" },
+  ]) {
+    await page.goto(sample.path);
+    const shell = page.locator(".app-shell");
+    await expect(shell).toHaveAttribute("data-route-mood", sample.mood);
+    await expectNoHorizontalOverflow(page);
+    const contrast = await shell.evaluate((element) => {
+      const styles = getComputedStyle(element);
+      return {
+        text: styles.getPropertyValue("--text").trim(),
+        surface: styles.getPropertyValue("--surface").trim(),
+      };
+    });
+    expect(contrast.text).toBe("#edf5ff");
+    expect(contrast.surface).toBe("rgba(7, 17, 29, 0.88)");
+    await captureElement(
+      page.locator(sample.capture),
+      `docs/screenshots/atmosphere-${sample.mood}.png`,
+    );
+  }
+});
+
 test("keeps shared mission patterns aligned across the responsive matrix", async ({
   page,
 }) => {
@@ -86,7 +136,10 @@ test("keeps mission evidence and source blocks balanced at laptop and large widt
       );
       const heading = document.querySelector(".mission-overview--evidence h3");
       if (!badge || !heading) return 0;
-      return heading.getBoundingClientRect().top - badge.getBoundingClientRect().bottom;
+      return (
+        heading.getBoundingClientRect().top -
+        badge.getBoundingClientRect().bottom
+      );
     });
     expect(evidenceHeadingGap).toBeGreaterThanOrEqual(10);
 

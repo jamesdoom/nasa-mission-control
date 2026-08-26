@@ -6,6 +6,8 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Added
 
+- A tokenized Mission Control atmosphere with distinct mission, Earth, live-instrument, learning, and command moods, layered starfield depth, and shared readable surfaces.
+
 - Add a machine-checked, owned improvement-cycle register covering usability journeys, accessibility modes, operating evidence, limitations, and backlog scoring.
 - Add monthly and release gates that retain improvement evidence and reject stale ownership, dates, evidence paths, or score arithmetic.
 - Add shared UTC freshness, update-expectation, evidence-class, and stale-fallback guidance across APOD, NeoWs, DONKI, EPIC, and NASA Media experiences.
