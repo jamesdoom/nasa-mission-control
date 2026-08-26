@@ -70,6 +70,11 @@ test("gives major route families distinct, accessible atmospheres", async ({
     await page.goto(sample.path);
     const shell = page.locator(".app-shell");
     await expect(shell).toHaveAttribute("data-route-mood", sample.mood);
+    expect(
+      await shell.evaluate((element) =>
+        getComputedStyle(element, "::before").getPropertyValue("top"),
+      ),
+    ).toBe("0px");
     await expectNoHorizontalOverflow(page);
     const contrast = await shell.evaluate((element) => {
       const styles = getComputedStyle(element);

@@ -36,6 +36,7 @@ All notable changes are documented here. This project follows [Semantic Versioni
 ### Changed
 
 - Unify live-data controls, charts, accessible tables, provenance panels, freshness telemetry, and asynchronous states into a shared spacecraft-console presentation.
+- Keep the fixed atmospheric layer continuous after the non-sticky site header scrolls away, removing the unintended 76-pixel shaded strip.
 
 - Make accessible analysis tables describe their matching chart or timeline, units, timestamps, and evidence origin more explicitly.
 - Count the production `stale-fallback` status directly in reliability trends while retaining current alert and cache thresholds pending a representative rolling sample.

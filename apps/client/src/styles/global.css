@@ -88,7 +88,7 @@ body {
 .app-shell::before,
 .app-shell::after {
   position: fixed;
-  inset: 76px 0 0;
+  inset: 0;
   z-index: -1;
   pointer-events: none;
   content: "";
