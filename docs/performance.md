@@ -99,3 +99,5 @@ after the second failure; see [operational-evidence-phase-2.md](operational-evid
 The dashboard APOD media already reserves layout space, requests its visible image eagerly with high fetch priority, uses responsive candidates when NASA provides an HD URL, and keeps other route modules code-split.
 
 The Phase 3 spacecraft-data presentation build on 2026-08-26 measures 184.6 kB total JavaScript gzip and 24.8 kB CSS gzip. It retains 5.4 kB of JavaScript and 1.2 kB of CSS budget headroom by using one shared instrument-token layer rather than five route-specific component systems.
+
+The Phase 4 motion build measures 184.9 kB total JavaScript gzip and 25.4 kB CSS gzip, retaining 5.1 kB and 0.6 kB beneath the existing ceilings. Choreography uses compositor-friendly opacity and transforms, one shared observer, and no additional media assets. The remaining CSS margin is narrow, so later cosmetic work should consolidate existing rules before extending the stylesheet.

@@ -122,11 +122,53 @@ function animateRouteArrival(element: HTMLElement) {
   if (typeof animate !== "function") return;
   Reflect.apply(animate, element, [
     [
-      { opacity: 0.58, transform: "translateY(8px)" },
+      { opacity: 0.72, transform: "translateY(8px)" },
       { opacity: 1, transform: "translateY(0)" },
     ],
-    { duration: 280, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" },
+    { duration: 240, easing: "cubic-bezier(0.16, 1, 0.3, 1)" },
   ]);
+}
+
+function observeSectionArrivals(root: HTMLElement): () => void {
+  const sections = new Set<HTMLElement>();
+  const reducedMotion = prefersReducedMotion();
+  const supportsIntersection =
+    typeof window.IntersectionObserver === "function";
+  let intersectionObserver: IntersectionObserver | undefined;
+
+  if (!reducedMotion && supportsIntersection) {
+    intersectionObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const section = entry.target as HTMLElement;
+          section.dataset.motionState = "revealed";
+          intersectionObserver?.unobserve(section);
+        }
+      },
+      { rootMargin: "0px 0px -8%", threshold: 0.08 },
+    );
+  }
+
+  function registerSections() {
+    for (const section of root.querySelectorAll<HTMLElement>(".section")) {
+      if (sections.has(section)) continue;
+      sections.add(section);
+      section.dataset.motionState = intersectionObserver
+        ? "pending"
+        : "revealed";
+      intersectionObserver?.observe(section);
+    }
+  }
+
+  registerSections();
+  const mutationObserver = new MutationObserver(registerSections);
+  mutationObserver.observe(root, { childList: true, subtree: true });
+  return () => {
+    mutationObserver.disconnect();
+    intersectionObserver?.disconnect();
+    for (const section of sections) delete section.dataset.motionState;
+  };
 }
 
 export function AppShell() {
@@ -155,6 +197,11 @@ export function AppShell() {
         animateRouteArrival(mainRef.current);
       previousPath.current = location.pathname;
     }
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!mainRef.current) return;
+    return observeSectionArrivals(mainRef.current);
   }, [location.pathname]);
 
   const routeTitle = titleForPath(location.pathname);

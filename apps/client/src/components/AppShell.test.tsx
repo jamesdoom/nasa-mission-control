@@ -77,6 +77,29 @@ describe("AppShell reliability behavior", () => {
     expect(screen.getByRole("main")).toHaveFocus();
   });
 
+  it("leaves section content available when motion observers are unavailable", () => {
+    const router = createMemoryRouter(
+      [
+        {
+          path: "/",
+          element: <AppShell />,
+          children: [
+            {
+              index: true,
+              element: <section className="section">Visible evidence</section>,
+            },
+          ],
+        },
+      ],
+      { initialEntries: ["/"] },
+    );
+    render(<RouterProvider router={router} />);
+    expect(screen.getByText("Visible evidence")).toHaveAttribute(
+      "data-motion-state",
+      "revealed",
+    );
+  });
+
   it("explains which features remain available when offline", () => {
     vi.spyOn(window.navigator, "onLine", "get").mockReturnValue(true);
     const router = createMemoryRouter([

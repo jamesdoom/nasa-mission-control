@@ -50,12 +50,23 @@
   --radius-control: 2px;
   --mood-primary: 72 217 239;
   --mood-secondary: 62 116 255;
+  --motion-instant: 100ms;
+  --motion-quick: 160ms;
+  --motion-standard: 240ms;
+  --motion-deliberate: 360ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-decelerate: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-emphasized: cubic-bezier(0.4, 0, 0.2, 1);
+  --interaction-lift: -3px;
 }
 * {
   box-sizing: border-box;
 }
 html {
   scroll-behavior: smooth;
+}
+[id] {
+  scroll-margin-top: 96px;
 }
 body {
   margin: 0;
@@ -195,13 +206,18 @@ a {
   display: flex;
   align-items: center;
   gap: 2rem;
-  position: relative;
-  z-index: 20;
+  position: sticky;
+  top: 0;
+  z-index: 50;
   background: rgba(5, 9, 18, 0.78);
   backdrop-filter: blur(18px);
   box-shadow:
     0 1px 0 rgba(121, 205, 255, 0.04),
     0 18px 48px rgba(0, 3, 10, 0.24);
+  transition:
+    background-color var(--motion-standard) var(--ease-standard),
+    border-color var(--motion-standard) var(--ease-standard),
+    box-shadow var(--motion-standard) var(--ease-standard);
 }
 .brand {
   display: flex;
@@ -329,8 +345,9 @@ a {
   color: inherit;
   text-decoration: none;
   transition:
-    background-color 180ms ease,
-    transform 180ms ease;
+    background-color var(--motion-quick) var(--ease-standard),
+    transform var(--motion-standard) var(--ease-decelerate),
+    box-shadow var(--motion-standard) var(--ease-standard);
 }
 .journey-start__card:hover,
 .journey-start__card:focus-visible {
@@ -1331,9 +1348,14 @@ p {
   justify-content: center;
   cursor: pointer;
   box-shadow: 0 8px 26px rgba(34, 76, 190, 0.18);
+  transition:
+    transform var(--motion-quick) var(--ease-decelerate),
+    filter var(--motion-quick) var(--ease-standard),
+    border-color var(--motion-quick) var(--ease-standard),
+    box-shadow var(--motion-standard) var(--ease-standard);
 }
-.button:hover {
-  filter: brightness(1.15);
+.button:active {
+  transform: translateY(1px) scale(0.99);
 }
 .button--secondary {
   background: rgba(14, 25, 41, 0.6);
@@ -3546,9 +3568,9 @@ p {
   border: 1px solid var(--line);
   background: rgba(6, 13, 24, 0.94);
   transition:
-    transform 180ms ease,
-    border-color 180ms ease,
-    box-shadow 180ms ease;
+    transform var(--motion-standard) var(--ease-decelerate),
+    border-color var(--motion-quick) var(--ease-standard),
+    box-shadow var(--motion-standard) var(--ease-standard);
 }
 .media-card:hover {
   transform: translateY(-3px);
@@ -3568,7 +3590,7 @@ p {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 350ms ease;
+  transition: transform var(--motion-deliberate) var(--ease-decelerate);
 }
 .media-card:hover .media-card__visual img {
   transform: scale(1.025);
@@ -4722,9 +4744,9 @@ p {
   background: #07101b;
   overflow: hidden;
   transition:
-    border-color 180ms ease,
-    box-shadow 180ms ease,
-    transform 180ms ease;
+    border-color var(--motion-quick) var(--ease-standard),
+    box-shadow var(--motion-standard) var(--ease-standard),
+    transform var(--motion-standard) var(--ease-decelerate);
 }
 .mission-card:hover {
   transform: translateY(-3px);
@@ -4758,7 +4780,7 @@ p {
   display: block;
   object-fit: cover;
   filter: saturate(0.85) contrast(1.05);
-  transition: transform 500ms ease;
+  transition: transform var(--motion-deliberate) var(--ease-decelerate);
 }
 .mission-card:hover .mission-card__image img {
   transform: scale(1.035);
@@ -7165,6 +7187,78 @@ p {
   }
 }
 
+main .section[data-motion-state="pending"] {
+  opacity: 0.92;
+  transform: translateY(10px);
+}
+main .section[data-motion-state="revealed"] {
+  animation: section-arrival var(--motion-deliberate) var(--ease-decelerate)
+    both;
+}
+.state-panel,
+.data-status,
+.provenance-panel {
+  animation: interface-state-arrival var(--motion-standard)
+    var(--ease-decelerate) both;
+}
+:is(input, select, textarea) {
+  transition:
+    background-color var(--motion-quick) var(--ease-standard),
+    border-color var(--motion-quick) var(--ease-standard),
+    box-shadow var(--motion-standard) var(--ease-standard);
+}
+:is(.mission-card, .media-card, .weather-card):focus-within {
+  border-color: rgb(var(--mood-primary) / 0.48);
+  box-shadow:
+    0 22px 54px rgba(0, 3, 10, 0.42),
+    0 0 30px rgb(var(--mood-primary) / 0.07);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .button:hover {
+    filter: brightness(1.12);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(34, 76, 190, 0.24);
+  }
+  .journey-start__card:hover,
+  .journey-start__card:focus-visible {
+    transform: translateY(var(--interaction-lift));
+    box-shadow: var(--shadow-panel);
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .media-card:hover,
+  .mission-card:hover,
+  .weather-card:hover,
+  .journey-start__card:hover,
+  .button:hover {
+    transform: none;
+  }
+  .media-card:hover .media-card__visual img,
+  .mission-card:hover .mission-card__image img {
+    transform: none;
+  }
+}
+
+@keyframes section-arrival {
+  from {
+    opacity: 0.92;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes interface-state-arrival {
+  from {
+    opacity: 0.84;
+    transform: translateY(5px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -7173,6 +7267,12 @@ p {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  main .section[data-motion-state] {
+    opacity: 1;
+    transform: none;
+    animation: none !important;
+    transition: none !important;
   }
 }
 

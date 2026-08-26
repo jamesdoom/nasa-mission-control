@@ -419,3 +419,35 @@ test("frames mission and story journeys cinematically with static reduced motion
     }
   }
 });
+
+test("keeps navigation sticky and choreography optional", async ({ page }) => {
+  await page.setViewportSize({ width: 1366, height: 768 });
+  await page.goto("/missions");
+  const header = page.locator(".site-header");
+  expect(
+    await header.evaluate((element) => getComputedStyle(element).position),
+  ).toBe("sticky");
+  await page.evaluate(() => window.scrollTo({ top: 900 }));
+  await expect
+    .poll(() =>
+      header.evaluate((element) => element.getBoundingClientRect().top),
+    )
+    .toBe(0);
+  await expect(header.getByRole("link", { name: "Dashboard" })).toBeVisible();
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.reload();
+  const section = page.locator("main .section").first();
+  await expect(section).toHaveAttribute("data-motion-state", "revealed");
+  const staticMotion = await section.evaluate((element) => {
+    const styles = getComputedStyle(element);
+    return {
+      animationName: styles.animationName,
+      opacity: styles.opacity,
+      transform: styles.transform,
+    };
+  });
+  expect(staticMotion.animationName).toBe("none");
+  expect(staticMotion.opacity).toBe("1");
+  expect(staticMotion.transform).toBe("none");
+});

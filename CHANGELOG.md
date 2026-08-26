@@ -6,6 +6,7 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Added
 
+- Shared motion timing, easing, section-reveal, async-state, focus-depth, and precise-pointer interaction choreography with complete reduced-motion fallbacks.
 - Distinct, tokenized instrument identities for APOD, NeoWs, DONKI, EPIC, and NASA Media with deterministic responsive screenshot evidence.
 - Machine-readable live, stale, and refreshing status hooks plus state-driven loading, degraded, and unavailable presentation.
 - Cinematic mission briefings and sourced story heroes with narrative flight paths, connected chapter transitions, layered evidence captions, refined timelines, and static reduced-motion presentation.
@@ -37,6 +38,7 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 - Unify live-data controls, charts, accessible tables, provenance panels, freshness telemetry, and asynchronous states into a shared spacecraft-console presentation.
 - Keep the fixed atmospheric layer continuous after the non-sticky site header scrolls away, removing the unintended 76-pixel shaded strip.
+- Keep the complete responsive navigation intentionally sticky and offset in-page anchors so headings remain visible beneath it.
 
 - Make accessible analysis tables describe their matching chart or timeline, units, timestamps, and evidence origin more explicitly.
 - Count the production `stale-fallback` status directly in reliability trends while retaining current alert and cache thresholds pending a representative rolling sample.
