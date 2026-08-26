@@ -72,13 +72,23 @@ test("keeps mission evidence and source blocks balanced at laptop and large widt
       width: viewport.width,
       height: viewport.height,
     });
-    await page.goto("/missions/juno");
+    await page.goto("/missions/webb");
     await expect(
       page.getByRole("heading", {
         name: "How the mission answered its question",
       }),
     ).toBeVisible();
     await expectNoHorizontalOverflow(page);
+
+    const evidenceHeadingGap = await page.evaluate(() => {
+      const badge = document.querySelector(
+        ".mission-overview--evidence .evidence-badge",
+      );
+      const heading = document.querySelector(".mission-overview--evidence h3");
+      if (!badge || !heading) return 0;
+      return heading.getBoundingClientRect().top - badge.getBoundingClientRect().bottom;
+    });
+    expect(evidenceHeadingGap).toBeGreaterThanOrEqual(10);
 
     const terms = page.locator(".mission-terms");
     const spacing = await page.evaluate(() => {
