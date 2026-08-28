@@ -28,10 +28,13 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          previous="$(gh run list --workflow reliability-trends.yml --status success --limit 1 --json databaseId --jq '.[0].databaseId // empty')"
-          if [[ -n "$previous" ]]; then
-            gh run download "$previous" --name reliability-history --dir artifacts/previous
-          fi
+          while read -r previous; do
+            if gh run download "$previous" --name reliability-history --dir artifacts/previous; then
+              echo "Restored reliability history from completed run $previous."
+              exit 0
+            fi
+          done < <(gh run list --workflow reliability-trends.yml --status completed --limit 10 --json databaseId --jq '.[].databaseId')
+          echo "No previous reliability-history artifact was available; starting a new history."
       - name: Capture production evidence and evaluate thresholds
         run: npm run reliability:capture
       - name: Publish readable run summary

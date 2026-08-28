@@ -32,32 +32,42 @@ const routeDefinitions = [
   ["media", "/api/media/search?q=apollo&mediaType=image&page=1"],
 ];
 
+function httpFailureCategory(status) {
+  if (status === 429) return "rate_limit";
+  if (status >= 500) return "http_5xx";
+  return "http_4xx";
+}
+
+function applicationErrorCode(body) {
+  const code = body?.error?.code;
+  return typeof code === "string" && /^[A-Z][A-Z0-9_]{1,63}$/.test(code)
+    ? code
+    : null;
+}
+
+function requestReference(value) {
+  return typeof value === "string" &&
+    /^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(value)
+    ? value
+    : null;
+}
+
 async function request(name, pathname) {
   const startedAt = performance.now();
+  let response;
   try {
-    const response = await fetch(new URL(pathname, baseUrl), {
+    response = await fetch(new URL(pathname, baseUrl), {
       headers: {
         accept: "application/json",
         "user-agent": "nasa-mission-control-reliability-trend/1.0",
       },
       signal: AbortSignal.timeout(12_000),
     });
-    const body = await response.json();
-    return {
-      name,
-      passed:
-        response.ok &&
-        body !== null &&
-        typeof body === "object" &&
-        !Array.isArray(body),
-      status: response.status,
-      durationMs: Math.round(performance.now() - startedAt),
-      originCache: response.headers.get("x-cache"),
-      edgeCache: response.headers.get("x-vercel-cache"),
-      dataStatus: response.headers.get("x-data-status"),
-      error: null,
-    };
   } catch (error) {
+    const errorCategory =
+      error instanceof Error && error.name === "TimeoutError"
+        ? "timeout"
+        : "network";
     return {
       name,
       passed: false,
@@ -66,9 +76,44 @@ async function request(name, pathname) {
       originCache: null,
       edgeCache: null,
       dataStatus: null,
-      error: error instanceof Error ? error.message : "UnknownError",
+      errorCategory,
+      applicationErrorCode: null,
+      requestId: null,
     };
   }
+  const common = {
+    name,
+    status: response.status,
+    durationMs: Math.round(performance.now() - startedAt),
+    originCache: response.headers.get("x-cache"),
+    edgeCache: response.headers.get("x-vercel-cache"),
+    dataStatus: response.headers.get("x-data-status"),
+    requestId: requestReference(response.headers.get("x-request-id")),
+  };
+  let body;
+  try {
+    body = await response.json();
+  } catch {
+    return {
+      ...common,
+      passed: false,
+      errorCategory: "invalid_json",
+      applicationErrorCode: null,
+    };
+  }
+  const validObject =
+    body !== null && typeof body === "object" && !Array.isArray(body);
+  const passed = response.ok && validObject;
+  return {
+    ...common,
+    passed,
+    errorCategory: passed
+      ? null
+      : response.ok
+        ? "invalid_contract"
+        : httpFailureCategory(response.status),
+    applicationErrorCode: applicationErrorCode(body),
+  };
 }
 
 const routes = [];

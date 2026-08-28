@@ -75,6 +75,11 @@ const requirements = [
     "gh run download",
   ],
   [
+    "reliability trends restore alerting runs",
+    files.trends,
+    "--status completed",
+  ],
+  [
     "reliability trends retain rolling evidence",
     files.trends,
     "name: reliability-history",
@@ -104,6 +109,13 @@ const requirements = [
 const failures = requirements
   .filter(([, contents, expected]) => !contents.includes(expected))
   .map(([name, , expected]) => ({ name, expected }));
+
+if (files.trends.includes("--status success")) {
+  failures.push({
+    name: "reliability history must not exclude alerting runs",
+    expected: "completed runs rather than successful runs",
+  });
+}
 
 if (
   files.release.indexOf("gh release create") <

@@ -10,7 +10,9 @@ The fixture shapes were checked on 2026-08-25 against the official [NASA Open AP
 
 ## Durable rolling evidence
 
-`Reliability trends` runs daily and makes two bounded requests to each normalized APOD, asteroid, DONKI, EPIC, and NASA Media route. It records response status, duration, origin cache result, edge cache result, and stale-data status. The successful prior run artifact is restored, merged, trimmed to 90 days, and uploaded again. The generated summary reports a rolling 30-day view suitable for the monthly product review.
+`Reliability trends` runs daily and makes two bounded requests to each normalized APOD, asteroid, DONKI, EPIC, and NASA Media route. It records response status, duration, origin cache result, edge cache result, and stale-data status. The newest available completed-run artifact—including an alerting failure—is restored, merged, trimmed to 90 days, and uploaded again. The workflow searches up to ten completed runs when a newer run did not reach artifact upload. The generated summary reports a rolling 30-day view suitable for the monthly product review.
+
+Failed observations retain a bounded transport, HTTP, or contract category, sanitized application error code, duration, and request reference. The readable summary presents these fields directly; upstream response bodies, credentials, and user data are not retained.
 
 Process-local `/api/health/reliability` counters are also captured. Cumulative counters sharing the same process start time are de-duplicated by their maximum before aggregation. Route observations remain useful when serverless routing places the health request on a different warm instance.
 

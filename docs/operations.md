@@ -48,8 +48,14 @@ Active mission records expire after 90 days, extended records after 60 days, and
 
 Threshold review on 2026-08-26 retained these values. The available durable artifact contains one run and two observations per route, with zero failures, stale fallbacks, or validation errors; that verifies collection but cannot establish a stable baseline. The slowest cold observations—NeoWs at 1.65 seconds and DONKI at 1.244 seconds—remain below the 5-second API threshold. Cache-hit diagnostics still require 20 origin-cache samples because edge hits can bypass the origin and must not be misread as an ineffective cache. Revisit thresholds after the first complete rolling window or sooner if an alert produces repeated false positives.
 
-GitHub’s failed workflow notification is the default alert channel and the JSON
-artifact is retained for 30 days. Repository maintainers own first response.
+GitHub’s failed workflow notification is the default alert channel. The workflow
+restores the newest available artifact from any completed run—including an
+alerting failure—and searches up to ten completed runs if the newest one did not
+reach artifact upload. This prevents detected failures from disappearing from
+the next rolling 30-day summary. The JSON artifact is retained for 90 days.
+Failure rows record only status, bounded error category, sanitized application
+error code, duration, and request reference; upstream response bodies are never
+retained. Repository maintainers own first response.
 This is a dependable portfolio monitor, not a contractual SLA: GitHub schedules
 may be delayed, and no external pager or Vercel Drain is currently claimed.
 

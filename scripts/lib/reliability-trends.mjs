@@ -22,6 +22,15 @@ function increment(target, source) {
   }
 }
 
+function countsBy(items, keyForItem) {
+  const counts = {};
+  for (const item of items) {
+    const key = keyForItem(item);
+    counts[key] = (counts[key] ?? 0) + 1;
+  }
+  return counts;
+}
+
 function processTotals(samples) {
   const upstreamMaxima = new Map();
   const cacheMaxima = new Map();
@@ -108,6 +117,7 @@ export function summarizeReliability(samples, now = new Date()) {
           ["stale", "stale-fallback"].includes(item.dataStatus),
       ).length;
       const failures = observations.filter((item) => !item.passed).length;
+      const failedObservations = observations.filter((item) => !item.passed);
       return [
         name,
         {
@@ -124,6 +134,20 @@ export function summarizeReliability(samples, now = new Date()) {
               : Number((hits / cacheSamples.length).toFixed(4)),
           staleFallbacks: stale,
           staleFallbackRatio: Number((stale / observations.length).toFixed(4)),
+          failureCategories: countsBy(
+            failedObservations,
+            (item) => item.errorCategory ?? "unknown",
+          ),
+          failureStatuses: countsBy(failedObservations, (item) =>
+            item.status === 0 ? "transport" : String(item.status),
+          ),
+          failureDetails: failedObservations.map((item) => ({
+            status: item.status,
+            errorCategory: item.errorCategory ?? "unknown",
+            applicationErrorCode: item.applicationErrorCode ?? null,
+            durationMs: item.durationMs,
+            requestId: item.requestId ?? null,
+          })),
         },
       ];
     }),
@@ -183,7 +207,7 @@ export function buildReliabilityHistory(previous, sample, now = new Date()) {
     .filter((item) => Date.parse(item.checkedAt) >= retentionCutoff)
     .sort((first, second) => first.checkedAt.localeCompare(second.checkedAt));
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     generatedAt: now.toISOString(),
     retentionDays: 90,
     samples,
@@ -211,7 +235,29 @@ export function reliabilityMarkdown(history) {
     `Validation failures: ${summary.validationFailures}`,
     `Alerts: ${summary.alerts.length ? summary.alerts.join(", ") : "none"}`,
     `Diagnostics: ${summary.diagnostics.length ? summary.diagnostics.join(", ") : "none"}`,
+  );
+  const failedRoutes = Object.entries(summary.routes).filter(
+    ([, route]) => route.failureDetails.length > 0,
+  );
+  if (failedRoutes.length > 0) {
+    lines.push(
+      "",
+      "## Failure diagnostics",
+      "",
+      "| Route | Status | Category | Application code | Duration | Request reference |",
+      "| --- | ---: | --- | --- | ---: | --- |",
+    );
+    for (const [name, route] of failedRoutes) {
+      for (const detail of route.failureDetails) {
+        lines.push(
+          `| ${name} | ${detail.status || "transport"} | ${detail.errorCategory} | ${detail.applicationErrorCode ?? "n/a"} | ${detail.durationMs} ms | ${detail.requestId ?? "n/a"} |`,
+        );
+      }
+    }
+  }
+  lines.push(
     "",
+    "Failure diagnostics contain bounded categories and request references; response bodies are not retained.",
     "Counters from the same process start time are de-duplicated by maximum value before aggregation.",
   );
   return `${lines.join("\n")}\n`;
