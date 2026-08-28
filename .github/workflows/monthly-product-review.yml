@@ -27,14 +27,14 @@ jobs:
         run: npm run review:cycle
       - name: Retain the monthly editorial evidence
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: editorial-health-${{ github.run_number }}
           path: artifacts/editorial-health.json
           retention-days: 90
       - name: Retain the improvement-cycle evidence
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: improvement-cycle-${{ github.run_number }}
           path: artifacts/improvement-cycle.json
