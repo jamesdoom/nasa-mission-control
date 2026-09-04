@@ -451,3 +451,77 @@ test("keeps navigation sticky and choreography optional", async ({ page }) => {
   expect(staticMotion.opacity).toBe("1");
   expect(staticMotion.transform).toBe("none");
 });
+
+test("protects signature layouts across the release viewport matrix", async ({
+  page,
+}) => {
+  for (const viewport of viewportMatrix) {
+    await page.setViewportSize({
+      width: viewport.width,
+      height: viewport.height,
+    });
+    await page.goto("/missions/webb");
+    await expectNoHorizontalOverflow(page);
+    await expect(page.getByRole("main")).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+
+    const header = page.locator(".site-header");
+    const hero = page.locator(".mission-detail__hero");
+    const dimensions = await page.evaluate(() => ({
+      headerWidth:
+        document.querySelector(".site-header")?.getBoundingClientRect().width ??
+        0,
+      viewportWidth: document.documentElement.clientWidth,
+      heroWidth:
+        document.querySelector(".mission-detail__hero")?.getBoundingClientRect()
+          .width ?? 0,
+    }));
+    expect(dimensions.headerWidth).toBeLessThanOrEqual(
+      dimensions.viewportWidth,
+    );
+    expect(dimensions.heroWidth).toBeLessThanOrEqual(dimensions.viewportWidth);
+    await captureElement(
+      hero,
+      `docs/screenshots/signature-${viewport.name}.png`,
+    );
+    await expect(header).toBeVisible();
+  }
+});
+
+test("preserves focus, landmarks, and forced-color structure", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 768, height: 900 });
+  await page.emulateMedia({ forcedColors: "active", reducedMotion: "reduce" });
+  await page.goto("/missions");
+
+  await expect(page.getByRole("banner")).toHaveCount(1);
+  const primaryNavigation = page.locator('nav[aria-label="Primary"]');
+  await expect(primaryNavigation).toHaveCount(1);
+  const menuButton = page.getByRole("button", { name: "Toggle navigation" });
+  if (await menuButton.isVisible()) await menuButton.click();
+  await expect(page.getByRole("navigation", { name: "Primary" })).toBeVisible();
+  await expect(page.getByRole("main")).toHaveCount(1);
+  await expect(page.getByRole("contentinfo")).toHaveCount(1);
+  await page.reload();
+  const skipLink = page.getByRole("link", { name: "Skip to main content" });
+  await skipLink.focus();
+  await expect(skipLink).toBeFocused();
+  const focusStyle = await skipLink.evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      outlineStyle: style.outlineStyle,
+      outlineWidth: style.outlineWidth,
+    };
+  });
+  expect(focusStyle.outlineStyle).not.toBe("none");
+  expect(Number.parseFloat(focusStyle.outlineWidth)).toBeGreaterThanOrEqual(2);
+  await page.keyboard.press("Enter");
+  await expect(page.locator("#main-content")).toBeFocused();
+  await expectNoHorizontalOverflow(page);
+  await page.getByRole("link", { name: "NASA Mission Control home" }).focus();
+  await captureElement(
+    page.locator(".site-header"),
+    "docs/screenshots/signature-forced-colors-focus.png",
+  );
+});

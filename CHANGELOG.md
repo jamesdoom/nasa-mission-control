@@ -6,6 +6,9 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Added
 
+- Signature visual baselines across 320 px, tablet, laptop, large-display, 200%-zoom-equivalent, and forced-colors keyboard states.
+- Aggregate image and font budgets with retained 90-day trend deltas, complementing existing JavaScript, CSS, and route-performance controls.
+- A structured four-session maintainer visual-quality review with explicit limits separating expert inspection from participant research.
 - Actionable reliability failure diagnostics with bounded HTTP/transport categories, sanitized application error codes, durations, and request references without retained response bodies.
 - Shared motion timing, easing, section-reveal, async-state, focus-depth, and precise-pointer interaction choreography with complete reduced-motion fallbacks.
 - Distinct, tokenized instrument identities for APOD, NeoWs, DONKI, EPIC, and NASA Media with deterministic responsive screenshot evidence.

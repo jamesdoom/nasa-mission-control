@@ -4,6 +4,7 @@ NASA Mission Control uses two complementary forms of performance evidence:
 
 - Vercel Speed Insights collects route-level Core Web Vitals from real production visits.
 - A deterministic CI check measures the compressed JavaScript and CSS produced by Vite.
+- The same build check measures every local raster image and font, preventing weight from being shifted into an untracked asset type.
 - A daily Playwright audit captures consistent desktop/mobile production measurements and runtime stability signals.
 
 No general visitor analytics, advertising identifiers, accounts, or custom tracking events are included.
@@ -23,6 +24,8 @@ The check reports gzip sizes and fails when any limit is exceeded:
 | All JavaScript assets    |  190 kB gzip |
 | All CSS assets           |   26 kB gzip |
 | Mission Archive cards    | 400 kB total |
+| All raster images        | 3.6 MB total |
+| All local fonts          |  80 kB total |
 
 The limits leave a small, deliberate margin above verified builds. Phase 5 raised the CSS ceiling from 16 to 18 kB to accommodate the responsive Celestial Scale Laboratory controls, logarithmic plot, evidence cards, and reduced-width layouts; its measured addition was about 0.6 kB gzip. Phase 6 raised the aggregate JavaScript ceiling from 160 to 162 kB for the reusable provenance disclosure, freshness guidance, glossary, and route-arrival correction. Phase 7 raised aggregate JavaScript to 164 kB and CSS to 18.25 kB for the lazy-loaded unified Discovery Index. Phase 8 raised aggregate JavaScript to 167 kB and CSS to 19.25 kB for the accessible mission map, orbit plot, responsive controls, and structured record view. Experience refinement phase 1 raised the aggregate ceilings to 168 kB JavaScript and 20.5 kB CSS for grouped navigation, evidence-label onboarding, task-oriented starting routes, 44-pixel coarse-pointer targets, zoom resilience, and forced-colors support. Scientific storytelling phase 2 raised the aggregate ceilings to 174 kB JavaScript and 21.5 kB CSS for three typed narrative datasets, a dedicated lazy-loaded story route, evidence-sequence cards, responsive chronology, source panels, and integrity coverage. Local-first personalization phase 3 raised them to 177 kB JavaScript and 22 kB CSS after measuring 175.6 kB and 21.7 kB. Search and discovery intelligence phase 1 raised JavaScript to 181 kB after measuring 179.3 kB. Deeper scientific analysis phase 2 raised the aggregate ceilings to 186 kB JavaScript and 23 kB CSS after measuring 183.5 kB and 22.3 kB. Guided learning phase 3 raised JavaScript to 191 kB after measuring 188.1 kB; its independently split route contains three track definitions, the validated local-progress store, knowledge checks, reflection and export controls, and educator session rendering. Raising a limit requires an explanation because a passing budget should not conceal an avoidable regression.
 
@@ -101,3 +104,5 @@ The dashboard APOD media already reserves layout space, requests its visible ima
 The Phase 3 spacecraft-data presentation build on 2026-08-26 measures 184.6 kB total JavaScript gzip and 24.8 kB CSS gzip. It retains 5.4 kB of JavaScript and 1.2 kB of CSS budget headroom by using one shared instrument-token layer rather than five route-specific component systems.
 
 The Phase 4 motion build measures 184.9 kB total JavaScript gzip and 25.4 kB CSS gzip, retaining 5.1 kB and 0.6 kB beneath the existing ceilings. Choreography uses compositor-friendly opacity and transforms, one shared observer, and no additional media assets. The remaining CSS margin is narrow, so later cosmetic work should consolidate existing rules before extending the stylesheet.
+
+Signature-polish phase 5 extends the same gate to all 25 raster images and three local font files. The initial inventory is 3,320.5 kB of raster imagery and 68.5 kB of fonts, below 3,600 kB and 80 kB ceilings. Image and font totals now join JavaScript and CSS in the retained 90-day asset trend. These aggregate limits complement the 1.2 MB per-route transfer ceiling: local assets may remain available for deeper routes without all being transferred on first view.

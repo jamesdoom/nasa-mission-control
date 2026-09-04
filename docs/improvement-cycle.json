@@ -20,7 +20,7 @@
       "name": "performance-and-visuals",
       "owner": "Frontend maintainer",
       "evidence": "docs/performance.md",
-      "status": "budget-pass"
+      "status": "script-style-image-font-and-route-budget-pass"
     },
     {
       "name": "reliability",
@@ -119,7 +119,13 @@
       "docs/screenshots/instrument-asteroids.png",
       "docs/screenshots/instrument-donki.png",
       "docs/screenshots/instrument-epic.png",
-      "docs/screenshots/instrument-media.png"
+      "docs/screenshots/instrument-media.png",
+      "docs/screenshots/signature-mobile-320.png",
+      "docs/screenshots/signature-tablet-768.png",
+      "docs/screenshots/signature-laptop-1366.png",
+      "docs/screenshots/signature-large-1920.png",
+      "docs/screenshots/signature-zoom-200.png",
+      "docs/screenshots/signature-forced-colors-focus.png"
     ],
     "result": "accepted-no-unresolved-regression"
   },
@@ -173,6 +179,7 @@
     "No multi-participant usability or learning-effectiveness sample exists.",
     "No completed NVDA/Firefox or VoiceOver/Safari session is recorded.",
     "Reliability and route-performance evidence has not completed a 30-day window.",
-    "Route mood validation is automated; no participant preference evidence is claimed."
+    "Route mood validation is automated; no participant preference evidence is claimed.",
+    "The Phase 5 short sessions are maintainer heuristic reviews, not participant research or manual screen-reader evidence."
   ]
 }
