@@ -1,6 +1,6 @@
 # Public operational status
 
-**Current summary (reviewed 2026-08-25):** NASA Mission Control’s application health endpoint, critical routes, and selected browser journeys are checked automatically. The project has no contractual uptime target and does not claim continuous availability.
+**Current summary (reviewed 2026-09-04):** NASA Mission Control’s application health endpoint, critical routes, and selected browser journeys are checked automatically. The project has no contractual uptime target and does not claim continuous availability.
 
 ## What is checked
 
@@ -23,5 +23,7 @@ Curated routes and a previously installed offline shell can remain usable during
 ## Monitoring limits
 
 GitHub schedules can be delayed or disabled, artifact deletion can restart the rolling history, Vercel Runtime Logs are not a dedicated external pager, in-process counters reset when an instance restarts, and no public incident-history service or SLA is claimed. Failures in scheduled checks create visible repository workflow failures; maintainers own review during active maintenance.
+
+The daily reliability monitor recorded repeated DONKI-backed space-weather failures from August 28 through September 3, 2026. The production probe returned current data again on September 4. This is a reviewed upstream incident and recovery, not an uptime guarantee; the rolling alert will remain visible until enough successful observations reduce the 30-day failure ratio below its threshold.
 
 For current details, inspect the repository’s [Actions history](https://github.com/jamesdoom/nasa-mission-control/actions), `operations.md`, and `service-limitations.md`. Product feedback and accessibility barriers should use the structured repository forms linked from the About page. Do not submit private Flight Log data.

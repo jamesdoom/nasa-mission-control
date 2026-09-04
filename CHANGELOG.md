@@ -53,6 +53,7 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Fixed
 
+- Update the moved official NASA Webb sunshield citation found by the September editorial audit.
 - Separate Mission Archive evidence badges from their headings and protect the spacing with responsive visual regression coverage.
 - Prevent automated TypeScript major upgrades from being grouped with tooling that does not yet support them, and pin deployment builds to Node.js 22.
 - Reduce transient production-journey alerts with bounded retries, scoped semantic locators, per-attempt diagnostics, and screenshots after repeated failures.

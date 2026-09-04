@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "reviewedAt": "2026-08-26",
-  "nextReviewDue": "2026-09-30",
-  "releaseContext": "Phase 5 evidence-led refinement cycle",
+  "reviewedAt": "2026-09-04",
+  "nextReviewDue": "2026-10-03",
+  "releaseContext": "September 2026 monthly review; no release since 1.0.0",
   "domains": [
     {
       "name": "usability",
@@ -26,13 +26,13 @@
       "name": "reliability",
       "owner": "Reliability maintainer",
       "evidence": "docs/data-contracts-reliability-phase-3.md",
-      "status": "sample-incomplete"
+      "status": "sample-incomplete-incident-recovered"
     },
     {
       "name": "content-and-citations",
       "owner": "Content reviewer",
       "evidence": "docs/editorial-maintenance-phase-5.md",
-      "status": "pass"
+      "status": "pass-with-transient-source-warning"
     },
     {
       "name": "feedback",
@@ -96,7 +96,7 @@
   ],
   "visualBaseline": {
     "owner": "Frontend maintainer",
-    "reviewedAt": "2026-08-26",
+    "reviewedAt": "2026-09-04",
     "evidence": "tests/e2e/visual-consistency.spec.ts",
     "screenshots": [
       "docs/screenshots/visual-mobile-320-filters.png",

@@ -22,6 +22,6 @@
   screen-reader usability or comprehension. No multi-participant or completed
   manual screen-reader sample is currently claimed.
 - Reliability and route-performance history has not yet accumulated a complete
-  representative 30-day window, and the JavaScript build currently passes its
-  aggregate ceiling without rounded headroom.
+  representative 30-day window, and the CSS build currently has narrow budget
+  headroom.
 - GitHub-scheduled monitoring can be delayed and is not an SLA or 24/7 pager.

@@ -4,7 +4,7 @@ The content-improvement baseline is recorded in [content-inventory-phase-1.md](c
 
 ## Editorial queue
 
-Reviewed and scored 2026-08-26. The score is `(traffic + usability evidence + content risk) / effort`; accessibility and scientific-integrity blockers override it. Every monthly review and release must update the evidence inputs and score, even when the resulting order does not change.
+Reviewed and re-scored 2026-09-04. The score is `(traffic + usability evidence + content risk) / effort`; accessibility and scientific-integrity blockers override it. The September editorial audit found one moved NASA Webb source, which was corrected, and one transient DONKI documentation warning; neither changed the evidence inputs or queue order. Every monthly review and release must update the evidence inputs and score, even when the resulting order does not change.
 
 | Priority | Existing-content action                                       | Score | Owner                     | Evidence basis                                      |
 | -------: | ------------------------------------------------------------- | ----: | ------------------------- | --------------------------------------------------- |
@@ -17,7 +17,7 @@ Traffic is a coarse 1–3 tier until privacy-conscious route evidence is availab
 
 ## Product and operating queue
 
-Reviewed and re-scored 2026-08-26 after the Phase 5 release review. Scores follow `continuous-improvement.md`; they are evidence-weighted priorities, not promises. The machine-checked values and owners live in `improvement-cycle.json`.
+Reviewed and re-scored 2026-09-04 after the monthly evidence review. No release occurred after the prior review. The recovered DONKI incident increases the value of completing the operating window but does not yet provide a representative 30-day sample, so the scores and order remain unchanged. Scores follow `continuous-improvement.md`; they are evidence-weighted priorities, not promises. The machine-checked values and owners live in `improvement-cycle.json`.
 
 | Priority | Candidate                                            | Production or usability evidence                                                                                          | Score | Owner                    | Next measurable action                                                                                |
 | -------: | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ----: | ------------------------ | ----------------------------------------------------------------------------------------------------- |
