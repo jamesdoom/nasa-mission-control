@@ -98,15 +98,29 @@ export function summarizeReliability(samples, now = new Date()) {
   for (const sample of windowSamples) {
     for (const route of sample.routes ?? []) {
       const group = routeGroups.get(route.name) ?? [];
-      group.push(route);
+      group.push({ checkedAt: sample.checkedAt, ...route });
       routeGroups.set(route.name, group);
     }
   }
   const routes = Object.fromEntries(
     [...routeGroups].map(([name, observations]) => {
       const durations = observations.map((item) => item.durationMs);
-      const cacheSamples = observations.filter((item) =>
-        ["HIT", "MISS", "STALE"].includes(item.originCache),
+      const cdnSamples = observations.filter((item) =>
+        ["HIT", "MISS", "STALE", "REVALIDATED", "BYPASS", "PRERENDER"].includes(
+          item.edgeCache,
+        ),
+      );
+      const cdnHits = cdnSamples.filter(
+        (item) => item.edgeCache === "HIT",
+      ).length;
+      const cdnStale = cdnSamples.filter(
+        (item) => item.edgeCache === "STALE",
+      ).length;
+      // Cached origin headers describe the response's creation, not this request.
+      const cacheSamples = observations.filter(
+        (item) =>
+          ["MISS", "BYPASS", "REVALIDATED"].includes(item.edgeCache) &&
+          ["HIT", "MISS", "STALE"].includes(item.originCache),
       );
       const hits = cacheSamples.filter(
         (item) => item.originCache === "HIT",
@@ -127,8 +141,13 @@ export function summarizeReliability(samples, now = new Date()) {
           p50LatencyMs: percentile(durations, 0.5),
           p95LatencyMs: percentile(durations, 0.95),
           maxLatencyMs: Math.max(...durations),
-          cacheSamples: cacheSamples.length,
-          cacheHitRatio:
+          cdnCacheSamples: cdnSamples.length,
+          cdnCacheHitRatio: cdnSamples.length
+            ? Number((cdnHits / cdnSamples.length).toFixed(4))
+            : null,
+          cdnStaleResponses: cdnStale,
+          originCacheSamples: cacheSamples.length,
+          originCacheHitRatio:
             cacheSamples.length === 0
               ? null
               : Number((hits / cacheSamples.length).toFixed(4)),
@@ -142,6 +161,8 @@ export function summarizeReliability(samples, now = new Date()) {
             item.status === 0 ? "transport" : String(item.status),
           ),
           failureDetails: failedObservations.map((item) => ({
+            checkedAt: item.checkedAt,
+            probeRequestId: item.probeRequestId ?? null,
             status: item.status,
             errorCategory: item.errorCategory ?? "unknown",
             applicationErrorCode: item.applicationErrorCode ?? null,
@@ -182,10 +203,12 @@ export function summarizeReliability(samples, now = new Date()) {
       alerts.push(`${name}.staleFallbackRatio=${route.staleFallbackRatio}`);
     }
     if (
-      route.cacheSamples >= reliabilityThresholds.minimumCacheSamples &&
-      route.cacheHitRatio < reliabilityThresholds.minimumCacheHitRatio
+      route.originCacheSamples >= reliabilityThresholds.minimumCacheSamples &&
+      route.originCacheHitRatio < reliabilityThresholds.minimumCacheHitRatio
     ) {
-      diagnostics.push(`${name}.cacheHitRatio=${route.cacheHitRatio}`);
+      diagnostics.push(
+        `${name}.originCacheHitRatio=${route.originCacheHitRatio}`,
+      );
     }
   }
   return {
@@ -207,7 +230,7 @@ export function buildReliabilityHistory(previous, sample, now = new Date()) {
     .filter((item) => Date.parse(item.checkedAt) >= retentionCutoff)
     .sort((first, second) => first.checkedAt.localeCompare(second.checkedAt));
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     generatedAt: now.toISOString(),
     retentionDays: 90,
     samples,
@@ -222,12 +245,12 @@ export function reliabilityMarkdown(history) {
     "",
     `Rolling window: ${summary.windowDays} days · samples: ${summary.sampleCount}`,
     "",
-    "| Route | Observations | Failures | p95 latency | Cache hit | Stale |",
-    "| --- | ---: | ---: | ---: | ---: | ---: |",
+    "| Route | Observations | Failures | p95 latency | CDN hit ratio (n) | CDN stale | Origin hit ratio (n) | App fallback |",
+    "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
   ];
   for (const [name, route] of Object.entries(summary.routes)) {
     lines.push(
-      `| ${name} | ${route.observations} | ${route.failures} | ${route.p95LatencyMs} ms | ${route.cacheHitRatio ?? "n/a"} | ${route.staleFallbacks} |`,
+      `| ${name} | ${route.observations} | ${route.failures} | ${route.p95LatencyMs} ms | ${route.cdnCacheHitRatio ?? "n/a"} (${route.cdnCacheSamples}) | ${route.cdnStaleResponses} | ${route.originCacheHitRatio ?? "n/a"} (${route.originCacheSamples}) | ${route.staleFallbacks} |`,
     );
   }
   lines.push(
@@ -244,19 +267,20 @@ export function reliabilityMarkdown(history) {
       "",
       "## Failure diagnostics",
       "",
-      "| Route | Status | Category | Application code | Duration | Request reference |",
-      "| --- | ---: | --- | --- | ---: | --- |",
+      "| Route | Status | Category | Application code | Duration | Checked at (UTC) | Probe reference | Response reference |",
+      "| --- | ---: | --- | --- | ---: | --- | --- | --- |",
     );
     for (const [name, route] of failedRoutes) {
       for (const detail of route.failureDetails) {
         lines.push(
-          `| ${name} | ${detail.status || "transport"} | ${detail.errorCategory} | ${detail.applicationErrorCode ?? "n/a"} | ${detail.durationMs} ms | ${detail.requestId ?? "n/a"} |`,
+          `| ${name} | ${detail.status || "transport"} | ${detail.errorCategory} | ${detail.applicationErrorCode ?? "n/a"} | ${detail.durationMs} ms | ${detail.checkedAt ?? "n/a"} | ${detail.probeRequestId ?? "n/a"} | ${detail.requestId ?? "n/a"} |`,
         );
       }
     }
   }
   lines.push(
     "",
+    "CDN ratios use recognized x-vercel-cache observations. Origin ratios use x-cache only on CDN MISS/BYPASS/REVALIDATED responses; cached or unknown CDN responses are excluded. n/a means no eligible observations. CDN STALE is background revalidation, distinct from application stale fallback. Response references can be replayed by the CDN; probe references identify the attempted request.",
     "Failure diagnostics contain bounded categories and request references; response bodies are not retained.",
     "Counters from the same process start time are de-duplicated by maximum value before aggregation.",
   );

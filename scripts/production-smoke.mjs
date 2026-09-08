@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { monitoringTimeoutMs } from "./lib/reliability-probe.mjs";
 
 const defaultUrl = "https://nasa-mission-control-alpha.vercel.app";
 const baseUrl = new URL(
@@ -10,7 +11,7 @@ const outputPath = path.resolve(
 );
 const thresholds = {
   attempts: 2,
-  requestTimeoutMs: 10_000,
+  requestTimeoutMs: monitoringTimeoutMs,
   healthLatencyMs: 1_500,
   apiLatencyMs: 5_000,
   pageLatencyMs: 3_000,
@@ -83,8 +84,8 @@ async function runAttempt(check) {
       redirect: "follow",
       signal: AbortSignal.timeout(thresholds.requestTimeoutMs),
     });
-    const durationMs = Math.round(performance.now() - startedAt);
     const body = check.html ? await response.text() : await response.json();
+    const durationMs = Math.round(performance.now() - startedAt);
     const contractValid = check.validate(body, response.headers);
     return {
       passed:

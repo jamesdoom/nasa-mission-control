@@ -19,7 +19,7 @@
     "offline:verify": "node scripts/check-offline-shell.mjs",
     "audit:production": "node scripts/production-performance-audit.mjs",
     "reliability:capture": "node scripts/capture-reliability-trend.mjs",
-    "reliability:check": "node scripts/check-reliability-trends.mjs",
+    "reliability:check": "node scripts/check-reliability-trends.mjs && node scripts/check-reliability-observations.mjs",
     "review:missions": "node scripts/review-mission-status.mjs",
     "review:content": "node scripts/check-content-baseline.mjs && node scripts/audit-editorial-health.mjs && node --test scripts/audit-editorial-health.test.mjs",
     "review:content:links": "node scripts/audit-editorial-health.mjs --check-links --output artifacts/editorial-health.json",

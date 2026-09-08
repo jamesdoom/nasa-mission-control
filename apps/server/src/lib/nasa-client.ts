@@ -16,6 +16,7 @@ import type {
 } from "@mission-control/shared";
 import { HttpError } from "./http-error.js";
 import { logger } from "./logger.js";
+import { requestContext } from "./request-context.js";
 import {
   CircuitBreaker,
   reliability,
@@ -244,6 +245,10 @@ export class NasaClient {
     const upstream = url.hostname;
     reliability.request(upstream);
     if (!this.breaker.permit(upstream)) {
+      logger.error("upstream.circuit_open", {
+        upstream,
+        upstreamPath: url.pathname,
+      });
       reliability.failure(upstream, "circuit_open");
       throw new HttpError(
         503,
@@ -251,6 +256,7 @@ export class NasaClient {
         "NASA is temporarily isolated after repeated failures. Please retry shortly.",
       );
     }
+    const context = requestContext.getStore();
     const startedAt = performance.now();
     try {
       const response = await this.fetchImpl(url, {
@@ -258,7 +264,10 @@ export class NasaClient {
           accept: "application/json",
           "user-agent": "NASA-Mission-Control/1.0.0",
         },
-        signal: AbortSignal.timeout(this.options.timeoutMs),
+        signal: AbortSignal.any([
+          AbortSignal.timeout(this.options.timeoutMs),
+          ...(context ? [context.signal] : []),
+        ]),
       });
       logger.info("upstream.request_complete", {
         upstream: url.hostname,
@@ -852,6 +861,11 @@ export class NasaClient {
     if (
       !(response.headers.get("content-type") ?? "").includes("application/json")
     ) {
+      logger.error("upstream.invalid_content_type", {
+        upstream: url.hostname,
+        upstreamPath: url.pathname,
+        status: response.status,
+      });
       throw new HttpError(
         502,
         "UPSTREAM_UNAVAILABLE",
@@ -876,8 +890,30 @@ export class NasaClient {
   private async parseJson(response: Response, url: URL): Promise<unknown> {
     try {
       return (await response.json()) as unknown;
-    } catch {
+    } catch (error: unknown) {
+      if (
+        error instanceof Error &&
+        ["TimeoutError", "AbortError"].includes(error.name)
+      ) {
+        reliability.failure(url.hostname, "timeout");
+        this.breaker.failure(url.hostname);
+        logger.error("upstream.body_failed", {
+          upstream: url.hostname,
+          upstreamPath: url.pathname,
+          outcome: "timeout",
+        });
+        throw new HttpError(
+          503,
+          "UPSTREAM_UNAVAILABLE",
+          "NASA took too long to respond. Please retry shortly.",
+        );
+      }
       reliability.failure(url.hostname, "malformed_json");
+      logger.error("upstream.body_failed", {
+        upstream: url.hostname,
+        upstreamPath: url.pathname,
+        outcome: "malformed_json",
+      });
       this.breaker.failure(url.hostname);
       throw new HttpError(
         502,

@@ -1,3 +1,5 @@
+import { requestContext } from "./request-context.js";
+
 type LogLevel = "info" | "error";
 type LogValue = string | number | boolean | null | undefined;
 type LogContext = Record<string, LogValue>;
@@ -7,6 +9,7 @@ function write(level: LogLevel, event: string, context: LogContext): void {
     timestamp: new Date().toISOString(),
     level,
     event,
+    requestId: requestContext.getStore()?.requestId,
     ...context,
   });
   if (level === "error") console.error(entry);

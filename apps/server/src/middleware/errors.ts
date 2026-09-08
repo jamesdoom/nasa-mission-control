@@ -3,6 +3,10 @@ import type { ApiErrorResponse } from "@mission-control/shared";
 import { randomUUID } from "node:crypto";
 import { HttpError } from "../lib/http-error.js";
 import { logger } from "../lib/logger.js";
+import {
+  applicationUpstreamBudgetMs,
+  requestContext,
+} from "../lib/request-context.js";
 
 declare global {
   namespace Express {
@@ -19,7 +23,23 @@ export const requestId: RequestHandler = (request, response, next) => {
       ? supplied
       : randomUUID();
   response.setHeader("x-request-id", request.requestId);
-  next();
+  const controller = new AbortController();
+  const timer = setTimeout(
+    () =>
+      controller.abort(
+        new DOMException("Upstream request deadline exceeded", "TimeoutError"),
+      ),
+    applicationUpstreamBudgetMs,
+  );
+  timer.unref();
+  response.once("close", () => {
+    clearTimeout(timer);
+    controller.abort();
+  });
+  requestContext.run(
+    { requestId: request.requestId, signal: controller.signal },
+    next,
+  );
 };
 
 export const requestLogger: RequestHandler = (request, response, next) => {
@@ -69,6 +89,14 @@ export const errorHandler: ErrorRequestHandler = (
     logger.error("request.unhandled_error", {
       requestId: request.requestId,
       errorName: error instanceof Error ? error.name : "UnknownError",
+    });
+  }
+  if (known && status >= 500) {
+    logger.error("request.failed", {
+      requestId: request.requestId,
+      path: request.path,
+      status,
+      applicationErrorCode: error.code,
     });
   }
   response.setHeader("cache-control", "no-store");
