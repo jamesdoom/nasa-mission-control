@@ -45,6 +45,7 @@ function fieldConsolePlugin(): Plugin {
 
 export default defineConfig({
   plugins: [react(), fieldConsolePlugin()],
+  build: { minify: "terser", cssMinify: "esbuild" },
   server: { proxy: { "/api": "http://localhost:3001" } },
   test: { environment: "jsdom", setupFiles: "./src/test/setup.ts", css: true },
 });

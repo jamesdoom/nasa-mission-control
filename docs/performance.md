@@ -45,6 +45,16 @@ Cinematic missions and stories phase 2 reuses the shared atmosphere rather than 
 
 ## Interpret real-user results
 
+Performance headroom phase 1 (2026-09-08) switches production JavaScript
+minification to Terser and consolidates 14 identical adjacent CSS rules without
+moving them across cascade boundaries. Total JavaScript drops from 184.9 to
+181.6 KiB gzip, leaving 8.4 KiB beneath the unchanged 190 KiB limit; the largest
+chunk drops from 100.6 to 97.6 KiB. CSS shrinks by 11 compressed bytes and remains
+25.4 KiB, so its 0.6 KiB margin remains a constraint. First offline installation
+now claims the existing page without an automatic reload or repeated page
+requests. See [the phase evidence](performance-headroom-phase-1.md) for scope,
+verification, and limitations.
+
 Use the Vercel project’s Speed Insights view after production has received enough traffic. Evaluate routes independently and use the standard “good” thresholds as goals:
 
 - LCP below 2.5 seconds

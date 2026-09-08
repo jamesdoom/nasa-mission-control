@@ -33,6 +33,7 @@ export function useServiceWorker(): FieldConsoleState {
   useEffect(() => {
     if (!import.meta.env.PROD || !("serviceWorker" in navigator)) return;
     let reloading = false;
+    let controlled = navigator.serviceWorker.controller !== null;
 
     const handleMessage = (event: MessageEvent<unknown>) => {
       const message = event.data;
@@ -41,6 +42,11 @@ export function useServiceWorker(): FieldConsoleState {
       }
     };
     const handleControllerChange = () => {
+      // First installation claims the already-current page without discarding its state.
+      if (!controlled) {
+        controlled = true;
+        return;
+      }
       if (reloading) return;
       reloading = true;
       window.location.reload();

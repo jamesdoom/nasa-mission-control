@@ -17,11 +17,18 @@ Traffic is a coarse 1–3 tier until privacy-conscious route evidence is availab
 
 ## Product and operating queue
 
+Phase 1 release re-score, 2026-09-08: [performance evidence](performance-headroom-phase-1.md)
+now measures 181.6/190 KiB JavaScript and 25.4/26 KiB CSS. JavaScript margin
+improves to 8.4 KiB; the remaining 0.6 KiB CSS margin keeps the asset-headroom
+score at 4.5. The other scores remain unchanged because this implementation adds
+no participant sample, operating window, or new NASA contract evidence. The
+editorial queue was also re-scored with unchanged inputs and order.
+
 Reviewed and re-scored 2026-09-04 after the monthly evidence review. No release occurred after the prior review. The recovered DONKI incident increases the value of completing the operating window but does not yet provide a representative 30-day sample, so the scores and order remain unchanged. Scores follow `continuous-improvement.md`; they are evidence-weighted priorities, not promises. The machine-checked values and owners live in `improvement-cycle.json`.
 
 | Priority | Candidate                                            | Production or usability evidence                                                                                          | Score | Owner                    | Next measurable action                                                                                |
 | -------: | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ----: | ------------------------ | ----------------------------------------------------------------------------------------------------- |
-|        1 | Preserve immersive asset headroom                    | Shared motion passes at 184.9/190 kB JavaScript and 25.4/26 kB CSS; stylesheet margin is now narrow                       |   4.5 | Frontend maintainer      | Consolidate existing CSS before adding further cosmetic rules                                         |
+|        1 | Preserve immersive asset headroom                    | Phase 1 passes at 181.6/190 KiB JavaScript and 25.4/26 KiB CSS; stylesheet margin remains narrow                          |   4.5 | Frontend maintainer      | Reuse existing CSS and assess route-specific styles before adding further cosmetic rules              |
 |        2 | Run assistive-technology and comprehension sessions  | Technical journeys pass, but participant and manual screen-reader counts remain zero                                      |   4.0 | Accessibility maintainer | Run three de-identified sessions covering first visit, learning, stale data, and a screen reader      |
 |        3 | Review the first complete operating window           | Reliability, route-performance, asset, and visual evidence has not accumulated a representative 30-day window             |   3.5 | Reliability maintainer   | Review 30 days of route, cache, stale, latency, asset, and visual evidence before changing thresholds |
 |        4 | Refresh NASA contract and scheduled content evidence | Current contract mutations and editorial audits pass, but upstream contracts and time-sensitive content continue changing |   2.3 | API and content owners   | Recheck official contracts and scheduled content reviews without weakening validation                 |

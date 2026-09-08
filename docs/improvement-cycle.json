@@ -1,8 +1,9 @@
 {
   "schemaVersion": 1,
   "reviewedAt": "2026-09-04",
+  "backlogScoredAt": "2026-09-08",
   "nextReviewDue": "2026-10-03",
-  "releaseContext": "September 2026 monthly review; no release since 1.0.0",
+  "releaseContext": "Performance headroom phase 1; backlog re-scored 2026-09-08 using docs/performance-headroom-phase-1.md; monthly review remains 2026-09-04",
   "domains": [
     {
       "name": "usability",
@@ -139,7 +140,7 @@
       "riskReduction": 3,
       "effort": 2,
       "score": 4.5,
-      "nextAction": "Consolidate existing CSS before adding further cosmetic rules."
+      "nextAction": "Reuse existing CSS and assess route-specific styles before adding further cosmetic rules; phase 1 measures 181.6/190 KiB JavaScript and 25.4/26 KiB CSS."
     },
     {
       "priority": 2,

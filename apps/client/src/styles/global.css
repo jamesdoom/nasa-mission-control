@@ -5720,9 +5720,7 @@ p {
     min-height: 480px;
   }
   .module-grid,
-  .about-grid {
-    grid-template-columns: 1fr;
-  }
+  .about-grid,
   .about-hero,
   .case-study__grid {
     grid-template-columns: 1fr;
@@ -5733,21 +5731,15 @@ p {
   .case-study__metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .journey-card {
-    grid-template-columns: 1fr;
-  }
-  .flight-log-console {
-    grid-template-columns: 1fr;
-  }
+  .journey-card,
+  .flight-log-console,
   .flight-log-tools__controls {
     grid-template-columns: 1fr;
   }
   .flight-log-collections {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  .flight-log-backup {
-    grid-column: 1;
-  }
+  .flight-log-backup,
   .journey-card footer {
     grid-column: 1;
   }
@@ -5777,9 +5769,7 @@ p {
   .weather-intro--visual {
     padding-bottom: 3rem;
   }
-  .asteroid-console {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .asteroid-console,
   .asteroid-summary {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -5813,9 +5803,7 @@ p {
   .media-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .media-detail__grid {
-    grid-template-columns: 1fr;
-  }
+  .media-detail__grid,
   .weather-intro {
     grid-template-columns: 1fr;
   }
@@ -5842,14 +5830,10 @@ p {
   }
   .missions-intro > div,
   .mission-compare-intro > div,
-  .mission-overview {
-    grid-template-columns: 1fr;
-  }
+  .mission-overview,
   .mission-compare-console__heading,
   .mission-comparison-grid,
-  .mission-comparison-grid--2 {
-    grid-template-columns: 1fr;
-  }
+  .mission-comparison-grid--2,
   .scale-lab-intro > div,
   .scale-evidence__grid {
     grid-template-columns: 1fr;
@@ -5866,12 +5850,8 @@ p {
   .mission-filters > span {
     min-height: 86px;
   }
-  .mission-achievements > div {
-    grid-template-columns: 1fr;
-  }
-  .trivia-intro > div {
-    grid-template-columns: 1fr;
-  }
+  .mission-achievements > div,
+  .trivia-intro > div,
   .trivia-console-section {
     grid-template-columns: 1fr;
   }
@@ -5957,9 +5937,7 @@ p {
   .discovery-jump,
   .story-hero,
   .story-timeline,
-  .story-sources {
-    grid-template-columns: 1fr;
-  }
+  .story-sources,
   .story-hero__content {
     grid-template-columns: 1fr;
   }
@@ -6028,10 +6006,7 @@ p {
     min-width: 0;
     width: 100%;
   }
-  .site-footer {
-    align-items: flex-start;
-    flex-direction: column;
-  }
+  .site-footer,
   .state-panel--error {
     align-items: flex-start;
     flex-direction: column;
@@ -7232,9 +7207,7 @@ main .section[data-motion-state="revealed"] {
   .mission-card:hover,
   .weather-card:hover,
   .journey-start__card:hover,
-  .button:hover {
-    transform: none;
-  }
+  .button:hover,
   .media-card:hover .media-card__visual img,
   .mission-card:hover .mission-card__image img {
     transform: none;
@@ -7808,9 +7781,7 @@ main .section[data-motion-state="revealed"] {
     background: #fff !important;
     color: #000 !important;
   }
-  .learning-sequence {
-    grid-template-columns: 1fr 1fr;
-  }
+  .learning-sequence,
   .completion-summary__evidence,
   .educator-guide dl {
     grid-template-columns: 1fr 1fr;

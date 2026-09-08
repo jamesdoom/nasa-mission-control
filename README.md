@@ -124,6 +124,12 @@ npm run format:check
 
 The first Playwright run may require `npx playwright install chromium`.
 
+Browser tests use the Vite development server by default. After `npm run build`,
+set `PLAYWRIGHT_PREVIEW=true` to test the minified production build, including the
+first offline installation lifecycle. CI and release checks use this mode. In
+PowerShell, use `$env:PLAYWRIGHT_PREVIEW="true"` before `npm run test:e2e` and
+`Remove-Item Env:PLAYWRIGHT_PREVIEW` to return to development mode.
+
 Portfolio screenshots are not rewritten during normal or CI test runs. To regenerate the deterministic captures, set `UPDATE_SCREENSHOTS=true` while running `npm run test:e2e` (or `$env:UPDATE_SCREENSHOTS="true"` first in PowerShell).
 
 ## Production run
@@ -313,6 +319,8 @@ The monthly `Mission status review` workflow checks official source availability
 62. **Complete — Motion and interaction choreography phase 4:** made the complete responsive header intentionally sticky; standardized four motion durations, three easing curves, page and section entrances, state transitions, control feedback, card depth, and anchor offsets; limited hover lift to precise pointers; prevented layout-moving animation; and made section choreography fully static under reduced motion.
 63. **Complete — September continuous-improvement review:** repaired a moved official NASA Webb citation, retained the transient DONKI documentation warning, recorded the recovered space-weather incident, refreshed governance review dates, and re-scored the owned backlog without inventing manual-session evidence or changing unsupported thresholds.
 64. **Complete — Signature polish and visual quality phase 5:** expanded deterministic visual protection across 320 px, tablet, laptop, large-display, and 200%-zoom-equivalent layouts; added forced-colors, focus, landmark, reduced-motion, and overflow checks; budgeted every raster image and local font alongside CSS, JavaScript, and route performance; and recorded four honest maintainer heuristic sessions without presenting them as participant research.
+
+65. **Complete — Performance headroom phase 1:** consolidated 14 identical adjacent CSS rules, enabled Terser production JavaScript compression, and prevented first-time offline installation from reloading the current page. JavaScript decreased from 184.9 to 181.6 KiB gzip with unchanged budgets; production browser coverage now protects the first-install lifecycle. See [phase evidence](docs/performance-headroom-phase-1.md).
 
 ## Screenshots
 

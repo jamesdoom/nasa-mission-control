@@ -37,6 +37,8 @@ jobs:
       - run: npm run offline:verify
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+        env:
+          PLAYWRIGHT_PREVIEW: "true"
       - name: Publish immutable GitHub release record
         env:
           GH_TOKEN: ${{ github.token }}

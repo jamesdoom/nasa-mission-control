@@ -78,9 +78,14 @@ test("gives major route families distinct, accessible atmospheres", async ({
     await expectNoHorizontalOverflow(page);
     const contrast = await shell.evaluate((element) => {
       const styles = getComputedStyle(element);
+      const swatch = document.createElement("span");
+      swatch.style.backgroundColor = "var(--surface)";
+      element.append(swatch);
+      const surface = getComputedStyle(swatch).backgroundColor;
+      swatch.remove();
       return {
         text: styles.getPropertyValue("--text").trim(),
-        surface: styles.getPropertyValue("--surface").trim(),
+        surface,
       };
     });
     expect(contrast.text).toBe("#edf5ff");

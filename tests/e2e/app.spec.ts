@@ -315,6 +315,40 @@ test("loads APOD, saves it, and preserves it in the Flight Log", async ({
   await expect(page.getByRole("heading", { name: apod.title })).toBeVisible();
 });
 
+test("first offline installation preserves the current page and selected date", async ({
+  page,
+}) => {
+  test.skip(
+    process.env.PLAYWRIGHT_PREVIEW !== "true",
+    "Requires the built service worker",
+  );
+  let releaseWorker!: () => void;
+  const workerReleased = new Promise<void>((resolve) => {
+    releaseWorker = resolve;
+  });
+  await page.route("**/sw.js", async (route) => {
+    await workerReleased;
+    await route.continue();
+  });
+  let navigations = 0;
+  page.on("request", (request) => {
+    if (request.isNavigationRequest() && request.frame() === page.mainFrame())
+      navigations += 1;
+  });
+  await mockApod(page);
+  await page.goto("/apod?date=2024-01-01");
+  await page.getByLabel("Observation date").fill("2024-02-02");
+  releaseWorker();
+  await expect(page.getByText("Offline field console ready")).toBeVisible();
+  await expect
+    .poll(() =>
+      page.evaluate(() => navigator.serviceWorker.controller !== null),
+    )
+    .toBe(true);
+  await expect(page.getByLabel("Observation date")).toHaveValue("2024-02-02");
+  expect(navigations).toBe(1);
+});
+
 test("keeps archive dates in the URL", async ({ page }) => {
   await mockApod(page);
   await page.goto("/apod?date=2024-01-01");
