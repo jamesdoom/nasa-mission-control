@@ -1,8 +1,97 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, render, screen, within } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
+import { axe } from "vitest-axe";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { UtcClock } from "./DashboardPage";
+import { DashboardPage, UtcClock } from "./DashboardPage";
 
-afterEach(() => vi.useRealTimers());
+afterEach(() => {
+  vi.useRealTimers();
+  vi.restoreAllMocks();
+  vi.unstubAllGlobals();
+});
+
+describe("DashboardPage status accessibility", () => {
+  it("shows offline guidance instead of a loading promise when no record is loaded", async () => {
+    vi.spyOn(navigator, "onLine", "get").mockReturnValue(false);
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() => new Promise<Response>(() => undefined)),
+    );
+    const { container } = render(
+      <MemoryRouter>
+        <DashboardPage />
+      </MemoryRouter>,
+    );
+    expect(screen.getByText(/No daily image is loaded/)).toBeVisible();
+    expect(
+      screen.queryByText("Loading the daily image"),
+    ).not.toBeInTheDocument();
+    const status = screen.getByRole("region", { name: "Briefing data status" });
+    expect(within(status).getByRole("status")).toHaveTextContent(
+      "Daily image: Offline · no data",
+    );
+    expect(within(status).getByRole("button")).toBeDisabled();
+    expect(
+      (
+        await axe(container, {
+          rules: { "color-contrast": { enabled: false } },
+        })
+      ).violations,
+    ).toEqual([]);
+  });
+
+  it("announces stale APOD and failed asteroids without claiming NASA health", async () => {
+    vi.spyOn(navigator, "onLine", "get").mockReturnValue(true);
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((url: string) =>
+        Promise.resolve(
+          url === "/api/apod"
+            ? new Response(
+                JSON.stringify({
+                  date: "2024-01-01",
+                  title: "Older image",
+                  explanation: "Recorded image",
+                  mediaType: "image",
+                  mediaUrl: "/test.jpg",
+                  hdUrl: null,
+                  thumbnailUrl: null,
+                  copyright: null,
+                }),
+                { headers: { "x-data-status": "stale-fallback" } },
+              )
+            : new Response(
+                JSON.stringify({
+                  error: { message: "Scan unavailable", retryable: false },
+                }),
+                { status: 503 },
+              ),
+        ),
+      ),
+    );
+    const { container } = render(
+      <MemoryRouter>
+        <DashboardPage />
+      </MemoryRouter>,
+    );
+    const status = within(
+      screen.getByRole("region", { name: "Briefing data status" }),
+    ).getByRole("status");
+    await screen.findByRole("heading", { name: "Older image" });
+    expect(status).toHaveTextContent(
+      "Partially available · Daily image: Stale fallback. Asteroid Watch: Unavailable.",
+    );
+    expect(status).toHaveAttribute("aria-atomic", "true");
+    expect(screen.queryByText("NASA // ACTIVE")).not.toBeInTheDocument();
+    expect(
+      (
+        await axe(container, {
+          rules: { "color-contrast": { enabled: false } },
+        })
+      ).violations,
+    ).toEqual([]);
+  });
+});
 
 describe("UtcClock", () => {
   it("updates once per second and clears its timer when removed", () => {

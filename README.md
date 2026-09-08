@@ -322,6 +322,8 @@ The monthly `Mission status review` workflow checks official source availability
 
 65. **Complete — Performance headroom phase 1:** consolidated 14 identical adjacent CSS rules, enabled Terser production JavaScript compression, and prevented first-time offline installation from reloading the current page. JavaScript decreased from 184.9 to 181.6 KiB gzip with unchanged budgets; production browser coverage now protects the first-install lifecycle. See [phase evidence](docs/performance-headroom-phase-1.md).
 
+66. **Complete — Accurate dashboard briefing phase 3:** replaced unconditional NASA/system health claims with request-scoped APOD and NeoWs states, retained explicit stale/offline guidance, added briefing refresh, and used returned scan dates for asteroid counts. The production state matrix covers success, partial failure, stale fallback, unavailable, loading, and offline recovery. See [phase evidence](docs/dashboard-status-phase-3.md). Phase 2 participant research remains pending recruitment.
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.

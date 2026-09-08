@@ -45,6 +45,11 @@ Cinematic missions and stories phase 2 reuses the shared atmosphere rather than 
 
 ## Interpret real-user results
 
+Dashboard status phase 3 (2026-09-08) adds request-scoped status summaries and
+refresh controls. The build measures 182.1 KiB JavaScript and 25.5 KiB CSS gzip,
+leaving 7.9 and 0.5 KiB beneath unchanged ceilings. No new dependency or image is
+introduced. See [phase evidence](dashboard-status-phase-3.md).
+
 Performance headroom phase 1 (2026-09-08) switches production JavaScript
 minification to Terser and consolidates 14 identical adjacent CSS rules without
 moving them across cascade boundaries. Total JavaScript drops from 184.9 to

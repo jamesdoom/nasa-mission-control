@@ -318,7 +318,7 @@ export function AppShell() {
         </button>
         <div className={online ? "system-status" : "system-status is-offline"}>
           <span className="status-dot" aria-hidden="true" />
-          {online ? "SYSTEMS NOMINAL" : "LOCAL MODE"}
+          {online ? "BROWSER ONLINE" : "BROWSER OFFLINE"}
         </div>
       </header>
       {online ? null : (
@@ -326,8 +326,8 @@ export function AppShell() {
           <strong>Network link offline.</strong>
           <span>
             Cached curated instruments and saved Flight Log records remain
-            available. Live NASA instruments will reconnect when this browser is
-            online; displayed telemetry is never presented as newly fetched.
+            available. Reconnect and retry live NASA requests; previously
+            displayed records are not newly fetched.
           </span>
         </div>
       )}

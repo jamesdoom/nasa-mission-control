@@ -17,6 +17,12 @@ Traffic is a coarse 1–3 tier until privacy-conscious route evidence is availab
 
 ## Product and operating queue
 
+Phase 3 release re-score, 2026-09-08: [dashboard evidence](dashboard-status-phase-3.md)
+adds truthful source-status and recovery coverage. Current assets measure
+182.1/190 KiB JavaScript and 25.5/26 KiB CSS. Narrow CSS headroom keeps the asset
+score at 4.5; participant, operating-window, and contract evidence inputs remain
+unchanged, so their scores and the editorial queue order remain unchanged.
+
 Phase 1 release re-score, 2026-09-08: [performance evidence](performance-headroom-phase-1.md)
 now measures 181.6/190 KiB JavaScript and 25.4/26 KiB CSS. JavaScript margin
 improves to 8.4 KiB; the remaining 0.6 KiB CSS margin keeps the asset-headroom
@@ -28,7 +34,7 @@ Reviewed and re-scored 2026-09-04 after the monthly evidence review. No release 
 
 | Priority | Candidate                                            | Production or usability evidence                                                                                          | Score | Owner                    | Next measurable action                                                                                |
 | -------: | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ----: | ------------------------ | ----------------------------------------------------------------------------------------------------- |
-|        1 | Preserve immersive asset headroom                    | Phase 1 passes at 181.6/190 KiB JavaScript and 25.4/26 KiB CSS; stylesheet margin remains narrow                          |   4.5 | Frontend maintainer      | Reuse existing CSS and assess route-specific styles before adding further cosmetic rules              |
+|        1 | Preserve immersive asset headroom                    | Phase 3 passes at 182.1/190 KiB JavaScript and 25.5/26 KiB CSS; stylesheet margin remains narrow                          |   4.5 | Frontend maintainer      | Reuse existing CSS and assess route-specific styles before adding further cosmetic rules              |
 |        2 | Run assistive-technology and comprehension sessions  | Technical journeys pass, but participant and manual screen-reader counts remain zero                                      |   4.0 | Accessibility maintainer | Run three de-identified sessions covering first visit, learning, stale data, and a screen reader      |
 |        3 | Review the first complete operating window           | Reliability, route-performance, asset, and visual evidence has not accumulated a representative 30-day window             |   3.5 | Reliability maintainer   | Review 30 days of route, cache, stale, latency, asset, and visual evidence before changing thresholds |
 |        4 | Refresh NASA contract and scheduled content evidence | Current contract mutations and editorial audits pass, but upstream contracts and time-sensitive content continue changing |   2.3 | API and content owners   | Recheck official contracts and scheduled content reviews without weakening validation                 |

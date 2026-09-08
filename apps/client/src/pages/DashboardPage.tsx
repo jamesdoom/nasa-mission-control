@@ -8,12 +8,19 @@ import { EvidenceGuide } from "../components/EvidenceGuide";
 import { useApod } from "../features/apod/useApod";
 import { useAsteroids } from "../features/asteroids/useAsteroids";
 import { useFavorites } from "../hooks/useFavorites";
+import { useNetworkStatus } from "../hooks/useNetworkStatus";
+import { briefingStatus, feedStatus } from "../utils/briefingStatus";
 import { utcDate } from "../utils/dates";
 
 export function DashboardPage() {
   const query = useApod();
   const asteroidQuery = useAsteroids(utcDate(), utcDate(6));
   const favorites = useFavorites();
+  const online = useNetworkStatus();
+  const status = briefingStatus([query, asteroidQuery], online);
+  const apodStatus = feedStatus(query, online);
+  const asteroidStatus = feedStatus(asteroidQuery, online);
+  const refreshing = query.isFetching || asteroidQuery.isFetching;
   const error = query.error instanceof ApiError ? query.error : undefined;
   return (
     <>
@@ -28,7 +35,7 @@ export function DashboardPage() {
           <div>
             <p className="kicker">
               <span />
-              Live orbital briefing
+              Your space briefing
             </p>
             <h1>
               Explore beyond
@@ -41,7 +48,7 @@ export function DashboardPage() {
             </p>
             <div className="hero-actions">
               <a className="button" href="#daily-briefing">
-                View today’s briefing
+                View the briefing
               </a>
               <Link className="button button--secondary" to="/apod">
                 Browse the archive
@@ -62,12 +69,12 @@ export function DashboardPage() {
             <UtcClock />
           </span>
           <span>
-            <small>Data link</small>
-            <strong className="nominal">NASA // ACTIVE</strong>
+            <small>Briefing data</small>
+            <strong>{status}</strong>
           </span>
           <span>
-            <small>Current module</small>
-            <strong>APOD // 01</strong>
+            <small>Briefing sources</small>
+            <strong>APOD + NeoWs</strong>
           </span>
         </div>
       </section>
@@ -76,16 +83,55 @@ export function DashboardPage() {
           <div>
             <p className="kicker">
               <span />
-              Daily transmission
+              NASA observations
             </p>
-            <h2>Today’s cosmic briefing</h2>
+            <h2>Daily briefing</h2>
           </div>
           <Link className="text-link" to="/apod">
             Explore the archive →
           </Link>
         </div>
-        {query.isPending ? (
-          <LoadingState />
+        <div
+          className="briefing-status"
+          aria-label="Briefing data status"
+          role="region"
+        >
+          <p role="status" aria-atomic="true">
+            <strong>{status}</strong> · Daily image: {apodStatus}. Asteroid
+            Watch: {asteroidStatus}.
+          </p>
+          <p>
+            Status covers these two requests, not all NASA services. Available
+            means a response was received, not a real-time feed. Check record
+            dates and source details.
+            {!online
+              ? " You are offline. Previously loaded records are not newly retrieved."
+              : ""}
+          </p>
+          <button
+            className="button button--secondary"
+            type="button"
+            disabled={!online || refreshing}
+            onClick={() => {
+              void query.refetch();
+              void asteroidQuery.refetch();
+            }}
+          >
+            {online && refreshing ? "Refreshing briefing…" : "Refresh briefing"}
+          </button>
+        </div>
+        <p className="kicker">Daily image · APOD</p>
+        {!online && !query.data ? (
+          <div className="state-panel">
+            <p>
+              No daily image is loaded. Reconnect, then refresh the briefing.
+            </p>
+          </div>
+        ) : query.isPending ? (
+          <LoadingState
+            title="Loading the daily image"
+            detail="Waiting for the APOD response; no observation is available yet."
+          />
         ) : query.isError ? (
           <ErrorState
             message={error?.message ?? "An unexpected error occurred."}
@@ -97,7 +143,7 @@ export function DashboardPage() {
             <DataStatus
               source="NASA APOD"
               updatedAt={query.dataUpdatedAt}
-              refreshing={query.isFetching}
+              refreshing={online && query.isFetching}
               data={query.data}
             />
             <ApodPanel
@@ -121,16 +167,22 @@ export function DashboardPage() {
         </div>
         <div className="journey-start__grid">
           <Link className="journey-start__card" to="/asteroids">
-            <small>About 3 minutes · Live data</small>
+            <small>About 3 minutes · NASA NeoWs</small>
             <h3>See what is passing Earth</h3>
+            <p>Asteroid Watch: {asteroidStatus}</p>
             {asteroidQuery.data ? (
               <p>
-                {asteroidQuery.data.totalCount} approaches in the next seven
-                days, explained with responsible risk context.
+                {asteroidQuery.data.totalCount} approaches in the returned scan
+                ({asteroidQuery.data.startDate}–{asteroidQuery.data.endDate},
+                UTC).
+                {asteroidStatus !== "Available"
+                  ? " Previously retrieved values; freshness is not confirmed."
+                  : " Explained with responsible risk context."}
               </p>
             ) : (
               <p>
-                Explore near-Earth encounters with responsible risk context.
+                No encounter count is available yet. Explore Asteroid Watch for
+                scan controls and responsible risk context.
               </p>
             )}
             <span>Open Asteroid Watch →</span>

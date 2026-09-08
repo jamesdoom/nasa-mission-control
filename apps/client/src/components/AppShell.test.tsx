@@ -116,7 +116,7 @@ describe("AppShell reliability behavior", () => {
     expect(screen.getByRole("status")).toHaveTextContent(
       "Cached curated instruments and saved Flight Log records remain available",
     );
-    expect(screen.getByText("LOCAL MODE")).toBeInTheDocument();
+    expect(screen.getByText("BROWSER OFFLINE")).toBeInTheDocument();
   });
 
   it("opens global command search from the keyboard", async () => {
