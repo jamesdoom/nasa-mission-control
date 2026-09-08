@@ -326,6 +326,8 @@ The monthly `Mission status review` workflow checks official source availability
 
 67. **Complete — Reliability measurement and timeout alignment:** separated CDN and observable origin-cache ratios, added correlated upstream diagnostics, and bounded HTTP upstream work to 10 seconds ahead of the 12-second monitoring deadline without changing latency/failure/fallback alerts. Historical Space Weather references were searched but their logs are unavailable; a recent successful revalidation was verified. See [investigation and validation](docs/reliability-reporting-investigation.md).
 
+68. **Complete — Exploration and learning continuity phase 4:** added context-preserving return links across guided paths, learning, stories, missions, and media; saved filtered explorations and next-step learning links in Flight Log; retained reflection drafts and resumable trivia sessions; and included new local records in existing backups. Verified discovery-to-evidence save/resume, mobile focus, and unavailable-storage flows. See [phase evidence](docs/exploration-continuity-phase-4.md).
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.

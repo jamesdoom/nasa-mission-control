@@ -1,7 +1,13 @@
+import { explorationLink } from "../utils/explorationContext";
 import type { MediaItem } from "@mission-control/shared";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export function MediaCard({ item }: { item: MediaItem }) {
+  const location = useLocation();
+  const detailPath = explorationLink(
+    `/media/${encodeURIComponent(item.nasaId)}`,
+    location.pathname + location.search,
+  );
   const year = Number.isNaN(Date.parse(item.dateCreated))
     ? null
     : new Date(item.dateCreated).getUTCFullYear();
@@ -9,7 +15,7 @@ export function MediaCard({ item }: { item: MediaItem }) {
     <article className="media-card">
       <Link
         className="media-card__visual"
-        to={`/media/${encodeURIComponent(item.nasaId)}`}
+        to={detailPath}
         aria-label={`Open ${item.title}`}
       >
         {item.previewUrl ? (
@@ -30,10 +36,7 @@ export function MediaCard({ item }: { item: MediaItem }) {
         </p>
         <h2>{item.title}</h2>
         <p>{item.description || "Description unavailable for this asset."}</p>
-        <Link
-          className="text-link"
-          to={`/media/${encodeURIComponent(item.nasaId)}`}
-        >
+        <Link className="text-link" to={detailPath}>
           Inspect asset →
         </Link>
       </div>

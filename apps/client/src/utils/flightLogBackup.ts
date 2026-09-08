@@ -1,6 +1,8 @@
 const maxBackupBytes = 1_000_000;
 
 const storageKeys = [
+  "mission-control:saved-explorations:v1",
+  "mission-control:trivia-session:v1",
   "mission-control:apod-favorites:v2",
   "mission-control:asteroid-favorites:v1",
   "mission-control:media-favorites:v1",
@@ -117,7 +119,10 @@ export function restoreFlightLogBackup(
       const raw = storage.getItem(key);
       if (raw !== null) {
         try {
-          record = mergeValue(record, JSON.parse(raw) as unknown);
+          record =
+            key === "mission-control:trivia-session:v1"
+              ? (JSON.parse(raw) as unknown)
+              : mergeValue(record, JSON.parse(raw) as unknown);
         } catch {
           // A malformed local value yields to the validated backup container.
         }

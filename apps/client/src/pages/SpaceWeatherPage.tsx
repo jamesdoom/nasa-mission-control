@@ -1,3 +1,4 @@
+import { keepExplorationContext } from "../utils/explorationContext";
 import { useEffect, useState, type SyntheticEvent } from "react";
 import { useSearchParams } from "react-router-dom";
 import { ApiError } from "../api/apod";
@@ -38,12 +39,24 @@ export function SpaceWeatherPage() {
   }, [startDate, endDate]);
 
   function update(nextCategory: Category) {
-    setParams({ startDate, endDate, category: nextCategory });
+    setParams(
+      keepExplorationContext(params, {
+        startDate,
+        endDate,
+        category: nextCategory,
+      }),
+    );
   }
 
   function submit(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
-    setParams({ startDate: draftStart, endDate: draftEnd, category });
+    setParams(
+      keepExplorationContext(params, {
+        startDate: draftStart,
+        endDate: draftEnd,
+        category,
+      }),
+    );
   }
   function toggleComparison(id: string) {
     const nextIds = comparisonIds.includes(id)

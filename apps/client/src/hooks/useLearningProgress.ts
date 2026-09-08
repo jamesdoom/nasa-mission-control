@@ -5,6 +5,7 @@ export type TrackProgress = {
   completedSteps: string[];
   checkPassed: boolean;
   reflection: string;
+  reflectionDraft?: string;
   updatedAt: string;
 };
 type Store = { version: 1; tracks: Record<string, TrackProgress> };
@@ -55,6 +56,9 @@ function read(): Store {
         completedSteps,
         checkPassed: item.checkPassed === true,
         reflection: text(item.reflection, 1000),
+        ...(typeof item.reflectionDraft === "string"
+          ? { reflectionDraft: item.reflectionDraft.slice(0, 1000) }
+          : {}),
         updatedAt: item.updatedAt,
       };
     }
@@ -110,14 +114,25 @@ export function useLearningProgress() {
         checkPassed: true,
         updatedAt: new Date().toISOString(),
       })),
+    saveDraft: (trackId: string, reflectionDraft: string) =>
+      update(trackId, (current) => ({
+        ...current,
+        reflectionDraft: reflectionDraft.slice(0, 1000),
+        updatedAt: new Date().toISOString(),
+      })),
     saveReflection: (trackId: string, reflection: string) =>
       update(trackId, (current) => ({
         ...current,
         reflection: text(reflection, 1000),
+        reflectionDraft: reflection,
         updatedAt: new Date().toISOString(),
       })),
     reset: () => {
-      localStorage.removeItem(storageKey);
+      try {
+        localStorage.removeItem(storageKey);
+      } catch {
+        /* Reset remains usable for this session. */
+      }
       setStore(empty);
     },
     exportJson: () =>

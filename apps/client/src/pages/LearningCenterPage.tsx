@@ -1,3 +1,8 @@
+import { useResumeAnchor } from "../hooks/useResumeAnchor";
+import {
+  explorationLink,
+  keepExplorationContext,
+} from "../utils/explorationContext";
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { learningTrackById, learningTracks } from "../data/learningTracks";
@@ -16,6 +21,7 @@ function download(name: string, content: string) {
 }
 
 export function LearningCenterPage() {
+  useResumeAnchor();
   const [params, setParams] = useSearchParams();
   const track = learningTrackById(params.get("track") ?? undefined);
   const progress = useLearningProgress();
@@ -27,13 +33,17 @@ export function LearningCenterPage() {
     updatedAt: "",
   };
   const [answer, setAnswer] = useState<number | null>(null);
-  const [reflection, setReflection] = useState(record.reflection);
+  const [reflection, setReflection] = useState(
+    record.reflectionDraft ?? record.reflection,
+  );
   const [status, setStatus] = useState("");
   useEffect(() => {
+    setReflection(record.reflectionDraft ?? record.reflection);
+  }, [track.id, record.reflection, record.reflectionDraft]);
+  useEffect(() => {
     setAnswer(null);
-    setReflection(record.reflection);
     setStatus("");
-  }, [track.id, record.reflection]);
+  }, [track.id]);
   const complete =
     record.completedSteps.length === track.steps.length &&
     record.checkPassed &&
@@ -79,7 +89,11 @@ export function LearningCenterPage() {
           Track
           <select
             value={track.id}
-            onChange={(event) => setParams({ track: event.target.value })}
+            onChange={(event) =>
+              setParams(
+                keepExplorationContext(params, { track: event.target.value }),
+              )
+            }
           >
             {learningTracks.map((item) => (
               <option key={item.id} value={item.id}>
@@ -141,13 +155,20 @@ export function LearningCenterPage() {
           <h3 id="learning-sequence-title">Guided sequence</h3>
           <ol className="learning-sequence">
             {track.steps.map((step, index) => (
-              <li key={step.id}>
+              <li key={step.id} id={`step-${step.id}`} tabIndex={-1}>
                 <div>
                   <span>{index + 1}</span>
                   <p className="eyebrow">{step.kind}</p>
                   <h4>{step.title}</h4>
                   <p>{step.instruction}</p>
-                  <Link to={step.to}>Open learning resource →</Link>
+                  <Link
+                    to={explorationLink(
+                      step.to,
+                      `/learn?track=${track.id}#step-${step.id}`,
+                    )}
+                  >
+                    Open learning resource →
+                  </Link>
                 </div>
                 <label>
                   <input
@@ -162,6 +183,8 @@ export function LearningCenterPage() {
           </ol>
         </section>
         <section
+          id="knowledge-check"
+          tabIndex={-1}
           className="knowledge-check"
           aria-labelledby="knowledge-check-title"
         >
@@ -213,6 +236,8 @@ export function LearningCenterPage() {
           ) : null}
         </section>
         <section
+          id="reflection"
+          tabIndex={-1}
           className="reflection-prompt"
           aria-labelledby="reflection-title"
         >
@@ -226,9 +251,16 @@ export function LearningCenterPage() {
               value={reflection}
               maxLength={1000}
               rows={5}
-              onChange={(event) => setReflection(event.target.value)}
+              onChange={(event) => {
+                setReflection(event.target.value);
+                progress.saveDraft(track.id, event.target.value);
+              }}
             />
           </label>
+          <p>
+            Drafts are kept in this browser as you type. Save your reflection
+            when it is ready to count toward completion.
+          </p>
           <button
             className="button button--secondary"
             type="button"

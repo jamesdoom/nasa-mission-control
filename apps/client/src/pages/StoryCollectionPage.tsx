@@ -1,4 +1,5 @@
-import { Link, useParams } from "react-router-dom";
+import { explorationLink } from "../utils/explorationContext";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { ProvenancePanel } from "../components/ProvenancePanel";
 import {
   storyCollectionById,
@@ -14,6 +15,8 @@ const evidenceLabels: Record<StoryEvidenceKind, string> = {
 };
 
 export function StoryCollectionPage() {
+  const location = useLocation();
+  const from = location.pathname + location.search;
   const { storyId } = useParams();
   const story = storyCollectionById(storyId);
 
@@ -130,7 +133,10 @@ export function StoryCollectionPage() {
                   <strong>Carry forward</strong>
                   <p>{chapter.takeaway}</p>
                 </div>
-                <Link className="button button--secondary" to={chapter.to}>
+                <Link
+                  className="button button--secondary"
+                  to={explorationLink(chapter.to, from)}
+                >
                   Open chapter {index + 1} →
                 </Link>
               </article>
@@ -212,7 +218,12 @@ export function StoryCollectionPage() {
             </li>
           ))}
           <li>
-            <Link to={`/learn?track=${story.learningTrackId}`}>
+            <Link
+              to={explorationLink(
+                `/learn?track=${story.learningTrackId}`,
+                from,
+              )}
+            >
               Continue in guided learning <span aria-hidden="true">→</span>
             </Link>
           </li>

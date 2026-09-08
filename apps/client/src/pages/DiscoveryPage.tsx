@@ -1,3 +1,4 @@
+import { explorationLink } from "../utils/explorationContext";
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { HeartIcon } from "../components/Icons";
@@ -135,7 +136,11 @@ export function DiscoveryPage() {
                     <small>{step.label}</small>
                     <h3>{step.title}</h3>
                     <p>{step.description}</p>
-                    <Link to={step.to}>Open instrument →</Link>
+                    <Link
+                      to={explorationLink(step.to, `/discover#${journey.id}`)}
+                    >
+                      Open instrument →
+                    </Link>
                   </div>
                 </li>
               ))}

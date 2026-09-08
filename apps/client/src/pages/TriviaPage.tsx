@@ -1,3 +1,9 @@
+import { readTriviaSession, writeTriviaSession } from "../utils/triviaSession";
+import {
+  keepExplorationContext,
+  explorationLink,
+} from "../utils/explorationContext";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
@@ -41,8 +47,12 @@ function categoryFrom(value: string | null): TriviaCategoryFilter {
 }
 
 function readBestStreak(): number {
-  const value = Number(localStorage.getItem(bestStreakKey) ?? 0);
-  return Number.isInteger(value) && value >= 0 ? value : 0;
+  try {
+    const value = Number(localStorage.getItem(bestStreakKey) ?? 0);
+    return Number.isInteger(value) && value >= 0 ? value : 0;
+  } catch {
+    return 0;
+  }
 }
 
 function readQuestionHistory(): string {
@@ -69,6 +79,19 @@ export function TriviaPage() {
   const [params, setParams] = useSearchParams();
   const difficulty = difficultyFrom(params.get("difficulty"));
   const category = categoryFrom(params.get("category"));
+  const filterKey = `${difficulty}:${category}`;
+  const [activeFilter, setActiveFilter] = useState(filterKey);
+  const [resume] = useState(() => {
+    const saved = readTriviaSession();
+    return saved?.difficulty === difficulty && saved.category === category
+      ? saved
+      : null;
+  });
+  const [sessionNotice, setSessionNotice] = useState(
+    resume
+      ? "Your last question and score have been restored."
+      : "Your current session is kept in this browser as you answer.",
+  );
   const [questionBank, setQuestionBank] = useState<TriviaQuestion[]>([]);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [loadAttempt, setLoadAttempt] = useState(0);
@@ -77,12 +100,14 @@ export function TriviaPage() {
       question.difficulty === difficulty &&
       (category === "all" || question.category === category),
   );
-  const [index, setIndex] = useState(0);
-  const [selected, setSelected] = useState<number | null>(null);
-  const [score, setScore] = useState(0);
-  const [streak, setStreak] = useState(0);
+  const [index, setIndex] = useState(resume?.index ?? 0);
+  const [selected, setSelected] = useState<number | null>(
+    resume?.selected ?? null,
+  );
+  const [score, setScore] = useState(resume?.score ?? 0);
+  const [streak, setStreak] = useState(resume?.streak ?? 0);
   const [bestStreak, setBestStreak] = useState(readBestStreak);
-  const [complete, setComplete] = useState(false);
+  const [complete, setComplete] = useState(resume?.complete ?? false);
   const question = questions[index];
 
   useEffect(() => {
@@ -92,11 +117,37 @@ export function TriviaPage() {
       .then((loaded) => {
         if (active) {
           const seen = new Set(readQuestionHistory().split("|"));
+          const savedIds = resume?.ids ?? [];
+          const compatible =
+            savedIds.length > 0 &&
+            savedIds.every((id) =>
+              loaded.some(
+                (q) =>
+                  q.id === id &&
+                  q.difficulty === resume?.difficulty &&
+                  (resume.category === "all" || q.category === resume.category),
+              ),
+            );
+          if (resume && !compatible) {
+            setIndex(0);
+            setSelected(null);
+            setScore(0);
+            setStreak(0);
+            setComplete(false);
+            setSessionNotice(
+              "The question bank changed. A new session has started.",
+            );
+          }
           setQuestionBank(
-            [...loaded].sort(
-              (left, right) =>
-                Number(seen.has(left.id)) - Number(seen.has(right.id)),
-            ),
+            [...loaded].sort((left, right) => {
+              if (compatible) {
+                const l = savedIds.indexOf(left.id);
+                const r = savedIds.indexOf(right.id);
+                if (l >= 0 || r >= 0)
+                  return (l < 0 ? 999 : l) - (r < 0 ? 999 : r);
+              }
+              return Number(seen.has(left.id)) - Number(seen.has(right.id));
+            }),
           );
         }
       })
@@ -107,21 +158,53 @@ export function TriviaPage() {
     return () => {
       active = false;
     };
-  }, [loadAttempt]);
+  }, [loadAttempt, resume]);
 
   useEffect(() => {
+    if (activeFilter === filterKey) return;
+    setActiveFilter(filterKey);
+    setSessionNotice("A new topic session has started in this browser.");
     setIndex(0);
     setSelected(null);
     setScore(0);
     setStreak(0);
     setComplete(false);
-  }, [category, difficulty]);
+  }, [activeFilter, filterKey]);
+
+  useEffect(() => {
+    if (!questions.length || activeFilter !== filterKey) return;
+    const persisted = writeTriviaSession({
+      difficulty,
+      category,
+      ids: questions.map((item) => item.id),
+      index,
+      selected,
+      score,
+      streak,
+      complete,
+    });
+    if (!persisted)
+      setSessionNotice(
+        "Browser storage is unavailable. Progress is kept for this session only.",
+      );
+  }, [
+    questionBank,
+    activeFilter,
+    filterKey,
+    category,
+    difficulty,
+    index,
+    selected,
+    score,
+    streak,
+    complete,
+  ]);
 
   function updateFilters(
     nextDifficulty: TriviaDifficulty,
     nextCategory: TriviaCategoryFilter,
   ) {
-    const next = new URLSearchParams();
+    const next = keepExplorationContext(params, {});
     next.set("difficulty", nextDifficulty);
     if (nextCategory !== "all") next.set("category", nextCategory);
     setParams(next);
@@ -196,6 +279,10 @@ export function TriviaPage() {
         />
       </section>
       <section className="section trivia-console-section">
+        <p role="status">
+          {sessionNotice}{" "}
+          <Link to="/favorites#resume">Resume later from Flight Log →</Link>
+        </p>
         <div className="trivia-filter-stack">
           <fieldset className="trivia-difficulties">
             <legend>Simulation difficulty</legend>
@@ -331,6 +418,20 @@ export function TriviaPage() {
                   Verify with {question.source.label} ↗
                 </a>
                 <small>Source reviewed {question.verifiedAt}</small>
+                <Link
+                  to={explorationLink(
+                    question.category === "moon"
+                      ? "/missions/apollo-11"
+                      : question.category === "planets"
+                        ? "/learn?track=mars-evidence"
+                        : question.category === "observatories"
+                          ? "/learn?track=cosmic-observatories"
+                          : "/missions/voyager-1",
+                    `/trivia?difficulty=${difficulty}&category=${category}`,
+                  )}
+                >
+                  Explore related evidence →
+                </Link>
                 <button className="button" type="button" onClick={next}>
                   {index === questions.length - 1
                     ? "Complete simulation"

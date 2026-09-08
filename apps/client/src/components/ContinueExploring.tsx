@@ -1,9 +1,11 @@
 import { useId } from "react";
-import { Link } from "react-router-dom";
+import { explorationLink } from "../utils/explorationContext";
+import { Link, useLocation } from "react-router-dom";
 import type { ExplorationLink } from "../data/contextualLinks";
 
 export function ContinueExploring({ links }: { links: ExplorationLink[] }) {
   const headingId = useId();
+  const location = useLocation();
   return (
     <aside className="continue-exploring" aria-labelledby={headingId}>
       <div className="section-heading">
@@ -20,7 +22,10 @@ export function ContinueExploring({ links }: { links: ExplorationLink[] }) {
         {links.map((link, index) => (
           <Link
             className="module-card module-card--active"
-            to={link.to}
+            to={explorationLink(
+              link.to,
+              location.pathname + location.search + location.hash,
+            )}
             key={link.to}
           >
             <span>0{index + 1}</span>

@@ -1,3 +1,4 @@
+import { keepExplorationContext } from "../utils/explorationContext";
 import { useEffect, useState, type SyntheticEvent } from "react";
 import { useSearchParams } from "react-router-dom";
 import { ApiError } from "../api/apod";
@@ -40,7 +41,13 @@ export function MediaLibraryPage() {
     const nextQuery = next.q ?? query;
     const nextType = next.mediaType ?? mediaType;
     const nextPage = next.page ?? 1;
-    setParams({ q: nextQuery, mediaType: nextType, page: String(nextPage) });
+    setParams(
+      keepExplorationContext(params, {
+        q: nextQuery,
+        mediaType: nextType,
+        page: String(nextPage),
+      }),
+    );
   }
 
   function submit(event: SyntheticEvent<HTMLFormElement>) {

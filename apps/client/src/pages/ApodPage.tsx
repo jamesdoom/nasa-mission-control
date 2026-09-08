@@ -1,3 +1,4 @@
+import { keepExplorationContext } from "../utils/explorationContext";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { APOD_EARLIEST_DATE } from "@mission-control/shared";
@@ -55,7 +56,12 @@ export function ApodPage() {
         className="date-console"
         onSubmit={(event) => {
           event.preventDefault();
-          setParams(draftDate === today() ? {} : { date: draftDate });
+          setParams(
+            keepExplorationContext(
+              params,
+              draftDate === today() ? {} : { date: draftDate },
+            ),
+          );
         }}
       >
         <label htmlFor="apod-date">Observation date</label>

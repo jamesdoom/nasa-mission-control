@@ -1,3 +1,4 @@
+import { ResumeExploration } from "../components/ResumeExploration";
 import { useState, type ChangeEvent } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { ApodPanel } from "../components/ApodPanel";
@@ -426,10 +427,11 @@ export function FavoritesPage() {
           )}
         </section>
       ) : null}
+      <ResumeExploration />
       {isEmpty ? (
         <div className="empty-state">
           <span aria-hidden="true">✦</span>
-          <h2>No discoveries logged yet</h2>
+          <h2>No saved records yet</h2>
           <p>
             Save an observation, tracked object, mission, or NASA media asset
             with its heart or save control. Your first record will appear here

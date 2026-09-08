@@ -36,7 +36,10 @@ describe("StoryCollectionPage", () => {
     ).toBeVisible();
     expect(
       screen.getByRole("link", { name: "Continue in guided learning" }),
-    ).toHaveAttribute("href", "/learn?track=mars-evidence");
+    ).toHaveAttribute(
+      "href",
+      "/learn?track=mars-evidence&returnTo=%2Fstories%2Fmars-habitability",
+    );
   });
 
   it("offers recovery for an unknown story", () => {

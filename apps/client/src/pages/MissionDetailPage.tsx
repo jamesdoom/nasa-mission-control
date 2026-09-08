@@ -1,5 +1,6 @@
+import { explorationLink } from "../utils/explorationContext";
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { getMission, getMissionReviewDueDate } from "../data/missions";
 import { NotFoundPage } from "./NotFoundPage";
 import { useMissionFavorites } from "../hooks/useMissionFavorites";
@@ -68,6 +69,8 @@ const missionDiscovery: Record<
 };
 
 export function MissionDetailPage() {
+  const location = useLocation();
+  const from = location.pathname + location.search;
   const mission = getMission(useParams().missionSlug);
   const favorites = useMissionFavorites();
   const recent = useRecentlyViewed();
@@ -307,7 +310,10 @@ export function MissionDetailPage() {
                   </a>
                 ))}
                 <Link
-                  to={`/media?q=${encodeURIComponent(mission.name)}&mediaType=image&page=1`}
+                  to={explorationLink(
+                    `/media?q=${encodeURIComponent(mission.name)}&mediaType=image&page=1`,
+                    from,
+                  )}
                 >
                   <span>archive search</span>
                   <strong>Search NASA’s media library</strong>
@@ -359,7 +365,7 @@ export function MissionDetailPage() {
                 </Link>
                 <Link
                   className="button button--secondary"
-                  to={discovery.instrument}
+                  to={explorationLink(discovery.instrument, from)}
                 >
                   {discovery.instrumentLabel}
                 </Link>

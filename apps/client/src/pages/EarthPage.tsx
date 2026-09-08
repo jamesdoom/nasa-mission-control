@@ -1,3 +1,4 @@
+import { keepExplorationContext } from "../utils/explorationContext";
 import { useEffect, useState, type SyntheticEvent } from "react";
 import type { EarthCollection } from "@mission-control/shared";
 import { useSearchParams } from "react-router-dom";
@@ -20,7 +21,7 @@ export function collectionSearchParams(
   collection: EarthCollection,
   resolvedDate?: string,
 ): URLSearchParams {
-  const next = new URLSearchParams({ collection });
+  const next = keepExplorationContext(current, { collection });
   const activeDate = resolvedDate ?? current.get("date");
   const activeImage = current.get("image");
   if (activeDate) next.set("date", activeDate);
@@ -47,7 +48,7 @@ export function EarthPage() {
 
   function submit(event: SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
-    const next = new URLSearchParams({ collection });
+    const next = keepExplorationContext(params, { collection });
     if (draftDate) next.set("date", draftDate);
     setParams(next);
   }
@@ -102,7 +103,7 @@ export function EarthPage() {
             type="button"
             onClick={() => {
               setDraftDate("");
-              setParams({ collection });
+              setParams(keepExplorationContext(params, { collection }));
             }}
           >
             Latest available
@@ -157,7 +158,7 @@ export function EarthPage() {
                 type="button"
                 onClick={() => {
                   setDraftDate("");
-                  setParams({ collection });
+                  setParams(keepExplorationContext(params, { collection }));
                 }}
               >
                 Open latest {collection} color

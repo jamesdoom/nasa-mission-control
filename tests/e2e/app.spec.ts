@@ -288,7 +288,7 @@ test("loads APOD, saves it, and preserves it in the Flight Log", async ({
   await page
     .getByRole("button", { name: `Save ${apod.title} to favorites` })
     .click();
-  await page.getByRole("link", { name: "Flight Log" }).click();
+  await page.getByRole("link", { name: "Flight Log", exact: true }).click();
   await expect(page).toHaveURL(/\/favorites$/);
   await expect(page.getByRole("heading", { name: apod.title })).toBeVisible();
   await page.getByText("Add note or tags", { exact: true }).click();
@@ -558,7 +558,7 @@ test("explores, sorts, opens, and saves an asteroid encounter", async ({
     page.getByText("Potentially hazardous asteroid", { exact: true }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Save to Flight Log" }).click();
-  await page.getByRole("link", { name: "Flight Log" }).click();
+  await page.getByRole("link", { name: "Flight Log", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "Asteroid encounters" }),
   ).toBeVisible();
@@ -590,7 +590,7 @@ test("searches and inspects the NASA media archive", async ({ page }) => {
   ).toBeVisible();
   await expect(page.getByText("Neil Armstrong")).toBeVisible();
   await page.getByRole("button", { name: "Save to Flight Log" }).click();
-  await page.getByRole("link", { name: "Flight Log" }).click();
+  await page.getByRole("link", { name: "Flight Log", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "Media discoveries" }),
   ).toBeVisible();
@@ -676,7 +676,7 @@ test("filters and opens a source-backed mission record", async ({ page }) => {
   ).toBeVisible();
   await expect(page.getByText("Curated record", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Save to Flight Log" }).click();
-  await page.getByRole("link", { name: "Flight Log" }).click();
+  await page.getByRole("link", { name: "Flight Log", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "Mission records" }),
   ).toBeVisible();
@@ -863,7 +863,7 @@ test("follows a guided discovery path into mission history and back", async ({
     .getByRole("link", { name: "Open instrument →" })
     .first()
     .click();
-  await expect(page).toHaveURL(/\/missions\/apollo-11$/);
+  await expect(page).toHaveURL(/\/missions\/apollo-11\?returnTo=/);
   await expect(
     page.getByRole("heading", {
       name: "Connect this record to live Mission Control",
@@ -876,7 +876,7 @@ test("follows a guided discovery path into mission history and back", async ({
       name: "Reconstruct Apollo 11 through evidence",
     }),
   ).toBeVisible();
-  await page.getByRole("link", { name: "Flight Log" }).click();
+  await page.getByRole("link", { name: "Flight Log", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "1 saved record" }),
   ).toBeVisible();
@@ -910,7 +910,9 @@ test("follows a source-checked science story into its first evidence chapter", a
   ).toBeVisible();
   await expect(page.getByText("Curated record").first()).toBeVisible();
   await page.getByRole("link", { name: "Open chapter 1 →" }).click();
-  await expect(page).toHaveURL(/\/missions\/curiosity$/);
+  await expect(page).toHaveURL(
+    /\/missions\/curiosity\?returnTo=%2Fstories%2Fmars-habitability$/,
+  );
   await expect(
     page.getByRole("heading", { name: "Curiosity", exact: true, level: 1 }),
   ).toBeVisible();
@@ -947,7 +949,7 @@ test("connects Artemis I to its guided lunar investigation", async ({
     })
     .click();
   await journey.getByRole("link", { name: "Open instrument →" }).nth(1).click();
-  await expect(page).toHaveURL(/\/earth$/);
+  await expect(page).toHaveURL(/\/earth\?returnTo=/);
 });
 
 test("opens Artemis I from guided path nine at the top of the record", async ({
@@ -965,7 +967,7 @@ test("opens Artemis I from guided path nine at the top of the record", async ({
     .first()
     .click();
 
-  await expect(page).toHaveURL(/\/missions\/artemis-i$/);
+  await expect(page).toHaveURL(/\/missions\/artemis-i\?returnTo=/);
   await expect(
     page.getByRole("heading", { name: "Artemis I", exact: true }),
   ).toBeVisible();
@@ -986,7 +988,7 @@ test("scores and explains source-checked space trivia", async ({ page }) => {
   await page.reload();
   await expect(
     page.getByRole("heading", {
-      name: "Which planet is NASA’s Curiosity rover exploring?",
+      name: "Where did Apollo 11’s lunar module Eagle land?",
     }),
   ).toBeVisible();
   await page.getByRole("radio", { name: "specialist" }).click();

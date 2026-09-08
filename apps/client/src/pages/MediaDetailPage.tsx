@@ -1,5 +1,6 @@
+import { safeExplorationPath } from "../utils/explorationContext";
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { ApiError } from "../api/apod";
 import { ErrorState, LoadingState } from "../components/AsyncState";
 import { ContinueExploring } from "../components/ContinueExploring";
@@ -11,6 +12,13 @@ import { DataContextPanel } from "../components/DataContextPanel";
 import { DataStatus } from "../components/DataStatus";
 
 export function MediaDetailPage() {
+  const location = useLocation();
+  const from = new URLSearchParams(location.search).get("returnTo");
+  const searchPath =
+    safeExplorationPath(from) &&
+    new URL(from, "https://mission-control.local").pathname === "/media"
+      ? from
+      : "/media";
   const nasaId = useParams().nasaId ?? "";
   const query = useMediaDetail(nasaId);
   const error = query.error instanceof ApiError ? query.error : undefined;
@@ -22,9 +30,9 @@ export function MediaDetailPage() {
       kind: "media",
       id: query.data.nasaId,
       title: query.data.title,
-      path: `/media/${encodeURIComponent(query.data.nasaId)}`,
+      path: location.pathname + location.search,
     });
-  }, [query.data, recent.record]);
+  }, [query.data, recent.record, location.pathname, location.search]);
   if (query.isPending)
     return (
       <section className="section">
@@ -48,7 +56,7 @@ export function MediaDetailPage() {
   const item = query.data;
   return (
     <article className="section media-detail">
-      <Link className="text-link" to="/media">
+      <Link className="text-link" to={searchPath}>
         ← Return to media search
       </Link>
       <DataStatus

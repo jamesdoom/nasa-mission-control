@@ -7822,3 +7822,32 @@ main .section[data-motion-state="revealed"] {
     border: 1px solid #555;
   }
 }
+.exploration-continuity {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  padding-block: 1rem;
+}
+.exploration-continuity > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+}
+.exploration-continuity p {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 0.85rem;
+}
+#resume article {
+  overflow-wrap: anywhere;
+}
+#resume article > button {
+  margin-left: 1rem;
+}
+@media print {
+  .exploration-continuity {
+    display: none;
+  }
+}

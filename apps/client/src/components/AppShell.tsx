@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { MarkIcon, SearchIcon } from "./Icons";
 import { useNetworkStatus } from "../hooks/useNetworkStatus";
+import { ExplorationContinuity } from "./ExplorationContinuity";
 import { FieldConsoleStatus } from "./FieldConsoleStatus";
 
 type ModuleLink = { to: string; label: string };
@@ -335,6 +336,7 @@ export function AppShell() {
         {routeTitle} loaded
       </p>
       <main ref={mainRef} id="main-content" tabIndex={-1}>
+        <ExplorationContinuity />
         <Outlet />
       </main>
       <footer className="site-footer">
