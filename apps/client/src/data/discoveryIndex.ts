@@ -60,18 +60,6 @@ const instrumentSeeds = [
     "Browse source-checked mission history",
     "/missions",
   ],
-  [
-    "mission-map",
-    "Solar-system Mission Map",
-    "Trace archive missions across five destination regions",
-    "/missions/map",
-  ],
-  [
-    "scale-lab",
-    "Celestial Scale Laboratory",
-    "Compare distances, sizes, and signal time",
-    "/scale-lab",
-  ],
   ["trivia", "Space Trivia", "Test source-checked space knowledge", "/trivia"],
   [
     "discover",
@@ -148,20 +136,6 @@ const instrumentMetadata: Record<string, DiscoveryResult["metadata"]> = {
     evidence: "curated",
     topics: ["missions", "history"],
     instrument: "Mission Archive",
-  },
-  "mission-map": {
-    destination: "Multiple",
-    era: "Archive",
-    evidence: "curated",
-    topics: ["missions", "destinations"],
-    instrument: "Mission Map",
-  },
-  "scale-lab": {
-    destination: "Multiple",
-    era: "Reference",
-    evidence: "calculated",
-    topics: ["distance", "scale"],
-    instrument: "Scale Lab",
   },
   trivia: {
     destination: "Multiple",

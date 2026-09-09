@@ -47,14 +47,7 @@
       "contentRisk": 2
     },
     {
-      "area": "Celestial Scale Laboratory",
-      "owner": "Science editor",
-      "traffic": 2,
-      "educationalValue": 3,
-      "contentRisk": 2
-    },
-    {
-      "area": "Mission map and investigation copy",
+      "area": "Investigation copy",
       "owner": "Science editor",
       "traffic": 2,
       "educationalValue": 2,
@@ -131,16 +124,6 @@
       "contentRisk": 2,
       "effort": 2,
       "score": 3
-    },
-    {
-      "priority": 4,
-      "candidate": "Review scale-profile values and reference-frame explanations",
-      "owner": "Science editor",
-      "traffic": 2,
-      "usabilityEvidence": 1,
-      "contentRisk": 2,
-      "effort": 2,
-      "score": 2.5
     }
   ]
 }

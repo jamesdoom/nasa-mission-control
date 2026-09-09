@@ -16,8 +16,13 @@
     }
   ],
   "shortcuts": [
-    { "name": "Mission Archive", "url": "/missions" },
-    { "name": "Mission Map", "url": "/missions/map" },
-    { "name": "Guided Discovery", "url": "/discover" }
+    {
+      "name": "Mission Archive",
+      "url": "/missions"
+    },
+    {
+      "name": "Guided Discovery",
+      "url": "/discover"
+    }
   ]
 }

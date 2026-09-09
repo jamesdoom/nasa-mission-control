@@ -96,11 +96,7 @@ const router = createBrowserRouter([
       },
       {
         path: "missions/map",
-        lazy: async () => ({
-          Component: (
-            await loadLazyRoute(() => import("./pages/MissionMapPage"))
-          ).MissionMapPage,
-        }),
+        loader: () => redirect("/missions"),
       },
       {
         path: "missions/:missionSlug",
@@ -112,10 +108,7 @@ const router = createBrowserRouter([
       },
       {
         path: "scale-lab",
-        lazy: async () => ({
-          Component: (await loadLazyRoute(() => import("./pages/ScaleLabPage")))
-            .ScaleLabPage,
-        }),
+        loader: () => redirect("/missions"),
       },
       {
         path: "trivia",

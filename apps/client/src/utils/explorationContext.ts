@@ -11,7 +11,6 @@ const roots = new Set([
   "trivia",
   "investigate",
   "search",
-  "scale-lab",
 ]);
 
 export function safeExplorationPath(value: string | null): value is string {

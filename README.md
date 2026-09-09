@@ -31,10 +31,8 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Ten-record curated Mission Archive spanning Apollo, Artemis, planetary exploration, heliophysics, and space observatories
 - URL-backed destination, spacecraft-type, and status filters
 - Destination overview groups and cinematic mission records with richer timelines, related NASA media, photography, credits, and official sources
-- Celestial Scale Laboratory with source-checked reference frames, logarithmic distance and diameter comparisons, calculated one-way light time, and shareable controls
 - Expandable evidence panels across live and curated instruments, with retrieval-versus-observation guidance and a shared data-literacy glossary
 - Unified Discovery Index spanning instruments, missions, guided paths, browser-local Flight Log records, and normalized live NASA media results with URL-backed source filters
-- Accessible solar-system mission map connecting all ten archive missions to five destination regions, defining milestones, and a structured text alternative without WebGL
 - Expanded browser-local Flight Log for APOD, asteroids, guided paths, mission records, and NASA media, with saved exploration URLs, return context, resumable learning and trivia, URL-backed search, collection filters, sorting, summaries, and portable backups
 - Runtime-validated recently viewed history with deduplication, bounded storage, and clear controls
 - Ninety-six source-checked Space Trivia questions with three difficulty levels, four URL-backed knowledge channels, scoring, a persistent best streak, teaching explanations, review dates, and NASA citations
@@ -195,9 +193,7 @@ The Earth contract contains the selected and latest available dates, normalized 
 
 Mission Archive records are intentionally local, typed editorial content rather than an invented “live missions” API. Every record carries a review date, official NASA source links, a stable NASA image/resource identifier and credit, and a stable route at `/missions/:missionSlug`. Archive filters remain in the URL.
 
-Retired mission-comparison URLs redirect to Mission Archive. Legacy bookmark data remains preserved for backup compatibility.
-
-The Celestial Scale Laboratory is a curated educational model, not a live ephemeris or trajectory engine. Every profile labels its origin, approximation type, and NASA source. Distances may use different reference frames when that is what the source supports; the interface warns against reading them as simultaneous positions. Signal time is calculated from the displayed distance using 299,792.458 kilometers per second, and logarithmic bars communicate orders of magnitude rather than linear spacing.
+Retired mission-comparison, Mission Map, and Scale Lab URLs redirect to Mission Archive. Legacy bookmark data remains preserved for backup compatibility.
 
 The Unified Discovery Index combines three deliberately separate channels. Instruments, curated missions, and guided paths come from a versioned local index; saved matches are read from the existing validated browser stores; and NASA media results use the normalized server search endpoint. Local and saved results render without waiting for NASA, query and source filters remain in the URL, and no cross-device index, database, or background upload is introduced.
 
@@ -221,7 +217,7 @@ A separate daily GitHub workflow runs a warmed synthetic audit against the produ
 
 ## Testing
 
-`npm test` covers query and date-range validation, bounded caching, security headers, APOD, NeoWs, Collection+JSON, DONKI, Earth observation behavior, curated mission, scale-profile, and trivia source integrity, timeout/rate-limit/non-JSON/malformed upstream responses, browser error reporting, offline-state messaging, route focus, media rendering, automated accessibility checks, trivia scoring, the UTC clock, and all local favorite stores. `npm run offline:verify` checks the generated installable shell and its live-API exclusion. `npm run test:e2e` verifies dashboard loading, transient API recovery, URL-backed filters, responsive navigation, all Flight Log content types, Space Weather filtering, the EPIC image sequence, Mission Archive navigation and legacy comparison redirects, celestial scale controls, portfolio status evidence, and Space Trivia in Chromium.
+`npm test` covers query and date-range validation, bounded caching, security headers, APOD, NeoWs, Collection+JSON, DONKI, Earth observation behavior, curated mission and trivia source integrity, timeout/rate-limit/non-JSON/malformed upstream responses, browser error reporting, offline-state messaging, route focus, media rendering, automated accessibility checks, trivia scoring, the UTC clock, and all local favorite stores. `npm run offline:verify` checks the generated installable shell and its live-API exclusion. `npm run test:e2e` verifies dashboard loading, transient API recovery, URL-backed filters, responsive navigation, all Flight Log content types, Space Weather filtering, the EPIC image sequence, Mission Archive navigation and retired-section redirects, portfolio status evidence, and Space Trivia in Chromium.
 
 [GitHub Actions](.github/workflows/ci.yml) runs formatting, strict types, lint, all Vitest suites, the production build, and Chromium smoke tests for pushes to `main` and pull requests.
 
@@ -330,6 +326,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 68. **Complete — Exploration and learning continuity phase 4:** added context-preserving return links across guided paths, learning, stories, missions, and media; saved filtered explorations and next-step learning links in Flight Log; retained reflection drafts and resumable trivia sessions; and included new local records in existing backups. Verified discovery-to-evidence save/resume, mobile focus, and unavailable-storage flows. See [phase evidence](docs/exploration-continuity-phase-4.md).
 
 69. **Complete — Experience streamlining: Align missions:** removed the mission comparison selector, workspace, and related Flight Log/story entry points; redirected legacy comparison URLs to Mission Archive; retained existing bookmark data for backup compatibility. Types, lint, unit/component/accessibility tests, end-to-end smoke coverage, production build, asset budgets, and desktop/mobile layout checks pass.
+
+70. **Complete — Experience streamlining: Mission Map and Scale Lab:** removed both sections, navigation/search/install shortcuts, and dedicated data, controls, and styles; redirected old URLs to Mission Archive and updated the Mars story continuation and editorial inventory. Types, lint, unit/component/accessibility tests, browser smoke checks, production build, and asset budgets pass.
 
 ## Screenshots
 

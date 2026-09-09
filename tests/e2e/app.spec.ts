@@ -453,7 +453,7 @@ test("guides a first visit through clear, accessible starting choices", async ({
   const explore = page.getByRole("navigation", { name: "Primary" });
   await expect(explore.getByText("Observe now")).toBeVisible();
   await expect(explore.getByText("Explore NASA")).toBeVisible();
-  await expect(explore.getByText("Learn and compare")).toBeVisible();
+  await expect(explore.getByText("Learn and discover")).toBeVisible();
 });
 
 test("keeps primary journey controls usable at a 320px zoom-equivalent width", async ({
@@ -713,38 +713,6 @@ test("legacy mission comparisons return to the archive", async ({ page }) => {
     .getByRole("combobox", { name: "Destination", exact: true })
     .selectOption("Moon");
   await expect(page).toHaveURL(/destination=Moon/);
-  await page.setViewportSize({ width: 390, height: 844 });
-  expect(
-    await page.evaluate(
-      () =>
-        document.documentElement.scrollWidth >
-        document.documentElement.clientWidth,
-    ),
-  ).toBe(false);
-});
-
-test("explores celestial scale with shareable measurement state", async ({
-  page,
-}) => {
-  await page.goto("/scale-lab?profiles=moon%2Cmars%2Csaturn");
-  await expect(page).toHaveTitle(
-    "Celestial Scale Laboratory | NASA Mission Control",
-  );
-  await expect(
-    page.getByRole("heading", {
-      name: "How far does the reference span reach?",
-    }),
-  ).toBeVisible();
-  await page.getByRole("button", { name: "One-way light time" }).click();
-  await expect(page).toHaveURL(/metric=signal/);
-  await expect(
-    page.getByRole("heading", { name: "How long would a signal need?" }),
-  ).toBeVisible();
-  await expect(
-    page
-      .getByRole("region", { name: "How long would a signal need?" })
-      .getByText("1.3 seconds"),
-  ).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
   expect(
     await page.evaluate(
@@ -1060,27 +1028,24 @@ test("searches local, saved, and NASA records from one discovery index", async (
   ).toBe(false);
 });
 
-test("explores the mission archive through an accessible destination map", async ({
-  page,
-}) => {
-  await page.goto("/missions/map");
-  await expect(
-    page.getByRole("heading", { name: "Solar-system mission map" }),
-  ).toBeVisible();
-  await page
-    .getByRole("button", {
-      name: "Outer Solar System: 3 archive missions",
-    })
-    .click();
-  await expect(page).toHaveURL(/destination=Outer\+Solar\+System/);
-  await expect(page.getByText("3 missions displayed")).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Voyager 1" })).toBeVisible();
-  await page.setViewportSize({ width: 390, height: 844 });
-  expect(
-    await page.evaluate(
-      () =>
-        document.documentElement.scrollWidth >
-        document.documentElement.clientWidth,
-    ),
-  ).toBe(false);
-});
+for (const retiredPath of [
+  "/missions/map?destination=Mars",
+  "/scale-lab?profiles=moon,mars",
+]) {
+  test(`redirects retired section ${retiredPath} to Mission Archive`, async ({
+    page,
+  }) => {
+    await page.goto(retiredPath);
+    await expect(page).toHaveURL(/\/missions$/);
+    await expect(
+      page.getByRole("heading", { name: "Mission Archive", exact: true }),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Explore", exact: true }).click();
+    await expect(
+      page.getByRole("link", { name: "Mission Map", exact: true }),
+    ).toHaveCount(0);
+    await expect(
+      page.getByRole("link", { name: "Scale Lab", exact: true }),
+    ).toHaveCount(0);
+  });
+}

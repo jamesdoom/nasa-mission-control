@@ -12,12 +12,10 @@ import { MissionCard } from "./MissionCard";
 import { missions } from "../data/missions";
 import { TriviaPage } from "../pages/TriviaPage";
 import { FavoritesPage } from "../pages/FavoritesPage";
-import { ScaleLabPage } from "../pages/ScaleLabPage";
 import { EarthImageViewer } from "./EarthImageViewer";
 import { ProvenancePanel } from "./ProvenancePanel";
 import { EvidenceGuide } from "./EvidenceGuide";
 import { SearchPage } from "../pages/SearchPage";
-import { MissionMapPage } from "../pages/MissionMapPage";
 import { StoryCollectionPage } from "../pages/StoryCollectionPage";
 import { LearningCenterPage } from "../pages/LearningCenterPage";
 import { MissionDetailPage } from "../pages/MissionDetailPage";
@@ -217,16 +215,6 @@ describe("automated accessibility", () => {
     localStorage.removeItem("mission-control:mission-favorites:v1");
   });
 
-  it("finds no detectable violations in the celestial scale laboratory", async () => {
-    const router = createMemoryRouter(
-      [{ path: "/scale-lab", element: <ScaleLabPage /> }],
-      { initialEntries: ["/scale-lab?profiles=moon,mars,saturn"] },
-    );
-    const { container } = render(<RouterProvider router={router} />);
-    const results = await axe(container, jsdomAxeOptions);
-    expect(results.violations).toEqual([]);
-  });
-
   it("finds no detectable violations in evidence provenance guidance", async () => {
     const { container } = render(
       <main>
@@ -256,16 +244,6 @@ describe("automated accessibility", () => {
     const router = createMemoryRouter(
       [{ path: "/search", element: <SearchPage /> }],
       { initialEntries: ["/search"] },
-    );
-    const { container } = render(<RouterProvider router={router} />);
-    const results = await axe(container, jsdomAxeOptions);
-    expect(results.violations).toEqual([]);
-  });
-
-  it("finds no detectable violations in the solar-system mission map", async () => {
-    const router = createMemoryRouter(
-      [{ path: "/missions/map", element: <MissionMapPage /> }],
-      { initialEntries: ["/missions/map"] },
     );
     const { container } = render(<RouterProvider router={router} />);
     const results = await axe(container, jsdomAxeOptions);

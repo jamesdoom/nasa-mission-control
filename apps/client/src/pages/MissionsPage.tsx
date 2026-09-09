@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { MissionCard } from "../components/MissionCard";
 import { ProvenancePanel } from "../components/ProvenancePanel";
 import {
@@ -93,7 +93,6 @@ export function MissionsPage() {
         <aside>
           <strong>CURATED DATA</strong>
           <span>Last source review // {latestReview}</span>
-          <Link to="/missions/map">Open mission map →</Link>
         </aside>
       </section>
       <section className="section provenance-section">

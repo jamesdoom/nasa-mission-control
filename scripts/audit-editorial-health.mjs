@@ -70,7 +70,6 @@ export async function auditEditorialHealth({
     learning: "apps/client/src/data/learningTracks.ts",
     enrichment: "apps/client/src/data/educationalEnrichment.ts",
     journeys: "apps/client/src/data/journeys.ts",
-    scale: "apps/client/src/data/scaleProfiles.ts",
   };
   const loaded = Object.fromEntries(
     await Promise.all(
@@ -193,7 +192,6 @@ export async function auditEditorialHealth({
     loaded.stories,
     loaded.learning,
     loaded.journeys,
-    loaded.scale,
   ];
   const sourceUrls = [
     ...new Set(
@@ -207,7 +205,6 @@ export async function auditEditorialHealth({
     ["stories", urlsIn(loaded.stories).length, 6],
     ["learning tracks", urlsIn(loaded.learning).length, 6],
     ["guided journeys", urlsIn(loaded.journeys).length, 9],
-    ["scale profiles", urlsIn(loaded.scale).length, 7],
   ];
   minimumSourceCounts.forEach(([area, count, minimum]) => {
     if (count < minimum)

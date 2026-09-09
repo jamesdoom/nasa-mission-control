@@ -78,14 +78,14 @@ export const storyCollections: StoryCollection[] = [
         to: "/media?q=Curiosity+Perseverance+Mars&mediaType=image&page=1",
       },
       {
-        kind: "calculated",
-        label: "Change scale",
-        title: "Measure the communication gap",
+        kind: "curated",
+        label: "Explore Mars missions",
+        title: "Follow the rover missions",
         description:
-          "Compare lunar and Mars reference distances and calculate one-way light time in the Celestial Scale Laboratory.",
+          "Explore the Curiosity and Perseverance mission records, their objectives, and defining moments.",
         takeaway:
           "Mars operations require autonomy because commands and results cannot travel instantaneously.",
-        to: "/scale-lab?profiles=moon,mars&metric=distance",
+        to: "/missions?destination=Mars",
       },
     ],
     milestones: [

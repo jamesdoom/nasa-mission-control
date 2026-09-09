@@ -6,7 +6,6 @@ const files = {
   stories: "apps/client/src/data/storyCollections.ts",
   learning: "apps/client/src/data/learningTracks.ts",
   journeys: "apps/client/src/data/journeys.ts",
-  scale: "apps/client/src/data/scaleProfiles.ts",
   baseline: "docs/content-inventory-phase-1.md",
 };
 
@@ -28,7 +27,6 @@ const counts = {
   stories: countRecords(contents.stories, "id"),
   learning: countRecords(contents.learning, "id"),
   journeys: countRecords(contents.journeys, "id"),
-  scale: countRecords(contents.scale, "id"),
 };
 
 const expectedCounts = {
@@ -37,7 +35,6 @@ const expectedCounts = {
   stories: 3,
   learning: 3,
   journeys: 9,
-  scale: 7,
 };
 
 const requiredBaselineTerms = [
@@ -47,7 +44,6 @@ const requiredBaselineTerms = [
   "Guided learning",
   "Scientific stories",
   "Guided Discovery",
-  "Celestial Scale Laboratory",
   "Discovery, search, and Flight Log guidance",
   "Dashboard and navigation copy",
   "About, privacy, accessibility, status, and limitations",
