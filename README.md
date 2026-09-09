@@ -7,7 +7,7 @@ An original, responsive command-center experience for exploring NASA imagery and
 ## Current features
 
 - Responsive application shell with accessible desktop/mobile navigation
-- Lazy-loaded global command search for keyboard-first access to instruments, missions, and discovery paths (`Ctrl+K` or `Command+K`)
+- Lazy-loaded global command search for keyboard-first access to instruments, missions, and science stories (`Ctrl+K` or `Command+K`)
 - Mission Control daily briefing with independent APOD/NeoWs loading, available, stale, unavailable, and offline status
 - APOD image and embedded-video support with date-based shareable URLs
 - Native playback for direct NASA video files with embedded-player support and a direct-open fallback
@@ -32,8 +32,8 @@ An original, responsive command-center experience for exploring NASA imagery and
 - URL-backed destination, spacecraft-type, and status filters
 - Destination overview groups and cinematic mission records with richer timelines, related NASA media, photography, credits, and official sources
 - Expandable evidence panels across live and curated instruments, with retrieval-versus-observation guidance and a shared data-literacy glossary
-- Unified Discovery Index spanning instruments, missions, guided paths, browser-local Flight Log records, and normalized live NASA media results with URL-backed source filters
-- Expanded browser-local Flight Log for APOD, asteroids, guided paths, mission records, and NASA media, with saved exploration URLs, return context, resumable learning and trivia, URL-backed search, collection filters, sorting, summaries, and portable backups
+- Unified Discovery Index spanning instruments, missions, science stories, browser-local Flight Log records, and normalized live NASA media results with URL-backed source filters
+- Expanded browser-local Flight Log for APOD, asteroids, mission records, and NASA media, with saved exploration URLs, return context, resumable trivia, URL-backed search, collection filters, sorting, summaries, and portable backups
 - Runtime-validated recently viewed history with deduplication, bounded storage, and clear controls
 - Ninety-six source-checked Space Trivia questions with three difficulty levels, four URL-backed knowledge channels, scoring, a persistent best streak, teaching explanations, review dates, and NASA citations
 - Grouped, keyboard-accessible module navigation with route-aware document titles
@@ -46,9 +46,7 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Plain-language DONKI measurement guide separating flare class, modeled CME speed, and observed Kp activity
 - Consistent UTC retrieval timestamps, source-specific update expectations, evidence classes, and prominent stale-fallback guidance across live-data routes
 - An owned, machine-checked monthly refinement cycle spanning usability, accessibility, visual/performance trends, reliability, content, feedback, limitations, and backlog scoring
-- Nine guided discovery paths connecting live instruments, NASA media searches, and source-checked mission history
-- Contextual mission-record actions that continue into related observations and guided investigations
-- Saveable guided paths with organized Flight Log collection counts and section shortcuts
+- Contextual mission-record actions that continue into related observations and NASA media
 - Validated, browser-local Flight Log backup and restore for user-controlled continuity without an account
 - User-visible same-origin API health checks with explicit NASA-upstream scope
 - Portfolio case study covering product constraints, architecture, scientific communication, and quality evidence
@@ -201,7 +199,7 @@ The Flight Log uses separate bounded, runtime-validated local-storage records fo
 
 Space Trivia is curated local educational content. Its 96-question bank provides 24 questions in each existing Moon, planets, observatories, and deep-space channel, divided into eight cadet, nine specialist, and seven commander questions per topic. Answer positions are balanced, and every teaching explanation links to the official NASA page and records its human review date. A filtered simulation walks each unique record once, then browser-local bounded history prioritizes unseen questions on later runs. Difficulty and category remain shareable URL state. Scores remain session state; only the best streak and question-history IDs persist locally.
 
-Discovery Paths are typed, locally curated navigation narratives rather than another live API. Each path connects existing normalized data routes, NASA Image Library searches, and mission records, then links to the official NASA topic or mission page that anchors its educational context.
+Guided Discovery and Learning Center are retired. Old URLs redirect to Mission Archive. Existing path favorites and learning progress remain in local storage and backups for compatibility; their pages and continuation controls are no longer shown. Science stories remain available through search.
 
 Errors use `{ error: { code, message, requestId } }`; server details and credentials are never returned. Shared internal contracts live in `packages/shared`, while NASA-specific schemas remain in `apps/server`.
 
@@ -213,7 +211,7 @@ Non-dashboard routes load as independent Vite chunks, so visitors do not downloa
 
 Vercel Speed Insights records production Core Web Vitals by route without adding general-purpose visitor analytics. CI also fails if the largest compressed JavaScript asset exceeds 110 kB, all compressed JavaScript exceeds 190 kB, compressed CSS exceeds 26 kB, or the ten optimized Mission Archive card images exceed 400 kB in aggregate. Run `npm run build && npm run performance:budget` to reproduce the asset evidence locally; see the [performance notes](docs/performance.md) for interpretation and the optimization workflow.
 
-A separate daily GitHub workflow runs a warmed synthetic audit against the production dashboard, Mission Archive, and Guided Discovery at desktop and mobile sizes plus the About case study and an Artemis I mission record. It fails on navigation, same-origin console/resource, application page, horizontal-overflow, transfer-size, TTFB, FCP, heading-readiness, or CLS regressions. Third-party embed failures remain in the retained diagnostic evidence without being presented as application regressions. Run `npm run audit:production` for the same read-only check locally.
+A separate daily GitHub workflow runs a warmed synthetic audit against the production dashboard and Mission Archive at desktop and mobile sizes plus the About case study and an Artemis I mission record. It fails on navigation, same-origin console/resource, application page, horizontal-overflow, transfer-size, TTFB, FCP, heading-readiness, or CLS regressions. Third-party embed failures remain in the retained diagnostic evidence without being presented as application regressions. Run `npm run audit:production` for the same read-only check locally.
 
 ## Testing
 
@@ -334,6 +332,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 72. **Complete — APOD layout compaction:** reduced the page heading and top spacing, placed the date controls beside the introduction on desktop, and retained stacked controls on smaller screens. At 1242 × 913, the image container begins around 484 px from the top. Types, lint, unit/component/accessibility tests, browser smoke checks, production build, and desktop/mobile visual checks pass.
 
 73. **Complete — Dashboard briefing panel removal:** removed the status summary, explanatory copy, and Refresh briefing button above the daily image; updated offline guidance to reference page reload. Retained coverage for loading, partial failure, stale data, offline states, and recovery. Types, lint, unit/component/accessibility tests, browser smoke checks, and production build pass.
+
+74. **Complete — Navigation streamlining: Guided Discovery and Learning Center:** removed both sections and their entry points, moved Mission Archive into Learn and discover, redirected old URLs to Mission Archive, and retained science stories through search. Legacy learning/path data remains available to backups. Types, lint, unit/component/accessibility tests, browser smoke and redirect checks, production build, offline-shell checks, asset budgets, and responsive navigation checks pass.
 
 ## Screenshots
 

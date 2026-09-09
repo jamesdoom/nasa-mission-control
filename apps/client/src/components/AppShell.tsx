@@ -24,14 +24,12 @@ const moduleGroups: readonly ModuleGroup[] = [
       { to: "/search", label: "Search everything" },
       { to: "/investigate", label: "Investigation Workspace" },
       { to: "/media", label: "Media Library" },
-      { to: "/missions", label: "Mission Archive" },
     ],
   },
   {
     label: "Learn and discover",
     links: [
-      { to: "/discover", label: "Guided Discovery" },
-      { to: "/learn", label: "Learning Center" },
+      { to: "/missions", label: "Mission Archive" },
       { to: "/trivia", label: "Space Trivia" },
     ],
   },
@@ -49,8 +47,6 @@ const routeTitles: Record<string, string> = {
   "/earth": "Earth Observatory",
   "/missions": "Mission Archive",
   "/trivia": "Space Trivia",
-  "/discover": "Guided Discovery",
-  "/learn": "Learning Center",
   "/stories": "Science Story",
   "/favorites": "Personal Flight Log",
   "/about": "About",
@@ -74,11 +70,7 @@ function moodForPath(pathname: string): RouteMood {
     )
   )
     return "live";
-  if (
-    ["/discover", "/learn", "/trivia"].some((route) =>
-      pathname.startsWith(route),
-    )
-  )
+  if (["/trivia"].some((route) => pathname.startsWith(route)))
     return "learning";
   return "command";
 }

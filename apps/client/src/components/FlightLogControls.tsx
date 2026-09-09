@@ -5,7 +5,6 @@ import type {
 
 const collections: FlightLogCollection[] = [
   "all",
-  "journeys",
   "asteroids",
   "missions",
   "media",

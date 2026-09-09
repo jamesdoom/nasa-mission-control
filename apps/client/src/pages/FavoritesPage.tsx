@@ -9,7 +9,6 @@ import { MissionCard } from "../components/MissionCard";
 import { RecordPersonalization } from "../components/RecordPersonalization";
 import { useAsteroidFavorites } from "../hooks/useAsteroidFavorites";
 import { useFavorites } from "../hooks/useFavorites";
-import { useJourneyFavorites } from "../hooks/useJourneyFavorites";
 import { useMediaFavorites } from "../hooks/useMediaFavorites";
 import { useMissionFavorites } from "../hooks/useMissionFavorites";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
@@ -38,7 +37,6 @@ export function FavoritesPage() {
   const asteroidFavorites = useAsteroidFavorites();
   const missionFavorites = useMissionFavorites();
   const mediaFavorites = useMediaFavorites();
-  const journeyFavorites = useJourneyFavorites();
   const recent = useRecentlyViewed();
   const personalization = useFlightLogPersonalization();
   const [backupStatus, setBackupStatus] = useState("");
@@ -53,27 +51,19 @@ export function FavoritesPage() {
     favorites.favorites.length === 0 &&
     asteroidFavorites.favorites.length === 0 &&
     missionFavorites.favorites.length === 0 &&
-    mediaFavorites.favorites.length === 0 &&
-    journeyFavorites.favorites.length === 0;
+    mediaFavorites.favorites.length === 0;
   const savedCount =
     favorites.favorites.length +
     asteroidFavorites.favorites.length +
     missionFavorites.favorites.length +
-    mediaFavorites.favorites.length +
-    journeyFavorites.favorites.length;
+    mediaFavorites.favorites.length;
   const activeCollectionCount = [
     favorites.favorites,
     asteroidFavorites.favorites,
     missionFavorites.favorites,
     mediaFavorites.favorites,
-    journeyFavorites.favorites,
   ].filter((items) => items.length > 0).length;
   const sections = [
-    {
-      id: "journeys",
-      label: "Guided paths",
-      count: journeyFavorites.favorites.length,
-    },
     {
       id: "asteroids",
       label: "Asteroids",
@@ -97,18 +87,6 @@ export function FavoritesPage() {
       ? [annotation.note, annotation.collection, ...annotation.tags]
       : [];
   }
-  const filteredJourneys = sortFlightLogItems(
-    journeyFavorites.favorites.filter((journey) =>
-      matchesFlightLogSearch(query, [
-        journey.title,
-        journey.summary,
-        journey.code,
-        ...personalValues(annotationKey("journey", journey.id)),
-      ]),
-    ),
-    sort,
-    (journey) => journey.title,
-  );
   const filteredAsteroids = sortFlightLogItems(
     asteroidFavorites.favorites.filter((asteroid) =>
       matchesFlightLogSearch(query, [
@@ -163,7 +141,7 @@ export function FavoritesPage() {
     Exclude<FlightLogCollection, "all">,
     number
   > = {
-    journeys: filteredJourneys.length,
+    journeys: 0,
     asteroids: filteredAsteroids.length,
     missions: filteredMissions.length,
     media: filteredMedia.length,
@@ -178,7 +156,7 @@ export function FavoritesPage() {
       : collectionCounts[collection];
   const allCollectionCounts: Record<FlightLogCollection, number> = {
     all: savedCount,
-    journeys: journeyFavorites.favorites.length,
+    journeys: 0,
     asteroids: asteroidFavorites.favorites.length,
     missions: missionFavorites.favorites.length,
     media: mediaFavorites.favorites.length,
@@ -461,52 +439,6 @@ export function FavoritesPage() {
           </button>
         </div>
       )}
-      {(collection === "all" || collection === "journeys") &&
-        filteredJourneys.length > 0 && (
-          <section className="flight-log-section" id="journeys">
-            <div className="section-heading">
-              <div>
-                <p className="kicker">
-                  <span />
-                  Saved investigations
-                </p>
-                <h2>Guided discovery paths</h2>
-              </div>
-            </div>
-            <div className="saved-journey-grid">
-              {filteredJourneys.map((journey) => (
-                <article key={journey.id}>
-                  <p className="eyebrow">{journey.code}</p>
-                  <h3>{journey.title}</h3>
-                  <p>{journey.summary}</p>
-                  <div>
-                    <Link to={`/discover#${journey.id}`}>Resume path →</Link>
-                    <button
-                      type="button"
-                      onClick={() => journeyFavorites.toggle(journey)}
-                    >
-                      Remove
-                    </button>
-                  </div>
-                  <RecordPersonalization
-                    title={journey.title}
-                    annotation={
-                      personalization.annotations[
-                        annotationKey("journey", journey.id)
-                      ]
-                    }
-                    onSave={(values) =>
-                      personalization.saveAnnotation(
-                        annotationKey("journey", journey.id),
-                        values,
-                      )
-                    }
-                  />
-                </article>
-              ))}
-            </div>
-          </section>
-        )}
       {(collection === "all" || collection === "asteroids") &&
         filteredAsteroids.length > 0 && (
           <section className="flight-log-section" id="asteroids">
@@ -735,15 +667,7 @@ export function FavoritesPage() {
           </div>
           <div>
             <Link to="/missions">Explore missions →</Link>
-            {journeyFavorites.favorites[0] ? (
-              <Link to={`/discover#${journeyFavorites.favorites[0].id}`}>
-                Resume {journeyFavorites.favorites[0].title} →
-              </Link>
-            ) : (
-              <Link to="/discover#science-stories">
-                Begin a science story →
-              </Link>
-            )}
+            <Link to="/search?source=story">Find a science story →</Link>
             <Link to="/search">Search across Mission Control →</Link>
           </div>
         </section>

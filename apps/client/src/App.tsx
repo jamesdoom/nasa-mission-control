@@ -119,19 +119,11 @@ const router = createBrowserRouter([
       },
       {
         path: "learn",
-        lazy: async () => ({
-          Component: (
-            await loadLazyRoute(() => import("./pages/LearningCenterPage"))
-          ).LearningCenterPage,
-        }),
+        loader: () => redirect("/missions"),
       },
       {
         path: "discover",
-        lazy: async () => ({
-          Component: (
-            await loadLazyRoute(() => import("./pages/DiscoveryPage"))
-          ).DiscoveryPage,
-        }),
+        loader: () => redirect("/missions"),
       },
       {
         path: "stories/:storyId",

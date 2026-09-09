@@ -423,9 +423,9 @@ export function TriviaPage() {
                     question.category === "moon"
                       ? "/missions/apollo-11"
                       : question.category === "planets"
-                        ? "/learn?track=mars-evidence"
+                        ? "/missions?destination=Mars"
                         : question.category === "observatories"
-                          ? "/learn?track=cosmic-observatories"
+                          ? "/missions?vehicle=observatory"
                           : "/missions/voyager-1",
                     `/trivia?difficulty=${difficulty}&category=${category}`,
                   )}

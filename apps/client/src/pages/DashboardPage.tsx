@@ -160,13 +160,11 @@ export function DashboardPage() {
             <p>Browse source-checked flight histories from Apollo to Webb.</p>
             <span>Open Mission Archive →</span>
           </Link>
-          <Link className="journey-start__card" to="/discover">
-            <small>10–15 minutes · Guided learning</small>
-            <h3>Investigate a space question</h3>
-            <p>
-              Connect observations, mission history, and NASA media in order.
-            </p>
-            <span>Choose a Discovery Path →</span>
+          <Link className="journey-start__card" to="/trivia">
+            <small>Space knowledge</small>
+            <h3>Test your space knowledge</h3>
+            <p>Explore NASA-sourced questions and explanations.</p>
+            <span>Open Space Trivia →</span>
           </Link>
         </div>
       </section>

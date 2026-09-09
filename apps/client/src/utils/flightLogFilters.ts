@@ -5,7 +5,6 @@ export type FlightLogSort = "default" | "az" | "za";
 
 const collections: FlightLogCollection[] = [
   "all",
-  "journeys",
   "asteroids",
   "missions",
   "media",

@@ -360,9 +360,6 @@ export function MissionDetailPage() {
                 </p>
               </div>
               <div>
-                <Link className="button" to={`/discover#${discovery.journey}`}>
-                  Open guided path
-                </Link>
                 <Link
                   className="button button--secondary"
                   to={explorationLink(discovery.instrument, from)}

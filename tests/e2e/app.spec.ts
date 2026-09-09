@@ -443,7 +443,7 @@ test("guides a first visit through clear, accessible starting choices", async ({
     page.getByRole("link", { name: /Follow a landmark mission/ }),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: /Investigate a space question/ }),
+    page.getByRole("link", { name: /Test your space knowledge/ }),
   ).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Know what the data labels mean" }),
@@ -477,51 +477,6 @@ test("keeps primary journey controls usable at a 320px zoom-equivalent width", a
         document.documentElement.clientWidth,
     ),
   ).toBe(false);
-});
-
-test("keeps a learning session operable with keyboard and accessibility preferences", async ({
-  page,
-}) => {
-  await page.emulateMedia({
-    reducedMotion: "reduce",
-    forcedColors: "active",
-  });
-  await page.setViewportSize({ width: 320, height: 700 });
-  await page.goto("/learn?track=mars-evidence");
-
-  const firstStep = page
-    .getByRole("checkbox", {
-      name: "Mark step complete",
-    })
-    .first();
-  await firstStep.focus();
-  await page.keyboard.press("Space");
-  await expect(firstStep).toBeChecked();
-
-  const firstAnswer = page.getByRole("radio").first();
-  await firstAnswer.focus();
-  await page.keyboard.press("ArrowDown");
-  await expect(
-    page.getByRole("radio", {
-      name: "The environment may once have been habitable",
-    }),
-  ).toBeChecked();
-  await page.getByRole("button", { name: "Check answer" }).focus();
-  await page.keyboard.press("Enter");
-  await expect(page.getByText("Correct.")).toBeVisible();
-  expect(
-    await page.evaluate(
-      () =>
-        document.documentElement.scrollWidth >
-        document.documentElement.clientWidth,
-    ),
-  ).toBe(false);
-
-  await page.emulateMedia({ media: "print" });
-  await expect(
-    page.getByRole("heading", { name: "Learner evidence sheet" }),
-  ).toBeVisible();
-  await expect(page.locator(".site-header")).toBeHidden();
 });
 
 test("explores, sorts, opens, and saves an asteroid encounter", async ({
@@ -799,61 +754,10 @@ test("shows portfolio evidence, API status, and the expanded mission archive", a
   await expect(page.getByText(/next scheduled status review/i)).toBeVisible();
 });
 
-test("follows a guided discovery path into mission history and back", async ({
-  page,
-}) => {
-  await page.goto("/discover");
-  await expect(page).toHaveTitle("Guided Discovery | NASA Mission Control");
-  const journey = page
-    .getByRole("article")
-    .filter({ hasText: "Reconstruct Apollo 11 through evidence" });
-  await journey
-    .getByRole("button", {
-      name: "Save Reconstruct Apollo 11 through evidence to Flight Log",
-    })
-    .click();
-  await journey
-    .getByRole("link", { name: "Open instrument →" })
-    .first()
-    .click();
-  await expect(page).toHaveURL(/\/missions\/apollo-11\?returnTo=/);
-  await expect(
-    page.getByRole("heading", {
-      name: "Connect this record to live Mission Control",
-    }),
-  ).toBeVisible();
-  await page.getByRole("link", { name: "Open guided path" }).click();
-  await expect(page).toHaveURL(/\/discover#moon-then-now$/);
-  await expect(
-    page.getByRole("heading", {
-      name: "Reconstruct Apollo 11 through evidence",
-    }),
-  ).toBeVisible();
-  await page.getByRole("link", { name: "Flight Log", exact: true }).click();
-  await expect(
-    page.getByRole("heading", { name: "1 saved record" }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("heading", { name: "Guided discovery paths" }),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("button", { name: "Export backup" }),
-  ).toBeVisible();
-  await page.getByRole("link", { name: "Resume path →" }).click();
-  await expect(page).toHaveURL(/\/discover#moon-then-now$/);
-});
-
 test("follows a source-checked science story into its first evidence chapter", async ({
   page,
 }) => {
-  await page.goto("/discover#science-stories");
-  await expect(
-    page.getByRole("heading", { name: "Investigate one big question" }),
-  ).toBeVisible();
-  await page
-    .getByRole("link", { name: "Begin science story →" })
-    .first()
-    .click();
+  await page.goto("/stories/mars-habitability");
   await expect(page).toHaveURL(/\/stories\/mars-habitability$/);
   await expect(
     page.getByRole("heading", { name: "Reading the record of a wetter Mars" }),
@@ -869,62 +773,6 @@ test("follows a source-checked science story into its first evidence chapter", a
   await expect(
     page.getByRole("heading", { name: "Curiosity", exact: true, level: 1 }),
   ).toBeVisible();
-});
-
-test("connects Artemis I to its guided lunar investigation", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/missions/artemis-i");
-  await page.getByRole("link", { name: "Open guided path" }).click();
-  await expect(page).toHaveURL(/\/discover#artemis-return-moon$/);
-  const journey = page
-    .getByRole("article")
-    .filter({ hasText: "Rehearse a return to the Moon" });
-  await expect(
-    journey.getByRole("heading", { name: "Rehearse a return to the Moon" }),
-  ).toBeVisible();
-  expect(
-    await page.evaluate(
-      () =>
-        document.documentElement.scrollWidth >
-        document.documentElement.clientWidth,
-    ),
-  ).toBe(false);
-  await expect(
-    journey.getByRole("link", {
-      name: "Verify context with NASA Artemis I ↗",
-    }),
-  ).toHaveAttribute("href", "https://www.nasa.gov/mission/artemis-i/");
-  await journey
-    .getByRole("button", {
-      name: "Save Rehearse a return to the Moon to Flight Log",
-    })
-    .click();
-  await journey.getByRole("link", { name: "Open instrument →" }).nth(1).click();
-  await expect(page).toHaveURL(/\/earth\?returnTo=/);
-});
-
-test("opens Artemis I from guided path nine at the top of the record", async ({
-  page,
-}) => {
-  await page.goto("/discover#artemis-return-moon");
-  const journey = page
-    .getByRole("article")
-    .filter({ hasText: "Rehearse a return to the Moon" });
-  await expect(
-    journey.getByRole("heading", { name: "Rehearse a return to the Moon" }),
-  ).toBeVisible();
-  await journey
-    .getByRole("link", { name: "Open instrument →" })
-    .first()
-    .click();
-
-  await expect(page).toHaveURL(/\/missions\/artemis-i\?returnTo=/);
-  await expect(
-    page.getByRole("heading", { name: "Artemis I", exact: true }),
-  ).toBeVisible();
-  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(10);
 });
 
 test("scores and explains source-checked space trivia", async ({ page }) => {
@@ -1009,7 +857,7 @@ test("searches local, saved, and NASA records from one discovery index", async (
     page.getByRole("heading", { name: "Search the mission index" }),
   ).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "Rehearse a return to the Moon" }),
+    page.getByRole("heading", { name: "Artemis I", exact: true }).first(),
   ).toBeVisible();
   await expect(
     page.getByRole("heading", { name: mediaItem.title }),
@@ -1031,6 +879,8 @@ test("searches local, saved, and NASA records from one discovery index", async (
 for (const retiredPath of [
   "/missions/map?destination=Mars",
   "/scale-lab?profiles=moon,mars",
+  "/discover#mars-field-lab",
+  "/learn?track=mars-evidence",
 ]) {
   test(`redirects retired section ${retiredPath} to Mission Archive`, async ({
     page,
@@ -1041,6 +891,18 @@ for (const retiredPath of [
       page.getByRole("heading", { name: "Mission Archive", exact: true }),
     ).toBeVisible();
     await page.getByRole("button", { name: "Explore", exact: true }).click();
+    await expect(
+      page.getByRole("link", { name: "Guided Discovery", exact: true }),
+    ).toHaveCount(0);
+    await expect(
+      page.getByRole("link", { name: "Learning Center", exact: true }),
+    ).toHaveCount(0);
+    await expect(
+      page
+        .locator(".module-nav__group")
+        .filter({ hasText: "Learn and discover" })
+        .getByRole("link", { name: "Mission Archive", exact: true }),
+    ).toBeVisible();
     await expect(
       page.getByRole("link", { name: "Mission Map", exact: true }),
     ).toHaveCount(0);

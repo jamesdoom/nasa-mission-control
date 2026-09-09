@@ -65,7 +65,6 @@ test("gives major route families distinct, accessible atmospheres", async ({
       mood: "live",
       capture: ".page-intro",
     },
-    { path: "/learn", mood: "learning", capture: ".learning-intro" },
   ]) {
     await page.goto(sample.path);
     const shell = page.locator(".app-shell");

@@ -74,3 +74,5 @@ Existing missions, science stories, and learning tracks now form a more coherent
 ## Phase 4 outcome
 
 APOD, NeoWs, DONKI, EPIC, and NASA Media now use a shared interpretation structure for freshness, displayed evidence, and unsupported conclusions. Loading and empty states name the actual operation, stale server fallbacks remain visible in the browser, and observed events are no longer conflated with modeled fields. See [live-data-context-phase-4.md](live-data-context-phase-4.md).
+
+September 9 streamlining update: Guided Discovery and Learning Center are retired from the interface. Their source records remain as archived content for existing local backups and historical evidence; the inventory checks continue validating those retained records. Science stories remain accessible through search.

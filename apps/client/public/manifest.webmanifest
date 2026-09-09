@@ -19,10 +19,6 @@
     {
       "name": "Mission Archive",
       "url": "/missions"
-    },
-    {
-      "name": "Guided Discovery",
-      "url": "/discover"
     }
   ]
 }

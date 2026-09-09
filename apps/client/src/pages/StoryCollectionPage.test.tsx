@@ -34,12 +34,6 @@ describe("StoryCollectionPage", () => {
     expect(
       screen.getByRole("navigation", { name: "Story evidence path" }),
     ).toBeVisible();
-    expect(
-      screen.getByRole("link", { name: "Continue in guided learning" }),
-    ).toHaveAttribute(
-      "href",
-      "/learn?track=mars-evidence&returnTo=%2Fstories%2Fmars-habitability",
-    );
   });
 
   it("offers recovery for an unknown story", () => {
@@ -53,6 +47,6 @@ describe("StoryCollectionPage", () => {
     ).toBeVisible();
     expect(
       screen.getByRole("link", { name: "Browse science stories" }),
-    ).toHaveAttribute("href", "/discover");
+    ).toHaveAttribute("href", "/search?source=story");
   });
 });

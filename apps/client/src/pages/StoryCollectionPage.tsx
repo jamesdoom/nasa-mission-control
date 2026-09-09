@@ -25,8 +25,8 @@ export function StoryCollectionPage() {
       <section className="section empty-state">
         <span aria-hidden="true">404</span>
         <h1>Science story not found</h1>
-        <p>Return to Guided Discovery to choose a source-checked collection.</p>
-        <Link className="button" to="/discover">
+        <p>Search for a source-checked science story.</p>
+        <Link className="button" to="/search?source=story">
           Browse science stories
         </Link>
       </section>
@@ -51,7 +51,7 @@ export function StoryCollectionPage() {
           </figcaption>
         </figure>
         <div className="section story-hero__content">
-          <Link className="text-link" to="/discover#science-stories">
+          <Link className="text-link" to="/search?source=story">
             ← All science stories
           </Link>
           <p className="kicker">
@@ -217,16 +217,6 @@ export function StoryCollectionPage() {
               </a>
             </li>
           ))}
-          <li>
-            <Link
-              to={explorationLink(
-                `/learn?track=${story.learningTrackId}`,
-                from,
-              )}
-            >
-              Continue in guided learning <span aria-hidden="true">→</span>
-            </Link>
-          </li>
         </ul>
       </section>
     </>

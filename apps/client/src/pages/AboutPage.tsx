@@ -28,11 +28,11 @@ const tourStops = [
   },
   {
     signal: "04 // Connected learning",
-    title: "Follow a discovery path",
+    title: "Explore science stories",
     description:
-      "Connect live instruments, mission history, and NASA media through one guided question.",
-    to: "/discover",
-    label: "Open Guided Discovery",
+      "Find source-checked stories connecting mission history and NASA observations.",
+    to: "/search?source=story",
+    label: "Find science stories",
   },
   {
     signal: "05 // Resilient return",

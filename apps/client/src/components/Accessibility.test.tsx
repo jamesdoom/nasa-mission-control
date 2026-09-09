@@ -17,7 +17,6 @@ import { ProvenancePanel } from "./ProvenancePanel";
 import { EvidenceGuide } from "./EvidenceGuide";
 import { SearchPage } from "../pages/SearchPage";
 import { StoryCollectionPage } from "../pages/StoryCollectionPage";
-import { LearningCenterPage } from "../pages/LearningCenterPage";
 import { MissionDetailPage } from "../pages/MissionDetailPage";
 
 const apod: Apod = {
@@ -264,16 +263,6 @@ describe("automated accessibility", () => {
     const router = createMemoryRouter(
       [{ path: "/missions/:missionSlug", element: <MissionDetailPage /> }],
       { initialEntries: ["/missions/juno"] },
-    );
-    const { container } = render(<RouterProvider router={router} />);
-    const results = await axe(container, jsdomAxeOptions);
-    expect(results.violations).toEqual([]);
-  });
-
-  it("finds no detectable violations in the learning center", async () => {
-    const router = createMemoryRouter(
-      [{ path: "/learn", element: <LearningCenterPage /> }],
-      { initialEntries: ["/learn?track=mars-evidence"] },
     );
     const { container } = render(<RouterProvider router={router} />);
     const results = await axe(container, jsdomAxeOptions);

@@ -38,18 +38,6 @@ const scenarios = [
     width: 1440,
     height: 900,
   },
-  {
-    name: "guided-discovery-desktop",
-    pathname: "/discover",
-    width: 1440,
-    height: 900,
-  },
-  {
-    name: "guided-discovery-mobile",
-    pathname: "/discover",
-    width: 390,
-    height: 844,
-  },
 ];
 
 if (baseUrl.protocol !== "https:")

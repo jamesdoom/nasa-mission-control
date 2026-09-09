@@ -69,8 +69,8 @@ describe("SearchPage", () => {
       screen.getAllByRole("heading", { name: /^Artemis I$/ }),
     ).toHaveLength(2);
     expect(
-      screen.getByRole("heading", { name: "Rehearse a return to the Moon" }),
-    ).toBeVisible();
+      screen.queryByRole("heading", { name: "Rehearse a return to the Moon" }),
+    ).not.toBeInTheDocument();
     expect(await screen.findByText("Artemis I launch")).toBeVisible();
     await userEvent.click(screen.getByRole("radio", { name: "Flight Log" }));
     expect(screen.getByLabelText("Current search URL")).toHaveTextContent(

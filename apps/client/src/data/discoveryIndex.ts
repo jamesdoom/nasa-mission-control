@@ -1,4 +1,3 @@
-import { discoveryJourneys } from "./journeys";
 import { missions } from "./missions";
 import { storyCollections } from "./storyCollections";
 
@@ -61,18 +60,6 @@ const instrumentSeeds = [
     "/missions",
   ],
   ["trivia", "Space Trivia", "Test source-checked space knowledge", "/trivia"],
-  [
-    "discover",
-    "Guided Discovery",
-    "Follow connected investigation paths",
-    "/discover",
-  ],
-  [
-    "learn",
-    "Learning Center",
-    "Complete source-backed educational tracks",
-    "/learn",
-  ],
   [
     "favorites",
     "Personal Flight Log",
@@ -143,20 +130,6 @@ const instrumentMetadata: Record<string, DiscoveryResult["metadata"]> = {
     evidence: "curated",
     topics: ["learning", "missions"],
     instrument: "Trivia",
-  },
-  discover: {
-    destination: "Multiple",
-    era: "Archive",
-    evidence: "curated",
-    topics: ["learning", "investigation"],
-    instrument: "Guided Discovery",
-  },
-  learn: {
-    destination: "Multiple",
-    era: "Current",
-    evidence: "curated",
-    topics: ["learning", "education"],
-    instrument: "Learning Center",
   },
   favorites: {
     destination: "Personal",
@@ -230,26 +203,6 @@ export const localDiscoveryIndex: DiscoveryResult[] = [
         ...topicsFrom(`${mission.name} ${mission.dek}`),
       ],
       instrument: "Mission Archive",
-    },
-  })),
-  ...discoveryJourneys.map((journey) => ({
-    id: `path-${journey.id}`,
-    title: journey.title,
-    description: journey.summary,
-    kind: "path" as const,
-    to: `/discover#${journey.id}`,
-    keywords:
-      `${journey.title} ${journey.summary} ${journey.outcome}`.toLocaleLowerCase(),
-    metadata: {
-      destination:
-        topicsFrom(`${journey.title} ${journey.summary}`)[0] ?? "Multiple",
-      era: "Archive",
-      evidence: "curated" as const,
-      topics: [
-        "Investigation",
-        ...topicsFrom(`${journey.title} ${journey.summary}`),
-      ],
-      instrument: "Guided Discovery",
     },
   })),
   ...storyCollections.map((story) => ({

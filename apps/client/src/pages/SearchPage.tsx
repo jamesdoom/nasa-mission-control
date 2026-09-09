@@ -18,7 +18,6 @@ import {
 import { useMediaSearch } from "../features/media/useMedia";
 import { useAsteroidFavorites } from "../hooks/useAsteroidFavorites";
 import { useFavorites } from "../hooks/useFavorites";
-import { useJourneyFavorites } from "../hooks/useJourneyFavorites";
 import { useMediaFavorites } from "../hooks/useMediaFavorites";
 import { useMissionFavorites } from "../hooks/useMissionFavorites";
 
@@ -26,7 +25,6 @@ const sources = [
   "all",
   "instrument",
   "mission",
-  "path",
   "story",
   "saved",
   "media",
@@ -36,7 +34,6 @@ const sourceLabels: Record<SearchSource, string> = {
   all: "All sources",
   instrument: "Instruments",
   mission: "Missions",
-  path: "Guided paths",
   story: "Science stories",
   saved: "Flight Log",
   media: "NASA media",
@@ -127,7 +124,6 @@ export function SearchPage() {
   const apod = useFavorites();
   const asteroids = useAsteroidFavorites();
   const missions = useMissionFavorites();
-  const paths = useJourneyFavorites();
   const media = useMediaFavorites();
   const searchNASA =
     query.length >= 2 && (source === "all" || source === "media");
@@ -190,12 +186,6 @@ export function SearchPage() {
   }
   const savedResults = useMemo(() => {
     const records = [
-      ...paths.favorites.map((item) =>
-        savedResult(item.id, item.title, item.summary, `/discover#${item.id}`, [
-          item.code,
-          item.outcome,
-        ]),
-      ),
       ...asteroids.favorites.map((item) =>
         savedResult(
           item.id,
@@ -247,7 +237,6 @@ export function SearchPage() {
     asteroids.favorites,
     media.favorites,
     missions.favorites,
-    paths.favorites,
     query,
     source,
   ]);

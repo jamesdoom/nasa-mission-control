@@ -11,7 +11,7 @@ describe("AppShell reliability behavior", () => {
     ["/missions", "mission"],
     ["/earth", "earth"],
     ["/apod", "live"],
-    ["/learn", "learning"],
+    ["/trivia", "learning"],
     ["/about", "command"],
   ])("applies the atmosphere for %s", (path, mood) => {
     const router = createMemoryRouter(
