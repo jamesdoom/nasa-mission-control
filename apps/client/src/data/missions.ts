@@ -198,7 +198,7 @@ export const missions: Mission[] = [
     achievements: [
       "Found evidence of an ancient habitable lake environment",
       "Detected organic molecules in Martian rocks",
-      "Measured radiation conditions for future explorers",
+      "Gained 1 kilometer in elevation by August 26, 2026",
     ],
     image: {
       src: "/assets/missions/curiosity.jpg",

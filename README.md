@@ -8,7 +8,7 @@ An original, responsive command-center experience for exploring NASA imagery and
 
 - Responsive application shell with accessible desktop/mobile navigation
 - Lazy-loaded global command search for keyboard-first access to instruments, missions, and discovery paths (`Ctrl+K` or `Command+K`)
-- Mission Control dashboard and live UTC telemetry styling
+- Mission Control daily briefing with independent APOD/NeoWs loading, available, stale, unavailable, and offline status
 - APOD image and embedded-video support with date-based shareable URLs
 - Native playback for direct NASA video files with embedded-player support and a direct-open fallback
 - Server-side NASA key, response normalization, timeout, validation, stable errors, and memory caching
@@ -36,9 +36,9 @@ An original, responsive command-center experience for exploring NASA imagery and
 - Expandable evidence panels across live and curated instruments, with retrieval-versus-observation guidance and a shared data-literacy glossary
 - Unified Discovery Index spanning instruments, missions, guided paths, browser-local Flight Log records, and normalized live NASA media results with URL-backed source filters
 - Accessible solar-system mission map connecting all ten archive missions to five destination regions, defining milestones, and a structured text alternative without WebGL
-- Expanded browser-local Flight Log for APOD, asteroids, guided paths, mission records, and NASA media, with URL-backed search, collection filters, sorting, summaries, and portable backups
+- Expanded browser-local Flight Log for APOD, asteroids, guided paths, mission records, and NASA media, with saved exploration URLs, return context, resumable learning and trivia, URL-backed search, collection filters, sorting, summaries, and portable backups
 - Runtime-validated recently viewed history with deduplication, bounded storage, and clear controls
-- Sixty-four source-checked Space Trivia questions with three difficulty levels, four URL-backed knowledge channels, scoring, a persistent best streak, teaching explanations, review dates, and NASA citations
+- Ninety-six source-checked Space Trivia questions with three difficulty levels, four URL-backed knowledge channels, scoring, a persistent best streak, teaching explanations, review dates, and NASA citations
 - Grouped, keyboard-accessible module navigation with route-aware document titles
 - Route-level code splitting, self-hosted fonts, and optimized local imagery for faster repeat visits
 - Credited NASA Bennu and solar imagery establishing a distinct visual identity for major live-data modules
@@ -252,6 +252,8 @@ The monthly `Mission status review` workflow checks official source availability
 
 ## Roadmap
 
+The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cycle. Phase 5 reliability/scientific maintenance is [in progress](docs/reliability-scientific-maintenance-phase-5.md); the retained operating window is incomplete.
+
 1. **Complete:** foundation, dashboard, APOD, local flight log, and Phase 1.1 hardening.
 2. **Complete:** Asteroid Watch with responsible NeoWs telemetry, encounter pages, and saved objects.
 3. **Complete:** NASA Image and Video Library search, filters, pagination, detail pages, and cinematic visual foundation.
@@ -282,7 +284,7 @@ The monthly `Mission status review` workflow checks official source availability
 28. **Complete — Mission analysis phase 4:** added URL-backed selection for two or three archive records, a responsive side-by-side flight profile workspace, direct NASA source links, and a tested merged cross-mission chronology.
 29. **Complete — Celestial scale phase 5:** added seven NASA-sourced reference profiles, URL-backed measurement controls, logarithmic distance and diameter comparisons, calculated one-way light time, mission continuations, and explicit reference-frame and precision guidance.
 
-### Next five improvement phases
+### Shipped improvement history
 
 30. **Complete — Provenance and data literacy phase 6:** added reusable evidence drawers, honest retrieval-versus-observation language, live, curated, and calculated indicators, a shared glossary, and scheduled-review context throughout the instrument suite.
 31. **Complete — Unified discovery index phase 7:** added a shareable full-search experience spanning instruments, missions, guided paths, validated browser-local Flight Log records, and independently loaded normalized NASA media, plus command-palette handoff and source filters.

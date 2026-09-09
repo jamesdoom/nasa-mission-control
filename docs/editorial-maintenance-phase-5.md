@@ -19,7 +19,7 @@ Releases run the same structural audit. A backlog dated before its latest review
 
 ## Automatic evidence and escalation
 
-`npm run review:content` checks the inventory, required citations, review freshness, exact normalized trivia duplicates, readability bounds, topic coverage, backlog arithmetic, and the test suite. `npm run review:content:links` adds a live check of the 61 unique official source URLs and writes the retained report.
+`npm run review:content` checks the inventory, required citations, review freshness, exact normalized trivia duplicates, readability bounds, topic coverage, backlog arithmetic, and the test suite. `npm run review:content:links` adds a live check of the current inventory of unique official source URLs and writes the retained report.
 
 - Missing citations, duplicate trivia, overdue verification/review dates, target regressions, and definite `404`/`410` source responses are actionable failures.
 - Timeouts, rate limits, and upstream `5xx` responses are warnings. A reviewer must retry and inspect them because transient availability is not evidence that a citation is invalid.
@@ -27,12 +27,12 @@ Releases run the same structural audit. A backlog dated before its latest review
 
 ## Current targets
 
-| Measure            | Target                                                                                  | Current baseline |
-| ------------------ | --------------------------------------------------------------------------------------- | ---------------- |
-| Trivia coverage    | At least 96 total and 24 in each of the four existing topics                            | 96; 24 each      |
-| Reading clarity    | Every trivia prompt at most 20 words; every explanation 8–55 words                      | 100%             |
-| Citation health    | 100% of trivia records cited and dated; minimum source coverage for all curated areas   | 100%; 61 URLs    |
-| Content freshness  | Monthly review within 40 days; stories 120 days; trivia and learning content 210 days   | Current          |
-| Backlog discipline | Re-score after every monthly review and release; every item has evidence, owner, effort | Current          |
+| Measure            | Target                                                                                  | Current baseline                      |
+| ------------------ | --------------------------------------------------------------------------------------- | ------------------------------------- |
+| Trivia coverage    | At least 96 total and 24 in each of the four existing topics                            | 96; 24 each                           |
+| Reading clarity    | Every trivia prompt at most 20 words; every explanation 8–55 words                      | 100%                                  |
+| Citation health    | 100% of trivia records cited and dated; minimum source coverage for all curated areas   | 100%; 73 URLs (2026-09-08 link audit) |
+| Content freshness  | Monthly review within 40 days; stories 120 days; trivia and learning content 210 days   | Current                               |
+| Backlog discipline | Re-score after every monthly review and release; every item has evidence, owner, effort | Current                               |
 
 These are floors, not claims that more words or more questions are automatically better. The next cycle first addresses freshness or integrity failures, then uses documented traffic and usability evidence to select improvements within the existing content areas.

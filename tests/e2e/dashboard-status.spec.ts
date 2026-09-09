@@ -37,18 +37,22 @@ for (const sample of [
   test(`dashboard reports image ${sample.image} and scan ${sample.scan}`, async ({
     page,
   }, testInfo) => {
-    await page.route("**/api/**", (route) => {
-      const image = new URL(route.request().url()).pathname === "/api/apod";
-      const state = image ? sample.image : sample.scan;
-      return route.fulfill({
-        status: state === "failed" ? 503 : 200,
-        contentType: "application/json",
-        headers: state === "stale" ? { "x-data-status": "stale-fallback" } : {},
-        body: JSON.stringify(
-          state === "failed" ? failure : image ? apod : asteroids,
-        ),
-      });
-    });
+    await page.route(
+      (url) => url.pathname.startsWith("/api/"),
+      (route) => {
+        const image = new URL(route.request().url()).pathname === "/api/apod";
+        const state = image ? sample.image : sample.scan;
+        return route.fulfill({
+          status: state === "failed" ? 503 : 200,
+          contentType: "application/json",
+          headers:
+            state === "stale" ? { "x-data-status": "stale-fallback" } : {},
+          body: JSON.stringify(
+            state === "failed" ? failure : image ? apod : asteroids,
+          ),
+        });
+      },
+    );
     await page.goto("/");
     const status = page.getByRole("region", { name: "Briefing data status" });
     await expect(status.locator("strong")).toHaveText(sample.overall);
@@ -105,20 +109,23 @@ test("dashboard keeps loading and refresh recovery truthful", async ({
     release = resolve;
   });
   let failing = true;
-  await page.route("**/api/**", async (route) => {
-    await gate;
-    await route.fulfill({
-      status: failing ? 503 : 200,
-      contentType: "application/json",
-      body: JSON.stringify(
-        failing
-          ? failure
-          : new URL(route.request().url()).pathname === "/api/apod"
-            ? apod
-            : asteroids,
-      ),
-    });
-  });
+  await page.route(
+    (url) => url.pathname.startsWith("/api/"),
+    async (route) => {
+      await gate;
+      await route.fulfill({
+        status: failing ? 503 : 200,
+        contentType: "application/json",
+        body: JSON.stringify(
+          failing
+            ? failure
+            : new URL(route.request().url()).pathname === "/api/apod"
+              ? apod
+              : asteroids,
+        ),
+      });
+    },
+  );
   await page.goto("/");
   const status = page.getByRole("region", { name: "Briefing data status" });
   await expect(status.locator("strong")).toHaveText("Loading");

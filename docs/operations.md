@@ -8,7 +8,7 @@ NASA Mission Control runs as a Vite single-page application with same-origin Exp
 - `Production smoke` runs twice per hour and can also be started manually. It checks health, APOD archive and media contracts, invalid-request mapping, four critical SPA routes, response latency, and cache headers. A route alerts only after both bounded attempts fail.
 - `Preview smoke` runs after a successful non-production deployment and applies the same contracts and thresholds to the deployment URL before review.
 - `Production performance` runs daily, checks desktop/mobile rendering and stability budgets, and retains JSON evidence for 30 days. Critical browser-local journeys receive two bounded attempts; repeated failures include a full-page diagnostic screenshot in the private workflow artifact.
-- `Reliability trends` runs daily, carries a sanitized 90-day artifact across successful runs, and publishes a rolling 30-day summary of route latency, failures, cache results, stale fallback, validation failures, and upstream categories.
+- `Reliability trends` runs daily, carries a sanitized 90-day artifact across completed runs, including alerting failures, and publishes a rolling 30-day summary of route latency, failures, cache results, stale fallback, validation failures, and upstream categories.
 - `Mission status review` runs monthly, checks curated review deadlines and official NASA source availability, and retains its evidence for 90 days. It deliberately requires a human to confirm changing mission statuses.
 - Vercel Runtime Logs contain structured request completion records, normalized upstream duration/outcome records, cache results, and sanitized `client.runtime_error` reports.
 - Successful NASA routes expose `x-vercel-cache` for CDN diagnostics and `x-cache` for origin-memory diagnostics; see [caching.md](caching.md).
@@ -124,3 +124,7 @@ production alias; it does not undo local Flight Log data in visitors’ browsers
 ## Monitoring limits
 
 Scheduled GitHub workflows provide visible failures but are not a service-level monitoring platform. GitHub may delay scheduled jobs during load and can disable schedules on inactive repositories. The rolling trend depends on the prior successful artifact remaining available; deletion or retention expiry starts a new history. Runtime logs are queried in Vercel rather than exported: no Pro/Enterprise Drain or third-party incident pager is configured by this repository. Add a signed Drain and dedicated external monitor only if the project adopts an uptime target and notification owner that justify them. See [data-contracts-reliability-phase-3.md](data-contracts-reliability-phase-3.md) for the evidence model and threshold rationale.
+
+### September 8 reliability review
+
+The [current maintenance evidence](reliability-scientific-maintenance-phase-5.md) reviews 14 retained daily runs and recurring APOD/Space Weather failures. The report now lists coverage of the last 30 completed UTC dates separately from rolling request statistics, including missing dates for each route. No process snapshots means validation coverage is unavailable, even when the recorded failure count is zero. Existing thresholds are unchanged.

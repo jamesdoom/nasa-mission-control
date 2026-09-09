@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import {
   buildReliabilityHistory,
   reliabilityMarkdown,
+  summarizeReliability,
 } from "./lib/reliability-trends.mjs";
 
 const now = new Date("2026-08-25T12:00:00.000Z");
@@ -86,3 +87,53 @@ assert.match(markdown, /reliability-test-request/);
 assert.match(markdown, /transport \| timeout/);
 assert.doesNotMatch(markdown, /unavailable response body/);
 console.log(JSON.stringify({ status: "ok", assertions: 12 }));
+
+const completeDays = Array.from({ length: 30 }, (_, index) => ({
+  checkedAt: new Date(Date.UTC(2026, 6, 26 + index, 12)).toISOString(),
+  routes: ["apod", "asteroids", "space-weather", "earth", "media"].flatMap(
+    (name) => [
+      { ...route(false, 6_000, "MISS"), name },
+      { ...route(true, 100, "MISS"), name },
+    ],
+  ),
+}));
+const reviewDate = new Date("2026-08-25T12:00:00Z");
+const complete = summarizeReliability(completeDays, reviewDate);
+assert.equal(complete.coverage.complete, true);
+assert.equal(complete.coverage.completeDays, 30);
+assert.ok(complete.alerts.includes("apod.failureRatio=0.5"));
+assert.equal(
+  summarizeReliability(completeDays.slice(1), reviewDate).coverage.complete,
+  false,
+);
+const repeatedToday = Array.from({ length: 30 }, () => ({
+  ...completeDays[0],
+  checkedAt: reviewDate.toISOString(),
+}));
+assert.equal(
+  summarizeReliability(repeatedToday, reviewDate).coverage.completeDays,
+  0,
+);
+const partial = structuredClone(completeDays);
+partial[0].routes = partial[0].routes.filter((item) => item.name !== "earth");
+assert.deepEqual(
+  summarizeReliability(partial, reviewDate).coverage.missingDatesByRoute.earth,
+  ["2026-07-26"],
+);
+assert.equal(summarizeReliability([], reviewDate).coverage.complete, false);
+const unsorted = summarizeReliability([...completeDays].reverse(), reviewDate);
+assert.equal(unsorted.firstSampleAt, completeDays[0].checkedAt);
+assert.equal(
+  summarizeReliability(
+    [{ checkedAt: "2027-01-01T00:00:00Z", routes: [] }],
+    reviewDate,
+  ).sampleCount,
+  0,
+);
+assert.match(
+  reliabilityMarkdown({ summary: complete }),
+  /validation coverage unavailable/,
+);
+console.log(
+  "Daily coverage, missing routes, ordering, future samples, and unchanged alerts: passed",
+);

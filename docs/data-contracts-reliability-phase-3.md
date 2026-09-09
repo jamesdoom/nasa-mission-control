@@ -33,3 +33,7 @@ Threshold failures fail the workflow and use GitHub's normal failed-run notifica
 ## Monthly review
 
 The accountable monthly issue links to the reliability workflow. Review the latest JSON and Markdown artifacts for cache-hit ratios, stale frequency, validation failures, latency distribution, upstream failure categories, and threshold movement. Record any threshold change and its evidence in the issue and update the improvement backlog.
+
+## September 8 source re-review
+
+The [Phase 5 maintenance review](reliability-scientific-maintenance-phase-5.md) records the current official integration references, scientific caveats, retained operating failures, and missing coverage. Historical fixture checks above remain dated evidence; no external contract changed in this review.

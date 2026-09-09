@@ -10,6 +10,59 @@ export const reliabilityThresholds = {
   validationFailures: 1,
 };
 
+const monitoredRoutes = [
+  "apod",
+  "asteroids",
+  "space-weather",
+  "earth",
+  "media",
+];
+
+function dailyCoverage(samples, now) {
+  const end = Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate(),
+  );
+  const dates = Array.from(
+    { length: reliabilityThresholds.windowDays },
+    (_, index) =>
+      new Date(end - (reliabilityThresholds.windowDays - index) * 86_400_000)
+        .toISOString()
+        .slice(0, 10),
+  );
+  const missingDatesByRoute = Object.fromEntries(
+    monitoredRoutes.map((name) => [
+      name,
+      dates.filter(
+        (date) =>
+          samples
+            .filter(
+              (sample) =>
+                sample.checkedAt?.slice(0, 10) === date &&
+                Number.isFinite(Date.parse(sample.checkedAt)),
+            )
+            .flatMap((sample) => sample.routes ?? [])
+            .filter((route) => route.name === name).length < 2,
+      ),
+    ]),
+  );
+  return {
+    startDate: dates[0],
+    endDate: dates.at(-1),
+    requiredDays: dates.length,
+    completeDays: dates.filter((date) =>
+      Object.values(missingDatesByRoute).every(
+        (missing) => !missing.includes(date),
+      ),
+    ).length,
+    missingDatesByRoute,
+    complete: Object.values(missingDatesByRoute).every(
+      (missing) => missing.length === 0,
+    ),
+  };
+}
+
 function percentile(values, proportion) {
   if (values.length === 0) return null;
   const sorted = [...values].sort((first, second) => first - second);
@@ -92,7 +145,12 @@ function processTotals(samples) {
 export function summarizeReliability(samples, now = new Date()) {
   const cutoff = now.valueOf() - reliabilityThresholds.windowDays * 86_400_000;
   const windowSamples = samples.filter(
-    (sample) => Date.parse(sample.checkedAt) >= cutoff,
+    (sample) =>
+      Date.parse(sample.checkedAt) >= cutoff &&
+      Date.parse(sample.checkedAt) <= now.valueOf(),
+  );
+  windowSamples.sort(
+    (a, b) => Date.parse(a.checkedAt) - Date.parse(b.checkedAt),
   );
   const routeGroups = new Map();
   for (const sample of windowSamples) {
@@ -214,6 +272,10 @@ export function summarizeReliability(samples, now = new Date()) {
   return {
     windowDays: reliabilityThresholds.windowDays,
     sampleCount: windowSamples.length,
+    coverage: dailyCoverage(samples, now),
+    processSnapshotCount: windowSamples.filter(
+      (sample) => sample.processSnapshot?.since,
+    ).length,
     firstSampleAt: windowSamples[0]?.checkedAt ?? null,
     lastSampleAt: windowSamples.at(-1)?.checkedAt ?? null,
     routes,
@@ -245,6 +307,8 @@ export function reliabilityMarkdown(history) {
     "",
     `Rolling window: ${summary.windowDays} days · samples: ${summary.sampleCount}`,
     "",
+    `Daily coverage: ${summary.coverage.completeDays}/${summary.coverage.requiredDays} completed UTC days (${summary.coverage.startDate} through ${summary.coverage.endDate}) · ${summary.coverage.complete ? "complete" : "INCOMPLETE"}. Requires two observations per monitored route per day; failed requests count as observations. Today is still in progress.`,
+    "",
     "| Route | Observations | Failures | p95 latency | CDN hit ratio (n) | CDN stale | Origin hit ratio (n) | App fallback |",
     "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
   ];
@@ -255,10 +319,18 @@ export function reliabilityMarkdown(history) {
   }
   lines.push(
     "",
-    `Validation failures: ${summary.validationFailures}`,
+    `Recorded validation failures: ${summary.validationFailures} · process snapshots: ${summary.processSnapshotCount}${summary.processSnapshotCount ? " (current-process scope only)" : " (validation coverage unavailable)"}`,
     `Alerts: ${summary.alerts.length ? summary.alerts.join(", ") : "none"}`,
     `Diagnostics: ${summary.diagnostics.length ? summary.diagnostics.join(", ") : "none"}`,
   );
+  if (!summary.coverage.complete) {
+    lines.push("", "Missing or insufficient daily observations:", "");
+    for (const [name, dates] of Object.entries(
+      summary.coverage.missingDatesByRoute,
+    )) {
+      if (dates.length) lines.push(`- ${name}: ${dates.join(", ")}`);
+    }
+  }
   const failedRoutes = Object.entries(summary.routes).filter(
     ([, route]) => route.failureDetails.length > 0,
   );

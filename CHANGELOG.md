@@ -6,6 +6,8 @@ All notable changes are documented here. This project follows [Semantic Versioni
 
 ### Added
 
+- Explicit completed-day reliability coverage and missing-route dates, plus unavailable validation-coverage labels when process snapshots are absent; alert thresholds remain unchanged.
+
 - Signature visual baselines across 320 px, tablet, laptop, large-display, 200%-zoom-equivalent, and forced-colors keyboard states.
 - Aggregate image and font budgets with retained 90-day trend deltas, complementing existing JavaScript, CSS, and route-performance controls.
 - A structured four-session maintainer visual-quality review with explicit limits separating expert inspection from participant research.
