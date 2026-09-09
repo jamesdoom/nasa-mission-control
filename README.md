@@ -329,6 +329,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 70. **Complete — Experience streamlining: Mission Map and Scale Lab:** removed both sections, navigation/search/install shortcuts, and dedicated data, controls, and styles; redirected old URLs to Mission Archive and updated the Mars story continuation and editorial inventory. Types, lint, unit/component/accessibility tests, browser smoke checks, production build, and asset budgets pass.
 
+71. **Complete — Experience streamlining: APOD reading guide:** removed the “How to read an APOD record” panel and its unused copy from the Astronomy Picture of the Day page. Validated types, lint, unit/component/accessibility tests, browser smoke coverage, and the production build.
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.

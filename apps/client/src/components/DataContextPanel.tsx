@@ -1,4 +1,4 @@
-type DataContextKind = "apod" | "asteroids" | "donki" | "epic" | "media";
+type DataContextKind = "asteroids" | "donki" | "epic" | "media";
 
 const context: Record<
   DataContextKind,
@@ -11,17 +11,6 @@ const context: Record<
     limits: string;
   }
 > = {
-  apod: {
-    title: "How to read an APOD record",
-    sourceUrl: "https://api.nasa.gov/",
-    cadence:
-      "APOD is a dated selection, not an observation feed. Its media may have been captured much earlier.",
-    meaning:
-      "NASA supplies the record. Seven-day media counts are calculated here from available dates.",
-    evidence: "Curated selection; calculated counts.",
-    limits:
-      "One selection cannot represent sky conditions or event frequency. A missing day can reflect API availability.",
-  },
   asteroids: {
     title: "How to read an approach record",
     sourceUrl: "https://api.nasa.gov/",

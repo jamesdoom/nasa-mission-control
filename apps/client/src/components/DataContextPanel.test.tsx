@@ -4,7 +4,6 @@ import { DataContextPanel } from "./DataContextPanel";
 
 describe("DataContextPanel", () => {
   it.each([
-    ["apod", "How to read an APOD record"],
     ["asteroids", "How to read an approach record"],
     ["donki", "How to read a DONKI event"],
     ["epic", "How to read an EPIC sequence"],
