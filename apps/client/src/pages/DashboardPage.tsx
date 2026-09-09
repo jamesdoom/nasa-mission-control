@@ -18,9 +18,7 @@ export function DashboardPage() {
   const favorites = useFavorites();
   const online = useNetworkStatus();
   const status = briefingStatus([query, asteroidQuery], online);
-  const apodStatus = feedStatus(query, online);
   const asteroidStatus = feedStatus(asteroidQuery, online);
-  const refreshing = query.isFetching || asteroidQuery.isFetching;
   const error = query.error instanceof ApiError ? query.error : undefined;
   return (
     <>
@@ -91,41 +89,10 @@ export function DashboardPage() {
             Explore the archive →
           </Link>
         </div>
-        <div
-          className="briefing-status"
-          aria-label="Briefing data status"
-          role="region"
-        >
-          <p role="status" aria-atomic="true">
-            <strong>{status}</strong> · Daily image: {apodStatus}. Asteroid
-            Watch: {asteroidStatus}.
-          </p>
-          <p>
-            Status covers these two requests, not all NASA services. Available
-            means a response was received, not a real-time feed. Check record
-            dates and source details.
-            {!online
-              ? " You are offline. Previously loaded records are not newly retrieved."
-              : ""}
-          </p>
-          <button
-            className="button button--secondary"
-            type="button"
-            disabled={!online || refreshing}
-            onClick={() => {
-              void query.refetch();
-              void asteroidQuery.refetch();
-            }}
-          >
-            {online && refreshing ? "Refreshing briefing…" : "Refresh briefing"}
-          </button>
-        </div>
         <p className="kicker">Daily image · APOD</p>
         {!online && !query.data ? (
           <div className="state-panel">
-            <p>
-              No daily image is loaded. Reconnect, then refresh the briefing.
-            </p>
+            <p>No daily image is loaded. Reconnect, then reload the page.</p>
           </div>
         ) : query.isPending ? (
           <LoadingState

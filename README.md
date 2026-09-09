@@ -333,6 +333,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 72. **Complete — APOD layout compaction:** reduced the page heading and top spacing, placed the date controls beside the introduction on desktop, and retained stacked controls on smaller screens. At 1242 × 913, the image container begins around 484 px from the top. Types, lint, unit/component/accessibility tests, browser smoke checks, production build, and desktop/mobile visual checks pass.
 
+73. **Complete — Dashboard briefing panel removal:** removed the status summary, explanatory copy, and Refresh briefing button above the daily image; updated offline guidance to reference page reload. Retained coverage for loading, partial failure, stale data, offline states, and recovery. Types, lint, unit/component/accessibility tests, browser smoke checks, and production build pass.
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.

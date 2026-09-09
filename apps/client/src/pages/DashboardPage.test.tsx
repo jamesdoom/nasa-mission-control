@@ -1,4 +1,4 @@
-import { act, render, screen, within } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { axe } from "vitest-axe";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -26,11 +26,7 @@ describe("DashboardPage status accessibility", () => {
     expect(
       screen.queryByText("Loading the daily image"),
     ).not.toBeInTheDocument();
-    const status = screen.getByRole("region", { name: "Briefing data status" });
-    expect(within(status).getByRole("status")).toHaveTextContent(
-      "Daily image: Offline · no data",
-    );
-    expect(within(status).getByRole("button")).toBeDisabled();
+    expect(screen.getByText("Offline", { exact: true })).toBeVisible();
     expect(
       (
         await axe(container, {
@@ -74,14 +70,11 @@ describe("DashboardPage status accessibility", () => {
         <DashboardPage />
       </MemoryRouter>,
     );
-    const status = within(
-      screen.getByRole("region", { name: "Briefing data status" }),
-    ).getByRole("status");
     await screen.findByRole("heading", { name: "Older image" });
-    expect(status).toHaveTextContent(
-      "Partially available · Daily image: Stale fallback. Asteroid Watch: Unavailable.",
-    );
-    expect(status).toHaveAttribute("aria-atomic", "true");
+    expect(
+      screen.getByText("Partially available", { exact: true }),
+    ).toBeVisible();
+    expect(screen.getByText("Asteroid Watch: Unavailable")).toBeVisible();
     expect(screen.queryByText("NASA // ACTIVE")).not.toBeInTheDocument();
     expect(
       (

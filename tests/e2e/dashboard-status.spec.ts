@@ -54,12 +54,17 @@ for (const sample of [
       },
     );
     await page.goto("/");
-    const status = page.getByRole("region", { name: "Briefing data status" });
-    await expect(status.locator("strong")).toHaveText(sample.overall);
-    await expect(status).toContainText(
-      `Daily image: ${sample.image === "failed" ? "Unavailable" : sample.image === "stale" ? "Stale fallback" : "Available"}`,
-    );
-    await expect(status).toContainText(
+    const status = page.locator(".telemetry");
+    await expect(
+      status
+        .locator("span")
+        .filter({ hasText: "Briefing data" })
+        .locator("strong"),
+    ).toHaveText(sample.overall);
+
+    await expect(
+      page.getByRole("link", { name: /See what is passing Earth/ }),
+    ).toContainText(
       `Asteroid Watch: ${sample.scan === "failed" ? "Unavailable" : sample.scan === "stale" ? "Stale fallback" : "Available"}`,
     );
     await expect(page.getByText("NASA // ACTIVE")).toHaveCount(0);
@@ -86,10 +91,13 @@ for (const sample of [
       path: testInfo.outputPath("briefing-status.png"),
     });
     await page.context().setOffline(true);
-    await expect(status.locator("strong")).toHaveText("Offline");
     await expect(
-      status.getByRole("button", { name: "Refresh briefing" }),
-    ).toBeDisabled();
+      status
+        .locator("span")
+        .filter({ hasText: "Briefing data" })
+        .locator("strong"),
+    ).toHaveText("Offline");
+
     if (sample.image === "failed")
       await expect(page.getByText(/No daily image is loaded/)).toBeVisible();
     else
@@ -97,11 +105,16 @@ for (const sample of [
         page.getByRole("heading", { name: apod.title }),
       ).toBeVisible();
     await page.context().setOffline(false);
-    await expect(status.locator("strong")).toHaveText(sample.overall);
+    await expect(
+      status
+        .locator("span")
+        .filter({ hasText: "Briefing data" })
+        .locator("strong"),
+    ).toHaveText(sample.overall);
   });
 }
 
-test("dashboard keeps loading and refresh recovery truthful", async ({
+test("dashboard keeps loading and reload recovery truthful", async ({
   page,
 }) => {
   let release!: () => void;
@@ -127,15 +140,30 @@ test("dashboard keeps loading and refresh recovery truthful", async ({
     },
   );
   await page.goto("/");
-  const status = page.getByRole("region", { name: "Briefing data status" });
-  await expect(status.locator("strong")).toHaveText("Loading");
-  await expect(status).toContainText(
-    "Daily image: Loading. Asteroid Watch: Loading.",
-  );
+  const status = page.locator(".telemetry");
+  await expect(
+    status
+      .locator("span")
+      .filter({ hasText: "Briefing data" })
+      .locator("strong"),
+  ).toHaveText("Loading");
+  await expect(
+    page.getByText("Loading the daily image", { exact: true }),
+  ).toBeVisible();
   release();
-  await expect(status.locator("strong")).toHaveText("Unavailable");
+  await expect(
+    status
+      .locator("span")
+      .filter({ hasText: "Briefing data" })
+      .locator("strong"),
+  ).toHaveText("Unavailable");
   failing = false;
-  await status.getByRole("button", { name: "Refresh briefing" }).click();
-  await expect(status.locator("strong")).toHaveText("Available");
+  await page.reload();
+  await expect(
+    status
+      .locator("span")
+      .filter({ hasText: "Briefing data" })
+      .locator("strong"),
+  ).toHaveText("Available");
   await expect(page.getByRole("heading", { name: apod.title })).toBeVisible();
 });
