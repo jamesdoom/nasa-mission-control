@@ -35,51 +35,49 @@ export function ApodPage() {
     });
   }, [query.data, recent.record]);
   return (
-    <section className="section page-section">
-      <div className="page-intro">
-        <p className="kicker">
-          <span />
-          Instrument 01
-        </p>
-        <h1>
-          Astronomy Picture
-          <br />
-          of the Day
-        </h1>
-        <p>
-          One remarkable view of our universe, selected daily by NASA
-          astronomers. Choose any date from the archive to begin.
-        </p>
-      </div>
-      <form
-        className="date-console"
-        onSubmit={(event) => {
-          event.preventDefault();
-          setParams(
-            keepExplorationContext(
-              params,
-              draftDate === today() ? {} : { date: draftDate },
-            ),
-          );
-        }}
-      >
-        <label htmlFor="apod-date">Observation date</label>
-        <div>
-          <input
-            id="apod-date"
-            type="date"
-            min={APOD_EARLIEST_DATE}
-            max={today()}
-            value={draftDate}
-            onChange={(event) => setDraftDate(event.target.value)}
-            required
-          />
-          <button className="button" type="submit">
-            Acquire
-          </button>
+    <section className="section page-section apod-page">
+      <div className="apod-page-heading">
+        <div className="page-intro">
+          <p className="kicker">
+            <span />
+            Instrument 01
+          </p>
+          <h1>Astronomy Picture of the Day</h1>
+          <p>
+            One remarkable view of our universe, selected daily by NASA
+            astronomers. Choose any date from the archive to begin.
+          </p>
         </div>
-        <small>Archive begins {APOD_EARLIEST_DATE}. Dates use UTC.</small>
-      </form>
+        <form
+          className="date-console"
+          onSubmit={(event) => {
+            event.preventDefault();
+            setParams(
+              keepExplorationContext(
+                params,
+                draftDate === today() ? {} : { date: draftDate },
+              ),
+            );
+          }}
+        >
+          <label htmlFor="apod-date">Observation date</label>
+          <div>
+            <input
+              id="apod-date"
+              type="date"
+              min={APOD_EARLIEST_DATE}
+              max={today()}
+              value={draftDate}
+              onChange={(event) => setDraftDate(event.target.value)}
+              required
+            />
+            <button className="button" type="submit">
+              Acquire
+            </button>
+          </div>
+          <small>Archive begins {APOD_EARLIEST_DATE}. Dates use UTC.</small>
+        </form>
+      </div>
       {query.isPending ? (
         <LoadingState
           title="Loading the selected APOD record"

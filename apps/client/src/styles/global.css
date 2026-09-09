@@ -7083,3 +7083,46 @@ main .section[data-motion-state="revealed"] {
     display: none;
   }
 }
+
+.apod-page {
+  padding-top: 1.5rem;
+}
+.apod-page-heading {
+  display: grid;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.apod-page-heading .page-intro,
+.apod-page-heading .date-console {
+  margin-bottom: 0;
+}
+.apod-page-heading .page-intro h1 {
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
+  max-width: 22ch;
+  margin: 0.5rem 0 0.75rem;
+  line-height: 1.08;
+}
+.apod-page-heading .page-intro > p:last-child {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+@media (min-width: 1000px) {
+  .apod-page-heading {
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.65fr);
+    gap: 2rem;
+    align-items: center;
+  }
+  .apod-page-heading .date-console {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  .apod-page-heading .date-console > div {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .apod-page-heading .date-console input {
+    flex: 1;
+    min-width: 0;
+  }
+}
