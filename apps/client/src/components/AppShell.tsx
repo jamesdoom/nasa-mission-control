@@ -50,7 +50,6 @@ const routeTitles: Record<string, string> = {
   "/space-weather": "Space Weather Center",
   "/earth": "Earth Observatory",
   "/missions": "Mission Archive",
-  "/missions/compare": "Mission Comparison",
   "/missions/map": "Solar-system Mission Map",
   "/scale-lab": "Celestial Scale Laboratory",
   "/trivia": "Space Trivia",

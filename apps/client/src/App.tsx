@@ -1,4 +1,8 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  redirect,
+  RouterProvider,
+} from "react-router-dom";
 import { AppShell } from "./components/AppShell";
 import { RouteErrorPage } from "./components/RouteErrorPage";
 import { DashboardPage } from "./pages/DashboardPage";
@@ -88,11 +92,7 @@ const router = createBrowserRouter([
       },
       {
         path: "missions/compare",
-        lazy: async () => ({
-          Component: (
-            await loadLazyRoute(() => import("./pages/MissionComparePage"))
-          ).MissionComparePage,
-        }),
+        loader: () => redirect("/missions"),
       },
       {
         path: "missions/map",

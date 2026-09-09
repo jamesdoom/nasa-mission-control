@@ -700,34 +700,19 @@ test("filters and opens a source-backed mission record", async ({ page }) => {
   ).toBe(false);
 });
 
-test("compares mission profiles across a merged chronology", async ({
-  page,
-}) => {
-  await page.goto("/missions?destination=Moon");
-  await page.getByRole("checkbox", { name: /Apollo 11/ }).click();
-  await expect(page).toHaveURL(/compare=apollo-11/);
-  await page.getByRole("checkbox", { name: /Artemis I/ }).click();
-  await expect(page).toHaveURL(/compare=apollo-11%2Cartemis-i/);
-  await page.getByRole("link", { name: "Open comparison" }).click();
-  await expect(page).toHaveURL(
-    /\/missions\/compare\?missions=apollo-11%2Cartemis-i/,
-  );
-  await expect(page).toHaveTitle("Mission Comparison | NASA Mission Control");
+test("legacy mission comparisons return to the archive", async ({ page }) => {
+  await page.goto("/missions/compare?missions=apollo-11,artemis-i");
+  await expect(page).toHaveURL(/\/missions$/);
   await expect(
-    page.getByRole("heading", { name: "Mission parameters" }),
+    page.getByRole("heading", { name: "Mission Archive", exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "Across mission time" }),
-  ).toBeVisible();
-  await page.getByLabel("Bookmark name").fill("Moon program comparison");
-  await page.getByRole("button", { name: "Save comparison" }).click();
-  await expect(
-    page.getByRole("link", { name: "Moon program comparison" }),
-  ).toBeVisible();
-  await page.reload();
-  await expect(
-    page.getByRole("link", { name: "Moon program comparison" }),
-  ).toBeVisible();
+    page.getByRole("heading", { name: "Align mission records" }),
+  ).toHaveCount(0);
+  await page
+    .getByRole("combobox", { name: "Destination", exact: true })
+    .selectOption("Moon");
+  await expect(page).toHaveURL(/destination=Moon/);
   await page.setViewportSize({ width: 390, height: 844 });
   expect(
     await page.evaluate(

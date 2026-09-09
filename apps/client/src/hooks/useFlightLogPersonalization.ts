@@ -19,7 +19,8 @@ export type SavedFlightLogView = {
   createdAt: string;
 };
 
-export type ComparisonBookmark = {
+// Preserve legacy bookmarks when editing other preferences or exporting backups.
+type ComparisonBookmark = {
   id: string;
   name: string;
   path: string;
@@ -222,47 +223,11 @@ export function useFlightLogPersonalization() {
     });
   }, []);
 
-  const saveComparison = useCallback((name: string, path: string) => {
-    const cleanName = boundedText(name, 60);
-    if (!cleanName || !path.startsWith("/missions/compare?")) return;
-    setStore((current) => {
-      const withoutPath = current.comparisonBookmarks.filter(
-        (item) => item.path !== path,
-      );
-      const next = {
-        ...current,
-        comparisonBookmarks: [
-          {
-            id: id("comparison"),
-            name: cleanName,
-            path: path.slice(0, 300),
-            createdAt: new Date().toISOString(),
-          },
-          ...withoutPath,
-        ].slice(0, maxBookmarks),
-      };
-      persist(next);
-      return next;
-    });
-  }, []);
-
   const removeView = useCallback((viewId: string) => {
     setStore((current) => {
       const next = {
         ...current,
         savedViews: current.savedViews.filter((view) => view.id !== viewId),
-      };
-      persist(next);
-      return next;
-    });
-  }, []);
-  const removeComparison = useCallback((bookmarkId: string) => {
-    setStore((current) => {
-      const next = {
-        ...current,
-        comparisonBookmarks: current.comparisonBookmarks.filter(
-          (item) => item.id !== bookmarkId,
-        ),
       };
       persist(next);
       return next;
@@ -274,7 +239,5 @@ export function useFlightLogPersonalization() {
     saveAnnotation,
     saveView,
     removeView,
-    saveComparison,
-    removeComparison,
   };
 }

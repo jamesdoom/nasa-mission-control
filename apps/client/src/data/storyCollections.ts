@@ -282,13 +282,13 @@ export const storyCollections: StoryCollection[] = [
       },
       {
         kind: "curated",
-        label: "Compare designs",
-        title: "Align two observatory flight profiles",
+        label: "Explore designs",
+        title: "Explore observatory flight profiles",
         description:
-          "Place Hubble and Webb side by side to compare objectives, destinations, milestones, and operational constraints.",
+          "Explore the mission archive for observatory objectives, destinations, milestones, and operational constraints.",
         takeaway:
           "Distance and wavelength coverage shape observatory design; neither is a direct measure of scientific importance.",
-        to: "/missions/compare?missions=hubble,webb",
+        to: "/missions?vehicle=observatory",
       },
     ],
     milestones: [

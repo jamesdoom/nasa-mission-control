@@ -8,7 +8,7 @@ import {
 describe("Flight Log personalization", () => {
   beforeEach(() => localStorage.clear());
 
-  it("saves bounded record details, views, and comparison bookmarks", () => {
+  it("saves bounded record details and views", () => {
     const { result } = renderHook(() => useFlightLogPersonalization());
     const key = annotationKey("mission", "apollo-11");
     act(() =>
@@ -26,13 +26,6 @@ describe("Flight Log personalization", () => {
       result.current.saveView("Moon records", "collection=missions&q=moon"),
     );
     expect(result.current.savedViews[0]?.name).toBe("Moon records");
-    act(() =>
-      result.current.saveComparison(
-        "Moon missions",
-        "/missions/compare?missions=apollo-11,artemis-i",
-      ),
-    );
-    expect(result.current.comparisonBookmarks[0]?.path).toContain("apollo-11");
   });
 
   it("recovers from malformed storage and removes empty annotations", () => {

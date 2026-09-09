@@ -2567,8 +2567,7 @@ p {
 .flight-log-no-results {
   margin-bottom: 4rem;
 }
-.flight-log-saved-views,
-.comparison-bookmarks {
+.flight-log-saved-views {
   margin: 1.5rem 0 4rem;
   padding: clamp(1.2rem, 3vw, 1.8rem);
   border: 1px solid var(--line);
@@ -2579,24 +2578,20 @@ p {
   grid-template-columns: minmax(220px, 0.65fr) minmax(0, 1.35fr);
   gap: 1.5rem 2rem;
 }
-.flight-log-saved-views h2,
-.comparison-bookmarks h3 {
+.flight-log-saved-views h2 {
   margin: 0.35rem 0;
 }
-.flight-log-saved-views p,
-.comparison-bookmarks p {
+.flight-log-saved-views p {
   color: #8096aa;
   line-height: 1.6;
 }
-.flight-log-saved-views form,
-.comparison-bookmarks form {
+.flight-log-saved-views form {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
   gap: 0.75rem;
 }
 .flight-log-saved-views label,
-.comparison-bookmarks label,
 .record-personalization label {
   display: grid;
   gap: 0.45rem;
@@ -2607,7 +2602,6 @@ p {
   text-transform: uppercase;
 }
 .flight-log-saved-views input,
-.comparison-bookmarks input,
 .record-personalization input,
 .record-personalization textarea {
   width: 100%;
@@ -2621,8 +2615,7 @@ p {
     sans-serif;
   text-transform: none;
 }
-.flight-log-saved-views ul,
-.comparison-bookmarks ul {
+.flight-log-saved-views ul {
   grid-column: 1 / -1;
   display: flex;
   flex-wrap: wrap;
@@ -2631,21 +2624,18 @@ p {
   padding: 0;
   list-style: none;
 }
-.flight-log-saved-views li,
-.comparison-bookmarks li {
+.flight-log-saved-views li {
   display: flex;
   align-items: center;
   gap: 0.55rem;
   border: 1px solid var(--line);
   background: #081321;
 }
-.flight-log-saved-views li a,
-.comparison-bookmarks li a {
+.flight-log-saved-views li a {
   padding: 0.65rem 0 0.65rem 0.8rem;
   color: var(--cyan);
 }
-.flight-log-saved-views li button,
-.comparison-bookmarks li button {
+.flight-log-saved-views li button {
   align-self: stretch;
   border: 0;
   border-left: 1px solid var(--line);
@@ -2714,12 +2704,6 @@ p {
 .flight-log-saved-card > .record-personalization {
   margin-top: 0;
 }
-.comparison-bookmarks {
-  margin-bottom: 0;
-}
-.comparison-bookmarks form {
-  margin: 1rem 0;
-}
 .flight-log-backup__preview {
   grid-column: 1 / -1;
   padding: 0.8rem;
@@ -2753,7 +2737,6 @@ p {
 @media (max-width: 760px) {
   .flight-log-saved-views,
   .flight-log-saved-views form,
-  .comparison-bookmarks form,
   .record-personalization form > div,
   .continuation-suggestions > div:last-child {
     grid-template-columns: 1fr;
@@ -2761,8 +2744,7 @@ p {
   .flight-log-saved-views ul {
     grid-column: 1;
   }
-  .flight-log-saved-views .button,
-  .comparison-bookmarks .button {
+  .flight-log-saved-views .button {
     width: 100%;
   }
 }
@@ -4220,33 +4202,28 @@ p {
   color: #96a9bb;
   line-height: 1.7;
 }
-.missions-intro,
-.mission-compare-intro {
+.missions-intro {
   padding-bottom: 3rem;
 }
-.missions-intro > div,
-.mission-compare-intro > div {
+.missions-intro > div {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 0.55fr);
   align-items: end;
   gap: 3rem;
 }
-.missions-intro h1,
-.mission-compare-intro h1 {
+.missions-intro h1 {
   font-size: clamp(3.5rem, 8vw, 7.5rem);
   line-height: 0.9;
   letter-spacing: -0.065em;
   margin: 0;
 }
-.missions-intro > div > p,
-.mission-compare-intro > div > p {
+.missions-intro > div > p {
   color: #9db0c2;
   font-size: 1.1rem;
   line-height: 1.7;
   margin: 0;
 }
-.missions-intro aside,
-.mission-compare-intro aside {
+.missions-intro aside {
   margin-top: 2rem;
   display: flex;
   gap: 1rem;
@@ -4257,8 +4234,7 @@ p {
     monospace;
   letter-spacing: 0.08em;
 }
-.missions-intro aside strong,
-.mission-compare-intro aside strong {
+.missions-intro aside strong {
   color: var(--amber);
   border: 1px solid rgba(255, 179, 64, 0.4);
   padding: 0.45rem 0.6rem;
@@ -4382,148 +4358,6 @@ p {
 }
 .mission-results {
   padding-top: 1rem;
-}
-.mission-compare-console__heading {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 2rem;
-  align-items: end;
-  margin-bottom: 1.5rem;
-  padding: clamp(1.25rem, 3vw, 2rem);
-  border: 1px solid var(--line);
-  background: rgba(7, 17, 29, 0.92);
-}
-.mission-compare-console__heading h2 {
-  margin: 0.4rem 0;
-  font-size: clamp(1.8rem, 4vw, 3rem);
-}
-.mission-compare-console__heading > div:last-child {
-  display: grid;
-  gap: 0.7rem;
-  justify-items: end;
-  color: #71899d;
-  font-size: 0.72rem;
-}
-.mission-compare-console__heading > div:last-child strong {
-  color: var(--cyan);
-  font-family: "Space Mono", monospace;
-}
-.mission-compare-console__heading button {
-  border: 0;
-  background: transparent;
-  color: #8fb3ca;
-  cursor: pointer;
-  text-decoration: underline;
-}
-.mission-compare-picker {
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-.mission-compare-picker legend {
-  margin-bottom: 0.7rem;
-}
-.mission-compare-picker > div {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.65rem;
-}
-.mission-compare-picker input {
-  position: absolute;
-  opacity: 0;
-}
-.mission-compare-picker label {
-  position: relative;
-}
-.mission-compare-picker label > span {
-  display: grid;
-  gap: 0.35rem;
-  padding: 0.85rem;
-  border: 1px solid #304359;
-  background: #07111d;
-}
-.mission-compare-picker input:checked + span {
-  border-color: var(--cyan);
-  background: rgba(72, 217, 239, 0.09);
-}
-.mission-compare-picker input:focus-visible + span {
-  outline: 2px solid var(--cyan);
-  outline-offset: 3px;
-}
-.mission-compare-picker input:disabled + span {
-  cursor: not-allowed;
-  opacity: 0.42;
-}
-.mission-comparison-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-}
-.mission-comparison-grid--2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-.mission-comparison-grid article {
-  border: 1px solid var(--line);
-}
-.mission-comparison-grid article > img {
-  width: 100%;
-  aspect-ratio: 3 / 2;
-  object-fit: cover;
-}
-.mission-comparison-grid article > div {
-  padding: clamp(1.25rem, 3vw, 2rem);
-}
-.mission-comparison-grid h3 {
-  margin: 0.5rem 0 1rem;
-  font-size: clamp(1.8rem, 3vw, 2.7rem);
-}
-.mission-comparison-grid dl {
-  margin: 1.5rem 0;
-}
-.mission-comparison-grid dl > div {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.65rem 0;
-  border-bottom: 1px solid var(--line);
-}
-.mission-comparison-grid dd {
-  margin: 0;
-  text-align: right;
-}
-.mission-comparison__links {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-.mission-comparison__links a,
-.comparison-timeline a {
-  color: var(--cyan);
-  text-decoration: none;
-}
-.comparison-timeline ol {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid var(--line);
-}
-.comparison-timeline li {
-  display: grid;
-  grid-template-columns: 150px minmax(0, 1fr);
-  gap: 2rem;
-  padding: 1.5rem 0;
-  border-bottom: 1px solid var(--line);
-}
-.comparison-timeline time,
-.comparison-timeline li a {
-  font:
-    0.65rem "Space Mono",
-    monospace;
-  text-transform: uppercase;
-}
-.comparison-timeline h3 {
-  margin: 0.35rem 0;
 }
 .scale-lab-intro {
   position: relative;
@@ -5686,9 +5520,6 @@ p {
   .mission-grid {
     grid-template-columns: 1fr;
   }
-  .mission-compare-picker > div {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
   .scale-picker > div {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
@@ -5842,20 +5673,13 @@ p {
     min-height: 500px;
   }
   .missions-intro > div,
-  .mission-compare-intro > div,
   .mission-overview,
-  .mission-compare-console__heading,
-  .mission-comparison-grid,
-  .mission-comparison-grid--2,
   .scale-lab-intro > div,
   .scale-evidence__grid {
     grid-template-columns: 1fr;
   }
   .scale-lab-intro::after {
     opacity: 0.45;
-  }
-  .mission-compare-console__heading > div:last-child {
-    justify-items: start;
   }
   .mission-filters {
     grid-template-columns: 1fr 1fr;
@@ -6324,9 +6148,6 @@ p {
   }
 }
 @media (max-width: 560px) {
-  .mission-compare-picker > div {
-    grid-template-columns: 1fr;
-  }
   .scale-metrics,
   .scale-picker > div {
     display: grid;
@@ -6342,14 +6163,6 @@ p {
   }
   .scale-evidence dl {
     grid-template-columns: 1fr;
-  }
-  .comparison-timeline li {
-    grid-template-columns: 1fr;
-    gap: 0.6rem;
-  }
-  .mission-comparison__links {
-    align-items: flex-start;
-    flex-direction: column;
   }
   .command-palette-backdrop {
     padding: 0;

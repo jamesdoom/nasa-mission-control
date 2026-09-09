@@ -161,17 +161,13 @@ await step("flight-log-local-continuity", async () => {
   await page.getByRole("link", { name: "Release view" }).waitFor();
 });
 
-await step("comparison-bookmark-continuity", async () => {
+await step("legacy-comparison-redirect", async () => {
   await page.goto(
     new URL("/missions/compare?missions=apollo-11,artemis-i", baseUrl).href,
     { waitUntil: "domcontentloaded" },
   );
   await page
-    .getByRole("link", { name: "Release comparison" })
-    .waitFor({ timeout: 10_000 });
-  await page.reload({ waitUntil: "domcontentloaded" });
-  await page
-    .getByRole("link", { name: "Release comparison" })
+    .getByRole("heading", { name: "Mission Archive", exact: true })
     .waitFor({ timeout: 10_000 });
   const overflow = await page.evaluate(
     () =>

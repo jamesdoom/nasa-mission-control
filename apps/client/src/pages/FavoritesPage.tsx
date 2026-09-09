@@ -734,18 +734,7 @@ export function FavoritesPage() {
             </p>
           </div>
           <div>
-            {missionFavorites.favorites.length >= 2 ? (
-              <Link
-                to={`/missions/compare?missions=${missionFavorites.favorites
-                  .slice(0, 3)
-                  .map((mission) => mission.slug)
-                  .join(",")}`}
-              >
-                Compare saved missions →
-              </Link>
-            ) : (
-              <Link to="/missions">Add another mission →</Link>
-            )}
+            <Link to="/missions">Explore missions →</Link>
             {journeyFavorites.favorites[0] ? (
               <Link to={`/discover#${journeyFavorites.favorites[0].id}`}>
                 Resume {journeyFavorites.favorites[0].title} →
