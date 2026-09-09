@@ -130,7 +130,6 @@ export function DashboardPage() {
             </p>
             <h2 id="start-title">Start with one clear path</h2>
           </div>
-          <p>Every route is available without an account.</p>
         </div>
         <div className="journey-start__grid">
           <Link className="journey-start__card" to="/asteroids">

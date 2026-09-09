@@ -335,6 +335,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 74. **Complete — Navigation streamlining: Guided Discovery and Learning Center:** removed both sections and their entry points, moved Mission Archive into Learn and discover, redirected old URLs to Mission Archive, and retained science stories through search. Legacy learning/path data remains available to backups. Types, lint, unit/component/accessibility tests, browser smoke and redirect checks, production build, offline-shell checks, asset budgets, and responsive navigation checks pass.
 
+75. **Complete — Evidence badge readability and dashboard copy:** scoped kicker decorations to empty spans so Calculated and other evidence labels retain their own readable dimensions; removed the account-free route sentence from the dashboard. Types, lint, unit/component/accessibility tests, browser smoke checks, production build, and desktop/mobile badge inspection pass.
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.

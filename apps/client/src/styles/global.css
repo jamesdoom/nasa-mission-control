@@ -1161,7 +1161,7 @@ main {
   gap: 0.65rem;
   margin: 0 0 1.35rem;
 }
-.kicker span {
+.kicker > span:empty {
   width: 28px;
   height: 1px;
   background: var(--cyan);
@@ -5657,7 +5657,7 @@ p {
     border: 1px solid CanvasText;
   }
   .status-dot,
-  .kicker > span {
+  .kicker > span:empty {
     background: CanvasText;
     box-shadow: none;
   }
