@@ -29,7 +29,12 @@
   --cyan: #48d9ef;
   --blue: #3e74ff;
   --amber: #ffb340;
-  --muted: #8b9cb1;
+  --muted: #a5b6c9;
+  --type-label: 0.75rem;
+  --type-control: 0.875rem;
+  --type-body: 1rem;
+  --type-section: clamp(1.5rem, 2.5vw, 2.25rem);
+  --space-heading: 1rem;
   --line: rgba(139, 174, 207, 0.16);
   --line-strong: rgba(139, 174, 207, 0.3);
   --panel: var(--surface);
@@ -1274,7 +1279,7 @@ p {
   color: #fff;
   text-decoration: none;
   padding: 0.9rem 1.25rem;
-  font-size: 0.82rem;
+  font-size: var(--type-control);
   font-weight: 700;
   display: inline-flex;
   align-items: center;
@@ -6762,5 +6767,91 @@ main .section[data-motion-state="revealed"] {
   }
   .dashboard-hero {
     padding-top: 1.5rem;
+  }
+}
+
+/* Shared readability rules: body copy stays proportional; short metadata uses mono. */
+.section-heading h2,
+.flight-log-tools__heading h2,
+.filter-heading h2 {
+  font-size: var(--type-section);
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+.section-heading {
+  gap: var(--space-heading);
+  margin-bottom: 1.5rem;
+}
+.kicker,
+.eyebrow,
+.telemetry small,
+.date-console label,
+.date-console small,
+.mission-filters label,
+.flight-log-tools label > span,
+.data-status > p {
+  font-size: var(--type-label);
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+.date-console small {
+  font-family: "DM Sans", system-ui, sans-serif;
+  text-transform: none;
+  letter-spacing: normal;
+}
+.provenance-panel summary small,
+.credit,
+.source-note {
+  color: var(--muted);
+}
+.evidence-class,
+.evidence-badge {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  min-height: 26px;
+  padding: 0.2rem 0.5rem;
+  font-size: var(--type-label);
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  background: #07111d;
+  box-shadow: none;
+}
+.kicker {
+  flex-wrap: wrap;
+}
+.kicker > span:empty {
+  flex: 0 0 28px;
+}
+.button {
+  min-height: var(--control-height);
+  border-radius: var(--radius-control);
+  line-height: 1.4;
+}
+main
+  :is(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+    select,
+    textarea
+  ) {
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: var(--type-body);
+  line-height: 1.4;
+}
+main input::placeholder,
+main textarea::placeholder {
+  color: #9aaec3;
+  opacity: 1;
+}
+.hero h1 em {
+  color: #a9c5e3;
+  -webkit-text-stroke: 0;
+}
+@media (forced-colors: active) {
+  .evidence-class,
+  .evidence-badge {
+    background: Canvas;
+    color: CanvasText;
   }
 }

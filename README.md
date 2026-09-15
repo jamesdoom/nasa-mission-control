@@ -339,6 +339,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 76. **Complete — Appearance and usability phase 1: Bring content forward:** compacted the dashboard hero and archive headings, moved supporting Mission Archive and Flight Log panels below primary records, and verified earlier desktop/mobile content positions without adding features. See [before/after evidence](docs/content-first-layouts-phase-1.md).
 
+77. **Complete — Appearance and usability phase 2: Readability and consistency:** standardized shared heading and control typography, brightened secondary text, clarified evidence badges, and replaced outlined dashboard emphasis with solid text. See [validation and visual evidence](docs/readability-consistency-phase-2.md).
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.
