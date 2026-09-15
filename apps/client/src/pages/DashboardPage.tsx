@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ApiError } from "../api/apod";
 import { ApodPanel } from "../components/ApodPanel";
@@ -13,6 +13,30 @@ import { briefingStatus, feedStatus } from "../utils/briefingStatus";
 import { utcDate } from "../utils/dates";
 
 export function DashboardPage() {
+  const heroRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+    let visible = true;
+    const update = () => {
+      hero.dataset.animationsPaused = String(!visible || document.hidden);
+    };
+    const observer =
+      typeof IntersectionObserver === "function"
+        ? new IntersectionObserver(([entry]) => {
+            visible = entry?.isIntersecting ?? false;
+            update();
+          })
+        : undefined;
+    observer?.observe(hero);
+    document.addEventListener("visibilitychange", update);
+    update();
+    return () => {
+      observer?.disconnect();
+      document.removeEventListener("visibilitychange", update);
+      delete hero.dataset.animationsPaused;
+    };
+  }, []);
   const query = useApod();
   const asteroidQuery = useAsteroids(utcDate(), utcDate(6));
   const favorites = useFavorites();
@@ -22,7 +46,7 @@ export function DashboardPage() {
   const error = query.error instanceof ApiError ? query.error : undefined;
   return (
     <>
-      <section className="hero section dashboard-hero">
+      <section ref={heroRef} className="hero section dashboard-hero">
         <div className="hero-immersion" aria-hidden="true">
           <span className="hero-immersion__stars hero-immersion__stars--near" />
           <span className="hero-immersion__stars hero-immersion__stars--far" />

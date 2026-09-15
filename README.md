@@ -351,6 +351,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 82. **Complete — Performance startup and requests:** deferred offline registration, added five-minute repeat-visit freshness for Earth/Media/Space Weather, paced retries, and cancelled requests without consumers while preserving shared requests. See [validation](docs/performance-startup-requests.md).
 
+83. **Complete — Performance mobile rendering:** reused the mobile background to avoid a measured extra 316.7 KiB download and paused three offscreen hero animations. All 45 production browser tests pass. See [before/after evidence](docs/performance-mobile-rendering.md).
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.

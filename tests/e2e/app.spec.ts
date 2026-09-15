@@ -959,3 +959,38 @@ test("reuses a recent Space Weather result after navigating away and back", asyn
   await expect(page.locator(".weather-card").first()).toBeVisible();
   expect(requests).toBe(1);
 });
+
+test("pauses decorative hero motion offscreen and resumes on return", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await mockApod(page);
+  await mockAsteroids(page);
+  await page.goto("/");
+  const hero = page.locator(".dashboard-hero");
+  await expect(hero).toHaveAttribute("data-animations-paused", "false");
+  await page.locator(".site-footer").scrollIntoViewIfNeeded();
+  await expect(hero).toHaveAttribute("data-animations-paused", "true");
+  await expect
+    .poll(() =>
+      hero.evaluate(
+        (element) =>
+          element
+            .getAnimations({ subtree: true })
+            .filter((animation) => animation.playState === "running").length,
+      ),
+    )
+    .toBe(0);
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+  await expect(hero).toHaveAttribute("data-animations-paused", "false");
+  await expect
+    .poll(() =>
+      hero.evaluate(
+        (element) =>
+          element
+            .getAnimations({ subtree: true })
+            .filter((animation) => animation.playState === "running").length,
+      ),
+    )
+    .toBeGreaterThan(0);
+});
