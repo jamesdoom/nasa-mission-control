@@ -367,6 +367,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 90. **Complete — Launch polish phase 2:** standardized page introductions and heading scale, aligned Media Library content, tightened spacing before Earth and weather controls, and preserved full APOD image framing. All 46 browser tests pass. See [before/after evidence](docs/page-composition.md).
 
+91. **Complete — Illustrated header consistency:** matched Space Weather and Asteroid Watch header widths, padding, title flow, and spacing before controls. Preserved NASA image credits and the weather research notice. See [composition notes](docs/page-composition.md).
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.

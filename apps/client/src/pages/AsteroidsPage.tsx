@@ -71,11 +71,7 @@ export function AsteroidsPage() {
           <span />
           Instrument 02
         </p>
-        <h1>
-          Asteroid
-          <br />
-          Watch
-        </h1>
+        <h1>Asteroid Watch</h1>
         <a
           className="module-image-credit"
           href="https://images.nasa.gov/details/2019-02-25_regolith_image_compilation"

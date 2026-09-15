@@ -7159,3 +7159,43 @@ main :is(a, button, input, select, textarea, summary) {
     font-size: 0.65rem;
   }
 }
+
+/* Both illustrated data headers share the same content edges and inset. */
+.asteroid-page,
+.weather-header-section {
+  padding-top: 1.5rem;
+}
+.weather-header-section {
+  padding-bottom: 1.5rem;
+}
+.asteroid-intro--visual,
+.weather-header-section .weather-intro--visual {
+  display: block;
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+  margin: 0;
+}
+.asteroid-page > .asteroid-intro--visual {
+  margin-bottom: 1.5rem;
+}
+:is(.asteroid-intro--visual, .weather-header-section .weather-intro--visual)
+  .kicker {
+  margin-bottom: 1rem;
+}
+:is(.asteroid-intro--visual, .weather-header-section .weather-intro--visual)
+  h1 {
+  max-width: none;
+  margin: 0 0 0.75rem;
+}
+.weather-header-section .weather-intro > p {
+  max-width: 65ch;
+}
+.weather-header-section .weather-intro aside {
+  margin-top: 1.5rem;
+}
+:is(.asteroid-intro--visual, .weather-header-section .weather-intro--visual)
+  .module-image-credit {
+  position: static;
+  display: block;
+  margin-top: 1.5rem;
+  text-align: right;
+}

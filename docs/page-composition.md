@@ -4,6 +4,8 @@ Shared CSS now gives the eight main exploration and saved-content pages a consis
 
 Existing feature behavior, data integration, keyboard order, mission-card imagery, and the single-column homepage remain unchanged. Detail-page cinematic layouts retain their existing composition.
 
+Header consistency follow-up: Space Weather and Asteroid Watch now share the same outer content edges, responsive inner padding, title spacing, and gap before controls. Titles wrap naturally. Their NASA backgrounds remain distinct, and image credits occupy normal layout space to prevent overlap. Space Weather retains its research-use notice below its description.
+
 ## Verification
 
 - Typecheck, lint, unit/component/accessibility tests, production build, all 46 production browser tests, and compressed asset budgets passed.

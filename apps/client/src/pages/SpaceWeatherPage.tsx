@@ -70,36 +70,42 @@ export function SpaceWeatherPage() {
 
   return (
     <>
-      <section className="section weather-intro weather-intro--visual">
-        <div>
-          <p className="kicker">
-            <span />
-            Heliophysics downlink // Instrument 04
-          </p>
-          <h1>Space Weather Center</h1>
-        </div>
-        <p>
-          Explore observed solar flares, coronal mass ejections, and geomagnetic
-          storms recorded by NASA’s DONKI research database.
-        </p>
-        <aside>
-          <strong>Research data—not an operational forecast.</strong>
+      <section className="section weather-header-section">
+        <div className="weather-intro weather-intro--visual">
+          <div>
+            <p className="kicker">
+              <span />
+              Heliophysics downlink // Instrument 04
+            </p>
+            <h1>Space Weather Center</h1>
+          </div>
           <p>
-            For official U.S. space weather forecasts, consult NOAA’s Space
-            Weather Prediction Center.
+            Explore observed solar flares, coronal mass ejections, and
+            geomagnetic storms recorded by NASA’s DONKI research database.
           </p>
-          <a href="https://www.swpc.noaa.gov/" target="_blank" rel="noreferrer">
-            Open NOAA SWPC ↗
+          <aside>
+            <strong>Research data—not an operational forecast.</strong>
+            <p>
+              For official U.S. space weather forecasts, consult NOAA’s Space
+              Weather Prediction Center.
+            </p>
+            <a
+              href="https://www.swpc.noaa.gov/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open NOAA SWPC ↗
+            </a>
+          </aside>
+          <a
+            className="module-image-credit"
+            href="https://images.nasa.gov/details/PIA26681"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Solar imagery: NASA / SDO ↗
           </a>
-        </aside>
-        <a
-          className="module-image-credit"
-          href="https://images.nasa.gov/details/PIA26681"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Solar imagery: NASA / SDO ↗
-        </a>
+        </div>
       </section>
       <section className="section weather-console-section">
         <form className="weather-console" onSubmit={submit}>
