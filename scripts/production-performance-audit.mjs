@@ -1,3 +1,4 @@
+import { maximumLayoutShiftSession } from "./lib/layout-shift.mjs";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { chromium } from "playwright";
@@ -9,6 +10,7 @@ const baseUrl = new URL(
 const outputPath = path.resolve(
   process.env.PERFORMANCE_REPORT ?? "artifacts/production-performance.json",
 );
+const observationMs = 6000;
 const budgets = {
   ttfbMs: 1_500,
   fcpMs: 3_000,
@@ -19,6 +21,7 @@ const budgets = {
 const scenarios = [
   { name: "dashboard-desktop", pathname: "/", width: 1440, height: 900 },
   { name: "dashboard-mobile", pathname: "/", width: 390, height: 844 },
+  { name: "apod-mobile", pathname: "/apod", width: 390, height: 844 },
   { name: "about-desktop", pathname: "/about", width: 1440, height: 900 },
   {
     name: "mission-archive-desktop",
@@ -68,6 +71,8 @@ function enforce(result) {
     failures.push("same-origin HTTP resource errors");
   if (result.failedSameOriginResources.length > 0)
     failures.push("failed same-origin resources");
+  if (result.contentReadiness.loadingPanels > 0)
+    failures.push("content still loading at observation cutoff");
   if (result.horizontalOverflow) failures.push("horizontal overflow");
   if (result.metrics.ttfbMs > budgets.ttfbMs) failures.push("TTFB budget");
   if (result.metrics.fcpMs !== null && result.metrics.fcpMs > budgets.fcpMs)
@@ -124,7 +129,7 @@ try {
         failedSameOriginResources.push(request.url());
     });
     await page.addInitScript(() => {
-      window.__missionControlVitals = { cls: 0, lcp: null };
+      window.__missionControlVitals = { shifts: [], lcp: null };
       new PerformanceObserver((entries) => {
         const last = entries.getEntries().at(-1);
         if (last) window.__missionControlVitals.lcp = last.startTime;
@@ -132,7 +137,10 @@ try {
       new PerformanceObserver((entries) => {
         for (const entry of entries.getEntries()) {
           if (!("hadRecentInput" in entry) || !entry.hadRecentInput)
-            window.__missionControlVitals.cls += entry.value;
+            window.__missionControlVitals.shifts.push({
+              startTime: entry.startTime,
+              value: entry.value,
+            });
         }
       }).observe({ type: "layout-shift", buffered: true });
     });
@@ -146,7 +154,7 @@ try {
       timeout: budgets.headingReadyMs,
     });
     const headingReadyMs = performance.now() - startedAt;
-    await page.waitForTimeout(1_500);
+    await page.waitForTimeout(observationMs);
     const observed = await page.evaluate(() => {
       const navigation = performance.getEntriesByType("navigation")[0];
       const paint = performance.getEntriesByName("first-contentful-paint")[0];
@@ -163,7 +171,19 @@ try {
             : navigation.responseStart - navigation.requestStart,
         domContentLoadedMs: navigation?.domContentLoadedEventEnd ?? 0,
         fcpMs: paint?.startTime ?? null,
-        cls: window.__missionControlVitals.cls,
+        shifts: window.__missionControlVitals.shifts,
+        pendingImages: [...document.images].filter(
+          (image) => image.currentSrc && !image.complete,
+        ).length,
+        brokenImages: [...document.images].filter(
+          (image) =>
+            image.currentSrc && image.complete && image.naturalWidth === 0,
+        ).length,
+        deferredImages: [...document.images].filter(
+          (image) => !image.currentSrc,
+        ).length,
+        loadingPanels: document.querySelectorAll(".state-panel--loading")
+          .length,
         lcpMs: window.__missionControlVitals.lcp,
         horizontalOverflow:
           document.documentElement.scrollWidth >
@@ -193,8 +213,14 @@ try {
         domContentLoadedMs: round(observed.domContentLoadedMs),
         fcpMs: round(observed.fcpMs),
         lcpMs: round(observed.lcpMs),
-        cls: round(observed.cls),
+        cls: maximumLayoutShiftSession(observed.shifts),
         headingReadyMs: round(headingReadyMs),
+      },
+      contentReadiness: {
+        deferredImages: observed.deferredImages,
+        pendingImages: observed.pendingImages,
+        brokenImages: observed.brokenImages,
+        loadingPanels: observed.loadingPanels,
       },
       horizontalOverflow: observed.horizontalOverflow,
       resources: {
@@ -223,6 +249,9 @@ const report = {
     : "failed",
   checkedAt: new Date().toISOString(),
   baseUrl: baseUrl.origin,
+  observationMs,
+  measurementScope:
+    "Fresh browser contexts; reduced motion; no CPU/network throttling. LCP is provisional within the observation window, not real-user Core Web Vitals.",
   budgets,
   results,
 };

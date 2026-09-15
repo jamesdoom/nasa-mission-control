@@ -353,6 +353,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 83. **Complete — Performance mobile rendering:** reused the mobile background to avoid a measured extra 316.7 KiB download and paused three offscreen hero animations. All 45 production browser tests pass. See [before/after evidence](docs/performance-mobile-rendering.md).
 
+84. **Complete — Performance loading stability:** reserved the daily-image loading area, prevented late font swaps, and strengthened the production audit with a longer observation window and precise session-based CLS. See [measurements and verification](docs/performance-loading-stability.md).
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.

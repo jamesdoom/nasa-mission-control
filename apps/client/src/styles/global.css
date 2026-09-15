@@ -2,21 +2,21 @@
   font-family: "DM Sans";
   font-style: normal;
   font-weight: 400 700;
-  font-display: swap;
+  font-display: optional;
   src: url("/assets/fonts/dm-sans-latin.woff2") format("woff2");
 }
 @font-face {
   font-family: "Space Mono";
   font-style: normal;
   font-weight: 400;
-  font-display: swap;
+  font-display: optional;
   src: url("/assets/fonts/space-mono-regular-latin.woff2") format("woff2");
 }
 @font-face {
   font-family: "Space Mono";
   font-style: normal;
   font-weight: 700;
-  font-display: swap;
+  font-display: optional;
   src: url("/assets/fonts/space-mono-bold-latin.woff2") format("woff2");
 }
 
@@ -7020,4 +7020,23 @@ main :is(a, button, input, select, textarea, summary) {
       linear-gradient(0deg, #050912 0%, transparent 34%),
       url("/assets/milky-way-960.webp");
   }
+}
+
+/* Reserve the daily image area before data arrives. */
+.briefing .state-panel--loading {
+  min-height: 580px;
+  align-items: flex-start;
+}
+@media (max-width: 900px) {
+  .briefing .state-panel--loading {
+    min-height: 480px;
+  }
+}
+@media (max-width: 600px) {
+  .briefing .state-panel--loading {
+    min-height: 340px;
+  }
+}
+.dashboard-hero h1 {
+  line-height: 1.08;
 }

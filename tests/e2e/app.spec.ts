@@ -994,3 +994,44 @@ test("pauses decorative hero motion offscreen and resumes on return", async ({
     )
     .toBeGreaterThan(0);
 });
+
+test("keeps the mobile dashboard stable while fonts and data load", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 900 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.addInitScript(() => {
+    Reflect.set(window, "loadingCls", 0);
+    new PerformanceObserver((list) => {
+      for (const entry of list.getEntries()) {
+        if (
+          "value" in entry &&
+          typeof entry.value === "number" &&
+          !("hadRecentInput" in entry && entry.hadRecentInput)
+        )
+          Reflect.set(
+            window,
+            "loadingCls",
+            Number(Reflect.get(window, "loadingCls")) + entry.value,
+          );
+      }
+    }).observe({ type: "layout-shift", buffered: true });
+  });
+  await mockApod(page);
+  await mockAsteroids(page);
+  await page.route("**/*.woff2", async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 800));
+    await route.continue();
+  });
+  await page.route("**/api/**", async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 1200));
+    await route.fallback();
+  });
+  await page.goto("/");
+  await expect(page.locator(".apod-image")).toBeVisible();
+  await page.evaluate(() => document.fonts.ready);
+  await page.waitForTimeout(500);
+  expect(
+    await page.evaluate(() => Number(Reflect.get(window, "loadingCls"))),
+  ).toBeLessThanOrEqual(0.1);
+});
