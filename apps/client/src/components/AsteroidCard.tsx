@@ -33,17 +33,18 @@ export function AsteroidCard({
           <h2>{asteroid.name}</h2>
         </div>
         <button
-          className={saved ? "icon-button is-saved" : "icon-button"}
+          className={saved ? "apod-save is-saved" : "apod-save"}
           type="button"
           aria-pressed={saved}
           aria-label={
             saved
-              ? `Remove ${asteroid.name} from favorites`
-              : `Save ${asteroid.name} to favorites`
+              ? `Remove ${asteroid.name} from Flight Log`
+              : `Save ${asteroid.name} to Flight Log`
           }
           onClick={onToggle}
         >
           <HeartIcon />
+          <span>{saved ? "Saved (Remove)" : "Save to Flight Log"}</span>
         </button>
       </div>
       <div

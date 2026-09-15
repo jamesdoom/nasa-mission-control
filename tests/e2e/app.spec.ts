@@ -5,6 +5,13 @@ async function capturePortfolioScreenshot(
   options: Parameters<Page["screenshot"]>[0],
 ): Promise<void> {
   if (process.env.UPDATE_SCREENSHOTS === "true") {
+    if (options?.fullPage) {
+      await page.evaluate(() => {
+        if (document.activeElement instanceof HTMLElement)
+          document.activeElement.blur();
+        window.scrollTo({ top: 0, behavior: "instant" });
+      });
+    }
     await page.screenshot(options);
   }
 }
@@ -445,6 +452,7 @@ test("guides a first visit through clear, accessible starting choices", async ({
   await expect(
     page.getByRole("link", { name: /Test your space knowledge/ }),
   ).toBeVisible();
+  await page.getByText("About the data labels", { exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "Know what the data labels mean" }),
   ).toBeVisible();

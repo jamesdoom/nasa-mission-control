@@ -39,7 +39,7 @@ describe("AsteroidCard", () => {
     ).toBeInTheDocument();
     expect(screen.queryByText(/dangerous/i)).not.toBeInTheDocument();
     await userEvent.click(
-      screen.getByRole("button", { name: "Save (2026 TEST) to favorites" }),
+      screen.getByRole("button", { name: "Save (2026 TEST) to Flight Log" }),
     );
     expect(onToggle).toHaveBeenCalledOnce();
     expect(

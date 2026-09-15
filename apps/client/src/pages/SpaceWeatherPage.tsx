@@ -235,7 +235,7 @@ export function SpaceWeatherPage() {
           />
         ) : query.isError ? (
           <ErrorState
-            message={error?.message ?? "An unexpected error occurred."}
+            message="Space Weather records could not be loaded. Try again in a moment, or choose a different date range above. This does not mean there were no events."
             requestId={error?.requestId}
             retry={() => void query.refetch()}
           />

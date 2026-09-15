@@ -345,6 +345,10 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 79. **Complete — Appearance and usability phase 4: Mobile and keyboard polish:** constrained mobile menu height, restored keyboard focus on Escape, enlarged key controls, preserved mobile APOD framing, and placed persistent status below the footer. See [validation and visual evidence](docs/mobile-keyboard-phase-4.md).
 
+80. **In progress — Appearance and usability phase 5: Validation:** prepared a consolidated automated review, refreshed screenshots, and a four-journey participant guide. Real sessions, findings, and any necessary fixes/retests remain pending. See [validation status](docs/appearance-validation-phase-5.md).
+
+81. **Complete — Streamlined home and trivia:** reduced repeated dashboard content, compacted trivia and moved source details after questions, clarified asteroid save states and Space Weather unavailable guidance. Includes refreshed validation evidence; participant research remains pending. See [update details](docs/streamlined-home-trivia.md).
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.

@@ -256,7 +256,7 @@ export function TriviaPage() {
       <section className="section trivia-intro">
         <p className="kicker">
           <span />
-          Knowledge simulation // Instrument 07
+          Space knowledge
         </p>
         <div>
           <h1>Space Trivia</h1>
@@ -266,18 +266,6 @@ export function TriviaPage() {
           </p>
         </div>
       </section>
-      <section className="section provenance-section">
-        <ProvenancePanel
-          kind="curated"
-          title="Source-checked educational question bank"
-          summary={`${String(triviaQuestionCount)} locally maintained questions`}
-          details={[
-            "Questions, choices, and explanations are curated content rather than live NASA data.",
-            "Every answer reveals the official NASA source used for verification.",
-            "History stays local and unseen questions come first.",
-          ]}
-        />
-      </section>
       <section className="section trivia-console-section">
         <p role="status">
           {sessionNotice}{" "}
@@ -285,7 +273,7 @@ export function TriviaPage() {
         </p>
         <div className="trivia-filter-stack">
           <fieldset className="trivia-difficulties">
-            <legend>Simulation difficulty</legend>
+            <legend>Difficulty</legend>
             {difficulties.map((item) => (
               <label key={item}>
                 <input
@@ -299,7 +287,7 @@ export function TriviaPage() {
             ))}
           </fieldset>
           <fieldset className="trivia-difficulties trivia-categories">
-            <legend>Knowledge channel</legend>
+            <legend>Topic</legend>
             {categories.map((item) => (
               <label key={item}>
                 <input
@@ -358,7 +346,7 @@ export function TriviaPage() {
           </div>
         ) : complete ? (
           <div className="trivia-complete">
-            <p className="eyebrow">Simulation complete</p>
+            <p className="eyebrow">Quiz complete</p>
             <span>
               {score}/{questions.length}
             </span>
@@ -434,13 +422,25 @@ export function TriviaPage() {
                 </Link>
                 <button className="button" type="button" onClick={next}>
                   {index === questions.length - 1
-                    ? "Complete simulation"
+                    ? "Finish quiz"
                     : "Next question"}
                 </button>
               </div>
             )}
           </article>
         ) : null}
+      </section>
+      <section className="section provenance-section">
+        <ProvenancePanel
+          kind="curated"
+          title="Source-checked educational question bank"
+          summary={`${String(triviaQuestionCount)} locally maintained questions`}
+          details={[
+            "Questions, choices, and explanations are curated content rather than live NASA data.",
+            "Every answer reveals the official NASA source used for verification.",
+            "History stays local and unseen questions come first.",
+          ]}
+        />
       </section>
     </>
   );

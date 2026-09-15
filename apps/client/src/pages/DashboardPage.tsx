@@ -89,7 +89,7 @@ export function DashboardPage() {
             Explore the archive →
           </Link>
         </div>
-        <p className="kicker">Daily image · APOD</p>
+
         {!online && !query.data ? (
           <div className="state-panel">
             <p>No daily image is loaded. Reconnect, then reload the page.</p>
@@ -167,9 +167,10 @@ export function DashboardPage() {
           </Link>
         </div>
       </section>
-      <div className="section evidence-guide-wrap">
+      <details className="section evidence-guide-wrap dashboard-data-guide">
+        <summary>About the data labels</summary>
         <EvidenceGuide />
-      </div>
+      </details>
     </>
   );
 }

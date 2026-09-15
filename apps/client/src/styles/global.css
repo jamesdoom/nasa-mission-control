@@ -6952,3 +6952,53 @@ main :is(a, button, input, select, textarea, summary) {
     padding-bottom: max(1rem, env(safe-area-inset-bottom));
   }
 }
+
+.dashboard-data-guide > summary {
+  cursor: pointer;
+  padding: 1rem 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.dashboard-data-guide:not([open]) {
+  padding-block: 1rem;
+}
+.trivia-intro {
+  padding-top: 2rem;
+  padding-bottom: 1.5rem;
+}
+.trivia-intro h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+.trivia-intro > div {
+  gap: 1.5rem;
+}
+.trivia-intro > div p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.trivia-console-section {
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+.trivia-console-section > p {
+  margin: 0;
+  font-size: 0.875rem;
+}
+.trivia-stage {
+  padding-top: 1rem;
+}
+.asteroid-card__header {
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+@media (max-width: 900px) {
+  .trivia-intro > div {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  .trivia-console-section {
+    grid-template-columns: 1fr;
+  }
+}
