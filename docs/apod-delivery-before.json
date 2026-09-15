@@ -1,0 +1,18 @@
+[
+  {
+    "width": 430,
+    "deviceScaleFactor": 3,
+    "selected": "/assets/missions/curiosity.jpg",
+    "requests": ["/assets/missions/curiosity.jpg"],
+    "imageFileBytes": 174769,
+    "hdLink": "/assets/missions/curiosity.jpg"
+  },
+  {
+    "width": 1440,
+    "deviceScaleFactor": 2,
+    "selected": "/assets/missions/curiosity.jpg",
+    "requests": ["/assets/missions/curiosity.jpg"],
+    "imageFileBytes": 174769,
+    "hdLink": "/assets/missions/curiosity.jpg"
+  }
+]

@@ -1,5 +1,49 @@
 import { expect, test, type Page } from "@playwright/test";
 
+test.describe("APOD image delivery on a high-density phone", () => {
+  test.use({
+    viewport: { width: 430, height: 932 },
+    deviceScaleFactor: 3,
+    serviceWorkers: "block",
+  });
+
+  test("loads the standard preview and keeps full resolution available on demand", async ({
+    page,
+  }) => {
+    const standard = "/assets/missions/cards/curiosity.jpg";
+    const hd = "/assets/missions/curiosity.jpg";
+    const requested: string[] = [];
+    page.on("request", (request) =>
+      requested.push(new URL(request.url()).pathname),
+    );
+    await page.route("**/api/apod**", (route) =>
+      route.fulfill({ json: { ...apod, mediaUrl: standard, hdUrl: hd } }),
+    );
+    await page.goto("/apod");
+    const picture = page.locator(".apod-image");
+    await expect(picture).toBeVisible();
+    await picture.evaluate((img: HTMLImageElement) => img.decode());
+    expect(
+      await picture.evaluate(
+        (img: HTMLImageElement) => new URL(img.currentSrc).pathname,
+      ),
+    ).toBe(standard);
+    expect(requested).toContain(standard);
+    expect(requested).not.toContain(hd);
+    const fullResolution = page.getByRole("link", {
+      name: /Open high-resolution image/,
+    });
+    await expect(fullResolution).toHaveAttribute("href", hd);
+    await fullResolution.focus();
+    const popupPromise = page.waitForEvent("popup");
+    await page.keyboard.press("Enter");
+    const popup = await popupPromise;
+    await popup.waitForLoadState();
+    expect(new URL(popup.url()).pathname).toBe(hd);
+    await popup.close();
+  });
+});
+
 async function capturePortfolioScreenshot(
   page: Page,
   options: Parameters<Page["screenshot"]>[0],

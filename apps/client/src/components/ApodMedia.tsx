@@ -54,10 +54,6 @@ export function ApodMedia({
     <img
       className="apod-image"
       src={apod.mediaUrl}
-      srcSet={
-        apod.hdUrl ? `${apod.mediaUrl} 1200w, ${apod.hdUrl} 2400w` : undefined
-      }
-      sizes="(max-width: 800px) 100vw, 65vw"
       alt={apod.title}
       loading={eager ? "eager" : "lazy"}
       fetchPriority={eager ? "high" : "auto"}

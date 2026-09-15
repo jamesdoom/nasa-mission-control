@@ -355,6 +355,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 84. **Complete — Performance loading stability:** reserved the daily-image loading area, prevented late font swaps, and strengthened the production audit with a longer observation window and precise session-based CLS. See [measurements and verification](docs/performance-loading-stability.md).
 
+85. **Complete — Performance APOD image delivery:** removed guessed image widths that automatically selected HD downloads on high-density screens. Standard previews retain the existing full-resolution link; controlled image bytes fell 56.1%. See [scope and validation](docs/performance-apod-delivery.md).
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.
