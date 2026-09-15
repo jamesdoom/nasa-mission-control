@@ -46,105 +46,100 @@ export function DashboardPage() {
   const error = query.error instanceof ApiError ? query.error : undefined;
   return (
     <>
-      <section ref={heroRef} className="hero section dashboard-hero">
-        <div className="hero-immersion" aria-hidden="true">
-          <span className="hero-immersion__stars hero-immersion__stars--near" />
-          <span className="hero-immersion__stars hero-immersion__stars--far" />
-          <span className="hero-immersion__horizon" />
-          <span className="hero-immersion__scan" />
-        </div>
-        <div className="hero-grid">
-          <div>
-            <p className="kicker">
-              <span />
-              Your space briefing
-            </p>
-            <h1>
-              Explore beyond
-              <br />
-              <em>the horizon.</em>
-            </h1>
-            <p className="hero-lede">
-              NASA imagery, mission records, and the stories behind space
-              exploration.
-            </p>
-            <div className="hero-actions">
-              <a className="button" href="#daily-briefing">
-                View the briefing
-              </a>
-              <Link className="button button--secondary" to="/apod">
-                Browse the archive
-              </Link>
+      <div className="dashboard-first-look">
+        <section ref={heroRef} className="hero section dashboard-hero">
+          <div className="hero-immersion" aria-hidden="true">
+            <span className="hero-immersion__stars hero-immersion__stars--near" />
+            <span className="hero-immersion__stars hero-immersion__stars--far" />
+            <span className="hero-immersion__horizon" />
+            <span className="hero-immersion__scan" />
+          </div>
+          <div className="hero-grid">
+            <div>
+              <p className="kicker">
+                <span />
+                Space, worth exploring
+              </p>
+              <h1>
+                Explore beyond
+                <br />
+                <em>the horizon.</em>
+              </h1>
+              <p className="hero-lede">
+                Discover NASA's daily picture, follow landmark missions, and
+                test your knowledge of the universe.
+              </p>
+              <div className="hero-actions">
+                <Link className="button" to="/apod">
+                  Explore the daily picture
+                </Link>
+                <Link className="text-link" to="/missions">
+                  Discover the missions
+                </Link>
+              </div>
             </div>
           </div>
-          <div className="orbit-graphic" aria-hidden="true">
-            <span className="planet" />
-            <span className="orbit orbit-one" />
-            <span className="orbit orbit-two" />
-            <span className="orbit orbit-one orbit-one--foreground" />
-            <i />
+          <div className="telemetry">
+            <span>
+              <small>Station time</small>
+              <UtcClock />
+            </span>
+            <span>
+              <small>Briefing data</small>
+              <strong>{status}</strong>
+            </span>
+            <span>
+              <small>Briefing sources</small>
+              <strong>APOD + NeoWs</strong>
+            </span>
           </div>
-        </div>
-        <div className="telemetry">
-          <span>
-            <small>Station time</small>
-            <UtcClock />
-          </span>
-          <span>
-            <small>Briefing data</small>
-            <strong>{status}</strong>
-          </span>
-          <span>
-            <small>Briefing sources</small>
-            <strong>APOD + NeoWs</strong>
-          </span>
-        </div>
-      </section>
-      <section className="section briefing" id="daily-briefing">
-        <div className="section-heading">
-          <div>
-            <p className="kicker">
-              <span />
-              NASA observations
-            </p>
-            <h2>Daily briefing</h2>
+        </section>
+        <section className="section briefing" id="daily-briefing">
+          <div className="section-heading">
+            <div>
+              <p className="kicker">
+                <span />
+                Selected by NASA
+              </p>
+              <h2>A window into our universe</h2>
+            </div>
+            <Link className="text-link" to="/apod">
+              Explore the archive →
+            </Link>
           </div>
-          <Link className="text-link" to="/apod">
-            Explore the archive →
-          </Link>
-        </div>
 
-        {!online && !query.data ? (
-          <div className="state-panel">
-            <p>No daily image is loaded. Reconnect, then reload the page.</p>
-          </div>
-        ) : query.isPending ? (
-          <LoadingState
-            title="Loading the daily image"
-            detail="Waiting for the APOD response; no observation is available yet."
-          />
-        ) : query.isError ? (
-          <ErrorState
-            message={error?.message ?? "An unexpected error occurred."}
-            requestId={error?.requestId}
-            retry={() => void query.refetch()}
-          />
-        ) : (
-          <>
-            <DataStatus
-              source="NASA APOD"
-              updatedAt={query.dataUpdatedAt}
-              refreshing={online && query.isFetching}
-              data={query.data}
+          {!online && !query.data ? (
+            <div className="state-panel">
+              <p>No daily image is loaded. Reconnect, then reload the page.</p>
+            </div>
+          ) : query.isPending ? (
+            <LoadingState
+              title="Loading the daily image"
+              detail="Waiting for the APOD response; no observation is available yet."
             />
-            <ApodPanel
-              apod={query.data}
-              saved={favorites.isFavorite(query.data.date)}
-              onToggle={() => favorites.toggle(query.data)}
+          ) : query.isError ? (
+            <ErrorState
+              message={error?.message ?? "An unexpected error occurred."}
+              requestId={error?.requestId}
+              retry={() => void query.refetch()}
             />
-          </>
-        )}
-      </section>
+          ) : (
+            <>
+              <DataStatus
+                source="NASA APOD"
+                updatedAt={query.dataUpdatedAt}
+                refreshing={online && query.isFetching}
+                data={query.data}
+              />
+              <ApodPanel
+                apod={query.data}
+                saved={favorites.isFavorite(query.data.date)}
+                onToggle={() => favorites.toggle(query.data)}
+              />
+            </>
+          )}
+        </section>
+      </div>
       <section className="section journey-start" aria-labelledby="start-title">
         <div className="section-heading">
           <div>

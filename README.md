@@ -359,6 +359,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 86. **Complete — Trivia layout alignment:** placed the session notice above left-aligned filters, aligned the score panel beside them on desktop, and matched the question card to the page content edges. Score cells share the available width; narrow screens stack the controls. Checked 1440px, 1024px, and 390px layouts and the full quality gates.
 
+87. **Implemented — Launch polish phase 1:** positioned the daily NASA picture beside a clearer desktop introduction, emphasized the APOD action, and refined the mobile stack with stable image framing. Automated validation is complete; first-impression participant validation remains planned. See the [five-phase launch roadmap and visual evidence](docs/launch-polish.md).
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.
