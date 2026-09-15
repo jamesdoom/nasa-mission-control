@@ -1,0 +1,98 @@
+[
+  {
+    "route": "apod",
+    "width": 1440,
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "missions",
+    "width": 1440,
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "favorites",
+    "width": 1440,
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "trivia",
+    "width": 1440,
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "earth",
+    "width": 1440,
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "media",
+    "width": 1440,
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "space-weather",
+    "width": 1440,
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "asteroids",
+    "width": 1440,
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "apod",
+    "width": 390,
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "missions",
+    "width": 390,
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "favorites",
+    "width": 390,
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "trivia",
+    "width": 390,
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "earth",
+    "width": 390,
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "media",
+    "width": 390,
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "space-weather",
+    "width": 390,
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "asteroids",
+    "width": 390,
+    "overflow": false,
+    "errors": []
+  }
+]

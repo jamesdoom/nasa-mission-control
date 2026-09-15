@@ -3,7 +3,7 @@
 This cycle refines existing features before promoting the site.
 
 1. **Implemented: stronger first impression.** Following visual review, the homepage now uses a single column. The introduction and its decorative animation are removed; station time, briefing data, and briefing sources sit above the NASA selection. The daily image is the primary focal point, with existing archive, save, source, error, and video behavior retained. Participant confirmation of first-impression clarity is pending phase 5.
-2. **Planned: page composition.** Consistent content widths, image framing, typography, filters, and spacing throughout existing pages.
+2. **Implemented: page composition.** Standardized primary heading sizes and introductory spacing across APOD, Mission Archive, Flight Log, Trivia, Earth, Media Library, Space Weather, and Asteroid Watch. Media Library uses the same outer width as adjacent sections and left-aligns its description with search controls. Mission and trivia descriptions sit beneath their titles; Earth and weather controls follow more compact introductions. APOD images retain their full framing on desktop. See [phase 2 evidence](page-composition.md).
 3. **Planned: interaction polish.** Refine selected, saved, loading, feedback, focus, and transition states.
 4. **Planned: incoming-traffic readiness.** Review metadata, sharing previews, direct entry routes, deployed performance, and recovery behavior.
 5. **Planned: participant validation and launch review.** Complete the outstanding real-user sessions, fix observed barriers, and verify the production revision before promotion.

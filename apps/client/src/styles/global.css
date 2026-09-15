@@ -7028,6 +7028,71 @@ main :is(a, button, input, select, textarea, summary) {
 }
 
 /* The daily picture is the single homepage focal point. */
+/* Shared page composition keeps introductions and controls on one reading axis. */
+:is(
+  .media-intro,
+  .earth-intro,
+  .weather-intro,
+  .missions-intro,
+  .trivia-intro
+) {
+  max-width: 1380px;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+:is(.apod-page, .asteroid-page, .flight-log-page) > .page-intro,
+.apod-page-heading .page-intro {
+  margin-bottom: 1.5rem;
+}
+:is(
+    .media-intro,
+    .earth-intro,
+    .weather-intro,
+    .missions-intro,
+    .trivia-intro,
+    .asteroid-intro,
+    .flight-log-page > .page-intro,
+    .apod-page-heading
+  )
+  h1 {
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+:is(.missions-intro, .trivia-intro) > div {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+:is(.media-intro, .weather-intro) > p:not(.kicker),
+:is(.missions-intro, .trivia-intro) > div > p,
+.earth-intro > div > p:last-child,
+.asteroid-intro > p:not(.kicker) {
+  max-width: 65ch;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+.media-intro > :is(h1, p, .kicker, .media-console) {
+  margin-left: 0;
+  margin-right: 0;
+}
+.media-intro .media-console {
+  margin-top: 1.5rem;
+}
+:is(.earth-intro, .weather-intro) {
+  gap: 1.5rem;
+  align-items: start;
+}
+:is(.earth-console-section, .weather-console-section) {
+  padding-top: 0;
+  padding-bottom: 1.5rem;
+}
+.apod-page .apod-image {
+  object-fit: contain;
+}
+
 .dashboard-first-look {
   max-width: 1240px;
   margin: 0 auto;
