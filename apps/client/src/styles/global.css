@@ -6981,13 +6981,33 @@ main :is(a, button, input, select, textarea, summary) {
 .trivia-console-section {
   gap: 1rem;
   padding-bottom: 1rem;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "notice notice"
+    "filters score";
 }
 .trivia-console-section > p {
+  grid-area: notice;
   margin: 0;
   font-size: 0.875rem;
 }
+.trivia-filter-stack {
+  grid-area: filters;
+}
+.trivia-telemetry {
+  grid-area: score;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
 .trivia-stage {
   padding-top: 1rem;
+}
+.trivia-question {
+  max-width: none;
+}
+.trivia-question > h2 {
+  max-width: 950px;
+  padding: clamp(1.5rem, 3vw, 3rem);
 }
 .asteroid-card__header {
   flex-wrap: wrap;
@@ -7000,6 +7020,10 @@ main :is(a, button, input, select, textarea, summary) {
   }
   .trivia-console-section {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "notice"
+      "filters"
+      "score";
   }
 }
 

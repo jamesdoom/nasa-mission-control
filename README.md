@@ -357,6 +357,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 85. **Complete — Performance APOD image delivery:** removed guessed image widths that automatically selected HD downloads on high-density screens. Standard previews retain the existing full-resolution link; controlled image bytes fell 56.1%. See [scope and validation](docs/performance-apod-delivery.md).
 
+86. **Complete — Trivia layout alignment:** placed the session notice above left-aligned filters, aligned the score panel beside them on desktop, and matched the question card to the page content edges. Score cells share the available width; narrow screens stack the controls. Checked 1440px, 1024px, and 390px layouts and the full quality gates.
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.
