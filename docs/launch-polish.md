@@ -10,6 +10,8 @@ This cycle refines existing features before promoting the site.
 
 ## Phase 1 verification
 
+Desktop alignment follow-up: both column introductions share the same top edge. The archive link sits beneath its heading, status details use a compact horizontal row, and the separate decorative background behind the introduction is removed on desktop. The captures below include this correction.
+
 Typecheck, lint, unit/component/accessibility tests, production build, and the production browser suite passed. Existing compressed asset budgets remain satisfied. The delayed-font/data fixture recorded zero CLS at 390px and 1440px after reserving the image frame. These are controlled measurements, not field-performance claims.
 
 The [previous desktop layout](screenshots/loading-stability/desktop.png) shows the introduction above the picture. Updated deterministic captures show the desktop side-by-side composition and mobile stack; content fixtures differ, so these are layout evidence rather than image-quality comparisons.

@@ -361,6 +361,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 87. **Implemented — Launch polish phase 1:** positioned the daily NASA picture beside a clearer desktop introduction, emphasized the APOD action, and refined the mobile stack with stable image framing. Automated validation is complete; first-impression participant validation remains planned. See the [five-phase launch roadmap and visual evidence](docs/launch-polish.md).
 
+88. **Complete — Homepage alignment follow-up:** aligned the desktop introduction and image-section headers, compacted the status row, and removed the separate desktop backdrop to connect the columns visually. Updated the [launch screenshots](docs/launch-polish.md).
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.

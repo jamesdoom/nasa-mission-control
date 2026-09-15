@@ -7048,11 +7048,14 @@ main :is(a, button, input, select, textarea, summary) {
 }
 .dashboard-first-look .dashboard-hero {
   align-self: start;
-  padding-top: 3rem;
+  padding-top: 0;
 }
 .dashboard-first-look .telemetry {
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
   margin-top: 2rem;
+  background: none;
+  box-shadow: none;
 }
 .dashboard-first-look .apod-panel {
   display: block;
@@ -7148,4 +7151,25 @@ main :is(a, button, input, select, textarea, summary) {
 }
 .dashboard-first-look .briefing .state-panel--loading {
   min-height: 680px;
+}
+
+@media (min-width: 901px) {
+  .dashboard-first-look .dashboard-hero::before,
+  .dashboard-first-look .dashboard-hero::after {
+    background: none;
+  }
+  .dashboard-first-look .hero-immersion__horizon {
+    display: none;
+  }
+  .dashboard-first-look .hero-immersion {
+    mask-image: linear-gradient(to right, #000, transparent);
+  }
+  .dashboard-first-look .section-heading {
+    align-items: start;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .dashboard-first-look .telemetry strong {
+    overflow-wrap: anywhere;
+  }
 }
