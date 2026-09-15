@@ -22,7 +22,7 @@ export function DashboardPage() {
   const error = query.error instanceof ApiError ? query.error : undefined;
   return (
     <>
-      <section className="hero section">
+      <section className="hero section dashboard-hero">
         <div className="hero-immersion" aria-hidden="true">
           <span className="hero-immersion__stars hero-immersion__stars--near" />
           <span className="hero-immersion__stars hero-immersion__stars--far" />
@@ -41,8 +41,8 @@ export function DashboardPage() {
               <em>the horizon.</em>
             </h1>
             <p className="hero-lede">
-              Your daily connection to the universe—NASA imagery, mission data,
-              and the stories behind our exploration of space.
+              NASA imagery, mission records, and the stories behind space
+              exploration.
             </p>
             <div className="hero-actions">
               <a className="button" href="#daily-briefing">

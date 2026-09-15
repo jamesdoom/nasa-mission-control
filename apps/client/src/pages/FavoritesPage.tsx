@@ -232,7 +232,7 @@ export function FavoritesPage() {
     window.setTimeout(() => window.location.reload(), 400);
   }
   return (
-    <section className="section page-section">
+    <section className="section page-section flight-log-page">
       <div className="page-intro">
         <p className="kicker">
           <span />
@@ -241,95 +241,6 @@ export function FavoritesPage() {
         <h1>Saved discoveries</h1>
         <p>Your favorite observations are stored only in this browser.</p>
       </div>
-      <section
-        className="flight-log-console"
-        aria-labelledby="flight-log-summary"
-      >
-        <div>
-          <p className="eyebrow">Local archive status</p>
-          <h2 id="flight-log-summary">
-            {savedCount} saved {savedCount === 1 ? "record" : "records"}
-          </h2>
-          <p>
-            Jump to a collection or create a portable backup. Imports replace
-            matching browser-local records only; no data is uploaded.
-          </p>
-          <dl className="flight-log-metrics">
-            <div>
-              <dt>Active collections</dt>
-              <dd>{activeCollectionCount}/5</dd>
-            </div>
-            <div>
-              <dt>Recent activity</dt>
-              <dd>{recent.items.length}</dd>
-            </div>
-          </dl>
-        </div>
-        <nav aria-label="Saved Flight Log collections">
-          {sections.map((section) =>
-            section.count > 0 ? (
-              <a href={`#${section.id}`} key={section.id}>
-                <span>{section.label}</span>
-                <strong>{String(section.count).padStart(2, "0")}</strong>
-              </a>
-            ) : null,
-          )}
-        </nav>
-        <div className="flight-log-backup">
-          <button
-            className="button button--secondary"
-            type="button"
-            onClick={downloadBackup}
-          >
-            Export backup
-          </button>
-          <label
-            className="button button--secondary"
-            htmlFor="flight-log-import"
-          >
-            Import backup
-          </label>
-          <input
-            className="sr-only"
-            id="flight-log-import"
-            type="file"
-            accept="application/json,.json"
-            onChange={(event) => void importBackup(event)}
-          />
-          <p role="status" aria-live="polite">
-            {backupStatus}
-          </p>
-          {pendingBackup ? (
-            <div className="flight-log-backup__preview">
-              <strong>Backup ready for review</strong>
-              <p>
-                Exported{" "}
-                {new Date(
-                  pendingBackup.preview.exportedAt,
-                ).toLocaleDateString()}{" "}
-                · {pendingBackup.preview.supportedRecords} supported records ·{" "}
-                {pendingBackup.preview.existingRecords} overlap with this
-                browser.
-              </p>
-              <button type="button" onClick={() => applyBackup("merge")}>
-                Merge, keep local conflicts
-              </button>
-              <button type="button" onClick={() => applyBackup("replace")}>
-                Replace supported records
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setPendingBackup(undefined);
-                  setBackupStatus("Import cancelled. No data changed.");
-                }}
-              >
-                Cancel
-              </button>
-            </div>
-          ) : null}
-        </div>
-      </section>
       {!isEmpty && (
         <FlightLogControls
           query={query}
@@ -344,68 +255,6 @@ export function FavoritesPage() {
           onClear={() => setParams({}, { replace: true })}
         />
       )}
-      {!isEmpty ? (
-        <section
-          className="flight-log-saved-views"
-          aria-labelledby="saved-views-title"
-        >
-          <div>
-            <p className="eyebrow">Reusable filters</p>
-            <h2 id="saved-views-title">Saved Flight Log views</h2>
-            <p>
-              Store the current search, collection, and sort controls on this
-              device.
-            </p>
-          </div>
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              personalization.saveView(viewName, params.toString());
-              setViewName("");
-            }}
-          >
-            <label>
-              View name
-              <input
-                value={viewName}
-                maxLength={40}
-                placeholder="e.g. Mars missions"
-                onChange={(event) => setViewName(event.target.value)}
-              />
-            </label>
-            <button
-              className="button button--secondary"
-              type="submit"
-              disabled={!viewName.trim()}
-            >
-              Save current view
-            </button>
-          </form>
-          {personalization.savedViews.length > 0 ? (
-            <ul>
-              {personalization.savedViews.map((view) => (
-                <li key={view.id}>
-                  <Link
-                    to={view.query ? `/favorites?${view.query}` : "/favorites"}
-                  >
-                    {view.name}
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={() => personalization.removeView(view.id)}
-                    aria-label={`Delete saved view ${view.name}`}
-                  >
-                    Delete
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="flight-log-saved-views__empty">No saved views yet.</p>
-          )}
-        </section>
-      ) : null}
-      <ResumeExploration />
       {isEmpty ? (
         <div className="empty-state">
           <span aria-hidden="true">✦</span>
@@ -609,6 +458,157 @@ export function FavoritesPage() {
             </div>
           </section>
         )}
+      <section
+        className="flight-log-console"
+        aria-labelledby="flight-log-summary"
+      >
+        <div>
+          <p className="eyebrow">Local archive status</p>
+          <h2 id="flight-log-summary">
+            {savedCount} saved {savedCount === 1 ? "record" : "records"}
+          </h2>
+          <p>
+            Jump to a collection or create a portable backup. Imports replace
+            matching browser-local records only; no data is uploaded.
+          </p>
+          <dl className="flight-log-metrics">
+            <div>
+              <dt>Active collections</dt>
+              <dd>{activeCollectionCount}/4</dd>
+            </div>
+            <div>
+              <dt>Recent activity</dt>
+              <dd>{recent.items.length}</dd>
+            </div>
+          </dl>
+        </div>
+        <nav aria-label="Saved Flight Log collections">
+          {sections.map((section) =>
+            section.count > 0 ? (
+              <a href={`#${section.id}`} key={section.id}>
+                <span>{section.label}</span>
+                <strong>{String(section.count).padStart(2, "0")}</strong>
+              </a>
+            ) : null,
+          )}
+        </nav>
+        <div className="flight-log-backup">
+          <button
+            className="button button--secondary"
+            type="button"
+            onClick={downloadBackup}
+          >
+            Export backup
+          </button>
+          <label
+            className="button button--secondary"
+            htmlFor="flight-log-import"
+          >
+            Import backup
+          </label>
+          <input
+            className="sr-only"
+            id="flight-log-import"
+            type="file"
+            accept="application/json,.json"
+            onChange={(event) => void importBackup(event)}
+          />
+          <p role="status" aria-live="polite">
+            {backupStatus}
+          </p>
+          {pendingBackup ? (
+            <div className="flight-log-backup__preview">
+              <strong>Backup ready for review</strong>
+              <p>
+                Exported{" "}
+                {new Date(
+                  pendingBackup.preview.exportedAt,
+                ).toLocaleDateString()}{" "}
+                · {pendingBackup.preview.supportedRecords} supported records ·{" "}
+                {pendingBackup.preview.existingRecords} overlap with this
+                browser.
+              </p>
+              <button type="button" onClick={() => applyBackup("merge")}>
+                Merge, keep local conflicts
+              </button>
+              <button type="button" onClick={() => applyBackup("replace")}>
+                Replace supported records
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setPendingBackup(undefined);
+                  setBackupStatus("Import cancelled. No data changed.");
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          ) : null}
+        </div>
+      </section>
+      {!isEmpty ? (
+        <section
+          className="flight-log-saved-views"
+          aria-labelledby="saved-views-title"
+        >
+          <div>
+            <p className="eyebrow">Reusable filters</p>
+            <h2 id="saved-views-title">Saved Flight Log views</h2>
+            <p>
+              Store the current search, collection, and sort controls on this
+              device.
+            </p>
+          </div>
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              personalization.saveView(viewName, params.toString());
+              setViewName("");
+            }}
+          >
+            <label>
+              View name
+              <input
+                value={viewName}
+                maxLength={40}
+                placeholder="e.g. Mars missions"
+                onChange={(event) => setViewName(event.target.value)}
+              />
+            </label>
+            <button
+              className="button button--secondary"
+              type="submit"
+              disabled={!viewName.trim()}
+            >
+              Save current view
+            </button>
+          </form>
+          {personalization.savedViews.length > 0 ? (
+            <ul>
+              {personalization.savedViews.map((view) => (
+                <li key={view.id}>
+                  <Link
+                    to={view.query ? `/favorites?${view.query}` : "/favorites"}
+                  >
+                    {view.name}
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => personalization.removeView(view.id)}
+                    aria-label={`Delete saved view ${view.name}`}
+                  >
+                    Delete
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="flight-log-saved-views__empty">No saved views yet.</p>
+          )}
+        </section>
+      ) : null}
+      <ResumeExploration />
       {recent.items.length > 0 && (
         <section className="flight-log-section recent-history">
           <div className="section-heading">

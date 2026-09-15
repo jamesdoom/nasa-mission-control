@@ -6668,3 +6668,99 @@ main .section[data-motion-state="revealed"] {
     min-width: 0;
   }
 }
+
+/* Content-first layouts keep supporting controls below the primary records. */
+.dashboard-hero {
+  min-height: 0;
+  padding-top: 1.75rem;
+  padding-bottom: 1rem;
+}
+.dashboard-hero .hero-grid {
+  grid-template-columns: minmax(0, 1fr) 240px;
+}
+.dashboard-hero h1 {
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  margin-bottom: 1rem;
+}
+.dashboard-hero .hero-lede {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+.dashboard-hero .orbit-graphic {
+  min-height: 210px;
+  transform: scale(0.55);
+}
+.dashboard-hero .telemetry {
+  margin-top: 1.25rem;
+}
+.dashboard-hero .telemetry > span {
+  padding: 0.65rem 0;
+  gap: 0.35rem;
+}
+.dashboard-hero + .briefing {
+  padding-top: 1.5rem;
+}
+.dashboard-hero + .briefing .section-heading {
+  margin-bottom: 1rem;
+}
+.missions-intro {
+  padding-top: 1.5rem;
+  padding-bottom: 1.25rem;
+}
+.missions-intro h1 {
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  line-height: 1.05;
+}
+.missions-intro > div {
+  gap: 1.25rem;
+}
+.missions-intro > div > p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.missions-intro aside {
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+.mission-filter-section {
+  padding-top: 0;
+  padding-bottom: 1rem;
+}
+.flight-log-page {
+  padding-top: 1.5rem;
+}
+.flight-log-page > .page-intro {
+  margin-bottom: 1.25rem;
+}
+.flight-log-page > .page-intro h1 {
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  margin-bottom: 0.75rem;
+}
+.flight-log-page > .page-intro > p:last-child {
+  margin-bottom: 0;
+  font-size: 1rem;
+}
+.flight-log-page .flight-log-tools {
+  margin-bottom: 1.25rem;
+}
+.flight-log-page .flight-log-section {
+  margin-top: 1.5rem;
+}
+.flight-log-page .flight-log-console {
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+}
+@media (max-width: 760px) {
+  .dashboard-hero .hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .dashboard-hero .orbit-graphic {
+    display: none;
+  }
+  .dashboard-hero .hero-grid > div:first-child {
+    position: static;
+  }
+  .dashboard-hero {
+    padding-top: 1.5rem;
+  }
+}

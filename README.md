@@ -337,6 +337,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 75. **Complete — Evidence badge readability and dashboard copy:** scoped kicker decorations to empty spans so Calculated and other evidence labels retain their own readable dimensions; removed the account-free route sentence from the dashboard. Types, lint, unit/component/accessibility tests, browser smoke checks, production build, and desktop/mobile badge inspection pass.
 
+76. **Complete — Appearance and usability phase 1: Bring content forward:** compacted the dashboard hero and archive headings, moved supporting Mission Archive and Flight Log panels below primary records, and verified earlier desktop/mobile content positions without adding features. See [before/after evidence](docs/content-first-layouts-phase-1.md).
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.

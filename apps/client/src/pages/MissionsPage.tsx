@@ -95,58 +95,6 @@ export function MissionsPage() {
           <span>Last source review // {latestReview}</span>
         </aside>
       </section>
-      <section className="section provenance-section">
-        <ProvenancePanel
-          kind="curated"
-          title="Source-checked editorial mission records"
-          summary={`Latest scheduled source review ${latestReview}`}
-          details={[
-            "Mission records are maintained in this repository and are not a live NASA mission-status feed.",
-            "Each record carries its own review date and links to the official NASA pages used to verify its claims.",
-            "Active and extended labels describe status at the recorded review date and are checked by the scheduled mission-review workflow.",
-          ]}
-        />
-      </section>
-      <section
-        className="section mission-destinations"
-        aria-labelledby="destination-groups-title"
-      >
-        <div className="section-heading">
-          <div>
-            <p className="kicker">
-              <span />
-              Destination index
-            </p>
-            <h2 id="destination-groups-title">Explore by destination</h2>
-          </div>
-          <p>Choose a region to focus the archive.</p>
-        </div>
-        <div className="mission-destination-grid">
-          {missionDestinations.map((item) => {
-            const grouped = missions.filter(
-              (mission) => mission.destination === item,
-            );
-            const operating = grouped.filter(
-              (mission) => mission.status !== "completed",
-            ).length;
-            return (
-              <button
-                key={item}
-                type="button"
-                aria-pressed={destination === item}
-                onClick={() => update("destination", item)}
-              >
-                <span>{item}</span>
-                <strong>{grouped.length}</strong>
-                <small>
-                  {operating} active or extended mission
-                  {operating === 1 ? "" : "s"}
-                </small>
-              </button>
-            );
-          })}
-        </div>
-      </section>
       <section className="section mission-filter-section">
         <div className="filter-heading">
           <div>
@@ -229,6 +177,58 @@ export function MissionsPage() {
             ))}
           </div>
         )}
+      </section>
+      <section className="section provenance-section">
+        <ProvenancePanel
+          kind="curated"
+          title="Source-checked editorial mission records"
+          summary={`Latest scheduled source review ${latestReview}`}
+          details={[
+            "Mission records are maintained in this repository and are not a live NASA mission-status feed.",
+            "Each record carries its own review date and links to the official NASA pages used to verify its claims.",
+            "Active and extended labels describe status at the recorded review date and are checked by the scheduled mission-review workflow.",
+          ]}
+        />
+      </section>
+      <section
+        className="section mission-destinations"
+        aria-labelledby="destination-groups-title"
+      >
+        <div className="section-heading">
+          <div>
+            <p className="kicker">
+              <span />
+              Destination index
+            </p>
+            <h2 id="destination-groups-title">Explore by destination</h2>
+          </div>
+          <p>Choose a region to focus the archive.</p>
+        </div>
+        <div className="mission-destination-grid">
+          {missionDestinations.map((item) => {
+            const grouped = missions.filter(
+              (mission) => mission.destination === item,
+            );
+            const operating = grouped.filter(
+              (mission) => mission.status !== "completed",
+            ).length;
+            return (
+              <button
+                key={item}
+                type="button"
+                aria-pressed={destination === item}
+                onClick={() => update("destination", item)}
+              >
+                <span>{item}</span>
+                <strong>{grouped.length}</strong>
+                <small>
+                  {operating} active or extended mission
+                  {operating === 1 ? "" : "s"}
+                </small>
+              </button>
+            );
+          })}
+        </div>
       </section>
     </>
   );

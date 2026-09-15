@@ -1,13 +1,12 @@
-# Evidence-driven next roadmap
+# Appearance and usability roadmap
 
-This five-phase sequence was proposed on 2026-09-08. Phases 1, 3, and 4 are implemented;
-phase 2 awaits participant recruitment. Phase 5 maintenance is in progress, with the complete operating window still pending. Accessibility, privacy, security, and data-integrity
-barriers override the sequence.
+Updated 2026-09-15. This cycle improves existing interfaces without adding features.
+The September 8 implementation history remains recorded in the README and phase evidence.
 
-1. **Complete — Recover performance headroom:** reduce JavaScript from 184.9 to 181.6 KiB gzip, consolidate adjacent CSS rules, and eliminate first-install offline reloads. Existing ceilings remain 190 KiB JavaScript and 26 KiB CSS. See [phase evidence](performance-headroom-phase-1.md); CSS still needs careful reuse.
-2. **Validate and simplify user journeys:** run three real, de-identified sessions spanning first visit, evidence, saving, and learning, including a screen-reader session. Fix and retest observed blockers; keep participant evidence separate from maintainer reviews.
-3. **Complete — Make dashboard status accurate and useful:** APOD and NeoWs independently drive loading, available, stale, unavailable, and offline indicators, with partial-failure guidance and retry. Browser connectivity is labeled separately from source availability. See [phase evidence](dashboard-status-phase-3.md).
-4. **Complete — Improve exploration and learning continuity:** refine existing mission, observation, guided-path, trivia, and Flight Log handoffs so users can save and resume with context. See [phase evidence](exploration-continuity-phase-4.md).
-5. **Strengthen reliability and scientific maintenance:** review a complete 30-day operating window, address recurring failures, and refresh official NASA contracts, time-sensitive content, and documentation. See [current review and remaining evidence](reliability-scientific-maintenance-phase-5.md).
+1. **Complete — Phase 1: Bring content forward:** compact the dashboard hero and archive introductions; place mission records and saved content ahead of supporting panels. Evidence: [content-first layouts](content-first-layouts-phase-1.md).
+2. **Improve readability and consistency:** standardize typography, spacing, controls, badge contrast, and restrained decoration.
+3. **Simplify existing interactions:** clarify primary actions, filter labels, saved states, and empty/error guidance.
+4. **Polish mobile and keyboard use:** refine menu height, touch targets, focus visibility, image framing, sticky headers, and notices.
+5. **Validate and consolidate:** test APOD browsing, mission filtering, finding saved content, and trivia with real participants; fix observed barriers and refresh visual evidence. Participant recruitment remains pending; maintainer checks are not participant research.
 
-Each item needs an evidence link, owner, acceptance criterion, and updated score before implementation. `npm run review:cycle` protects the owned register and score arithmetic. Re-score after every monthly review and release; document rejected ideas as well as selected work.
+For each phase, review desktop/mobile layouts, run required quality gates, update evidence, and commit and push only after validation. Existing scientific and reliability maintenance remains tracked separately.
