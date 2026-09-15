@@ -164,6 +164,8 @@ export function AppShell() {
   const [modulesOpen, setModulesOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const navigationRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const exploreButtonRef = useRef<HTMLButtonElement>(null);
   const mainRef = useRef<HTMLElement>(null);
   const location = useLocation();
   const previousPath = useRef(location.pathname);
@@ -202,7 +204,15 @@ export function AppShell() {
         setModulesOpen(false);
     }
     function escape(event: KeyboardEvent) {
-      if (event.key === "Escape") setModulesOpen(false);
+      if (event.key === "Escape" && !commandOpen) {
+        if (modulesOpen) {
+          setModulesOpen(false);
+          exploreButtonRef.current?.focus();
+        } else if (open) {
+          setOpen(false);
+          menuButtonRef.current?.focus();
+        }
+      }
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
         setCommandOpen((value) => !value);
@@ -214,7 +224,7 @@ export function AppShell() {
       document.removeEventListener("pointerdown", close);
       document.removeEventListener("keydown", escape);
     };
-  }, []);
+  }, [open, modulesOpen, commandOpen]);
   return (
     <div
       className={`app-shell app-shell--${routeMood}`}
@@ -236,6 +246,7 @@ export function AppShell() {
           </span>
         </NavLink>
         <button
+          ref={menuButtonRef}
           className="menu-button"
           type="button"
           aria-expanded={open}
@@ -259,6 +270,7 @@ export function AppShell() {
           <div className="nav-disclosure">
             <button
               type="button"
+              ref={exploreButtonRef}
               className={modulesActive ? "is-active" : ""}
               aria-expanded={modulesOpen}
               aria-controls="module-navigation"

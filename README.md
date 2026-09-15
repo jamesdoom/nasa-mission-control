@@ -343,6 +343,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 78. **Complete — Appearance and usability phase 3: Interaction clarity:** clarified APOD actions and visible save state, simplified mission and Flight Log filter labels, and made empty/error guidance more direct. See [validation and visual evidence](docs/interaction-clarity-phase-3.md).
 
+79. **Complete — Appearance and usability phase 4: Mobile and keyboard polish:** constrained mobile menu height, restored keyboard focus on Escape, enlarged key controls, preserved mobile APOD framing, and placed persistent status below the footer. See [validation and visual evidence](docs/mobile-keyboard-phase-4.md).
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.

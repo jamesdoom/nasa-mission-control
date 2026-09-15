@@ -6885,3 +6885,70 @@ main textarea::placeholder {
   flex-wrap: wrap;
   gap: 0.75rem;
 }
+
+/* Keep persistent status and mobile navigation clear of reading content. */
+.field-console {
+  position: static;
+  max-width: none;
+  margin: 0;
+  padding: 1rem clamp(1.25rem, 5vw, 5rem);
+  box-shadow: none;
+  border-width: 1px 0 0;
+}
+.field-console strong,
+.field-console small {
+  font-size: var(--type-label);
+}
+.field-console button,
+.menu-button,
+.command-trigger,
+.icon-button {
+  min-width: 44px;
+  min-height: 44px;
+}
+main :is(a, button, input, select, textarea, summary) {
+  scroll-margin-block: 6rem 2rem;
+}
+@media (max-width: 900px) {
+  .site-header {
+    gap: 0.75rem;
+  }
+  .nav--open {
+    max-height: calc(100dvh - 66px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
+  .nav > a,
+  .nav-disclosure > button,
+  .module-nav a {
+    min-height: 44px;
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
+    font-size: 0.875rem;
+  }
+  .nav :focus-visible {
+    outline-offset: -3px;
+  }
+  .apod-page .apod-visual {
+    min-height: 0;
+  }
+  .apod-page .apod-image {
+    height: auto;
+    max-height: 75dvh;
+    object-fit: contain;
+  }
+  .apod-page .media-frame {
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+  }
+  .apod-page .media-frame--direct {
+    aspect-ratio: auto;
+  }
+  .apod-page .media-frame--direct video {
+    max-height: 75dvh;
+  }
+  .field-console {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}

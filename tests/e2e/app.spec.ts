@@ -911,3 +911,26 @@ for (const retiredPath of [
     ).toHaveCount(0);
   });
 }
+
+test("mobile navigation fits the viewport and Escape restores focus", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 640 });
+  await page.goto("/missions");
+  const menu = page.getByRole("button", { name: "Toggle navigation" });
+  const explore = page.getByRole("button", { name: "Explore", exact: true });
+  await menu.click();
+  await explore.click();
+  const nav = page.getByRole("navigation", { name: "Primary", exact: true });
+  const bounds = await nav.boundingBox();
+  expect(bounds).not.toBeNull();
+  if (!bounds) throw new Error("Navigation bounds unavailable");
+  expect(bounds.y + bounds.height).toBeLessThanOrEqual(641);
+  await page.getByRole("link", { name: "Space Trivia", exact: true }).focus();
+  await page.keyboard.press("Escape");
+  await expect(explore).toBeFocused();
+  await expect(explore).toHaveAttribute("aria-expanded", "false");
+  await page.keyboard.press("Escape");
+  await expect(menu).toBeFocused();
+  await expect(menu).toHaveAttribute("aria-expanded", "false");
+});
