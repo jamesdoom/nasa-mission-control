@@ -390,6 +390,15 @@ export function TriviaPage() {
                   >
                     <span>{String.fromCharCode(65 + choiceIndex)}</span>
                     {choice}
+                    {(correct || incorrect) && (
+                      <small className="trivia-choice-feedback">
+                        {correct
+                          ? choiceIndex === selected
+                            ? "Your answer - Correct"
+                            : "Correct answer"
+                          : "Your answer - Incorrect"}
+                      </small>
+                    )}
                   </button>
                 );
               })}

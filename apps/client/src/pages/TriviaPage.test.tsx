@@ -61,6 +61,8 @@ describe("TriviaPage", () => {
       await screen.findByRole("button", { name: /Ocean of Storms/ }),
     );
     expect(screen.getByText("Course correction")).toBeVisible();
+    expect(screen.getByText("Your answer - Incorrect")).toBeVisible();
+    expect(screen.getByText("Correct answer")).toBeVisible();
     expect(screen.getByText(/Armstrong and Aldrin landed/)).toBeVisible();
   });
 });

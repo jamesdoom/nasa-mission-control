@@ -1609,22 +1609,6 @@ p {
   color: #9aabba;
   line-height: 1.75;
   max-width: 68ch;
-  display: -webkit-box;
-  -webkit-line-clamp: 9;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.explanation--expanded {
-  display: block;
-  overflow: visible;
-}
-.explanation-toggle {
-  margin-top: 0.75rem;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  font: inherit;
-  cursor: pointer;
 }
 .apod-copy .text-link {
   margin-top: 1rem;
@@ -2637,9 +2621,6 @@ p {
 }
 .apod-panel--compact .apod-copy h2 {
   font-size: 2rem;
-}
-.apod-panel--compact .explanation {
-  -webkit-line-clamp: 4;
 }
 .empty-state {
   text-align: center;
@@ -7198,4 +7179,60 @@ main :is(a, button, input, select, textarea, summary) {
   display: block;
   margin-top: 1.5rem;
   text-align: right;
+}
+
+/* Shared interaction feedback stays legible without motion or color alone. */
+:is(
+    .media-console fieldset,
+    .weather-filters,
+    .earth-collections,
+    .trivia-difficulties,
+    .flight-log-collections
+  )
+  input:checked
+  + span {
+  font-weight: 700;
+  box-shadow: inset 0 -2px currentColor;
+}
+:is(
+    .media-console fieldset,
+    .weather-filters,
+    .earth-collections,
+    .trivia-difficulties,
+    .flight-log-collections
+  )
+  input:focus-visible
+  + span {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+:is(.apod-save, .mission-save, .encounter-save):focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+.trivia-choices button {
+  flex-wrap: wrap;
+}
+.trivia-choice-feedback {
+  flex-basis: 100%;
+  padding-left: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.trivia-choices button:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.trivia-debrief {
+  display: grid;
+  justify-items: start;
+  gap: 0.75rem;
+}
+.trivia-debrief > :is(p, a, .button) {
+  margin: 0;
+}
+.trivia-debrief > .button {
+  float: none;
+  margin-top: 0.5rem;
 }

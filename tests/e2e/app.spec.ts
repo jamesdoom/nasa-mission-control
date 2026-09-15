@@ -1,5 +1,33 @@
 import { expect, test, type Page } from "@playwright/test";
 
+test("shows the complete APOD story on the homepage and archive", async ({
+  page,
+}) => {
+  const explanation =
+    "NASA's explanation remains readable from beginning to end. ".repeat(60) +
+    "Final sentence of the story.";
+  await page.route("**/api/apod**", (route) =>
+    route.fulfill({ json: { ...apod, explanation } }),
+  );
+  await mockAsteroids(page);
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const path of ["/", "/apod"]) {
+      await page.goto(path);
+      const story = page.locator(".explanation");
+      await expect(story).toHaveText(explanation);
+      expect(
+        await story.evaluate(
+          (element) => element.scrollHeight <= element.clientHeight + 1,
+        ),
+      ).toBe(true);
+      await expect(
+        page.getByRole("button", { name: /Continue reading|Show less/ }),
+      ).toHaveCount(0);
+    }
+  }
+});
+
 test.describe("APOD image delivery on a high-density phone", () => {
   test.use({
     viewport: { width: 430, height: 932 },

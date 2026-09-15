@@ -37,24 +37,21 @@ describe("ApodPanel", () => {
     expect(onToggle).toHaveBeenCalledTimes(2);
   });
 
-  it("lets readers reveal and collapse the full NASA explanation", async () => {
-    const user = userEvent.setup();
-    render(<ApodPanel apod={apod} saved={false} onToggle={vi.fn()} />);
-
-    const explanation = screen.getByText("Science context");
-    const toggle = screen.getByRole("button", { name: "Continue reading" });
-    expect(toggle).toHaveAttribute("aria-expanded", "false");
-    expect(explanation).not.toHaveClass("explanation--expanded");
-
-    await user.click(toggle);
-    expect(screen.getByRole("button", { name: "Show less" })).toHaveAttribute(
-      "aria-expanded",
-      "true",
+  it("shows the entire explanation without an expand control", () => {
+    const explanation = "A complete NASA story. ".repeat(80);
+    render(
+      <ApodPanel
+        apod={{ ...apod, explanation }}
+        saved={false}
+        onToggle={vi.fn()}
+      />,
     );
-    expect(explanation).toHaveClass("explanation--expanded");
-
-    await user.click(screen.getByRole("button", { name: "Show less" }));
-    expect(explanation).not.toHaveClass("explanation--expanded");
+    expect(screen.getByText(/A complete NASA story/).textContent).toBe(
+      explanation,
+    );
+    expect(
+      screen.queryByRole("button", { name: /Continue reading|Show less/ }),
+    ).not.toBeInTheDocument();
   });
 
   it("uses the native player for direct NASA video files", () => {
