@@ -1,6 +1,6 @@
 export function LoadingState({
   title = "Loading NASA data",
-  detail = "Requesting and validating the selected records…",
+  detail = "Loading your selected records. This may take a moment…",
 }: {
   title?: string;
   detail?: string;
@@ -27,7 +27,7 @@ export function ErrorState({
   return (
     <div className="state-panel state-panel--error" role="alert">
       <div>
-        <strong>NASA data unavailable</strong>
+        <strong>Could not load NASA data</strong>
         <p>{message}</p>
         {requestId && <small>Reference: {requestId}</small>}
       </div>

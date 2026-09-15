@@ -60,7 +60,7 @@ export function ApodPage() {
             );
           }}
         >
-          <label htmlFor="apod-date">Observation date</label>
+          <label htmlFor="apod-date">Archive date</label>
           <div>
             <input
               id="apod-date"
@@ -72,7 +72,7 @@ export function ApodPage() {
               required
             />
             <button className="button" type="submit">
-              Acquire
+              View image
             </button>
           </div>
           <small>Archive begins {APOD_EARLIEST_DATE}. Dates use UTC.</small>
@@ -81,11 +81,14 @@ export function ApodPage() {
       {query.isPending ? (
         <LoadingState
           title="Loading the selected APOD record"
-          detail="Requesting the archive date and validating NASA’s response…"
+          detail="Finding the image or video for your selected date…"
         />
       ) : query.isError ? (
         <ErrorState
-          message={error?.message ?? "An unexpected error occurred."}
+          message={
+            error?.message ??
+            "We could not load this date. Try again or choose another archive date."
+          }
           requestId={error?.requestId}
           retry={() => void query.refetch()}
         />

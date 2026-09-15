@@ -6855,3 +6855,33 @@ main textarea::placeholder {
     color: CanvasText;
   }
 }
+
+.apod-save {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--control-height);
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--text);
+  font:
+    600 var(--type-control) "DM Sans",
+    system-ui,
+    sans-serif;
+  cursor: pointer;
+}
+.apod-save svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+.apod-save.is-saved {
+  color: var(--cyan);
+  border-color: currentColor;
+}
+.apod-copy > .eyebrow {
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}

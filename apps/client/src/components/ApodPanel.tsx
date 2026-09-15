@@ -29,19 +29,20 @@ export function ApodPanel({
       </div>
       <div className="apod-copy">
         <div className="eyebrow">
-          <span>Observation // {apod.date}</span>
+          <span>Archive date // {apod.date}</span>
           <button
-            className={saved ? "icon-button is-saved" : "icon-button"}
+            className={saved ? "apod-save is-saved" : "apod-save"}
             type="button"
             aria-pressed={saved}
             aria-label={
               saved
-                ? `Remove ${apod.title} from favorites`
-                : `Save ${apod.title} to favorites`
+                ? `Remove ${apod.title} from Flight Log`
+                : `Save ${apod.title} to Flight Log`
             }
             onClick={onToggle}
           >
             <HeartIcon />
+            <span>{saved ? "Saved (Remove)" : "Save to Flight Log"}</span>
           </button>
         </div>
         <h2>{apod.title}</h2>

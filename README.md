@@ -341,6 +341,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 77. **Complete — Appearance and usability phase 2: Readability and consistency:** standardized shared heading and control typography, brightened secondary text, clarified evidence badges, and replaced outlined dashboard emphasis with solid text. See [validation and visual evidence](docs/readability-consistency-phase-2.md).
 
+78. **Complete — Appearance and usability phase 3: Interaction clarity:** clarified APOD actions and visible save state, simplified mission and Flight Log filter labels, and made empty/error guidance more direct. See [validation and visual evidence](docs/interaction-clarity-phase-3.md).
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.

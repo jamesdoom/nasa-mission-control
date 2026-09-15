@@ -286,7 +286,7 @@ test("loads APOD, saves it, and preserves it in the Flight Log", async ({
     animations: "disabled",
   });
   await page
-    .getByRole("button", { name: `Save ${apod.title} to favorites` })
+    .getByRole("button", { name: `Save ${apod.title} to Flight Log` })
     .click();
   await page.getByRole("link", { name: "Flight Log", exact: true }).click();
   await expect(page).toHaveURL(/\/favorites$/);
@@ -310,7 +310,7 @@ test("loads APOD, saves it, and preserves it in the Flight Log", async ({
   await expect(page).toHaveURL(/collection=apod/);
   await page.getByLabel("Search saved records").fill("no matching record");
   await expect(page.getByText("No saved records match")).toBeVisible();
-  await page.getByRole("button", { name: "Clear archive controls" }).click();
+  await page.getByRole("button", { name: "Reset search and filters" }).click();
   await expect(page).toHaveURL(/\/favorites$/);
   await expect(page.getByRole("heading", { name: apod.title })).toBeVisible();
 });
@@ -337,7 +337,7 @@ test("first offline installation preserves the current page and selected date", 
   });
   await mockApod(page);
   await page.goto("/apod?date=2024-01-01");
-  await page.getByLabel("Observation date").fill("2024-02-02");
+  await page.getByLabel("Archive date").fill("2024-02-02");
   releaseWorker();
   await expect(page.getByText("Offline field console ready")).toBeVisible();
   await expect
@@ -345,14 +345,14 @@ test("first offline installation preserves the current page and selected date", 
       page.evaluate(() => navigator.serviceWorker.controller !== null),
     )
     .toBe(true);
-  await expect(page.getByLabel("Observation date")).toHaveValue("2024-02-02");
+  await expect(page.getByLabel("Archive date")).toHaveValue("2024-02-02");
   expect(navigations).toBe(1);
 });
 
 test("keeps archive dates in the URL", async ({ page }) => {
   await mockApod(page);
   await page.goto("/apod?date=2024-01-01");
-  await expect(page.getByLabel("Observation date")).toHaveValue("2024-01-01");
+  await expect(page.getByLabel("Archive date")).toHaveValue("2024-01-01");
   await expect(page.getByRole("heading", { name: apod.title })).toBeVisible();
 });
 

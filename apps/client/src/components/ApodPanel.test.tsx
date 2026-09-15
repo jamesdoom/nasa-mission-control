@@ -18,13 +18,23 @@ const apod: Apod = {
 describe("ApodPanel", () => {
   it("renders video APOD, attribution, and an accessible favorite control", async () => {
     const onToggle = vi.fn();
-    render(<ApodPanel apod={apod} saved={false} onToggle={onToggle} />);
+    const { rerender } = render(
+      <ApodPanel apod={apod} saved={false} onToggle={onToggle} />,
+    );
     expect(screen.getByTitle("A cosmic view video")).toBeInTheDocument();
     expect(screen.getByText("Credit: An astronomer")).toBeInTheDocument();
     const button = screen.getByRole("button", { name: /save a cosmic view/i });
     expect(button).toHaveAttribute("aria-pressed", "false");
     await userEvent.click(button);
     expect(onToggle).toHaveBeenCalledOnce();
+    rerender(<ApodPanel apod={apod} saved={true} onToggle={onToggle} />);
+    const remove = screen.getByRole("button", {
+      name: "Remove A cosmic view from Flight Log",
+    });
+    expect(remove).toHaveAttribute("aria-pressed", "true");
+    expect(remove).toHaveTextContent("Saved (Remove)");
+    await userEvent.click(remove);
+    expect(onToggle).toHaveBeenCalledTimes(2);
   });
 
   it("lets readers reveal and collapse the full NASA explanation", async () => {

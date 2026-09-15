@@ -291,7 +291,7 @@ test("keeps loading, error, and recovered content panels visually stable", async
   await captureElement(state, "docs/screenshots/visual-loading-state.png");
 
   resolveRequest?.();
-  await expect(state).toContainText("NASA data unavailable");
+  await expect(state).toContainText("Could not load NASA data");
   await expectNoHorizontalOverflow(page);
   await captureElement(state, "docs/screenshots/visual-error-state.png");
 
@@ -306,9 +306,7 @@ test("keeps empty and stale-degraded guidance aligned and actionable", async ({
   await page.setViewportSize({ width: 768, height: 900 });
   await page.goto("/missions?destination=Moon&vehicle=rover");
   const emptyState = page.locator(".mission-results .state-panel");
-  await expect(emptyState).toContainText(
-    "No missions match this telemetry profile",
-  );
+  await expect(emptyState).toContainText("No missions match these filters");
   await expect(
     emptyState.getByRole("button", { name: "Show all missions" }),
   ).toBeVisible();

@@ -266,7 +266,7 @@ export function FavoritesPage() {
           </p>
           <div className="empty-state__actions">
             <Link className="button" to="/apod">
-              Save today’s image
+              Browse today’s image
             </Link>
             <Link className="button button--secondary" to="/missions">
               Browse missions
@@ -278,13 +278,16 @@ export function FavoritesPage() {
         <div className="empty-state flight-log-no-results">
           <span aria-hidden="true">⌁</span>
           <h2>No saved records match</h2>
-          <p>Adjust the search or collection filter to reopen the archive.</p>
+          <p>
+            Try another search or record type, or reset to show all your saved
+            records.
+          </p>
           <button
             className="button"
             type="button"
             onClick={() => setParams({}, { replace: true })}
           >
-            Clear archive controls
+            Reset search and filters
           </button>
         </div>
       )}

@@ -99,7 +99,7 @@ export function MissionsPage() {
         <div className="filter-heading">
           <div>
             <p className="eyebrow">Optional filters</p>
-            <h2>Refine the archive</h2>
+            <h2>Filter missions</h2>
           </div>
           {destination !== "all" || vehicle !== "all" || status !== "all" ? (
             <button type="button" onClick={clearFilters}>
@@ -129,7 +129,7 @@ export function MissionsPage() {
             >
               {vehicles.map((item) => (
                 <option key={item} value={item}>
-                  {item === "all" ? "All vehicles" : capitalize(item)}
+                  {item === "all" ? "All spacecraft types" : capitalize(item)}
                 </option>
               ))}
             </select>
@@ -157,7 +157,7 @@ export function MissionsPage() {
         {visible.length === 0 ? (
           <div className="state-panel">
             <div>
-              <strong>No missions match this telemetry profile</strong>
+              <strong>No missions match these filters</strong>
               <p>
                 Clear the filters to return to all ten source-checked missions.
               </p>

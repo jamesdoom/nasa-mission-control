@@ -52,7 +52,7 @@ export function FlightLogControls({
     <section className="flight-log-tools" aria-labelledby="archive-tools">
       <div className="flight-log-tools__heading">
         <div>
-          <p className="eyebrow">Archive controls</p>
+          <p className="eyebrow">Search and filters</p>
           <h2 id="archive-tools">Organize saved records</h2>
         </div>
         <p role="status" aria-live="polite">
@@ -84,7 +84,7 @@ export function FlightLogControls({
         </label>
       </div>
       <fieldset className="flight-log-collections">
-        <legend>Collection type</legend>
+        <legend>Record type</legend>
         {collections.map((item) => (
           <label key={item}>
             <input
@@ -102,7 +102,7 @@ export function FlightLogControls({
       </fieldset>
       {hasActiveControls && visibleCount > 0 ? (
         <button className="flight-log-clear" type="button" onClick={onClear}>
-          Clear archive controls
+          Reset search and filters
         </button>
       ) : null}
     </section>
