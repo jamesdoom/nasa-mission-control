@@ -363,6 +363,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 88. **Complete — Homepage alignment follow-up:** aligned the desktop introduction and image-section headers, compacted the status row, and removed the separate desktop backdrop to connect the columns visually. Updated the [launch screenshots](docs/launch-polish.md).
 
+89. **Complete — Single-column homepage:** removed the introductory hero and its animation observer, placed all three status items above the NASA selection, and expanded the daily-image frame. Updated the [launch roadmap and screenshots](docs/launch-polish.md).
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.

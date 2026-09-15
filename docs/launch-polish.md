@@ -2,7 +2,7 @@
 
 This cycle refines existing features before promoting the site.
 
-1. **Implemented: stronger first impression.** The desktop introduction sits beside the daily NASA picture, replacing the decorative orbit illustration. Clear introductory copy leads to one primary APOD action and a quieter Mission Archive link. Mobile stacks the introduction and image, with a compact data status. The image uses a stable frame without cropping; existing save, source, error, and video behavior remains available. Participant confirmation of first-impression clarity is pending phase 5.
+1. **Implemented: stronger first impression.** Following visual review, the homepage now uses a single column. The introduction and its decorative animation are removed; station time, briefing data, and briefing sources sit above the NASA selection. The daily image is the primary focal point, with existing archive, save, source, error, and video behavior retained. Participant confirmation of first-impression clarity is pending phase 5.
 2. **Planned: page composition.** Consistent content widths, image framing, typography, filters, and spacing throughout existing pages.
 3. **Planned: interaction polish.** Refine selected, saved, loading, feedback, focus, and transition states.
 4. **Planned: incoming-traffic readiness.** Review metadata, sharing previews, direct entry routes, deployed performance, and recovery behavior.
@@ -10,11 +10,11 @@ This cycle refines existing features before promoting the site.
 
 ## Phase 1 verification
 
-Desktop alignment follow-up: both column introductions share the same top edge. The archive link sits beneath its heading, status details use a compact horizontal row, and the separate decorative background behind the introduction is removed on desktop. The captures below include this correction.
+The user-requested single-column follow-up supersedes the earlier side-by-side layout. All three status items remain visible at narrow widths. The daily selection is now the page's primary heading, and the removed hero's observer and animation test were retired.
 
 Typecheck, lint, unit/component/accessibility tests, production build, and the production browser suite passed. Existing compressed asset budgets remain satisfied. The delayed-font/data fixture recorded zero CLS at 390px and 1440px after reserving the image frame. These are controlled measurements, not field-performance claims.
 
-The [previous desktop layout](screenshots/loading-stability/desktop.png) shows the introduction above the picture. Updated deterministic captures show the desktop side-by-side composition and mobile stack; content fixtures differ, so these are layout evidence rather than image-quality comparisons.
+The [previous desktop layout](screenshots/loading-stability/desktop.png) shows the introduction above the picture. Updated deterministic captures show the single-column desktop and mobile composition; content fixtures differ, so these are layout evidence rather than image-quality comparisons.
 
 ![Updated desktop homepage](screenshots/launch-polish/desktop.png)
 

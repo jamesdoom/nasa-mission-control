@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ApiError } from "../api/apod";
 import { ApodPanel } from "../components/ApodPanel";
@@ -13,30 +13,6 @@ import { briefingStatus, feedStatus } from "../utils/briefingStatus";
 import { utcDate } from "../utils/dates";
 
 export function DashboardPage() {
-  const heroRef = useRef<HTMLElement>(null);
-  useEffect(() => {
-    const hero = heroRef.current;
-    if (!hero) return;
-    let visible = true;
-    const update = () => {
-      hero.dataset.animationsPaused = String(!visible || document.hidden);
-    };
-    const observer =
-      typeof IntersectionObserver === "function"
-        ? new IntersectionObserver(([entry]) => {
-            visible = entry?.isIntersecting ?? false;
-            update();
-          })
-        : undefined;
-    observer?.observe(hero);
-    document.addEventListener("visibilitychange", update);
-    update();
-    return () => {
-      observer?.disconnect();
-      document.removeEventListener("visibilitychange", update);
-      delete hero.dataset.animationsPaused;
-    };
-  }, []);
   const query = useApod();
   const asteroidQuery = useAsteroids(utcDate(), utcDate(6));
   const favorites = useFavorites();
@@ -47,53 +23,20 @@ export function DashboardPage() {
   return (
     <>
       <div className="dashboard-first-look">
-        <section ref={heroRef} className="hero section dashboard-hero">
-          <div className="hero-immersion" aria-hidden="true">
-            <span className="hero-immersion__stars hero-immersion__stars--near" />
-            <span className="hero-immersion__stars hero-immersion__stars--far" />
-            <span className="hero-immersion__horizon" />
-            <span className="hero-immersion__scan" />
-          </div>
-          <div className="hero-grid">
-            <div>
-              <p className="kicker">
-                <span />
-                Space, worth exploring
-              </p>
-              <h1>
-                Explore beyond
-                <br />
-                <em>the horizon.</em>
-              </h1>
-              <p className="hero-lede">
-                Discover NASA's daily picture, follow landmark missions, and
-                test your knowledge of the universe.
-              </p>
-              <div className="hero-actions">
-                <Link className="button" to="/apod">
-                  Explore the daily picture
-                </Link>
-                <Link className="text-link" to="/missions">
-                  Discover the missions
-                </Link>
-              </div>
-            </div>
-          </div>
-          <div className="telemetry">
-            <span>
-              <small>Station time</small>
-              <UtcClock />
-            </span>
-            <span>
-              <small>Briefing data</small>
-              <strong>{status}</strong>
-            </span>
-            <span>
-              <small>Briefing sources</small>
-              <strong>APOD + NeoWs</strong>
-            </span>
-          </div>
-        </section>
+        <div className="telemetry">
+          <span>
+            <small>Station time</small>
+            <UtcClock />
+          </span>
+          <span>
+            <small>Briefing data</small>
+            <strong>{status}</strong>
+          </span>
+          <span>
+            <small>Briefing sources</small>
+            <strong>APOD + NeoWs</strong>
+          </span>
+        </div>
         <section className="section briefing" id="daily-briefing">
           <div className="section-heading">
             <div>
@@ -101,7 +44,7 @@ export function DashboardPage() {
                 <span />
                 Selected by NASA
               </p>
-              <h2>A window into our universe</h2>
+              <h1>A window into our universe</h1>
             </div>
             <Link className="text-link" to="/apod">
               Explore the archive →

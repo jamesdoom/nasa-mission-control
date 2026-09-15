@@ -7027,35 +7027,38 @@ main :is(a, button, input, select, textarea, summary) {
   }
 }
 
+/* The daily picture is the single homepage focal point. */
 .dashboard-first-look {
-  display: grid;
-  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-  gap: 2.5rem;
   max-width: 1240px;
   margin: 0 auto;
-  padding: 2.5rem 1.5rem;
+  padding: 1.5rem;
 }
 .dashboard-first-look > .section {
   width: 100%;
-  padding: 0;
+  padding: 1.5rem 0 0;
   margin: 0;
 }
-.dashboard-first-look .hero-grid {
-  display: block;
-}
-.dashboard-first-look .hero-grid > div:first-child {
-  position: static;
-}
-.dashboard-first-look .dashboard-hero {
-  align-self: start;
-  padding-top: 0;
-}
 .dashboard-first-look .telemetry {
+  display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
-  margin-top: 2rem;
+  margin: 0;
   background: none;
   box-shadow: none;
+}
+.dashboard-first-look .telemetry > span {
+  display: flex;
+  padding: 0.75rem 0;
+  gap: 0.4rem;
+}
+.dashboard-first-look .telemetry strong {
+  overflow-wrap: anywhere;
+}
+.dashboard-first-look .section-heading h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
 }
 .dashboard-first-look .apod-panel {
   display: block;
@@ -7065,7 +7068,7 @@ main :is(a, button, input, select, textarea, summary) {
 }
 .dashboard-first-look .apod-image {
   width: 100%;
-  height: 340px;
+  height: clamp(340px, 45vw, 560px);
   object-fit: contain;
 }
 .dashboard-first-look .apod-copy {
@@ -7074,102 +7077,20 @@ main :is(a, button, input, select, textarea, summary) {
 .dashboard-first-look .apod-copy h2 {
   font-size: clamp(1.4rem, 2vw, 2rem);
 }
-.dashboard-first-look .section-heading h2 {
-  font-size: clamp(1.4rem, 2vw, 2rem);
-}
-@media (max-width: 900px) {
-  .dashboard-first-look {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    padding: 1.5rem 5%;
-  }
-  .dashboard-first-look .dashboard-hero {
-    padding-top: 0;
-  }
-  .dashboard-first-look .telemetry {
-    display: flex;
-    margin-top: 1rem;
-  }
-  .dashboard-first-look .telemetry > span:nth-child(2) {
-    display: flex;
-  }
-  .dashboard-first-look .telemetry > span:not(:nth-child(2)) {
-    display: none;
-  }
-  .dashboard-first-look .apod-image {
-    height: 340px;
-  }
-}
-
-.dashboard-hero[data-animations-paused="true"] *,
-.dashboard-hero[data-animations-paused="true"]::before,
-.dashboard-hero[data-animations-paused="true"]::after {
-  animation-play-state: paused;
-}
-@media (max-width: 600px) {
-  .dashboard-hero::before {
-    background-image:
-      linear-gradient(
-        90deg,
-        rgba(3, 8, 18, 0.9) 0%,
-        rgba(3, 8, 18, 0.45) 52%,
-        rgba(3, 8, 18, 0.7) 100%
-      ),
-      linear-gradient(0deg, #050912 0%, transparent 34%),
-      url("/assets/milky-way-960.webp");
-  }
-}
-
-/* Reserve the daily image area before data arrives. */
-.briefing .state-panel--loading {
-  min-height: 580px;
-  align-items: flex-start;
-}
-@media (max-width: 900px) {
-  .briefing .state-panel--loading {
-    min-height: 480px;
-  }
-}
-@media (max-width: 600px) {
-  .briefing .state-panel--loading {
-    min-height: 340px;
-  }
-}
-.dashboard-hero h1 {
-  line-height: 1.08;
-}
-
-.dashboard-first-look .hero-lede {
-  width: auto;
-  max-width: 100%;
-}
-.dashboard-first-look .hero-actions {
-  align-items: center;
-}
-.dashboard-first-look .dashboard-hero::before {
-  opacity: 0.3;
-}
 .dashboard-first-look .briefing .state-panel--loading {
   min-height: 680px;
 }
-
-@media (min-width: 901px) {
-  .dashboard-first-look .dashboard-hero::before,
-  .dashboard-first-look .dashboard-hero::after {
-    background: none;
+@media (max-width: 600px) {
+  .dashboard-first-look {
+    padding: 1rem 5%;
   }
-  .dashboard-first-look .hero-immersion__horizon {
-    display: none;
-  }
-  .dashboard-first-look .hero-immersion {
-    mask-image: linear-gradient(to right, #000, transparent);
-  }
-  .dashboard-first-look .section-heading {
-    align-items: start;
-    flex-direction: column;
+  .dashboard-first-look .telemetry {
     gap: 0.75rem;
   }
+  .dashboard-first-look .telemetry small {
+    font-size: 0.6rem;
+  }
   .dashboard-first-look .telemetry strong {
-    overflow-wrap: anywhere;
+    font-size: 0.65rem;
   }
 }
