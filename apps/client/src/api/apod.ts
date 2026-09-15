@@ -11,10 +11,14 @@ export class ApiError extends Error {
   }
 }
 
-export async function getApod(date?: string): Promise<Apod> {
+export async function getApod(
+  date?: string,
+  signal?: AbortSignal,
+): Promise<Apod> {
   const query = date ? `?${new URLSearchParams({ date })}` : "";
   const response = await fetch(`/api/apod${query}`, {
     headers: { accept: "application/json" },
+    ...(signal ? { signal } : {}),
   });
   if (!response.ok) {
     const fallback = "Mission Control could not retrieve this observation.";

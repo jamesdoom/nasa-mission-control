@@ -942,3 +942,20 @@ test("mobile navigation fits the viewport and Escape restores focus", async ({
   await expect(menu).toBeFocused();
   await expect(menu).toHaveAttribute("aria-expanded", "false");
 });
+
+test("reuses a recent Space Weather result after navigating away and back", async ({
+  page,
+}) => {
+  let requests = 0;
+  page.on("request", (request) => {
+    if (new URL(request.url()).pathname === "/api/space-weather") requests += 1;
+  });
+  await mockSpaceWeather(page);
+  await page.goto("/space-weather");
+  await expect(page.locator(".weather-card").first()).toBeVisible();
+  await page.getByRole("link", { name: "About", exact: true }).click();
+  await expect(page).toHaveURL(/\/about$/);
+  await page.goBack();
+  await expect(page.locator(".weather-card").first()).toBeVisible();
+  expect(requests).toBe(1);
+});

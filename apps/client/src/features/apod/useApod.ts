@@ -3,7 +3,7 @@ import { getApod } from "../../api/apod";
 export function useApod(date?: string) {
   return useApiQuery({
     queryKey: ["apod", date ?? "today"],
-    queryFn: () => getApod(date),
+    queryFn: (signal) => getApod(date, signal),
     staleTime: 5 * 60 * 1000,
     retry: 1,
   });
@@ -18,7 +18,8 @@ export function useApodHistory(endDate: string, days = 7, enabled = true) {
   });
   return useApiQuery({
     queryKey: ["apod-history", ...dates],
-    queryFn: () => Promise.all(dates.map((date) => getApod(date))),
+    queryFn: (signal) =>
+      Promise.all(dates.map((date) => getApod(date, signal))),
     staleTime: 24 * 60 * 60 * 1000,
     retry: 1,
     enabled,

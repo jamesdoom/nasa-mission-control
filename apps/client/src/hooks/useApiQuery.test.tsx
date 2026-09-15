@@ -22,3 +22,76 @@ describe("useApiQuery", () => {
     expect(queryFn).toHaveBeenCalledTimes(2);
   });
 });
+
+it("keeps a shared request alive until its last consumer leaves", async () => {
+  let signal: AbortSignal | undefined;
+  const queryFn = vi.fn((requestSignal: AbortSignal) => {
+    signal = requestSignal;
+    return new Promise<string>((_resolve, reject) => {
+      requestSignal.addEventListener("abort", () =>
+        reject(new DOMException("Aborted", "AbortError")),
+      );
+    });
+  });
+  const options = { queryKey: ["shared-cancellation"], queryFn };
+  const first = renderHook(() => useApiQuery(options));
+  const second = renderHook(() => useApiQuery(options));
+  expect(queryFn).toHaveBeenCalledOnce();
+  first.unmount();
+  await act(async () => {
+    await Promise.resolve();
+  });
+  expect(signal?.aborted).toBe(false);
+  second.unmount();
+  await act(async () => {
+    await Promise.resolve();
+  });
+  expect(signal?.aborted).toBe(true);
+  expect(queryFn).toHaveBeenCalledOnce();
+});
+
+it("revalidates expired cache entries", async () => {
+  const queryFn = vi.fn().mockResolvedValue("cached");
+  const now = vi.spyOn(Date, "now").mockReturnValue(100_000);
+  const options = { queryKey: ["expiry"], queryFn, staleTime: 300_000 };
+  try {
+    const first = renderHook(() => useApiQuery(options));
+    await waitFor(() => expect(first.result.current.isSuccess).toBe(true));
+    first.unmount();
+    now.mockReturnValue(400_001);
+    const second = renderHook(() => useApiQuery(options));
+    await waitFor(() => expect(queryFn).toHaveBeenCalledTimes(2));
+    second.unmount();
+  } finally {
+    now.mockRestore();
+  }
+});
+
+it("waits before retrying a failed request", async () => {
+  vi.useFakeTimers();
+  const queryFn = vi
+    .fn()
+    .mockRejectedValueOnce(new Error("temporary"))
+    .mockResolvedValue("ok");
+  const hook = renderHook(() =>
+    useApiQuery({ queryKey: ["backoff"], queryFn }),
+  );
+  try {
+    await act(async () => {
+      await Promise.resolve();
+    });
+    expect(queryFn).toHaveBeenCalledOnce();
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(999);
+    });
+    expect(queryFn).toHaveBeenCalledOnce();
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(1);
+    });
+    expect(queryFn).toHaveBeenCalledTimes(2);
+    expect(hook.result.current.data).toBe("ok");
+  } finally {
+    hook.unmount();
+    vi.useRealTimers();
+  }
+});

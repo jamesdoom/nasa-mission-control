@@ -7,9 +7,14 @@ import type {
 import { ApiError } from "./apod";
 import { readResponseJson } from "./responseStatus";
 
-async function request<T>(url: string, fallback: string): Promise<T> {
+async function request<T>(
+  url: string,
+  fallback: string,
+  signal?: AbortSignal,
+): Promise<T> {
   const response = await fetch(url, {
     headers: { accept: "application/json" },
+    ...(signal ? { signal } : {}),
   });
   if (!response.ok) {
     try {
@@ -31,6 +36,7 @@ export function searchMedia(
   query: string,
   mediaType: MediaType | "all",
   page: number,
+  signal?: AbortSignal,
 ): Promise<MediaSearch> {
   const params = new URLSearchParams({
     q: query,
@@ -40,12 +46,17 @@ export function searchMedia(
   return request(
     `/api/media/search?${params}`,
     "Mission Control could not search the NASA media archive.",
+    signal,
   );
 }
 
-export function getMediaDetail(nasaId: string): Promise<MediaDetail> {
+export function getMediaDetail(
+  nasaId: string,
+  signal?: AbortSignal,
+): Promise<MediaDetail> {
   return request(
     `/api/media/${encodeURIComponent(nasaId)}`,
     "Mission Control could not retrieve this NASA media asset.",
+    signal,
   );
 }

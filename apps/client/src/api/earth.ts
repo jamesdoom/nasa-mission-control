@@ -9,11 +9,13 @@ import { readResponseJson } from "./responseStatus";
 export async function getEarthObservation(
   collection: EarthCollection,
   date?: string,
+  signal?: AbortSignal,
 ): Promise<EarthObservation> {
   const params = new URLSearchParams({ collection });
   if (date) params.set("date", date);
   const response = await fetch(`/api/earth?${params}`, {
     headers: { accept: "application/json" },
+    ...(signal ? { signal } : {}),
   });
   if (!response.ok) {
     const fallback = "Mission Control could not retrieve Earth observations.";

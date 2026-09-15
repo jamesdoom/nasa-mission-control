@@ -1,3 +1,4 @@
+import { afterPageLoad } from "../utils/afterPageLoad";
 import { useEffect, useState } from "react";
 
 type FieldConsoleState = {
@@ -57,34 +58,37 @@ export function useServiceWorker(): FieldConsoleState {
       handleControllerChange,
     );
 
-    void navigator.serviceWorker
-      .register("/sw.js")
-      .then((registration) => {
-        if (registration.waiting) {
-          setWaiting(registration.waiting);
-          setState((current) => ({ ...current, updateAvailable: true }));
-        }
-        registration.addEventListener("updatefound", () => {
-          const installing = registration.installing;
-          installing?.addEventListener("statechange", () => {
-            if (
-              installing.state === "installed" &&
-              navigator.serviceWorker.controller
-            ) {
-              setWaiting(installing);
-              setState((current) => ({ ...current, updateAvailable: true }));
-            }
+    const cancelRegistration = afterPageLoad(() => {
+      void navigator.serviceWorker
+        .register("/sw.js")
+        .then((registration) => {
+          if (registration.waiting) {
+            setWaiting(registration.waiting);
+            setState((current) => ({ ...current, updateAvailable: true }));
+          }
+          registration.addEventListener("updatefound", () => {
+            const installing = registration.installing;
+            installing?.addEventListener("statechange", () => {
+              if (
+                installing.state === "installed" &&
+                navigator.serviceWorker.controller
+              ) {
+                setWaiting(installing);
+                setState((current) => ({ ...current, updateAvailable: true }));
+              }
+            });
           });
-        });
-        return navigator.serviceWorker.ready;
-      })
-      .then((registration) => {
-        setState((current) => ({ ...current, ready: true }));
-        registration.active?.postMessage({ type: "GET_VERSION" });
-      })
-      .catch(() => undefined);
+          return navigator.serviceWorker.ready;
+        })
+        .then((registration) => {
+          setState((current) => ({ ...current, ready: true }));
+          registration.active?.postMessage({ type: "GET_VERSION" });
+        })
+        .catch(() => undefined);
+    });
 
     return () => {
+      cancelRegistration();
       navigator.serviceWorker.removeEventListener("message", handleMessage);
       navigator.serviceWorker.removeEventListener(
         "controllerchange",

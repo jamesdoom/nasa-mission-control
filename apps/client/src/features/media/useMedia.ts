@@ -8,8 +8,9 @@ export function useMediaSearch(
   page: number,
 ) {
   return useApiQuery({
+    staleTime: 5 * 60 * 1000,
     queryKey: ["media", "search", query, mediaType, page],
-    queryFn: () => searchMedia(query, mediaType, page),
+    queryFn: (signal) => searchMedia(query, mediaType, page, signal),
     enabled: query.length >= 2,
     placeholderData: true,
   });
@@ -17,8 +18,9 @@ export function useMediaSearch(
 
 export function useMediaDetail(nasaId: string) {
   return useApiQuery({
+    staleTime: 5 * 60 * 1000,
     queryKey: ["media", "detail", nasaId],
-    queryFn: () => getMediaDetail(nasaId),
+    queryFn: (signal) => getMediaDetail(nasaId, signal),
     enabled: nasaId.length > 0,
   });
 }

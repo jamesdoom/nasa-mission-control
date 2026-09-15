@@ -2,7 +2,7 @@ import { useEffect, useReducer, useRef } from "react";
 
 type QueryOptions<T> = {
   queryKey: readonly unknown[];
-  queryFn: () => Promise<T>;
+  queryFn: (signal: AbortSignal) => Promise<T>;
   enabled?: boolean;
   placeholderData?: boolean;
   retry?: number;
@@ -16,6 +16,7 @@ type Entry = {
   pending: boolean;
   promise: Promise<void> | null;
   listeners: Set<() => void>;
+  controller: AbortController | null;
   accessedAt: number;
 };
 
@@ -80,6 +81,7 @@ function entryFor(key: string): Entry {
     pending: false,
     promise: null,
     listeners: new Set(),
+    controller: null,
     accessedAt: Date.now(),
   };
   cache.set(key, created);
@@ -101,29 +103,46 @@ function notify(entry: Entry): void {
 
 async function execute<T>(
   entry: Entry,
-  queryFn: () => Promise<T>,
+  queryFn: (signal: AbortSignal) => Promise<T>,
   retries: number,
 ): Promise<void> {
-  if (entry.promise) return entry.promise;
+  if (entry.promise) {
+    if (entry.controller?.signal.aborted)
+      return entry.promise.then(() => {
+        if (entry.listeners.size) return execute(entry, queryFn, retries);
+      });
+    return entry.promise;
+  }
+  const controller = new AbortController();
+  entry.controller = controller;
+  const isAborted = () => controller.signal.aborted;
   entry.pending = true;
   entry.error = null;
   const request = (async () => {
     for (let attempt = 0; attempt <= retries; attempt += 1) {
+      if (isAborted()) return;
       try {
-        entry.data = await queryFn();
+        const data = await queryFn(controller.signal);
+        if (isAborted()) return;
+        entry.data = data;
         entry.updatedAt = Date.now();
         entry.error = null;
         return;
       } catch (error) {
+        if (isAborted()) return;
         if (attempt >= retries || !retryable(error)) {
           entry.error = error;
           return;
         }
+        await new Promise((resolve) =>
+          setTimeout(resolve, Math.min(1000 * 2 ** attempt, 8000)),
+        );
       }
     }
   })().finally(() => {
     entry.pending = false;
     entry.promise = null;
+    entry.controller = null;
     notify(entry);
   });
   entry.promise = request;
@@ -154,20 +173,28 @@ export function useApiQuery<T>({
     entry.listeners.add(listener);
     return () => {
       entry.listeners.delete(listener);
+      queueMicrotask(() => {
+        if (entry.listeners.size === 0) entry.controller?.abort();
+      });
     };
   }, [entry]);
   useEffect(() => {
     if (!enabled || requestedKey.current === key) return;
     requestedKey.current = key;
-    const fresh = Date.now() - entry.updatedAt < staleTime;
-    if (!fresh) void execute(entry, () => queryFnRef.current(), retry);
+    const fresh =
+      entry.data !== undefined &&
+      entry.error === null &&
+      Date.now() - entry.updatedAt < staleTime;
+    if (!fresh)
+      void execute(entry, (signal) => queryFnRef.current(signal), retry);
   }, [enabled, entry, key, retry, staleTime]);
 
   const data =
     storedData ?? (placeholderData ? previousData.current : undefined);
   const common = {
     dataUpdatedAt: entry.updatedAt,
-    refetch: () => execute(entry, () => queryFnRef.current(), retry),
+    refetch: () =>
+      execute(entry, (signal) => queryFnRef.current(signal), retry),
   };
   if (entry.error !== null)
     return {

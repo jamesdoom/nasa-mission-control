@@ -10,10 +10,12 @@ export async function getSpaceWeather(
   startDate: string,
   endDate: string,
   category: SpaceWeatherCategory | "all",
+  signal?: AbortSignal,
 ): Promise<SpaceWeatherFeed> {
   const params = new URLSearchParams({ startDate, endDate, category });
   const response = await fetch(`/api/space-weather?${params}`, {
     headers: { accept: "application/json" },
+    ...(signal ? { signal } : {}),
   });
   if (!response.ok) {
     const fallback =

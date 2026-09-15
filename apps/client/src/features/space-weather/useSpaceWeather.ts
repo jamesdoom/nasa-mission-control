@@ -8,8 +8,9 @@ export function useSpaceWeather(
   category: SpaceWeatherCategory | "all",
 ) {
   return useApiQuery({
+    staleTime: 5 * 60 * 1000,
     queryKey: ["space-weather", startDate, endDate, category],
-    queryFn: () => getSpaceWeather(startDate, endDate, category),
+    queryFn: (signal) => getSpaceWeather(startDate, endDate, category, signal),
     placeholderData: true,
   });
 }

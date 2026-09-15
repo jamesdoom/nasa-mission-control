@@ -7,7 +7,8 @@ export function useEarthObservation(
   date?: string,
 ) {
   return useApiQuery({
+    staleTime: 5 * 60 * 1000,
     queryKey: ["earth", collection, date ?? "latest"],
-    queryFn: () => getEarthObservation(collection, date),
+    queryFn: (signal) => getEarthObservation(collection, date, signal),
   });
 }

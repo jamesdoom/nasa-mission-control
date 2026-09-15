@@ -349,6 +349,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 81. **Complete — Streamlined home and trivia:** reduced repeated dashboard content, compacted trivia and moved source details after questions, clarified asteroid save states and Space Weather unavailable guidance. Includes refreshed validation evidence; participant research remains pending. See [update details](docs/streamlined-home-trivia.md).
 
+82. **Complete — Performance startup and requests:** deferred offline registration, added five-minute repeat-visit freshness for Earth/Media/Space Weather, paced retries, and cancelled requests without consumers while preserving shared requests. See [validation](docs/performance-startup-requests.md).
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.

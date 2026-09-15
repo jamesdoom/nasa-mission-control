@@ -5,10 +5,12 @@ import { readResponseJson } from "./responseStatus";
 export async function getAsteroids(
   startDate: string,
   endDate: string,
+  signal?: AbortSignal,
 ): Promise<AsteroidFeed> {
   const query = new URLSearchParams({ startDate, endDate });
   const response = await fetch(`/api/asteroids?${query}`, {
     headers: { accept: "application/json" },
+    ...(signal ? { signal } : {}),
   });
   if (!response.ok) {
     const fallback = "Mission Control could not retrieve asteroid encounters.";
