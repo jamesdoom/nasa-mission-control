@@ -1,0 +1,45 @@
+{
+  "status": "ok",
+  "checkedAt": "2026-09-16T17:10:27.419Z",
+  "baseUrl": "https://nasa-mission-control-alpha.vercel.app",
+  "scope": "read-only server checks with browser-local continuity writes only",
+  "steps": [
+    {
+      "name": "curated-mission-route",
+      "status": "ok",
+      "durationMs": 3230,
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok",
+          "durationMs": 3230
+        }
+      ]
+    },
+    {
+      "name": "flight-log-local-continuity",
+      "status": "ok",
+      "durationMs": 658,
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok",
+          "durationMs": 658
+        }
+      ]
+    },
+    {
+      "name": "legacy-comparison-redirect",
+      "status": "ok",
+      "durationMs": 315,
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "ok",
+          "durationMs": 315
+        }
+      ]
+    }
+  ],
+  "failures": []
+}

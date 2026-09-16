@@ -375,6 +375,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 94. **Complete — Launch polish phase 4:** add main-entry metadata and sharing previews, keep useful content reachable during NASA failures, and audit deployed mobile performance. Lab results and outstanding field-performance review are documented in [traffic readiness](docs/traffic-readiness.md).
 
+95. **In progress — Launch polish phase 5:** prepared participant tasks and the launch checklist, verified the deployed application baseline, and refreshed tested screenshots. Recruitment, actual sessions, and any resulting fixes/retests remain pending. See the [launch review](docs/launch-review.md).
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.

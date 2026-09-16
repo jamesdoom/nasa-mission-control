@@ -1,0 +1,56 @@
+{
+  "checkedAt": "2026-09-16T17:12:32.363Z",
+  "applicationRevision": "dac0fab",
+  "documentationRevision": "2ffcb16",
+  "asset": "assets/index-qZKIlPLk.js",
+  "pages": [
+    {
+      "path": "/",
+      "status": 200
+    },
+    {
+      "path": "/apod",
+      "status": 200
+    },
+    {
+      "path": "/missions",
+      "status": 200
+    },
+    {
+      "path": "/trivia",
+      "status": 200
+    },
+    {
+      "path": "/earth",
+      "status": 200
+    },
+    {
+      "path": "/space-weather",
+      "status": 200
+    },
+    {
+      "path": "/asteroids",
+      "status": 200
+    },
+    {
+      "path": "/media",
+      "status": 200
+    },
+    {
+      "path": "/favorites",
+      "status": 200
+    },
+    {
+      "path": "/about",
+      "status": 200
+    },
+    {
+      "path": "/search",
+      "status": 200
+    },
+    {
+      "path": "/investigate",
+      "status": 200
+    }
+  ]
+}

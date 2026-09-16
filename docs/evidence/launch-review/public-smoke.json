@@ -1,0 +1,164 @@
+{
+  "status": "ok",
+  "checkedAt": "2026-09-16T17:10:22.414Z",
+  "baseUrl": "https://nasa-mission-control-alpha.vercel.app",
+  "thresholds": {
+    "attempts": 2,
+    "requestTimeoutMs": 12000,
+    "healthLatencyMs": 1500,
+    "apiLatencyMs": 5000,
+    "pageLatencyMs": 3000
+  },
+  "cache": {
+    "originSamples": 2,
+    "originHits": 1,
+    "edgeSamples": 8,
+    "edgeHits": 2
+  },
+  "results": [
+    {
+      "name": "api-health",
+      "pathname": "/api/health",
+      "expectedStatus": 200,
+      "maxLatencyMs": 1500,
+      "passed": true,
+      "attempts": [
+        {
+          "passed": true,
+          "status": 200,
+          "durationMs": 1089,
+          "contractValid": true,
+          "originCache": null,
+          "edgeCache": "MISS",
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "apod-archive",
+      "pathname": "/api/apod?date=2024-01-01",
+      "expectedStatus": 200,
+      "maxLatencyMs": 5000,
+      "passed": true,
+      "attempts": [
+        {
+          "passed": true,
+          "status": 200,
+          "durationMs": 149,
+          "contractValid": true,
+          "originCache": "MISS",
+          "edgeCache": "HIT",
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "media-search",
+      "pathname": "/api/media/search?q=apollo&mediaType=image&page=1",
+      "expectedStatus": 200,
+      "maxLatencyMs": 5000,
+      "passed": true,
+      "attempts": [
+        {
+          "passed": true,
+          "status": 200,
+          "durationMs": 51,
+          "contractValid": true,
+          "originCache": "HIT",
+          "edgeCache": "HIT",
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "api-validation",
+      "pathname": "/api/asteroids?startDate=not-a-date",
+      "expectedStatus": 400,
+      "maxLatencyMs": 1500,
+      "passed": true,
+      "attempts": [
+        {
+          "passed": true,
+          "status": 400,
+          "durationMs": 61,
+          "contractValid": true,
+          "originCache": null,
+          "edgeCache": "MISS",
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "spa-dashboard",
+      "pathname": "/",
+      "expectedStatus": 200,
+      "maxLatencyMs": 3000,
+      "passed": true,
+      "attempts": [
+        {
+          "passed": true,
+          "status": 200,
+          "durationMs": 95,
+          "contractValid": true,
+          "originCache": null,
+          "edgeCache": "MISS",
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "spa-missions-artemis-i",
+      "pathname": "/missions/artemis-i",
+      "expectedStatus": 200,
+      "maxLatencyMs": 3000,
+      "passed": true,
+      "attempts": [
+        {
+          "passed": true,
+          "status": 200,
+          "durationMs": 66,
+          "contractValid": true,
+          "originCache": null,
+          "edgeCache": "MISS",
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "spa-favorites",
+      "pathname": "/favorites",
+      "expectedStatus": 200,
+      "maxLatencyMs": 3000,
+      "passed": true,
+      "attempts": [
+        {
+          "passed": true,
+          "status": 200,
+          "durationMs": 74,
+          "contractValid": true,
+          "originCache": null,
+          "edgeCache": "MISS",
+          "error": null
+        }
+      ]
+    },
+    {
+      "name": "spa-about",
+      "pathname": "/about",
+      "expectedStatus": 200,
+      "maxLatencyMs": 3000,
+      "passed": true,
+      "attempts": [
+        {
+          "passed": true,
+          "status": 200,
+          "durationMs": 86,
+          "contractValid": true,
+          "originCache": null,
+          "edgeCache": "MISS",
+          "error": null
+        }
+      ]
+    }
+  ]
+}

@@ -2,6 +2,10 @@
 
 Status: in progress. Automated validation and refreshed captures prepared on 2026-09-15; real participant sessions and any resulting fixes/retests remain pending. Application baseline: 1d79efc. Do not mark this phase complete based on automated results alone.
 
+## Current continuation
+
+On September 16, 2026, the product owner confirmed that participants still need to be arranged. The [launch review](launch-review.md) records fresh technical verification and refreshed screenshots against application baseline `dac0fab`, plus a [shareable participant task sheet](participant-task-sheet.md). The earlier evidence below is historical. Actual sessions, observed fixes, and participant retests remain pending.
+
 ## Maintainer evidence
 
 The initial deterministic browser suite passed 42 tests, with one production-only test skipped. After correcting capture setup, the refresh passed 39 tests and encountered three screenshot file-write errors; all three passed on a serial retry. It covers APOD date URLs and error recovery; saving and finding APOD in Flight Log; mission filtering and record navigation; trivia scoring, explanations, and session restoration; mobile navigation, keyboard focus, reflow, forced colors, and reduced motion. Screenshots were regenerated using the tested flows. Full-page portfolio captures now reset scroll and transient focus before capture so sticky headers do not appear mid-page. Typecheck, lint, unit/component/accessibility tests, production build, compressed asset budgets, and offline-shell verification passed.
