@@ -1,0 +1,66 @@
+{
+  "checkedAt": "2026-09-16T16:54:06.285Z",
+  "commit": "dac0fab",
+  "results": [
+    {
+      "path": "/",
+      "status": 200,
+      "title": "Explore space"
+    },
+    {
+      "path": "/apod",
+      "status": 200,
+      "title": "Astronomy Picture of the Day"
+    },
+    {
+      "path": "/missions",
+      "status": 200,
+      "title": "Mission Archive"
+    },
+    {
+      "path": "/trivia",
+      "status": 200,
+      "title": "Space Trivia"
+    },
+    {
+      "path": "/earth",
+      "status": 200,
+      "title": "Earth Observatory"
+    },
+    {
+      "path": "/space-weather",
+      "status": 200,
+      "title": "Space Weather Center"
+    },
+    {
+      "path": "/asteroids",
+      "status": 200,
+      "title": "Asteroid Watch"
+    },
+    {
+      "path": "/media",
+      "status": 200,
+      "title": "NASA Media Library"
+    },
+    {
+      "path": "/favorites",
+      "status": 200,
+      "title": "Personal Flight Log"
+    },
+    {
+      "path": "/about",
+      "status": 200,
+      "title": "About"
+    },
+    {
+      "path": "/search",
+      "status": 200,
+      "title": "Unified Discovery Index"
+    },
+    {
+      "path": "/investigate",
+      "status": 200,
+      "title": "Investigation Workspace"
+    }
+  ]
+}

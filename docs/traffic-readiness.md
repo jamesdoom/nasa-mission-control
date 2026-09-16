@@ -32,6 +32,12 @@ The seven existing unthrottled production scenarios passed their stability and r
 
 [Core Web Vitals guidance](https://web.dev/articles/vitals) defines good LCP at 2.5 seconds or less, INP at 200 milliseconds or less, and CLS at 0.1 or less, assessed at the 75th percentile separately for mobile and desktop. These navigation probes do not measure field INP, and no real-user percentile dataset was inspected. Existing Speed Insights instrumentation remains unchanged. Review its mobile/desktop field distribution as incoming traffic supplies sufficient samples; do not label this phase a real-user Core Web Vitals pass. Participant validation and traffic promotion remain phase 5 work.
 
+## Deployed follow-up
+
+The public deployment of `dac0fab` was verified after push. All twelve main routes returned 200 and the matching initial HTML title and social tags; their script hash matched the local production build. [Metadata evidence](evidence/traffic-readiness/deployed-metadata.json).
+
+The repeated throttled production probe measured homepage LCP **7.396 s**, dated APOD LCP **2.160 s**, and simulated-failure LCP **1.972 s**. All three recorded **CLS 0**, no pending images or loading panels at the observation cutoff, and the failure scenario successfully opened Mission Archive. The deployed error-layout correction is confirmed. The homepage timing varied substantially from the baseline and remains outside the good target; this run does not establish whether the difference came from the network, NASA response, image delivery, or application work. It is not evidence of a performance pass. Investigate slow-homepage delivery before a broad traffic campaign. [Deployed slow-run evidence](evidence/traffic-readiness/slow-deployed-after.json).
+
 ## Verification and reproduction
 
 Typecheck, lint, 183 unit/component tests (including accessibility checks), the production build, and all 48 browser tests passed. Metadata tests verify navigation replacement, initial HTML without JavaScript, preview asset existence, and routing configuration. Compressed assets remain within the existing budgets; offline-shell checks pass. Mobile failure screenshots were visually inspected. The React review found no new fetch waterfall, dependency, or broad rerender subscription.
