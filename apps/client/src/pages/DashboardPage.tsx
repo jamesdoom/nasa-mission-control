@@ -52,8 +52,12 @@ export function DashboardPage() {
           </div>
 
           {!online && !query.data ? (
-            <div className="state-panel">
+            <div className="briefing-unavailable">
               <p>No daily image is loaded. Reconnect, then reload the page.</p>
+              <p>
+                <Link to="/missions">Explore mission histories</Link> or{" "}
+                <Link to="/trivia">try space trivia</Link> while offline.
+              </p>
             </div>
           ) : query.isPending ? (
             <LoadingState
@@ -61,11 +65,18 @@ export function DashboardPage() {
               detail="Waiting for the APOD response; no observation is available yet."
             />
           ) : query.isError ? (
-            <ErrorState
-              message={error?.message ?? "An unexpected error occurred."}
-              requestId={error?.requestId}
-              retry={() => void query.refetch()}
-            />
+            <div className="briefing-unavailable">
+              <ErrorState
+                message={error?.message ?? "An unexpected error occurred."}
+                requestId={error?.requestId}
+                retry={() => void query.refetch()}
+              />
+              <p>
+                You can still{" "}
+                <Link to="/missions">explore mission histories</Link> or{" "}
+                <Link to="/trivia">try space trivia</Link>.
+              </p>
+            </div>
           ) : (
             <>
               <DataStatus

@@ -4,6 +4,8 @@ import { MarkIcon, SearchIcon } from "./Icons";
 import { useNetworkStatus } from "../hooks/useNetworkStatus";
 import { ExplorationContinuity } from "./ExplorationContinuity";
 import { FieldConsoleStatus } from "./FieldConsoleStatus";
+import pageMetadata from "../data/pageMetadata.json";
+import { updatePageMetadata } from "../utils/pageMetadata";
 
 type ModuleLink = { to: string; label: string };
 type ModuleGroup = { label: string; links: readonly ModuleLink[] };
@@ -37,19 +39,10 @@ const moduleGroups: readonly ModuleGroup[] = [
 const moduleLinks = moduleGroups.flatMap((group) => group.links);
 
 const routeTitles: Record<string, string> = {
-  "/": "Dashboard",
-  "/search": "Unified Discovery Index",
-  "/investigate": "Investigation Workspace",
-  "/apod": "Astronomy Picture of the Day",
-  "/asteroids": "Asteroid Watch",
-  "/media": "NASA Media Library",
-  "/space-weather": "Space Weather Center",
-  "/earth": "Earth Observatory",
-  "/missions": "Mission Archive",
-  "/trivia": "Space Trivia",
+  ...Object.fromEntries(
+    Object.entries(pageMetadata).map(([path, entry]) => [path, entry.title]),
+  ),
   "/stories": "Science Story",
-  "/favorites": "Personal Flight Log",
-  "/about": "About",
 };
 
 function titleForPath(pathname: string): string {
@@ -178,6 +171,7 @@ export function AppShell() {
   useEffect(() => {
     const title = titleForPath(location.pathname);
     document.title = `${title} | NASA Mission Control`;
+    updatePageMetadata(location.pathname, title);
     setOpen(false);
     setModulesOpen(false);
     if (previousPath.current !== location.pathname) {

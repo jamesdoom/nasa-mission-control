@@ -1,0 +1,50 @@
+{
+  "/": {
+    "title": "Explore space",
+    "description": "Explore NASA pictures, mission histories, Earth observations, and space trivia in an independent educational app."
+  },
+  "/apod": {
+    "title": "Astronomy Picture of the Day",
+    "description": "Browse NASA astronomy pictures by archive date, read the full explanation, and save discoveries in your browser."
+  },
+  "/missions": {
+    "title": "Mission Archive",
+    "description": "Explore source-checked histories of ten landmark space missions, from Apollo to Webb."
+  },
+  "/trivia": {
+    "title": "Space Trivia",
+    "description": "Test your space knowledge with NASA-sourced questions, explanations, and references."
+  },
+  "/earth": {
+    "title": "Earth Observatory",
+    "description": "Explore archived DSCOVR EPIC Earth imagery and MODIS global composites. These observations are not live video."
+  },
+  "/space-weather": {
+    "title": "Space Weather Center",
+    "description": "Browse NASA DONKI solar and geomagnetic observations with research context. Not an operational forecast."
+  },
+  "/asteroids": {
+    "title": "Asteroid Watch",
+    "description": "Explore NASA near-Earth asteroid approach records, distances, and sizes with responsible risk context."
+  },
+  "/media": {
+    "title": "NASA Media Library",
+    "description": "Search NASA photography, video, and audio with original archive metadata."
+  },
+  "/favorites": {
+    "title": "Personal Flight Log",
+    "description": "Reopen discoveries saved in this browser. Saved records are local and are not shared through this link."
+  },
+  "/about": {
+    "title": "About",
+    "description": "Learn about this independent NASA-data explorer, its sources, accessibility, and reliability."
+  },
+  "/search": {
+    "title": "Unified Discovery Index",
+    "description": "Search NASA imagery, mission records, and educational material across the app."
+  },
+  "/investigate": {
+    "title": "Investigation Workspace",
+    "description": "Explore related NASA records and sources in an investigation workspace."
+  }
+}

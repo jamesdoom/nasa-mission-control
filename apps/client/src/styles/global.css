@@ -7123,7 +7123,8 @@ main :is(a, button, input, select, textarea, summary) {
 .dashboard-first-look .apod-copy h2 {
   font-size: clamp(1.4rem, 2vw, 2rem);
 }
-.dashboard-first-look .briefing .state-panel--loading {
+.dashboard-first-look .briefing .state-panel--loading,
+.dashboard-first-look .briefing-unavailable {
   min-height: 680px;
 }
 @media (max-width: 600px) {
@@ -7258,4 +7259,11 @@ main :is(a, button, input, select, textarea, summary) {
   .button:active {
     transform: none;
   }
+}
+
+.dashboard-first-look .briefing-unavailable {
+  padding-block: 2rem;
+}
+.dashboard-first-look .briefing-unavailable > p {
+  margin-top: 1.5rem;
 }

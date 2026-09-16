@@ -1,0 +1,37 @@
+{
+  "checkedAt": "2026-09-16T16:42:04.492Z",
+  "base": "https://nasa-mission-control-alpha.vercel.app",
+  "scope": "Lab only: 390px DPR2, 150ms latency, 1.6Mbps download, 4x CPU slowdown, fresh contexts, reduced motion, 12s observation after heading. No field INP measurement.",
+  "results": [
+    {
+      "path": "/",
+      "fail": false,
+      "status": 200,
+      "lcpMs": 4320,
+      "cls": 0,
+      "pendingImages": 0,
+      "loading": 0,
+      "curatedReachable": null
+    },
+    {
+      "path": "/apod?date=2024-01-01",
+      "fail": false,
+      "status": 200,
+      "lcpMs": 2100,
+      "cls": 0,
+      "pendingImages": 0,
+      "loading": 0,
+      "curatedReachable": null
+    },
+    {
+      "path": "/",
+      "fail": true,
+      "status": 200,
+      "lcpMs": 1820,
+      "cls": 0.2373242314722266,
+      "pendingImages": 0,
+      "loading": 0,
+      "curatedReachable": true
+    }
+  ]
+}

@@ -1,0 +1,282 @@
+{
+  "status": "ok",
+  "checkedAt": "2026-09-16T16:39:10.346Z",
+  "baseUrl": "https://nasa-mission-control-alpha.vercel.app",
+  "observationMs": 6000,
+  "measurementScope": "Fresh browser contexts; reduced motion; no CPU/network throttling. LCP is provisional within the observation window, not real-user Core Web Vitals.",
+  "budgets": {
+    "ttfbMs": 1500,
+    "fcpMs": 3000,
+    "headingReadyMs": 5000,
+    "cls": 0.1,
+    "sameOriginTransferKb": 1200
+  },
+  "results": [
+    {
+      "name": "dashboard-desktop",
+      "url": "https://nasa-mission-control-alpha.vercel.app/",
+      "status": 200,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "metrics": {
+        "connectionAndResponseMs": 98.9,
+        "ttfbMs": 30.5,
+        "domContentLoadedMs": 385.1,
+        "fcpMs": 552,
+        "lcpMs": 2192,
+        "cls": 0,
+        "headingReadyMs": 522.3
+      },
+      "contentReadiness": {
+        "deferredImages": 0,
+        "pendingImages": 0,
+        "brokenImages": 0,
+        "loadingPanels": 0
+      },
+      "horizontalOverflow": false,
+      "resources": {
+        "sameOriginTransferKb": 526.4,
+        "sameOriginResourceCount": 10,
+        "scriptCount": 2,
+        "imageCount": 0
+      },
+      "consoleErrors": [],
+      "consoleDiagnostics": [],
+      "pageErrors": [],
+      "sameOriginResourceErrors": [],
+      "thirdPartyResourceErrors": [],
+      "failedSameOriginResources": [],
+      "failures": []
+    },
+    {
+      "name": "dashboard-mobile",
+      "url": "https://nasa-mission-control-alpha.vercel.app/",
+      "status": 200,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "metrics": {
+        "connectionAndResponseMs": 103.2,
+        "ttfbMs": 31.6,
+        "domContentLoadedMs": 210.6,
+        "fcpMs": 312,
+        "lcpMs": 848,
+        "cls": 0,
+        "headingReadyMs": 310.8
+      },
+      "contentReadiness": {
+        "deferredImages": 0,
+        "pendingImages": 0,
+        "brokenImages": 0,
+        "loadingPanels": 0
+      },
+      "horizontalOverflow": false,
+      "resources": {
+        "sameOriginTransferKb": 339.5,
+        "sameOriginResourceCount": 10,
+        "scriptCount": 2,
+        "imageCount": 0
+      },
+      "consoleErrors": [],
+      "consoleDiagnostics": [],
+      "pageErrors": [],
+      "sameOriginResourceErrors": [],
+      "thirdPartyResourceErrors": [],
+      "failedSameOriginResources": [],
+      "failures": []
+    },
+    {
+      "name": "apod-mobile",
+      "url": "https://nasa-mission-control-alpha.vercel.app/apod",
+      "status": 200,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "metrics": {
+        "connectionAndResponseMs": 109,
+        "ttfbMs": 30.7,
+        "domContentLoadedMs": 210.2,
+        "fcpMs": 232,
+        "lcpMs": 344,
+        "cls": 0,
+        "headingReadyMs": 338.5
+      },
+      "contentReadiness": {
+        "deferredImages": 0,
+        "pendingImages": 0,
+        "brokenImages": 0,
+        "loadingPanels": 0
+      },
+      "horizontalOverflow": false,
+      "resources": {
+        "sameOriginTransferKb": 346.9,
+        "sameOriginResourceCount": 20,
+        "scriptCount": 6,
+        "imageCount": 0
+      },
+      "consoleErrors": [],
+      "consoleDiagnostics": [],
+      "pageErrors": [],
+      "sameOriginResourceErrors": [],
+      "thirdPartyResourceErrors": [],
+      "failedSameOriginResources": [],
+      "failures": []
+    },
+    {
+      "name": "about-desktop",
+      "url": "https://nasa-mission-control-alpha.vercel.app/about",
+      "status": 200,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "metrics": {
+        "connectionAndResponseMs": 94.8,
+        "ttfbMs": 28.3,
+        "domContentLoadedMs": 203.5,
+        "fcpMs": 264,
+        "lcpMs": 416,
+        "cls": 0.0006418595679012346,
+        "headingReadyMs": 338.1
+      },
+      "contentReadiness": {
+        "deferredImages": 0,
+        "pendingImages": 0,
+        "brokenImages": 0,
+        "loadingPanels": 0
+      },
+      "horizontalOverflow": false,
+      "resources": {
+        "sameOriginTransferKb": 526.9,
+        "sameOriginResourceCount": 10,
+        "scriptCount": 3,
+        "imageCount": 0
+      },
+      "consoleErrors": [],
+      "consoleDiagnostics": [],
+      "pageErrors": [],
+      "sameOriginResourceErrors": [],
+      "thirdPartyResourceErrors": [],
+      "failedSameOriginResources": [],
+      "failures": []
+    },
+    {
+      "name": "mission-archive-desktop",
+      "url": "https://nasa-mission-control-alpha.vercel.app/missions",
+      "status": 200,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "metrics": {
+        "connectionAndResponseMs": 100.6,
+        "ttfbMs": 29.6,
+        "domContentLoadedMs": 234.2,
+        "fcpMs": 308,
+        "lcpMs": 596,
+        "cls": 0,
+        "headingReadyMs": 403.7
+      },
+      "contentReadiness": {
+        "deferredImages": 6,
+        "pendingImages": 0,
+        "brokenImages": 0,
+        "loadingPanels": 0
+      },
+      "horizontalOverflow": false,
+      "resources": {
+        "sameOriginTransferKb": 795.1,
+        "sameOriginResourceCount": 15,
+        "scriptCount": 5,
+        "imageCount": 4
+      },
+      "consoleErrors": [],
+      "consoleDiagnostics": [],
+      "pageErrors": [],
+      "sameOriginResourceErrors": [],
+      "thirdPartyResourceErrors": [],
+      "failedSameOriginResources": [],
+      "failures": []
+    },
+    {
+      "name": "mission-archive-mobile",
+      "url": "https://nasa-mission-control-alpha.vercel.app/missions",
+      "status": 200,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "metrics": {
+        "connectionAndResponseMs": 100,
+        "ttfbMs": 30.3,
+        "domContentLoadedMs": 190.1,
+        "fcpMs": 376,
+        "lcpMs": 376,
+        "cls": 0,
+        "headingReadyMs": 351.8
+      },
+      "contentReadiness": {
+        "deferredImages": 9,
+        "pendingImages": 0,
+        "brokenImages": 0,
+        "loadingPanels": 0
+      },
+      "horizontalOverflow": false,
+      "resources": {
+        "sameOriginTransferKb": 428.2,
+        "sameOriginResourceCount": 12,
+        "scriptCount": 5,
+        "imageCount": 1
+      },
+      "consoleErrors": [],
+      "consoleDiagnostics": [],
+      "pageErrors": [],
+      "sameOriginResourceErrors": [],
+      "thirdPartyResourceErrors": [],
+      "failedSameOriginResources": [],
+      "failures": []
+    },
+    {
+      "name": "mission-detail-desktop",
+      "url": "https://nasa-mission-control-alpha.vercel.app/missions/artemis-i",
+      "status": 200,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "metrics": {
+        "connectionAndResponseMs": 97.9,
+        "ttfbMs": 29.5,
+        "domContentLoadedMs": 326.4,
+        "fcpMs": 580,
+        "lcpMs": 684,
+        "cls": 0,
+        "headingReadyMs": 500.8
+      },
+      "contentReadiness": {
+        "deferredImages": 0,
+        "pendingImages": 0,
+        "brokenImages": 0,
+        "loadingPanels": 0
+      },
+      "horizontalOverflow": false,
+      "resources": {
+        "sameOriginTransferKb": 601.1,
+        "sameOriginResourceCount": 15,
+        "scriptCount": 8,
+        "imageCount": 1
+      },
+      "consoleErrors": [],
+      "consoleDiagnostics": [],
+      "pageErrors": [],
+      "sameOriginResourceErrors": [],
+      "thirdPartyResourceErrors": [],
+      "failedSameOriginResources": [],
+      "failures": []
+    }
+  ]
+}

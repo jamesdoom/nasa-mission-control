@@ -373,6 +373,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 93. **Complete — Phase 3 interaction-flow follow-up:** moved supporting explanations below data results, restored focus when advancing trivia, and refined save-hover and reduced-motion pressed states. All 48 browser tests pass. See [interaction verification](docs/interaction-polish.md).
 
+94. **Complete — Launch polish phase 4:** add main-entry metadata and sharing previews, keep useful content reachable during NASA failures, and audit deployed mobile performance. Lab results and outstanding field-performance review are documented in [traffic readiness](docs/traffic-readiness.md).
+
 ## Screenshots
 
 The captures below use deterministic mocked NASA content. Regenerate them with `npm run screenshots:update` without consuming NASA API quota.

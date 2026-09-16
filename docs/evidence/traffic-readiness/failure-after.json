@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-09-16T16:48:19.534Z",
+  "base": "http://127.0.0.1:5175",
+  "scope": "Lab only: 390px DPR2, 150ms latency, 1.6Mbps download, 4x CPU slowdown, fresh contexts, reduced motion, 12s observation after heading. No field INP measurement.",
+  "results": [
+    {
+      "path": "/",
+      "fail": true,
+      "status": 200,
+      "lcpMs": 2272,
+      "cls": 0,
+      "pendingImages": 0,
+      "loading": 0,
+      "curatedReachable": true
+    }
+  ]
+}

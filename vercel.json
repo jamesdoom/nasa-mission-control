@@ -4,6 +4,50 @@
   "outputDirectory": "apps/client/dist",
   "rewrites": [
     {
+      "source": "/apod",
+      "destination": "/_entries/apod.html"
+    },
+    {
+      "source": "/missions",
+      "destination": "/_entries/missions.html"
+    },
+    {
+      "source": "/trivia",
+      "destination": "/_entries/trivia.html"
+    },
+    {
+      "source": "/earth",
+      "destination": "/_entries/earth.html"
+    },
+    {
+      "source": "/space-weather",
+      "destination": "/_entries/space-weather.html"
+    },
+    {
+      "source": "/asteroids",
+      "destination": "/_entries/asteroids.html"
+    },
+    {
+      "source": "/media",
+      "destination": "/_entries/media.html"
+    },
+    {
+      "source": "/favorites",
+      "destination": "/_entries/favorites.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/_entries/about.html"
+    },
+    {
+      "source": "/search",
+      "destination": "/_entries/search.html"
+    },
+    {
+      "source": "/investigate",
+      "destination": "/_entries/investigate.html"
+    },
+    {
       "source": "/:path((?!api(?:/|$)).*)",
       "destination": "/index.html"
     }
