@@ -155,9 +155,6 @@ export function SpaceWeatherPage() {
           ))}
         </fieldset>
       </section>
-      <section className="section">
-        <DataContextPanel kind="donki" />
-      </section>
       <section
         className="section weather-guide"
         aria-labelledby="weather-guide-title"
@@ -292,6 +289,9 @@ export function SpaceWeatherPage() {
             </div>
           </>
         )}
+      </section>
+      <section className="section">
+        <DataContextPanel kind="donki" />
       </section>
       <section className="section connected-section">
         <ContinueExploring links={weatherExplorationLinks} />

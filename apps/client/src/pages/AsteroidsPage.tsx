@@ -131,7 +131,6 @@ export function AsteroidsPage() {
         </button>
         <small>NASA NeoWs supports ranges no more than seven days apart.</small>
       </form>
-      <DataContextPanel kind="asteroids" />
 
       {query.isPending ? (
         <LoadingState
@@ -239,6 +238,7 @@ export function AsteroidsPage() {
           )}
         </>
       )}
+      <DataContextPanel kind="asteroids" />
     </section>
   );
 }

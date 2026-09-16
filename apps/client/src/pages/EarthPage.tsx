@@ -126,9 +126,6 @@ export function EarthPage() {
           ))}
         </fieldset>
       </section>
-      <section className="section">
-        <DataContextPanel kind="epic" />
-      </section>
       <section className="section earth-results" aria-live="polite">
         {query.isPending ? (
           <LoadingState
@@ -228,6 +225,9 @@ export function EarthPage() {
           </p>
         </section>
       )}
+      <section className="section">
+        <DataContextPanel kind="epic" />
+      </section>
       <section className="section connected-section">
         <ContinueExploring links={earthExplorationLinks} />
       </section>

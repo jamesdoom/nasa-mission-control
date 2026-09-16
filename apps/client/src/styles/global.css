@@ -7236,3 +7236,26 @@ main :is(a, button, input, select, textarea, summary) {
   float: none;
   margin-top: 0.5rem;
 }
+
+@media (hover: hover) and (pointer: fine) {
+  :is(.apod-save, .mission-save, .encounter-save):hover {
+    border-color: var(--cyan);
+    background-color: rgba(72, 217, 239, 0.1);
+  }
+}
+:is(.apod-save, .mission-save, .encounter-save) {
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease;
+}
+.trivia-question > h2:focus,
+.trivia-complete > h2:focus {
+  outline: 2px solid var(--cyan);
+  outline-offset: -4px;
+  scroll-margin-top: 6rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .button:active {
+    transform: none;
+  }
+}

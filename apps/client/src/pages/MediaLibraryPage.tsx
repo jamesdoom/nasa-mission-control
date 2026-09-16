@@ -102,9 +102,6 @@ export function MediaLibraryPage() {
           </fieldset>
         </form>
       </section>
-      <section className="section">
-        <DataContextPanel kind="media" />
-      </section>
       <section className="section media-results" aria-live="polite">
         <div className="section-heading">
           <div>
@@ -174,6 +171,9 @@ export function MediaLibraryPage() {
             </nav>
           </>
         )}
+      </section>
+      <section className="section">
+        <DataContextPanel kind="media" />
       </section>
     </>
   );

@@ -1,5 +1,23 @@
 import { expect, test, type Page } from "@playwright/test";
 
+test("moves keyboard focus to the next trivia question with reduced motion", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/trivia");
+  const answer = page.getByRole("button", { name: /Sea of Tranquility/ });
+  await answer.focus();
+  await page.keyboard.press("Enter");
+  const next = page.getByRole("button", { name: "Next question" });
+  await next.focus();
+  await page.keyboard.press("Enter");
+  const heading = page.locator(".trivia-question > h2");
+  await expect(heading).toBeFocused();
+  await expect(heading).not.toContainText("Eagle land");
+  await page.keyboard.press("Tab");
+  await expect(page.locator(".trivia-choices button").first()).toBeFocused();
+});
+
 test("shows the complete APOD story on the homepage and archive", async ({
   page,
 }) => {

@@ -15,3 +15,13 @@ Trivia identifies the chosen incorrect answer and the correct answer in text, in
 - React review: simplified APOD state, preserved semantic controls, and added no fetches, effects, or dependencies. Existing loading/recovery and save journeys remain covered by the browser suite.
 
 Participant validation remains scheduled for phase 5.
+
+## Interaction-flow follow-up — September 16
+
+Supporting data explanations now follow results on Media Library, Earth, Space Weather, and Asteroid Watch. Filter controls lead directly into results, loading, or recovery states. Scientific context remains present, and Space Weather's research-use notice remains in its header.
+
+Trivia moves focus to the next question after advancing, to the completion heading after finishing, and back to the question after restarting. Focus is only moved following these explicit actions. The question heading has a visible focus outline, and Tab advances into its answer choices.
+
+Save controls receive subtle 140ms color/border feedback on hover-capable fine pointers. Reduced-motion mode retains the global near-zero transition duration and now also suppresses the button's pressed transform.
+
+Verification: strict types, lint, unit/component/accessibility tests, production build, compressed asset budgets, and all 48 browser tests pass. A new keyboard regression exercises answering, advancing, focus placement, and the next Tab destination with reduced motion. Existing tests cover filtering, saving, reopening, restoration, and loading/error recovery. Maintainer interaction checks do not replace the planned participant sessions.

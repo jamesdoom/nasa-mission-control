@@ -4,7 +4,7 @@ import {
   explorationLink,
 } from "../utils/explorationContext";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
   loadTriviaQuestions,
@@ -109,6 +109,14 @@ export function TriviaPage() {
   const [bestStreak, setBestStreak] = useState(readBestStreak);
   const [complete, setComplete] = useState(resume?.complete ?? false);
   const question = questions[index];
+  const questionHeading = useRef<HTMLHeadingElement>(null);
+  const shouldFocusQuestion = useRef(false);
+  useEffect(() => {
+    if (shouldFocusQuestion.current) {
+      questionHeading.current?.focus();
+      shouldFocusQuestion.current = false;
+    }
+  }, [index, complete]);
 
   useEffect(() => {
     let active = true;
@@ -235,6 +243,7 @@ export function TriviaPage() {
   }
 
   function next() {
+    shouldFocusQuestion.current = true;
     if (index === questions.length - 1) {
       setComplete(true);
       return;
@@ -244,6 +253,7 @@ export function TriviaPage() {
   }
 
   function restart() {
+    shouldFocusQuestion.current = true;
     setIndex(0);
     setSelected(null);
     setScore(0);
@@ -350,7 +360,7 @@ export function TriviaPage() {
             <span>
               {score}/{questions.length}
             </span>
-            <h2>
+            <h2 ref={questionHeading} tabIndex={-1}>
               {score === questions.length
                 ? "Flawless trajectory"
                 : score > 0
@@ -371,7 +381,9 @@ export function TriviaPage() {
                 {difficulty} // {categoryLabels[question.category]}
               </span>
             </header>
-            <h2>{question.prompt}</h2>
+            <h2 ref={questionHeading} tabIndex={-1}>
+              {question.prompt}
+            </h2>
             <div className="trivia-choices">
               {question.choices.map((choice, choiceIndex) => {
                 const answered = selected !== null;
