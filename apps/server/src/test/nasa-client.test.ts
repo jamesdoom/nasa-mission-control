@@ -12,7 +12,8 @@ describe("NasaClient", () => {
           title: "Orbit",
           explanation: "Test",
           media_type: "image",
-          url: "https://example.com/image.jpg",
+          url: "https://science.nasa.gov/image-article/example/",
+          hdurl: "https://example.com/image.jpg",
         }),
         { status: 200, headers: { "content-type": "application/json" } },
       ),
@@ -26,8 +27,8 @@ describe("NasaClient", () => {
     expect(log).toHaveBeenCalledWith(
       "upstream.request_complete",
       expect.objectContaining({
-        upstream: "api.nasa.gov",
-        upstreamPath: "/planetary/apod",
+        upstream: "science.nasa.gov",
+        upstreamPath: "/wp-json/wp/v2/apod-basic/240101",
         status: 200,
         outcome: "success",
       }),
@@ -170,7 +171,9 @@ describe("NasaClient", () => {
           title: "Orbit",
           explanation: "Test",
           media_type: "video",
-          url: "https://youtube.com/embed/example",
+          url: "https://science.nasa.gov/image-article/example/",
+          basic_html:
+            '<iframe src="https://youtube.com/embed/example"></iframe>',
           thumbnail_url: "https://example.com/thumb.jpg",
         }),
         { status: 200, headers: { "content-type": "application/json" } },
@@ -187,8 +190,10 @@ describe("NasaClient", () => {
       hdUrl: null,
     });
     const url = fetchImpl.mock.calls[0]?.[0] as URL;
-    expect(url.searchParams.get("api_key")).toBe("secret");
-    expect(url.searchParams.get("thumbs")).toBe("true");
+    expect(url.href).toBe(
+      "https://science.nasa.gov/wp-json/wp/v2/apod-basic/240101",
+    );
+    expect(url.search).toBe("");
   });
 
   it("accepts NASA video records with an empty thumbnail URL", async () => {
@@ -200,7 +205,9 @@ describe("NasaClient", () => {
           explanation:
             "An airplane contrail crosses the partially eclipsed Sun.",
           media_type: "video",
-          url: "https://apod.nasa.gov/apod/image/2608/perseids_eclipse_mystery.mp4",
+          url: "https://science.nasa.gov/image-article/example/",
+          basic_html:
+            '<video><source src="https://assets.science.nasa.gov/example.mp4"></video>',
           thumbnail_url: "",
         }),
         { status: 200, headers: { "content-type": "application/json" } },

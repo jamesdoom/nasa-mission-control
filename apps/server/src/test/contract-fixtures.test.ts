@@ -122,7 +122,7 @@ describe("sanitized NASA contract fixtures", () => {
         name: "APOD",
         payloads: [without(fixtures.apod, ["media_type"])],
         invoke: (nasa) => nasa.getApod("2024-01-01"),
-        upstreamPath: "/planetary/apod",
+        upstreamPath: "/wp-json/wp/v2/apod-basic/240101",
         issuePath: "media_type",
       },
       {

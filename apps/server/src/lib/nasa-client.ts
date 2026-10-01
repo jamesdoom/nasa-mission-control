@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { load } from "cheerio";
 import type {
   Apod,
   Asteroid,
@@ -27,12 +28,20 @@ const nasaApodSchema = z.object({
   date: z.string(),
   title: z.string(),
   explanation: z.string(),
-  media_type: z.enum(["image", "video"]),
+  media_type: z.enum(["image", "video", "iframe"]),
   url: z.string().url(),
-  hdurl: z.string().url().optional(),
-  thumbnail_url: z.union([z.string().url(), z.literal("")]).optional(),
-  copyright: z.string().optional(),
+  hdurl: z.string().url().nullish(),
+  basic_html: z.string().optional(),
+  copyright: z.string().nullish(),
 });
+
+function apodText(html: string): string {
+  const document = load(html);
+  document("script, style").remove();
+  document("br").replaceWith(" ");
+  document("p, div").append(" ");
+  return document.root().text().replace(/\s+/g, " ").trim();
+}
 
 const epicImageSchema = z.object({
   identifier: z.string().min(1),
@@ -314,12 +323,10 @@ export class NasaClient {
   }
 
   async getApod(date: string): Promise<Apod> {
-    const url = new URL("https://api.nasa.gov/planetary/apod");
-    url.search = new URLSearchParams({
-      api_key: this.options.apiKey,
-      date,
-      thumbs: "true",
-    }).toString();
+    const compactDate = date.replaceAll("-", "").slice(2);
+    const url = new URL(
+      `https://science.nasa.gov/wp-json/wp/v2/apod-basic/${compactDate}`,
+    );
 
     let response: Response;
     try {
@@ -373,16 +380,35 @@ export class NasaClient {
       );
     }
     const item = parsed.data;
-    const copyright = item.copyright?.trim();
+    // The migrated API's url is the article, and video hdurl is a poster.
+    const document = load(item.basic_html ?? "");
+    const mediaUrl =
+      item.media_type === "image"
+        ? item.hdurl
+        : document("video[src], video source[src], iframe[src]")
+            .first()
+            .attr("src");
+    const media = z
+      .string()
+      .url()
+      .refine((value) => ["https:", "http:"].includes(new URL(value).protocol))
+      .safeParse(mediaUrl?.startsWith("//") ? `https:${mediaUrl}` : mediaUrl);
+    if (!media.success || item.date !== date) {
+      throw new HttpError(
+        502,
+        "UPSTREAM_UNAVAILABLE",
+        "NASA returned an incomplete or mismatched APOD record.",
+      );
+    }
+    const copyright = item.copyright ? apodText(item.copyright) : null;
     return {
       date: item.date,
-      title: item.title,
-      explanation: item.explanation,
-      mediaType: item.media_type,
-      mediaUrl: item.url,
-      hdUrl: item.hdurl ?? null,
-      thumbnailUrl:
-        item.thumbnail_url === "" ? null : (item.thumbnail_url ?? null),
+      title: apodText(item.title),
+      explanation: apodText(item.explanation).replace(/^Explanation:\s*/i, ""),
+      mediaType: item.media_type === "image" ? "image" : "video",
+      mediaUrl: media.data,
+      hdUrl: item.media_type === "image" ? (item.hdurl ?? null) : null,
+      thumbnailUrl: item.media_type === "image" ? null : (item.hdurl ?? null),
       copyright: copyright === "" ? null : (copyright ?? null),
     };
   }

@@ -40,6 +40,10 @@ const checks = [
     validate: (body, headers) =>
       body?.date === "2024-01-01" &&
       typeof body?.title === "string" &&
+      body.title !== "NASA Science" &&
+      typeof body?.mediaUrl === "string" &&
+      !body.mediaUrl.includes("nasa-logo") &&
+      !body.mediaUrl.includes("/image-article/") &&
       headers.get("cache-control")?.includes("public") &&
       ["HIT", "MISS"].includes(headers.get("x-cache") ?? ""),
   },

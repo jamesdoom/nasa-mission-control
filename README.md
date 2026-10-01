@@ -221,9 +221,9 @@ A separate daily GitHub workflow runs a warmed synthetic audit against the produ
 
 ## NASA APIs and attribution
 
-The application uses [NASA Open APIs](https://api.nasa.gov/) for APOD and NeoWs. NASA’s official APOD service repository notes that the public hosted instance can experience downtime, so every NASA integration is treated as a fallible upstream. NASA-provided copyright attribution is displayed when present.
+The application uses the public NASA Science APOD endpoint for APOD and [NASA Open APIs](https://api.nasa.gov/) for NeoWs. APOD requires no API key; NeoWs and DONKI still require the server-owned NASA key. NASA’s official APOD service repository notes that the public hosted instance can experience downtime, so every NASA integration is treated as a fallible upstream. NASA-provided copyright attribution is displayed when present.
 
-APOD video records may include a missing or empty `thumbnail_url` even when `thumbs=true`; the server normalizes that case to `null` while continuing to validate every non-empty media URL.
+Following the September 2026 APOD migration, the server requests `/wp-json/wp/v2/apod-basic/YYMMDD`, uses `hdurl` for images and video posters, extracts video/iframe sources from `basic_html`, and converts explanation and credit HTML to plain text. Missing media and mismatched dates fail safely. The legacy `/planetary/apod` service returned NASA branding instead of the observation on October 1; it is no longer used here. NASA documents a December 1, 2026 archive/redirect plan in its [official service repository](https://github.com/nasa/apod-api). This public upstream remains fallible; timeouts, error mapping, caching, and stale labels still apply. See [migration evidence](docs/apod-migration.md).
 
 Asteroid measurements come from NASA/JPL through NeoWs. NASA/JPL defines a potentially hazardous asteroid using orbital proximity and absolute magnitude criteria; the classification does not mean an Earth impact is predicted. See the official [CNEOS PHA definition](https://cneos.jpl.nasa.gov/glossary/PHA.html) and [NEO FAQ](https://cneos.jpl.nasa.gov/faq/).
 
@@ -376,6 +376,8 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 94. **Complete — Launch polish phase 4:** add main-entry metadata and sharing previews, keep useful content reachable during NASA failures, and audit deployed mobile performance. Lab results and outstanding field-performance review are documented in [traffic readiness](docs/traffic-readiness.md).
 
 95. **In progress — Launch polish phase 5:** prepared participant tasks and the launch checklist, verified the deployed application baseline, and refreshed tested screenshots. Recruitment, actual sessions, and any resulting fixes/retests remain pending. See the [launch review](docs/launch-review.md).
+
+96. **Complete — APOD migration repair:** switched to NASA Science's public dated endpoint, normalized HTML text and image/video media, preserved upstream resilience, and strengthened the archive monitor against branding images and article URLs. All 190 unit/component/accessibility tests and 48 browser tests pass, with live image/video and homepage verification. See [migration evidence](docs/apod-migration.md).
 
 ## Screenshots
 
