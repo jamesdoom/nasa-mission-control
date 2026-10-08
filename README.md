@@ -379,7 +379,7 @@ The [current five-phase roadmap](docs/next-roadmap.md) tracks the September 8 cy
 
 96. **Complete — APOD migration repair:** switched to NASA Science's public dated endpoint, normalized HTML text and image/video media, preserved upstream resilience, and strengthened the archive monitor against branding images and article URLs. All 190 unit/component/accessibility tests and 48 browser tests pass, with live image/video and homepage verification. See [migration evidence](docs/apod-migration.md).
 
-97. **Complete — DONKI migration repair:** switched FLR, CME, and GST to NASA’s documented public CCMC API after the September 30 migration, removed credentials from DONKI requests, and retained full-feed validation, deadlines, and caching. All 195 unit/component/accessibility tests and 48 browser tests pass; production recovery is checked separately. See [migration evidence](docs/donki-api-migration.md).
+97. **Complete — DONKI migration repair:** switched FLR, CME, and GST to NASA’s documented public CCMC API after the September 30 migration, removed credentials from DONKI requests, and retained full-feed validation, deadlines, and caching. All 195 unit/component/accessibility tests and 48 browser tests pass; live production checks returned current historical and recent feeds, and desktop/mobile browser verification passed. See [migration evidence](docs/donki-api-migration.md).
 
 ## Screenshots
 

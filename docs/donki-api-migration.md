@@ -13,3 +13,14 @@ Direct NASA requests from this workstation timed out during investigation. Deplo
 ## Local validation
 
 Strict type checking, ESLint, Prettier, all 195 workspace unit/component/accessibility tests, and all 48 production-preview browser tests passed. The production build, compressed asset budgets, and offline-shell checks passed. Final diff review confirmed that only the DONKI transport URL and query credentials changed in application code; client contracts and scientific interpretation remain unchanged.
+
+## Production verification
+
+The fix was pushed as commit 6d4e2e81599b67ef5031b33716745d2b394c39c3 and automatically deployed to production as dpl_EzSG8yWbs9HcmfC8LUXJyznytSwD. On October 8 at 19:27 UTC, both live probes returned HTTP 200, CDN MISS, and x-data-status: current:
+
+| Range                         | Events (flare / CME / storm) | Full-response latency | Request reference                    |
+| ----------------------------- | ---------------------------- | --------------------- | ------------------------------------ |
+| 2024-05-10 through 2024-05-11 | 40 (28 / 11 / 1)             | 525 ms                | 1a031cac-b782-450c-bd81-e3bc949f93a9 |
+| 2026-10-01 through 2026-10-08 | 30 (7 / 22 / 1)              | 155 ms                | ac3fea0f-e447-4e40-9351-f4a650cc3928 |
+
+Correlated runtime logs for the archive request show the new FLR, CME, and GST endpoints returning HTTP 200 in 153, 141, and 131 ms respectively, followed by a successful normalized origin response. A live Chromium check rendered all 40 archive event cards at 1440px and 390px widths with no page runtime errors. All eight read-only production smoke checks passed. These observations verify the deployed migration; they do not remove historical failures or establish sustained 30-day reliability.
