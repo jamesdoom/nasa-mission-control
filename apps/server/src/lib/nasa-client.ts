@@ -685,12 +685,11 @@ export class NasaClient {
     const responses = await Promise.all(
       categories.map(async (eventCategory) => {
         const url = new URL(
-          `https://api.nasa.gov/DONKI/${endpoint[eventCategory]}`,
+          `https://ccmc.gsfc.nasa.gov/DONKI-API/get/${endpoint[eventCategory]}`,
         );
         url.search = new URLSearchParams({
           startDate,
           endDate,
-          api_key: this.options.apiKey,
         }).toString();
         return {
           category: eventCategory,

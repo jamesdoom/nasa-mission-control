@@ -137,7 +137,7 @@ describe("sanitized NASA contract fixtures", () => {
         payloads: [without(fixtures.flare, [0, "flrID"])],
         invoke: (nasa) =>
           nasa.getSpaceWeather("2024-05-10", "2024-05-11", "flare"),
-        upstreamPath: "/DONKI/FLR",
+        upstreamPath: "/DONKI-API/get/FLR",
         issuePath: "0.flrID",
       },
       {
@@ -145,7 +145,7 @@ describe("sanitized NASA contract fixtures", () => {
         payloads: [without(fixtures.cme, [0, "activityID"])],
         invoke: (nasa) =>
           nasa.getSpaceWeather("2024-05-10", "2024-05-11", "cme"),
-        upstreamPath: "/DONKI/CME",
+        upstreamPath: "/DONKI-API/get/CME",
         issuePath: "0.activityID",
       },
       {
@@ -153,7 +153,7 @@ describe("sanitized NASA contract fixtures", () => {
         payloads: [without(fixtures.storm, [0, "gstID"])],
         invoke: (nasa) =>
           nasa.getSpaceWeather("2024-05-10", "2024-05-11", "storm"),
-        upstreamPath: "/DONKI/GST",
+        upstreamPath: "/DONKI-API/get/GST",
         issuePath: "0.gstID",
       },
       {
